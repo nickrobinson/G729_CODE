@@ -1,0 +1,177 @@
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Mississippi State University 
+// ECE 4532-4542 Senior Design
+// Engineer: Sean Owens
+// 
+// Create Date:    18:46:59 10/14/2010  
+// Module Name:    div_s 
+// Project Name: 	 ITU G.729 Hardware Implementation
+// Target Devices: Virtex 5
+// Tool versions:  Xilinx 9.2i
+// Description: 	 This is a function to perform division of the a input by the b input. The divErr bit will be set
+//						 high should division by zero occur.
+// 
+// Dependencies: 	 regArraySize6.v, Chebps10_FSM.v, Chebps11_FSM.v, twoway_16bit_mux.v, gridPointsMem.v
+//
+// Revision: 
+// Revision 0.01 - File Created
+// Additional Comments: 
+//
+//////////////////////////////////////////////////////////////////////////////////
+module div_s(clock, reset, a, b, div_err, out, start, done, subouta, suboutb, subin,
+					overflow);
+	input clock, reset, start;
+   input [15:0] a;
+   input [15:0] b;
+	input [31:0] subin;
+	output reg done, div_err, overflow;
+   output reg [15:0] out;
+	output reg [31:0] subouta, suboutb;
+	
+	parameter MIN_16 = 16'h8000;
+	parameter MAX_16 = 16'h7fff;
+	parameter init = 3'd0;
+	parameter check_state = 3'd1;
+	parameter err_state = 3'd2;
+	parameter zero_state = 3'd3;
+	parameter max_state = 3'd4;
+	parameter div_state1 = 3'd5;
+	parameter div_state2 = 3'd6;
+	parameter div_state3 = 3'd7;
+	
+	reg [2:0] currentstate, nextstate;
+	
+	reg [3:0] iteration;
+	reg [3:0] next_iteration;
+	
+	reg [15:0] next_out, next_temp_L_num;
+	wire [31:0] L_denom, L_num, L_out;
+	reg [31:0] temp_L_num, temp_L_out;
+	
+	assign L_num = {16'd0,a};
+	assign L_denom = {16'd0,b};	
+	assign L_out = {16'd0,out};
+	
+	//temp_L_num_flop
+	always@(posedge clock) begin
+		if(reset)
+			temp_L_num = L_num;
+		else
+			temp_L_num = next_temp_L_num;
+	end
+	
+	//iteration flop
+	always@(posedge clock) begin
+		if(reset)
+			iteration = 0;
+		else
+			iteration = next_iteration;
+	end
+	
+	//out flop
+	always@(posedge clock) begin
+		if(reset)
+			out = 'd0;
+		else
+			out = next_out;
+	end
+	
+	always@(posedge clock) begin
+		if(reset)
+			currentstate = init;
+		else
+			currentstate = nextstate;
+	end
+	
+	always@(*) begin
+		next_temp_L_num = temp_L_num;
+		next_out = out;
+		next_iteration = iteration;
+		nextstate = currentstate;
+		done = 0;
+		div_err = 0;
+		overflow = 0;
+		case(currentstate)
+		
+			init: begin
+				next_out = 0;
+				if(start==0)
+					nextstate = init;
+				else
+					nextstate = check_state;
+			end
+			
+			check_state: begin
+				if((a>b) || (a[15]==1) || (b[15]==1) || (b==0))
+					nextstate = err_state;
+				else if(a==0)
+					nextstate = zero_state;
+				else if(a==b)
+					nextstate = max_state;
+				else begin
+					next_temp_L_num = L_num;
+					nextstate = div_state1;
+				end
+			end
+			
+			err_state: begin
+				div_err = 1;
+				done = 1;
+			end
+			
+			zero_state: begin
+				next_out = 'd0;
+				done = 'd1;
+				nextstate = init;
+			end
+			
+			max_state: begin
+				next_out = MAX_16;
+				done = 'd1;
+				nextstate = init;
+			end
+			
+			div_state1: begin
+				if(iteration >= 'd15) begin
+					next_iteration = 0;
+					done = 1;
+					nextstate = init;
+				end
+				else begin
+					next_out = out << 1;
+					next_temp_L_num = temp_L_num << 1;
+					next_iteration = iteration + 'd1;
+					nextstate = div_state2;
+				end
+			end
+			
+			div_state2: begin
+				if(temp_L_num < L_denom)
+					nextstate = div_state1;
+				else begin
+					subouta = temp_L_num;
+					suboutb = L_denom;
+					temp_L_out = L_out + 1;
+					nextstate = div_state3;
+				end
+			end
+			
+			div_state3: begin
+				next_temp_L_num = subin;
+				if(temp_L_out > 32'h0000_7fff ) begin
+					overflow = 1;
+					next_out = MAX_16;
+				end
+				else if((temp_L_out[31] == 1) && (temp_L_out > 32'hffff_8000)) begin
+					overflow = 1;
+					next_out = MIN_16;
+				end
+				else
+					next_out = temp_L_out[15:0];
+					nextstate = div_state1;
+			end
+		endcase
+	end
+				
+endmodule

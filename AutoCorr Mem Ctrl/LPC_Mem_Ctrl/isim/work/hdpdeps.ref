@@ -1,0 +1,15 @@
+V3 11
+FL "C:/Users/Sean/Documents/My Dropbox/Senior Design/G.729 Verilog Code/Sean's AutoCorr Mem Ctrl/LPC_Mem_Ctrl/../AutoCorr_mem_1.v" 2010/09/27.15:57:54 J.36
+MO work/AutoCorr_mem_1 \
+      FL "C:/Users/Sean/Documents/My Dropbox/Senior Design/G.729 Verilog Code/Sean's AutoCorr Mem Ctrl/LPC_Mem_Ctrl/../AutoCorr_mem_1.v" \
+      MI BLK_MEM_GEN_V2_4
+FL "C:/Users/Sean/Documents/My Dropbox/Senior Design/G.729 Verilog Code/Sean's AutoCorr Mem Ctrl/LPC_Mem_Ctrl/../LPC_Mem_Ctrl_tb.v" 2010/10/04.16:47:07 J.36
+MO work/LPC_Mem_Ctrl_tb_v \
+      FL "C:/Users/Sean/Documents/My Dropbox/Senior Design/G.729 Verilog Code/Sean's AutoCorr Mem Ctrl/LPC_Mem_Ctrl/../LPC_Mem_Ctrl_tb.v" \
+      MI LPC_Mem_Ctrl
+FL "C:/Users/Sean/Documents/My Dropbox/Senior Design/G.729 Verilog Code/Sean's AutoCorr Mem Ctrl/LPC_Mem_Ctrl/LPC_Mem_Ctrl.v" 2010/10/04.16:55:39 J.36
+MO work/LPC_Mem_Ctrl \
+      FL "C:/Users/Sean/Documents/My Dropbox/Senior Design/G.729 Verilog Code/Sean's AutoCorr Mem Ctrl/LPC_Mem_Ctrl/LPC_Mem_Ctrl.v" \
+      MI AutoCorr_mem_1
+FL $XILINX/verilog/src/glbl.v 2007/05/18.16:22:56 J.36
+MO work/glbl FL $XILINX/verilog/src/glbl.v

@@ -1,0 +1,126 @@
+COPYRIGHT (c) 2006, 2007 XILINX, INC.
+ALL RIGHTS RESERVED
+
+Core name            : Block Memory Generator 
+Version              : v2.4 rev 1
+Release Date         : April 2, 2007
+File                 : blk_mem_gen_release_notes.txt
+
+Revision History
+Date     By            Version   Change Description
+========================================================================
+01/2006  Xilinx, Inc.  1.1       Initial creation.
+06/2006  Xilinx, Inc.  2.1       Version 2.1
+09/2006  Xilinx, Inc.  2.2       Version 2.2
+11/2006  Xilinx, Inc.  2.3       Version 2.3
+02/2007  Xilinx, Inc.  2.4       Version 2.4
+04/2007  Xilinx, Inc.  2.4       Version 2.4 rev 1
+========================================================================
+
+INTRODUCTION
+
+RELEASE NOTES
+
+  1. System Requirements
+  2. What's New
+  3. Bugs Fixed
+  4. Known Issues
+
+TECHNICAL SUPPORT
+
+========================================================================
+
+INTRODUCTION
+============
+This document contains release notes for the Xilinx LogiCORE Block Memory
+Generator v2.4 rev 1.  The Xilinx Block Memory Generator core is included at no
+additional charge with Xilinx ISE Software. 
+
+To access the core, select Project-> New Source-> IP (Coregen & Architecture
+Wizard) in Project Navigator and enter your desired name for the component.
+The Block Memory Generator can be found in the Memories & Storage Elements
+folder. Alternatively you can invoke ISE CORE Generator standalone from the
+ISE Accessories folder and access the core from Memories & Storage Elements.
+
+For additional information on this core, please visit the Block Memory
+Generator product page: 
+  	http://www.xilinx.com/xlnx/xebiz/designResources/ip_product_details.jsp?key=Block_Memory_Generator
+
+
+The most up to date list of known issues with the Block Memory Generator v2.4 core can be found in Answer Record 24555: 
+
+   http://www.xilinx.com/xlnx/xil_ans_display.jsp?getPagePath=24555
+
+
+RELEASE NOTES for Block Memory Generator v2.4 rev 1
+===================================================
+
+1. System Requirements
+  
+   - Platform Support information for this core version is described in the
+     Release Notes AR for ISE 9.1i IP Update 1:
+     http://www.xilinx.com/xlnx/xil_ans_display.jsp?getPagePath=24307
+
+  - Special Requirements for this core version:
+    ISE 9.1i Service Pack 2
+
+2. Enhancements
+
+   - Support for ECC (built-in Hamming error correction) in Virtex-5
+
+   - Support for Spartan(TM)-3A DSP
+
+3. Bugs Fixed
+
+    - Block Memory Generator resource utilization is non-optimal for 
+      certain configurations
+          Change Request: 429967
+
+    - Block Memory Generator GUI displays unselectable options
+          Change Request: 415531
+
+4. Known Issues
+
+    - Core does not generate for large memories.  Depending on the
+      machine Coregen runs on, the maximum size of the memory that
+      can be generated will vary.  For example, a Dual Pentium-4
+      server running at 3.6GHz with 2 Gig RAM can generate a memory 
+      core of size 1.8 MBits or 230 K Bytes.
+          Change Request: 225405
+
+    - Out-of-range address input can cause the core to generate X's
+      on the DOUT bus.
+
+    - Block Memory Generator GUI fails with an internal error if no
+      value is entered for Write Depth.
+          Change Request: 432931
+
+   For the most up to date list of known issues with the Block Memory Generator v2.4
+   core, please refer to Answer Record 24555: 
+
+   http://www.xilinx.com/xlnx/xil_ans_display.jsp?getPagePath=24555
+
+
+OTHER GENERAL INFORMATION
+=========================
+   The Block Memory Generator may be configured to generate memories which may 
+exceed the capacity of your targeted device. Utilize the "Block RAM resource(s)"
+estimate reported on the last page of the Block Memory Generator Coregen GUI
+and the Datasheet for your selected device to ensure that your selected
+configuration does not exceed the capacity for your device.
+
+
+TECHNICAL SUPPORT
+=================
+
+The most efficient method for obtaining technical support for this core 
+is to create a WebCase on the http://www.xilinx.com/support
+website. Questions are routed to a team of engineers with specific 
+expertise in using the Block Memory Generator core. Xilinx will provide
+technical support for use of this product when used according to the 
+guidelines described in the Block Memory Generator Datasheet. Xilinx
+cannot guarantee timing, functionality, or support of this product for
+designs that do not follow these guidelines.
+
+
+

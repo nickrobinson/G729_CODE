@@ -1,0 +1,223 @@
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Mississippi State University 
+// ECE 4532-4542 Senior Design
+// Engineer: Sean Owens
+// 
+// Create Date:    15:32:35 09/16/2010 
+// Module Name:    LPC_Mem_Ctrl 
+// Project Name: 	 ITU G.729 Hardware Implementation
+// Target Devices: Vertex 5
+// Tool versions:  Xilinx 9.2i
+// Description: 	 Controller for the memory interface between the Pre-Processing
+//						 block and the Auto-correlation block.  This controller is used
+//						 to create a circular buffer that abstracts address referencing
+//						 from the Pre-processing and Auto-correlation blocks.
+//
+// Dependencies: 	 AutoCorr_mem_1.xco
+//
+// Revision: 0.02 - Increased memory capacity and subsequent logic.  Added write
+//						  management.
+// Revision: 0.01 - File Created
+// Additional Comments: 
+//
+//////////////////////////////////////////////////////////////////////////////////
+module LPC_Mem_Ctrl(clock, reset, In_Done, In_Sample, Out_Count, Out_Sample, frame_done);
+   input clock;
+	input reset;
+	input In_Done;
+   input [15:0] In_Sample;
+   input [7:0] Out_Count;
+   output [15:0] Out_Sample;
+	output frame_done;
+
+	reg [8:0] addra;
+	reg [8:0] nextaddra;
+	reg [8:0] addrb;
+	reg [8:0] nextaddrb;
+	reg [15:0] dina;
+	reg wea;
+	reg web;
+	reg webflag;
+	reg frame_done;
+	reg framedoneflag;
+	reg [5:0] frame_count;
+	reg [5:0] nextframe_count;
+	wire [15:0] dinb;
+	wire [15:0] doutb;
+	 
+	parameter rstate1 = 3'd0;
+	parameter rstate2 = 3'd1;
+	parameter rstate3 = 3'd2;
+	parameter rstate4 = 3'd3;
+	parameter wait1 = 3'd4;
+	parameter wait2 = 3'd5;
+	parameter wait3 = 3'd6;
+	
+	
+	parameter start1 = 9'd40;
+	parameter start2 = 9'd120;
+	parameter start3 = 9'd200;
+	parameter start4 = 9'd280;
+	
+	reg [2:0] rcurrentState;
+	reg [2:0] rnextState;
+	 
+	AutoCorr_mem_1 i_AutoCorr_mem_1(.addra(addra),.dina(16'd0),.wea(1'd0),.clka(clock),
+		.douta(Out_Sample), .addrb(addrb), .dinb(dinb), .web(webflag), .clkb(clock), .doutb(doutb));
+		
+		
+	assign dinb = In_Sample;
+	 
+	always@(posedge clock)begin
+		if(reset) begin
+			rcurrentState <= rstate1;
+		end
+		else begin
+			rcurrentState <= rnextState;
+		end
+	end
+	
+	always@(posedge clock)begin
+		if(reset) begin
+			addra <= start1;
+		end
+		else begin
+			addra <= nextaddra;
+		end
+	end
+	
+	always@(*)begin
+	
+		rnextState = rcurrentState;
+		nextaddra = addra;
+		case(rcurrentState)
+		
+			rstate1: begin
+				nextaddra = start1 + Out_Count;
+				if(addra == 279) begin
+					rnextState = wait1;
+					nextaddra = start2;
+				end
+				else
+					rnextState = rstate1;
+			end
+			
+			wait1:
+			begin
+				rnextState = rstate2;
+				nextaddra = start2;
+			end
+			
+			rstate2: begin
+				if(Out_Count >= 200)
+					nextaddra = Out_Count - 200;
+				else if(Out_Count < 200)
+					nextaddra = start2 + Out_Count;
+				if(addra == 39) begin
+					rnextState = wait2;
+					nextaddra = start3;
+				end
+				else
+					rnextState = rstate2;
+			end
+			
+			wait2:
+			begin
+				rnextState = rstate3;
+				nextaddra = start3;
+			end
+			
+			rstate3: begin
+				if(Out_Count < 120)
+					nextaddra = start3 + Out_Count;
+				else
+					nextaddra = Out_Count - 120;
+				if(addra == 119) begin
+					rnextState = wait3;
+					nextaddra = start4;
+				end
+				else
+					rnextState = rstate3;
+			end
+			
+			wait3:
+			begin
+				rnextState = rstate4;
+				nextaddra = start4;
+			end
+			
+			rstate4: begin
+				if(Out_Count < 40)
+					nextaddra = start4 + Out_Count;
+				else
+					nextaddra = Out_Count - 40;
+				if(addra == 199) begin
+					rnextState = rstate1;
+					nextaddra = start1;
+				end
+				else
+					rnextState = rstate4;
+			end
+		endcase
+	end
+	
+	always@(posedge clock)begin
+		if(reset) begin
+			addrb <= 200;
+		end
+		else begin
+			addrb <= nextaddrb;
+		end
+	end
+	
+	always@(posedge clock)begin
+		if(reset) begin
+			frame_count <= 0;
+		end
+		else begin
+			frame_count <= nextframe_count;
+		end
+	end
+
+	always@(posedge clock) begin
+		if(reset) begin
+			frame_done = 0;
+		end
+		else begin
+			if(framedoneflag)
+				frame_done = 1;
+			else
+				frame_done = 0;
+		end
+	end
+
+	always@(*)begin
+		nextaddrb = addrb;
+		nextframe_count = frame_count;
+		if(In_Done) begin
+			if(addrb == 319) begin			
+				nextaddrb = 0;
+				webflag = 1;
+				nextframe_count = frame_count + 1;
+			end
+			else begin
+				nextaddrb = addrb + 8'd1;
+				webflag = 1;
+				nextframe_count = frame_count + 1;
+			end
+			if(nextframe_count == 6'd40) begin
+				nextframe_count = 6'd0;
+				framedoneflag = 1;
+			end
+		end
+	end
+
+	always@(negedge In_Done)begin
+		framedoneflag = 0;
+		webflag = 0;
+	end
+
+	
+	
+endmodule

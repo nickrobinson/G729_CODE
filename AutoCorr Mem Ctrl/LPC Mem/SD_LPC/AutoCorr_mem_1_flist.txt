@@ -1,0 +1,8 @@
+# Output products list for <AutoCorr_mem_1>
+AutoCorr_mem_1.ngc
+AutoCorr_mem_1.v
+AutoCorr_mem_1.veo
+AutoCorr_mem_1.xco
+AutoCorr_mem_1_blk_mem_gen_v2_4_xst_1_vhdl.prj
+AutoCorr_mem_1_flist.txt
+AutoCorr_mem_1_xmdf.tcl

@@ -1,0 +1,8 @@
+# Output products list for <scratch_memory_V1>
+scratch_memory_V1.ngc
+scratch_memory_V1.v
+scratch_memory_V1.veo
+scratch_memory_V1.xco
+scratch_memory_V1_blk_mem_gen_v2_4_xst_1_vhdl.prj
+scratch_memory_V1_flist.txt
+scratch_memory_V1_xmdf.tcl
