@@ -136,15 +136,16 @@ parameter FOR_LOOP3_BODY1 = 6'd24;
 parameter FOR_LOOP3_BODY2 = 6'd25;
 parameter FOR_LOOP3_BODY3 = 6'd26;
 parameter FOR_LOOP3_BODY3_MEM_WAIT1 = 6'd27;
-parameter FOR_LOOP3_BODY3_MEM_WAIT2 = 6'd28;
-parameter FOR_LOOP4 = 6'd29; 
-parameter FOR_LOOP4_MEM_WAIT1 = 6'd30;
-parameter FOR_LOOP4_MEM_WAIT2 = 6'd31;
-parameter FOR_LOOP3_BODY4 = 6'd32;
-parameter FOR_LOOP3_BODY5 = 6'd33;
-parameter FOR_LOOP3_BODY6 = 6'd34;
-parameter GAMMA_SET1 = 6'd35;
-parameter GAMMA_SET2 = 6'd36;
+parameter FOR_LOOP3_BODY3_MEM_WAIT1_5 = 6'd28;
+parameter FOR_LOOP3_BODY3_MEM_WAIT2 = 6'd29;
+parameter FOR_LOOP4 = 6'd30; 
+parameter FOR_LOOP4_MEM_WAIT1 = 6'd31;
+parameter FOR_LOOP4_MEM_WAIT2 = 6'd32;
+parameter FOR_LOOP3_BODY4 = 6'd33;
+parameter FOR_LOOP3_BODY5 = 6'd34;
+parameter FOR_LOOP3_BODY6 = 6'd35;
+parameter GAMMA_SET1 = 6'd36;
+parameter GAMMA_SET2 = 6'd37;
 
 //always blocks for working registers
 
@@ -292,29 +293,27 @@ begin
 	
 	case(state)
 	
-		INIT:
+		INIT:			//state0
 		begin
-		if(start != 1)
-			nextstate = INIT;
-		else if (start == 1)
-			begin
-				LsfReset = 1;
-				cur_rcReset = 1;			
-				critLar0Reset = 1;
-				critLar1Reset = 1;
-				tempReset = 1;
-				d_minReset = 1;
-				iReset = 1;
-				kReset = 1;
-				smoothReset = 1;
-				nextstate = FOR_LOOP1;
-			end
+			LsfReset = 1;
+			cur_rcReset = 1;			
+			critLar0Reset = 1;
+			critLar1Reset = 1;
+			tempReset = 1;
+			d_minReset = 1;
+			iReset = 1;
+			kReset = 1;			
+			if(start != 1)
+				nextstate = INIT;
+			else if (start == 1)				
+					nextstate = FOR_LOOP1;
+				
 		end//INIT
 		
 		/*This state and the next state perfom
 		"for (k=0; k<M; k++)" and
 		"LsfInt[k] = shl(LsfInt[k],1)" */
-		FOR_LOOP1:
+		FOR_LOOP1:			//state1
 		begin
 			if(k>=10)
 			begin
@@ -328,7 +327,7 @@ begin
 			end
 		end//FOR_LOOP1
 		
-		FOR_LOOP1_MEM_WAIT1:
+		FOR_LOOP1_MEM_WAIT1:			//state2
 		begin
 			memReadAddr = {INTERPOLATION_LSF_INT[10:4],k[3:0]};
 			shlVar1Out = memIn[15:0];
@@ -341,13 +340,13 @@ begin
 		
 		/*This state and the next state perfom		
 		"LsfNew[k] = shl(LsfNew[k],1)" */
-		FOR_LOOP1_BODY1:
+		FOR_LOOP1_BODY1:			//state3
 		begin
 			memReadAddr = {INTERPOLATION_LSF_NEW[10:4],k[3:0]};
 			nextstate = FOR_LOOP1_MEM_WAIT2;
 		end//FOR_LOOP1_BODY1
 		
-		FOR_LOOP1_MEM_WAIT2:
+		FOR_LOOP1_MEM_WAIT2:				//state4
 		begin
 			memReadAddr = {INTERPOLATION_LSF_NEW[10:4],k[3:0]};
 			shlVar1Out = memIn[15:0];
@@ -367,7 +366,7 @@ begin
 		/*This state and the next state perfom
 		"for (i=0; i<2; 2++)" and
 		"cur_rc = abs_s(rc[i])" */
-		FOR_LOOP2:
+		FOR_LOOP2:			//state5
 		begin
 			if(i>=2)
 			begin
@@ -381,7 +380,7 @@ begin
 			end		
 		end//FOR_LOOP2
 		
-		FOR_LOOP2_MEM_WAIT1:
+		FOR_LOOP2_MEM_WAIT1:			//state6
 		begin
 			memReadAddr = {LEVINSON_DURBIN_RC[10:2],i[1:0]};
 			if(memIn[15] == 1)
@@ -405,7 +404,7 @@ begin
 		  }
 		  else (nextstate)
 		*/
-		FOR_LOOP2_BODY1:
+		FOR_LOOP2_BODY1:			//state7
 		begin
 			shrVar1Out = cur_rc;
 			shrVar2Out = 16'd4;
@@ -438,7 +437,7 @@ begin
 		else
 		{
 		*/
-		FOR_LOOP2_BODY2:
+		FOR_LOOP2_BODY2:			//state8
 		begin
 			subOutA = cur_rc;
 			subOutB = SEG2;
@@ -474,7 +473,7 @@ begin
           LarNew[i] = extract_l(L_temp);
         }
        else {*/
-		FOR_LOOP2_BODY3:
+		FOR_LOOP2_BODY3:			//state9
 		begin
 			subOutA = cur_rc;
 			subOutB = SEG3;
@@ -489,7 +488,7 @@ begin
 				L_subOutA = L_multIn;
 				L_subOutB = L_B2;
 				L_shrOutVar1 = L_subIn;
-				L_shrOutNumShift = 16'd1;
+				L_shrOutNumShift = 16'd11;
 				addOutA = {12'd0,i[3:0]};
 				addOutB = 16'd2;
 				memWriteAddr = {PERC_VAR_LAR[10:2],addIn[1:0]};
@@ -509,7 +508,7 @@ begin
          LarNew[i] = extract_l(L_temp);
         }	}    }
 	   */
-		FOR_LOOP2_BODY4:
+		FOR_LOOP2_BODY4:			//state10
 		begin
 			shrVar1Out = cur_rc;
 			shrVar2Out = 16'd1;
@@ -533,13 +532,13 @@ begin
 		 if (r_c[i] < 0)
 			LarNew[i] = sub(0, LarNew[i]);
 		*/
-		FOR_LOOP2_BODY5:
+		FOR_LOOP2_BODY5:			//state11
 		begin
 			memReadAddr = {LEVINSON_DURBIN_RC[10:2],i[1:0]};
 			nextstate = FOR_LOOP2_BODY5_MEM_WAIT1;
 		end//FOR_LOOP2_BODY5
 		
-		FOR_LOOP2_BODY5_MEM_WAIT1:
+		FOR_LOOP2_BODY5_MEM_WAIT1:			//state12
 		begin
 			memReadAddr = {LEVINSON_DURBIN_RC[10:2],i[1:0]};
 			if(memIn[15] == 1)
@@ -559,7 +558,7 @@ begin
 			end
 		end//FOR_LOOP2_BODY5_MEM_WAIT1
 		
-		FOR_LOOP2_BODY5_MEM_WAIT2:
+		FOR_LOOP2_BODY5_MEM_WAIT2:			//state13
 		begin
 			subOutA = 16'd0;
 			subOutB = memIn;
@@ -580,13 +579,13 @@ begin
 			Lar[0] = shr(temp, 1);
 			LarOld[0] = LarNew[0];
 		*/
-		LAR_INTERPOL1:
+		LAR_INTERPOL1:			//state14
 		begin
 			memReadAddr = {PERC_VAR_LAR[10:2],2'd2};
 			nextstate = LAR_INTERPOL1_MEM_WAIT1;
 		end//LAR_INTERPOL1
 		
-		LAR_INTERPOL1_MEM_WAIT1:
+		LAR_INTERPOL1_MEM_WAIT1:			//state15
 		begin
 			nexttemp = memIn[15:0];
 			tempLD = 1;
@@ -594,7 +593,7 @@ begin
 			nextstate = LAR_INTERPOL1_MEM_WAIT2;
 		end//LAR_INTERPOL1_MEM_WAIT1
 		
-		LAR_INTERPOL1_MEM_WAIT2:
+		LAR_INTERPOL1_MEM_WAIT2:			//state16
 		begin
 			addOutA = temp;
 			addOutB = memIn[15:0];
@@ -606,7 +605,7 @@ begin
 			nextstate = LAR_INTERPOL1_MEM_WAIT3;
 		end//LAR_INTERPOL1_MEM_WAIT2
 		
-		LAR_INTERPOL1_MEM_WAIT3:
+		LAR_INTERPOL1_MEM_WAIT3:			//state17
 		begin
 			memOut = temp;
 			memWrite = 1;
@@ -618,13 +617,13 @@ begin
 		  Lar[1] = shr(temp, 1);
 		  LarOld[1] = LarNew[1];
 		  */
-		LAR_INTERPOL2:
+		LAR_INTERPOL2:			//state18
 		begin
 			memReadAddr = {PERC_VAR_LAR[10:2],2'd3};
 			nextstate = LAR_INTERPOL2_MEM_WAIT1;
 		end//LAR_INTERPOL2
 		
-		LAR_INTERPOL2_MEM_WAIT1:
+		LAR_INTERPOL2_MEM_WAIT1:			//state19
 		begin
 			nexttemp = memIn[15:0];
 			tempLD = 1;
@@ -632,7 +631,7 @@ begin
 			nextstate = LAR_INTERPOL2_MEM_WAIT2;
 		end//LAR_INTERPOL2_MEM_WAIT1
 		
-		LAR_INTERPOL2_MEM_WAIT2:
+		LAR_INTERPOL2_MEM_WAIT2:			//state20
 		begin
 			addOutA = temp;
 			addOutB = memIn[15:0];
@@ -644,7 +643,7 @@ begin
 			nextstate = LAR_INTERPOL2_MEM_WAIT3;
 		end//LAR_INTERPOL2_MEM_WAIT2
 		
-		LAR_INTERPOL2_MEM_WAIT3:
+		LAR_INTERPOL2_MEM_WAIT3:			//state21
 		begin
 			memOut = temp;
 			memWrite = 1;
@@ -653,7 +652,7 @@ begin
 		end//LAR_INTERPOL2_MEM_WAIT3
 		
 		//	for (k=0; k<2; k++) {       
-		FOR_LOOP3:
+		FOR_LOOP3:			//state22
 		begin
 			if(k>=2)
 			begin
@@ -662,7 +661,7 @@ begin
 				done = 1;
 			end
 			
-			else if(k<10)
+			else if(k<2)
 			begin
 				multOutA = k;
 				multOutB = 2;
@@ -672,7 +671,7 @@ begin
 		end//FOR_LOOP3
 		
 		//CritLar0 = Lar[2*k];
-		FOR_LOOP3_MEM_WAIT1:
+		FOR_LOOP3_MEM_WAIT1:			//state23
 		begin
 			nextcritLar0 = memIn[15:0];
 			critLar0LD = 1;
@@ -693,7 +692,7 @@ begin
          }}
 		  else {
 		*/
-		FOR_LOOP3_BODY1:
+		FOR_LOOP3_BODY1:			//state24
 		begin
 			nextcritLar1 = memIn[15:0];
 			critLar1LD = 1;	
@@ -701,7 +700,7 @@ begin
 			begin
 				subOutA = critLar0;
 				subOutB = THRESH_L1;
-				L_subOutA = {16'd0,critLar1[15:0]};
+				L_subOutA = {16'd0,nextcritLar1[15:0]};
 				L_subOutB = THRESH_H1;
 				if((subIn[15] == 1) && (L_subIn[15] != 1))
 				begin
@@ -721,7 +720,7 @@ begin
 			smooth = 1;
         }}
 		*/
-		FOR_LOOP3_BODY2:
+		FOR_LOOP3_BODY2:			//state25
 		begin
 			subOutA = critLar0;
 			subOutB = THRESH_L2;
@@ -740,17 +739,16 @@ begin
 			gamma1[k] = GAMMA1_0;
 			if (k == 0)			{
 				Lsf = LsfInt;	}
-      else 						{
-        Lsf = LsfNew;      }      
+			else 					{
+				Lsf = LsfNew;  }      
 		*/
-		FOR_LOOP3_BODY3:
-		begin
-			memWriteAddr = {PERC_VAR_GAMMA1[10:4],k[3:0]};
-			memOut = GAMMA1_0;
-			memWrite = 1;
-			
+		FOR_LOOP3_BODY3:			//state26
+		begin			
 			if(smooth == 0)
 			begin
+				memWriteAddr = {PERC_VAR_GAMMA1[10:4],k[3:0]};
+				memOut = GAMMA1_0;
+				memWrite = 1;
 				if(k == 0)
 				begin				
 					nextLsf = INTERPOLATION_LSF_INT;
@@ -762,26 +760,32 @@ begin
 					nextLsf = INTERPOLATION_LSF_NEW;
 					LsfLD = 1;
 				end		
-				memReadAddr = {Lsf[10:1],1'd0};
-				nextstate = FOR_LOOP3_BODY3_MEM_WAIT1;
+				nextstate = FOR_LOOP3_BODY3_MEM_WAIT1;				
 			end
 			else
 				nextstate = GAMMA_SET1;
 		end//FOR_LOOP3_BODY3
 		
-		/* next two states perform
+		/* next three states perform
 			d_min = sub(Lsf[1], Lsf[0]);
 		*/
-		FOR_LOOP3_BODY3_MEM_WAIT1:
+		FOR_LOOP3_BODY3_MEM_WAIT1:			//state27
 		begin
-			nexttemp = memIn[15:0];
-			tempLD = 1;
-			memReadAddr = {Lsf[10:1],1'd1};
-			nextstate = FOR_LOOP3_BODY3_MEM_WAIT2;
+			memReadAddr = {Lsf[10:1],1'd0};					
+			nextstate = FOR_LOOP3_BODY3_MEM_WAIT1_5;	
 		end//FOR_LOOP3_BODY3_MEM_WAIT1
 		
-		FOR_LOOP3_BODY3_MEM_WAIT2:
+		FOR_LOOP3_BODY3_MEM_WAIT1_5:	//state28
 		begin
+			nexttemp = memIn[15:0];
+			tempLD = 1;	
+			memReadAddr = {Lsf[10:1],1'd1};
+			nextstate = FOR_LOOP3_BODY3_MEM_WAIT2;
+		end//FOR_LOOP3_BODY3_MEM_WAIT1_5:
+		
+		FOR_LOOP3_BODY3_MEM_WAIT2:			//state29
+		begin
+			memReadAddr = {Lsf[10:1],1'd1};
 			subOutA = memIn[15:0];
 			subOutB = temp;
 			nextd_min = subIn;
@@ -792,7 +796,7 @@ begin
 		end//FOR_LOOP3_BODY3_MEM_WAIT2
 		
 		//for (i=1; i<M-1; i++) {
-		FOR_LOOP4:
+		FOR_LOOP4:			//state30
 		begin
 			if(i>=9)
 			begin
@@ -811,7 +815,7 @@ begin
 			if (sub(temp,d_min)<0) {
             d_min = temp;       }
 		*/
-		FOR_LOOP4_MEM_WAIT1:
+		FOR_LOOP4_MEM_WAIT1:			//state31
 		begin
 			nexttemp = memIn[15:0];
 			tempLD = 1;
@@ -821,7 +825,7 @@ begin
 			nextstate = FOR_LOOP4_MEM_WAIT2;
 		end//FOR_LOOP4_MEM_WAIT1
 		
-		FOR_LOOP4_MEM_WAIT2:
+		FOR_LOOP4_MEM_WAIT2:			//state32
 		begin
 			subOutA = memIn[15:0];
 			subOutB = temp;
@@ -845,7 +849,7 @@ begin
 			temp = shl(temp, 5);
 			gamma2[k] = temp;
 		*/
-		FOR_LOOP3_BODY4:
+		FOR_LOOP3_BODY4:			//state33
 		begin
 			multOutA = ALPHA;
 			multOutB = d_min;
@@ -864,7 +868,7 @@ begin
 		/*if (sub(gamma2[k] , GAMMA2_0_H)>0) {
         gamma2[k] = GAMMA2_0_H;		       }
 		*/
-		FOR_LOOP3_BODY5:
+		FOR_LOOP3_BODY5:			//state34
 		begin
 			subOutA = temp;
 			subOutB = GAMMA2_0_H;
@@ -880,7 +884,7 @@ begin
 		/*if (sub(gamma2[k] ,GAMMA2_0_L)<0) {
         gamma2[k] = GAMMA2_0_L;		      }
 		*/
-		FOR_LOOP3_BODY6:
+		FOR_LOOP3_BODY6:			//state35
 		begin
 			subOutA = temp;
 			subOutB = GAMMA2_0_L;
@@ -897,7 +901,7 @@ begin
 			nextstate = FOR_LOOP3;
 		end//FOR_LOOP3_BODY6
 		
-		GAMMA_SET1:
+		GAMMA_SET1:			//state36
 		begin
 			memWriteAddr = {PERC_VAR_GAMMA1[10:1],k[0]};
 			memOut = GAMMA1_1;
@@ -905,7 +909,7 @@ begin
 			nextstate = GAMMA_SET2;
 		end//GAMMA_SET1
 		
-		GAMMA_SET2:
+		GAMMA_SET2:				//state37
 		begin
 			memWriteAddr = {PERC_VAR_GAMMA2[10:1],k[0]};
 			memOut = GAMMA2_1;
