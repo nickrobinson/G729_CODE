@@ -22,7 +22,7 @@
 module mult(a, b,multRsel,overflow, product);
 
 input [15:0] a, b;
-input multRsel;
+input multRsel;		//This input is for whenever the mult_r function is needed.
 output reg overflow;
 output [15:0] product;
 
@@ -34,8 +34,7 @@ parameter MAX_32 = 32'h0000_7fff;
 parameter MIN_16 = 16'h8000;
 parameter MAX_16 = 16'h7fff;
 
-wire signed [31:0] temp1,temp2,temp3,temp4;
-reg signed [31:0] temp,temp5;
+reg signed [31:0] temp;
 
 always @(*) 
 begin
@@ -44,9 +43,13 @@ begin
 	if(multRsel)
 		temp = temp + 32'h0000_4000;
 	//I don't know where these magic numbers came from, except from the C model.
-	temp = temp & 32'hffff_8000;	
-	temp = temp >>> 15;
-
+	//I think they have something to do with the precision of the multiplication
+   if(temp > 'd7)
+	begin
+		temp = temp & 32'hffff_8000;	
+		temp = temp >>> 15;
+	end
+	
 	if((temp & 32'h0001_0000)!=0)
 		temp = temp | 32'hffff_0000;
 		
