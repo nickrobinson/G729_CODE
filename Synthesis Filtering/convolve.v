@@ -111,7 +111,6 @@ begin
 		
 		STATE_COUNT_LOOP1:
 		begin
-			count2Reset = 1;
 			if(count1 > L)
 			begin
 				nextstate = STATE_INIT;
@@ -129,10 +128,10 @@ begin
 		begin
 			if(count2 > count1)
 			begin
+				count2Reset = 1;
 				nextcount1 = count1 + 1;
 				count1Ld = 1;
 				nextstate = STATE_COUNT_LOOP1;
-				done = 1;
 			end
 			else if(count2 <= count1)
 			begin
@@ -140,7 +139,7 @@ begin
 				nextcount2 = count2 + 1;
 				count2Ld = 1;
 				nextstate = STATE_COUNT_LOOP2;
-				$display("count2: %d", count1);
+				$display("count2: %d", count2);
 			end		
 		end
 		
