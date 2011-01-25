@@ -17,20 +17,20 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module convolve(clk, reset, start, rPrimeIn, rPrimeWrite, rPrimeRequested, rPrimeOut, done,
+module convolve(clk, reset, start, memIn, memWriteEn, memWriteAddr, memOut, done,
 					    L_macIn, L_macOutA, L_macOutB, L_macOutC);
 
 `include "paramList.v"
 
 //inputs
 input clk, reset, start;
-input [31:0] rPrimeIn;
+input [31:0] memIn;
 input [31:0] L_macIn;
 
 //outputs
-output reg rPrimeWrite;
-output reg [10:0]  rPrimeRequested;
-output reg [31:0] rPrimeOut;
+output reg memWriteEn;
+output reg [10:0]  memWriteAddr;
+output reg [31:0] memOut;
 output reg done;
 output reg [15:0] L_macOutA,L_macOutB;
 output reg [31:0] L_macOutC;
@@ -40,6 +40,8 @@ reg count2Ld,count2Reset;
 reg [5:0] count1,nextcount1;
 reg [5:0] count2,nextcount2;
 reg [2:0] state,nextstate;
+reg [31:0] temp,nexttemp;
+reg tempLd,tempReset;
 
 //state parameters
 parameter STATE_INIT = 3'd0;
@@ -77,14 +79,25 @@ begin
 		count2 <= nextcount2;
 end
 
+// Adding temp flip flop to store s value in inner loop
+always @(posedge clk)
+begin
+	if(reset)
+		temp <= 0;
+	else if(tempReset)
+		temp <= 0;
+	else if(tempLd)
+		temp <= nexttemp;
+end
+
 always @(*)
 begin
 	nextstate = state;
 	nextcount1 = count1;
 	nextcount2 = count2;
 	done = 0;
-	rPrimeRequested = 0;
-	rPrimeWrite = 0;
+	memWriteAddr = 0;
+	memWriteEn = 0;
 	count1Reset = 0;
 	count1Ld = 0;
 	count2Reset = 0;
@@ -103,7 +116,6 @@ begin
 				nextstate = STATE_INIT;
 			else 
 			begin
-				$display("Entering Loop");
 				nextstate = STATE_COUNT_LOOP1;
 				//rPrimeRequested = {AUTOCORR_R[10:4],4'd0};
 			end
@@ -114,13 +126,13 @@ begin
 			if(count1 > L)
 			begin
 				nextstate = STATE_INIT;
-				done = 1;
 			end
 			else if(count1 <= L)
 			begin
 				//rPrimeRequested = {AUTOCORR_R[10:4],count};
 				nextstate = STATE_COUNT_LOOP2;
-				$display("count1: %d", count1);
+				nexttemp = 0;    //This temp variable will represent s from the C code
+				tempLd = 1;
 			end		
 		end
 		
@@ -128,26 +140,23 @@ begin
 		begin
 			if(count2 > count1)
 			begin
-				count2Reset = 1;
 				nextcount1 = count1 + 1;
 				count1Ld = 1;
+				count2Reset = 1;
 				nextstate = STATE_COUNT_LOOP1;
 			end
 			else if(count2 <= count1)
 			begin
 				//rPrimeRequested = {AUTOCORR_R[10:4],count};
 				nextcount2 = count2 + 1;
-				count2Ld = 1;
-				nextstate = STATE_COUNT_LOOP2;
-				$display("count2: %d", count2);
-			end		
+		      count2Ld = 1;
+				memWriteAddr = {AUTOCORR_R[10:6], count2};
+			end	
 		end
 		
 		STATE_L_MAC1:
 		begin
-			nextcount1 = count1 + 1;
-			count1Ld = 1;
-			nextstate = STATE_COUNT_LOOP1;
+			nextstate = STATE_COUNT_LOOP2;
 		end
 		
 		default:

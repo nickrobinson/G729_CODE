@@ -28,13 +28,13 @@ module convolve_test;
 	reg clk;
 	reg reset;
 	reg start;
-	reg [31:0] rPrimeIn;
+	reg [31:0] memIn;
 	wire [31:0] L_macIn;
 
 	// Outputs
-	wire rPrimeWrite;
-	wire [10:0] rPrimeRequested;
-	wire [31:0] rPrimeOut;
+	wire memWriteEn;
+	wire [10:0] memWriteAddr;
+	wire [31:0] memOut;
 	wire done;
 	wire [15:0] L_macOutA;
 	wire [15:0] L_macOutB;
@@ -45,10 +45,10 @@ module convolve_test;
 		.clk(clk), 
 		.reset(reset), 
 		.start(start), 
-		.rPrimeIn(rPrimeIn), 
-		.rPrimeWrite(rPrimeWrite), 
-		.rPrimeRequested(rPrimeRequested), 
-		.rPrimeOut(rPrimeOut), 
+		.memIn(memIn), 
+		.memWriteEn(memWriteEn), 
+		.memWriteAddr(memWriteAddr), 
+		.memOut(memOut), 
 		.done(done),
 		.L_macIn(L_macIn),
 		.L_macOutA(L_macOutA), 
@@ -69,7 +69,7 @@ module convolve_test;
 		clk = 0;
 		reset = 0;
 		start = 0;
-		rPrimeIn = 0;
+		memIn = 0;
 
 		// Wait 100 ns for global reset to finish
 		#100;
