@@ -231,6 +231,8 @@ always@(negedge clk)
 begin
 	if(overflow)
 		overflowLD = 1;
+	else if(overflow != 1)
+		overflowLD = 0;
 end
 
 //state machine always block
@@ -263,7 +265,7 @@ always @(*) begin
 	norm_lDoneReset = 0;
 	L_shlDoneReset = 0;
 	overflowReset = 0;
-	overflowLD = 0;
+	//overflowLD = 0;
 	norm_lReset = 0;
 	hamIn = 0;
 	xi = 0;
