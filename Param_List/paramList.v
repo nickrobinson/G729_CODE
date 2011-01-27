@@ -16,5 +16,7 @@ parameter PERC_VAR_GAMMA2 = 11'd450;				//Perceptual Adaptation gamma2 uses 2 bl
 parameter PERC_VAR_LAR = 11'd452;					//Perceptual Adaptation Lar uses 4 blocks
 parameter PERC_VAR_LAR_NEW = 11'd456;				//Perceptual Adaptation LarNew uses 4 blocks
 parameter PERC_VAR_LAR_OLD = 11'd460;				//Perceptual Adaptation LarOld uses 2 blocks
-
+parameter INT_LPC_LSP = 11'd462;				//INT_LPC LSP uses 16 blocks
+parameter INT_LPC_F1 = 11'd478;					//INT_LPC F1 uses 8 blocks
+parameter INT_LPC_F2 = 11'd486;					//INT_LPC F2 uses 8 blocks
 
