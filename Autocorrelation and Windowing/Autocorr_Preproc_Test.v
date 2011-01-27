@@ -24,7 +24,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module Top_Level_Test_v;
+module Autocorr_Preproc_Test_v;
 `include "paramList.v"
 	//Universal inputs
 	reg mclk;
@@ -87,9 +87,9 @@ module Top_Level_Test_v;
 
 		
 	
-	reg [15:0] samplesmem [0:1998];
-	reg [15:0] filteredmem [0:1998];
-	reg [31:0] autocorr_out [0:43];
+	reg [15:0] samplesmem [0:9999];
+	reg [15:0] filteredmem [0:9999];
+	reg [31:0] autocorr_out [0:9999];
 	reg frameDoneState, nextFrameDoneState;
 	reg [2:0] frameDoneCount,frameDoneCountLoad,frameDoneCountReset;
 	//Mux0 regs
@@ -336,20 +336,21 @@ module Top_Level_Test_v;
 		#50;
 		reset = 0;
 		#50;	
-
+		for(j=0;j<60;j=j+1)
+		begin
 			for (i=0;i<80;i=i+1)
 			begin
 			  @(posedge mclk);
 			  preProcReady = 1;
-			  xn = samplesmem[i];
+			  xn = samplesmem[j*80+i];
 			  @(posedge mclk);
 			  preProcReady = 0;
 			  wait (preProcDone);
 			  @(posedge mclk);
-			  if (yn != filteredmem[i])
-					$display($time, " ERROR: x[%d] = %x, y[%d] = %x, expected = %x", i, xn, i, yn, filteredmem[i]);
+			  if (yn != filteredmem[j*80+i])
+					$display($time, " ERROR: x[%d] = %x, y[%d] = %x, expected = %x", j*80+i, xn, j*80+i, yn, filteredmem[j*80+i]);
            else
-               $display($time, " CORRECT:  x[%d] = %x, y[%d] = %x", i, xn, i, yn);
+               $display($time, " CORRECT:  x[%d] = %x, y[%d] = %x", j*80+i, xn, j*80+i, yn);
 				#50;
 			end			
 			
@@ -360,12 +361,16 @@ module Top_Level_Test_v;
 				testReadRequested = {AUTOCORR_R[10:4],i[3:0]};
 				@(posedge mclk);
 				@(posedge mclk);
-				if (memIn!= autocorr_out[i])
-					$display($time, " ERROR: r'[%d] = %x, expected = %x", i, memIn, autocorr_out[i]);
+				if (memIn!= autocorr_out[j*11+i])
+					$display($time, " ERROR: r'[%d] = %x, expected = %x", j*11+i, memIn, autocorr_out[j*11+i]);
 				else
-					$display($time, " CORRECT:  r'[%d] = %x", i, memIn);
+					$display($time, " CORRECT:  r'[%d] = %x", j*11+i, memIn);
 			end
-		// 80 more(test#2)
+			#100;
+			mux0sel=0;
+		end//for loop j
+	
+		/*/ 80 more(test#2)
 			mux0sel = 0;
 			for (i=80;i<160;i=i+1)
 			begin
@@ -454,7 +459,7 @@ module Top_Level_Test_v;
 					$display($time, " ERROR: r'[%d] = %x, expected = %x", i, memIn, autocorr_out[i]);
 				else
 					$display($time, " CORRECT:  r'[%d] = %x", i, memIn);
-			end
+			end*/
 	end//always
 
 initial forever #10 mclk = ~mclk; //50MHz clk
