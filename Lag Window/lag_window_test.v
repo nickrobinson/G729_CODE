@@ -58,8 +58,8 @@ module lag_window_test_v;
 	wire [31:0] rPrimeIn;
 
 	//working regs
-	reg [31:0] rMem [0:10];		  
-	reg [31:0] rPrimeMem [0:10];
+	reg [31:0] rMem [0:9999];		  
+	reg [31:0] rPrimeMem [0:9999];
 	//Mux0 regs	
 	reg lagMuxSel;
 	reg [10:0] lagMuxOut;
@@ -76,7 +76,7 @@ module lag_window_test_v;
 	reg lagMux3Sel;
 	reg lagMux3Out;
 	reg testWriteEnable;
-	integer i;
+	integer i,j;
 	
 	// Instantiate the Unit Under Test (UUT)
 	lag_window uut (
@@ -207,6 +207,14 @@ module lag_window_test_v;
 		start = 0;		
 		lagMuxSel = 0;
 		
+		#50 ;		
+		reset = 1;		
+		#50;		
+		reset = 0;
+		// Wait 100 ns for global reset to finish
+		#100;
+	for(j=0;j<100;j=j+1)
+	begin	
 		//Test # 1
 		lagMux1Sel = 1;
 		lagMux2Sel = 1;
@@ -215,22 +223,15 @@ module lag_window_test_v;
 		for(i=0;i<11;i=i+1)
 		begin			
 			#40;
-			testWriteRequested = {AUTOCORR_R[10:5],i[4:0]};
-			testWriteOut = rMem[i];
+			testWriteRequested = {AUTOCORR_R[10:4],i[3:0]};
+			testWriteOut = rMem[j*11+i];
 			testWriteEnable = 1;
 			#40;
 		end
 		
 		lagMux1Sel = 0;
 		lagMux2Sel = 0;
-		lagMux3Sel = 0;
-		
-		#50 ;		
-		reset = 1;		
-		#50;		
-		reset = 0;
-		// Wait 100 ns for global reset to finish
-		#100;
+		lagMux3Sel = 0;		
 		
 		// Add stimulus here
 		start = 1;
@@ -243,95 +244,16 @@ module lag_window_test_v;
 		for(i = 0; i<11;i=i+1)
 		begin			
 			testReadRequested = {LAG_WINDOW_R_PRIME[10:4],i[3:0]};
-			@(posedge clk);
-			@(posedge clk);
-			if (rPrimeIn != rPrimeMem[i])
-					$display($time, " ERROR: r'[%d] = %x, expected = %x", i, rPrimeIn, rPrimeMem[i]);
+			#35;
+			if (rPrimeIn != rPrimeMem[j*11+i])
+					$display($time, " ERROR: r'[%d] = %x, expected = %x", j*11+i, rPrimeIn, rPrimeMem[j*11+i]);
 				else
-					$display($time, " CORRECT:  r'[%d] = %x", i, rPrimeIn);
+					$display($time, " CORRECT:  r'[%d] = %x", j*11+i, rPrimeIn);
 		end
-	//Test #2
+		lagMuxSel = 0;
+		#100;
+	end//	for joop j
 	
-		
-		$readmemh("1lag_window_in1.out", rMem);
-		$readmemh("1lag_window_out1.out", rPrimeMem);
-		lagMuxSel = 0;
-		lagMux1Sel = 1;
-		lagMux2Sel = 1;
-		lagMux3Sel = 1;		
-		for(i=0;i<11;i=i+1)
-		begin	
-			#40;
-			testWriteRequested = {AUTOCORR_R[10:4],i[3:0]};
-			testWriteOut = rMem[i];
-			testWriteEnable = 1;
-			#40;
-		end
-		lagMuxSel = 0;
-		lagMux1Sel = 0;
-		lagMux2Sel = 0;
-		lagMux3Sel = 0;
-		
-		// Add stimulus here
-		#50;
-		start = 1;
-		#50
-		start = 0;
-		#50;
-		
-		wait(done);
-      lagMuxSel = 1;
-		for(i = 0; i<11;i = i+1)
-		begin			
-			testReadRequested = {LAG_WINDOW_R_PRIME[10:4],i[3:0]};
-			@(posedge clk);
-			@(posedge clk);
-			if (rPrimeIn != rPrimeMem[i])
-					$display($time, " ERROR: r'[%d] = %x, expected = %x", i, rPrimeIn, rPrimeMem[i]);
-				else
-					$display($time, " CORRECT:  r'[%d] = %x", i, rPrimeIn);
-		end	
-		//Test #3
-	
-		
-		$readmemh("1lag_window_in2.out", rMem);
-		$readmemh("1lag_window_out2.out", rPrimeMem);
-		lagMuxSel = 0;
-		lagMux1Sel = 1;
-		lagMux2Sel = 1;
-		lagMux3Sel = 1;		
-		for(i=0;i<11;i=i+1)
-		begin	
-			#40;
-			testWriteRequested = {AUTOCORR_R[10:4],i[3:0]};
-			testWriteOut = rMem[i];
-			testWriteEnable = 1;
-			#40;
-		end
-		lagMuxSel = 0;
-		lagMux1Sel = 0;
-		lagMux2Sel = 0;
-		lagMux3Sel = 0;
-		
-		// Add stimulus here
-		#50;
-		start = 1;
-		#50
-		start = 0;
-		#50;
-		
-		wait(done);
-      lagMuxSel = 1;
-		for(i = 0; i<11;i = i+1)
-		begin			
-			testReadRequested = {LAG_WINDOW_R_PRIME[10:4],i[3:0]};
-			@(posedge clk);
-			@(posedge clk);
-			if (rPrimeIn != rPrimeMem[i])
-					$display($time, " ERROR: r'[%d] = %x, expected = %x", i, rPrimeIn, rPrimeMem[i]);
-				else
-					$display($time, " CORRECT:  r'[%d] = %x", i, rPrimeIn);
-		end	
 	end//always
    initial forever #10 clk = ~clk;     
 endmodule
