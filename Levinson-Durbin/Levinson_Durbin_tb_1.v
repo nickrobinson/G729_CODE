@@ -86,9 +86,9 @@ module Levinson_Durbin_tb_1_v;
 	wire scratch_mem_write_en;
 	
 	//working regs
-	reg [31:0] levinson_in [0:10];
-	reg [15:0] levinson_out_a [0:10];
-	reg [15:0] levinson_out_rc [0:10];
+	reg [31:0] levinson_in [0:9999];
+	reg [15:0] levinson_out_a [0:9999];
+	reg [15:0] levinson_out_rc [0:9999];
 	//mux0regs
 	reg mux0sel;
 	reg [10:0] mux0out;
@@ -106,7 +106,7 @@ module Levinson_Durbin_tb_1_v;
 	reg mux3out;
 	reg testWriteEnable;
 	
-	integer i;
+	integer i,j;
 
 	// Instantiate the Unit Under Test (UUT)
 	Levinson_Durbin_FSM levinson (
@@ -249,23 +249,6 @@ module Levinson_Durbin_tb_1_v;
 		clock = 0;
 		reset = 0;
 		start = 0;
-		mux0sel = 0;
-		mux1sel = 1;
-		mux2sel = 1;
-		mux3sel = 1;
-		
-		for(i=0;i<11;i=i+1)
-		begin
-			#50;
-			testWriteAddr = {LAG_WINDOW_R_PRIME[10:4],i[3:0]};
-			testWriteOut = levinson_in[i];
-			testWriteEnable = 1;
-			#50;
-		end
-		
-		mux1sel = 0;
-		mux2sel = 0;
-		mux3sel = 0;
 		
 		// Wait 100 ns for global reset to finish
 		#100;
@@ -273,29 +256,47 @@ module Levinson_Durbin_tb_1_v;
 		#50;
 		reset = 0;
 		#50;
-
-		start = 1;
-		#50;
-		start = 0;
-		wait(done);
-		#50;
-		
-		mux0sel = 1;
-		for(i=0;i<11;i=i+1)
+		for(j=0;j<60;j=j+1)
 		begin
-			testReadAddr = {LEVINSON_DURBIN_A[10:4],i[3:0]};
-			@(posedge clock);
-			@(posedge clock);
-			if (scratch_mem_in != levinson_out_a[i])
-				$display($time, " ERROR: A[%d] = %x, expected = %x", i, scratch_mem_in, levinson_out_a[i]);
-			else if (scratch_mem_in == levinson_out_a[i])
-				$display($time, " CORRECT:  A[%d] = %x", i, scratch_mem_in);
-			@(posedge clock);
-		end
-		
-		#50;
-		
-		//TEST2
+			mux0sel = 0;
+			mux1sel = 1;
+			mux2sel = 1;
+			mux3sel = 1;
+			
+			for(i=0;i<11;i=i+1)
+			begin
+				#50;
+				testWriteAddr = {LAG_WINDOW_R_PRIME[10:4],i[3:0]};
+				testWriteOut = levinson_in[j*11+i];
+				testWriteEnable = 1;
+				#50;
+			end
+			
+			mux1sel = 0;
+			mux2sel = 0;
+			mux3sel = 0;		
+
+			start = 1;
+			#50;
+			start = 0;
+			wait(done);
+			#50;
+			
+			mux0sel = 1;
+			for(i=0;i<11;i=i+1)
+			begin
+				testReadAddr = {LEVINSON_DURBIN_A[10:4],i[3:0]};
+				@(posedge clock);
+				@(posedge clock);
+				if (scratch_mem_in != levinson_out_a[11*j+i])
+					$display($time, " ERROR: A[%d] = %x, expected = %x", 11*j+i, scratch_mem_in, levinson_out_a[11*j+i]);
+				else if (scratch_mem_in == levinson_out_a[11*j+i])
+					$display($time, " CORRECT:  A[%d] = %x", 11*j+i, scratch_mem_in);
+				@(posedge clock);
+			end
+			#50;
+		end //for j loop
+		/*/TEST2
 		$readmemh("levinson_in1.out", levinson_in);
 		$readmemh("levinson_out_a1.out", levinson_out_a);
 		mux0sel = 0;		
@@ -332,8 +333,8 @@ module Levinson_Durbin_tb_1_v;
 				$display($time, " CORRECT:  A[%d] = %x", i, scratch_mem_in);
 			@(posedge clock);
 		end
-		
-	end
+		*/
+	end//always
       
 	initial forever #10 clock = ~clock;
 endmodule
