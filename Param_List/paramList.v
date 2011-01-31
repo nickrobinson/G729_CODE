@@ -20,7 +20,12 @@ parameter PERC_VAR_LAR_NEW = 11'd460;				//Perceptual Adaptation LarNew uses 4 b
 parameter INT_LPC_LSP = 11'd464;					//INT_LPC LSP uses 16 blocks
 parameter INT_LPC_F1 = 11'd480;						//INT_LPC F1 uses 8 blocks
 parameter INT_LPC_F2 = 11'd488;						//INT_LPC F2 uses 8 blocks
-parameter XXXXXXXXXXXXXXXX = 11'd496;				//OPEN 16 Blocks
-parameter XXXXXXXXXXXXXXXX = 11'd512;				//OPEN 512 Blocks
+parameter WEIGHT_AZ_A_IN = 11'd496;					//Weight_Az A uses 16 blocks
+parameter WEIGHT_AZ_AP_OUT = 11'd512				//Weight_Az AP uses 16 blocks
+parameter XXXXXXXXXXXXXXXX = 11'd528;				//OPEN 16 Blocks
+parameter XXXXXXXXXXXXXXXX = 11'd544;				//OPEN 32 Blocks
+parameter XXXXXXXXXXXXXXXX = 11'd576;				//OPEN 64 Blocks
+parameter XXXXXXXXXXXXXXXX = 11'd640;				//OPEN 128 Blocks
+parameter XXXXXXXXXXXXXXXX = 11'd768;				//OPEN 256 Blocks
 parameter XXXXXXXXXXXXXXXX = 11'd1024;				//OPEN 1024 Blocks
 
