@@ -81,8 +81,8 @@ module Az_LSP_Test_v;
    wire [31:0] lspIn;
 	
 	//working regs
-	reg [15:0] aSubI_in [0:10];
-	reg [15:0] lspOutMem [0:9];
+	reg [15:0] aSubI_in [0:9999];
+	reg [15:0] lspOutMem [0:9999];
 	//Mux0 regs	
 	reg lspMuxSel;
 	reg [10:0] lspMuxOut;
@@ -100,7 +100,7 @@ module Az_LSP_Test_v;
 	reg lspMux3Out;
 	reg testLspWrite;
 
-	integer i;
+	integer i,j;
 	
 	//file read in for inputs and output tests
 	initial 
@@ -303,27 +303,7 @@ module Az_LSP_Test_v;
 		clk = 0;
 		reset = 0;
 		start = 0;
-		lspMuxSel = 0;
-		lspMux1Sel = 0;
-		lspMux2Sel = 0;
-		lspMux3Sel = 0;
-		testReadRequested = 0;
-		
-		//writing the previous modules to memory
-		for(i=0;i<11;i=i+1)
-		begin
-			#100;
-			lspMux1Sel = 1;
-			lspMux2Sel = 1;
-			lspMux3Sel = 1;
-			testWriteRequested = {LEVINSON_DURBIN_A[10:5],i[4:0]};
-			testLspOut = aSubI_in[i];
-			testLspWrite = 1;	
-			#100;
-		end
-		lspMux1Sel = 0;
-		lspMux2Sel = 0;
-		lspMux3Sel = 0;	
+		testReadRequested = 0;	
 		
 		// Wait 100 ns for global reset to finish
 		#50;
@@ -331,29 +311,54 @@ module Az_LSP_Test_v;
 		#50;
 		reset = 0;
 		#50;
-       
-		start = 1;
-		#50;
-		start = 0;
-		#50;
-		// Add stimulus here		
-	
-		wait(done);
-		#100;
-		lspMuxSel = 1;
-		for (i = 0; i<10;i=i+1)
-		begin				
-				testReadRequested = {AZ_TO_LSP_CURRENT[11:5],i[4:0]};
-				@(posedge clk);
-				@(posedge clk);
-				if (lspIn != lspOutMem[i])
-					$display($time, " ERROR: lsp[%d] = %x, expected = %x", i, lspIn, lspOutMem[i]);
-				else if (lspIn == lspOutMem[i])
-					$display($time, " CORRECT:  lsp[%d] = %x", i, lspIn);
-				@(posedge clk);
-
+		
+		for(j=0;j<120;j=j+1)
+		begin
+		
+		//writing the previous modules to memory
+			lspMuxSel = 0;
+			lspMux1Sel = 0;
+			lspMux2Sel = 0;
+			lspMux3Sel = 0;
+					
+			for(i=0;i<11;i=i+1)
+			begin
+				#100;
+				lspMux1Sel = 1;
+				lspMux2Sel = 1;
+				lspMux3Sel = 1;
+				testWriteRequested = {LEVINSON_DURBIN_A[10:4],i[3:0]};
+				testLspOut = aSubI_in[j*11+i];
+				testLspWrite = 1;	
+				#100;
 			end
-			
+			lspMux1Sel = 0;
+			lspMux2Sel = 0;
+			lspMux3Sel = 0;
+			 
+			start = 1;
+			#50;
+			start = 0;
+			#50;
+			// Add stimulus here		
+		
+			wait(done);
+			#100;
+			lspMuxSel = 1;
+			for (i = 0; i<10;i=i+1)
+			begin				
+					testReadRequested = {AZ_TO_LSP_CURRENT[11:4],i[3:0]};
+					@(posedge clk);
+					@(posedge clk);
+					if (lspIn != lspOutMem[10*j+i])
+						$display($time, " ERROR: lsp[%d] = %x, expected = %x", 10*j+i, lspIn, lspOutMem[10*j+i]);
+					else if (lspIn == lspOutMem[10*j+i])
+						$display($time, " CORRECT:  lsp[%d] = %x", 10*j+i, lspIn);
+					@(posedge clk);
+	
+				end
+		end// for loop j
+		/*
 			//round 2 test
 		$readmemh("az_lsp_in1.out", aSubI_in);
 		$readmemh("az_lsp_out1.out", lspOutMem);
@@ -435,7 +440,7 @@ module Az_LSP_Test_v;
 				@(posedge clk);
 
 			end	
-
+		*/
 	end//initial
      
 initial forever #10 clk = ~clk;	  
