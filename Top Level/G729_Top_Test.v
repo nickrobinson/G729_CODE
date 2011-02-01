@@ -37,8 +37,8 @@ module G729_Top_Test_v;
 	
 	
 	//Working regs
-	reg [15:0] samplesmem [0:1998];
-	reg [31:0] outputmem[0:1999];
+	reg [15:0] samplesmem [0:9999];
+	reg [31:0] outputmem[0:9999];
 	reg [31:0] testmem[0:10];
 	
 	//working integers
@@ -77,7 +77,7 @@ module G729_Top_Test_v;
 		#50;		
 		reset = 0;
 		#100;			// Wait 100 ns for global reset to finish
-		for(k=0;k<2;k=k+1)
+		for(k=0;k<60;k=k+1)
 		begin		
 			for (i=0;i<80;i=i+1)
 				begin
@@ -110,7 +110,8 @@ module G729_Top_Test_v;
 			begin
 				testmem[j] = out;
 				j = j+1;
-			end		
+			end
+
 	end//end always
 	
 	initial forever #10 clock = ~clock;
