@@ -133,11 +133,11 @@ module perc_var_test_v;
 	//file read in for inputs and output tests
 	initial 
 	begin// samples out are samples from ITU G.729 test vectors
-		$readmemh("2lsf_int_in.out", lsfInt);
-		$readmemh("2lsf_new_in.out", lsfNew);
-		$readmemh("2rc_in.out", rc);
-		$readmemh("2gamma1_out.out", gamma1);
-		$readmemh("2gamma2_out.out", gamma2);
+		$readmemh("tame_percvar_lsf_int_in.out", lsfInt);
+		$readmemh("tame_percvar_lsf_new_in.out", lsfNew);
+		$readmemh("tame_percvar_rc_in.out", rc);
+		$readmemh("tame_percvar_gamma1_out.out", gamma1);
+		$readmemh("tame_percvar_gamma2_out.out", gamma2);
 	end
 	
 	//Instantiated modules
