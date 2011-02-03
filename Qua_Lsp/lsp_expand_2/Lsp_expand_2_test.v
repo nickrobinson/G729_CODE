@@ -1,26 +1,24 @@
 `timescale 1ns / 1ps
 
-////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer:
-//
-// Create Date:   22:00:07 02/01/2011
-// Design Name:   Lsp_Expand_2
-// Module Name:   C:/Users/Muaddib/Documents/Zach Office/School MSU/Spring 2011/Senior Design II/G729 Verilog Code/Qua_LSP/Lsp_expand_2_test.v
-// Project Name:  Qua_LSP
-// Target Device:  
-// Tool versions:  
-// Description: 
-//
-// Verilog Test Fixture created by ISE for module: Lsp_Expand_2
-//
-// Dependencies:
+//////////////////////////////////////////////////////////////////////////////////
+// Mississippi State University 
+// ECE 4532-4542 Senior Design
+// Engineer: Zach Thornton
 // 
-// Revision:
+// Create Date:    22:00:07 02/01/2011
+// Module Name:    Lsp_Expand_2_test.v 
+// Project Name: 	 ITU G.729 Hardware Implementation
+// Target Devices: Virtex 5
+// Tool versions:  Xilinx 9.2i
+// Description: 	 Verilog Test Fixture created by ISE for module: Lsp_Expand_2
+// 
+// Dependencies: 	 Lsp_Expand_2.v, Scratch_Memory_Controller.v, L_sub.v, L_add.v, sub.v, shr.v, add.v
+//
+// Revision: 
 // Revision 0.01 - File Created
-// Additional Comments:
-// 
-////////////////////////////////////////////////////////////////////////////////
+// Additional Comments: 
+//
+//////////////////////////////////////////////////////////////////////////////////
 
 module Lsp_expand_2_test;
 `include "paramList.v"
