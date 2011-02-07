@@ -33,49 +33,22 @@ module Weight_Az_test_v;
 	reg [10:0] AP;
 	reg [10:0] gammaAddr;	
 	
+	//Outputs
 	wire done;
-	wire [31:0] readIn;
-	wire [31:0] L_mult_in;
-	wire [31:0] L_add_in;
-	wire [15:0] add_in;
 
-	// Outputs
-	wire [10:0] readAddr;
-	wire [10:0] writeAddr;
-	wire [31:0] writeOut;
-	wire writeEn;
-	wire [15:0] L_mult_a;
-	wire [15:0] L_mult_b;
-	wire [15:0] add_a;
-	wire [15:0] add_b;
-	wire [31:0] L_add_a;
-	wire [31:0] L_add_b;
-	
-	
 	//intermediary wires
-	wire [31:0] memIn;
+	wire [31:0] readIn;
 	
-	
-	
-	
-	
+		
 	integer i, j;
 	
-	//Mux0 regs	
 	reg wazMuxSel;
-	reg [10:0] wazMuxOut;
 	reg [10:0] wazReadRequested;
-	//mux1 regs
 	reg wazMux1Sel;
-	reg [10:0] wazMux1Out;
 	reg [10:0] wazWriteRequested;
-	//mux2 regs
 	reg wazMux2Sel;
-	reg [31:0] wazMux2Out;
 	reg [31:0] wazOut;
-	//mux3regs
 	reg wazMux3Sel;
-	reg wazMux3Out;
 	reg wazWrite;
 	
 
@@ -98,99 +71,25 @@ module Weight_Az_test_v;
 		
 
 	// Instantiate the Unit Under Test (UUT)
-	Weight_Az uut (
+	Weight_Az_Top uut (
 		.start(start), 
 		.clk(clk), 
 		.done(done), 
 		.reset(reset), 
 		.A(A), 
 		.AP(AP), 
-		.gammaAddr(gammaAddr), 
-		.readAddr(readAddr), 
-		.readIn(readIn), 
-		.writeAddr(writeAddr), 
-		.writeOut(writeOut), 
-		.writeEn(writeEn), 
-		.L_mult_in(L_mult_in), 
-		.L_add_in(L_add_in), 
-		.add_in(add_in), 
-		.L_mult_a(L_mult_a), 
-		.L_mult_b(L_mult_b), 
-		.add_a(add_a), 
-		.add_b(add_b), 
-		.L_add_a(L_add_a), 
-		.L_add_b(L_add_b)
-	);
+		.gammaAddr(gammaAddr),
+		.wazReadRequested(wazReadRequested),
+		.wazWriteRequested(wazWriteRequested), 
+		.wazOut(wazOut),
+		.wazWrite(wazWrite),
+		.wazMuxSel(wazMuxSel),
+		.wazMux1Sel(wazMux1Sel), 
+		.wazMux2Sel(wazMux2Sel), 
+		.wazMux3Sel(wazMux3Sel),
+		.readIn(readIn)
+		);	
 	
-	
-	always @(*)
-	begin
-		case	(wazMuxSel)	
-			'd0 :	wazMuxOut = wazReadRequested;
-			'd1:	wazMuxOut = readAddr;
-		endcase
-	end
-	
-	//lsp write address mux
-	always @(*)
-	begin
-		case	(wazMux1Sel)	
-			'd0 :	wazMux1Out = wazWriteRequested;
-			'd1:	wazMux1Out = writeAddr;
-		endcase
-	end
-	
-	//lsp write input mux
-	always @(*)
-	begin
-		case	(wazMux2Sel)	
-			'd0 :	wazMux2Out = wazOut;
-			'd1:	wazMux2Out = writeOut;
-		endcase
-	end
-	
-	//lsp write enable mux
-	always @(*)
-	begin
-		case	(wazMux3Sel)	
-			'd0 :	wazMux3Out = wazWrite;
-			'd1:	wazMux3Out = writeEn;
-		endcase
-	end
-	
-	
-	Scratch_Memory_Controller testMem(
-												 .addra(wazMux1Out),
-												 .dina(wazMux2Out),
-												 .wea(wazMux3Out),
-												 .clk(clk),
-												 .addrb(wazMuxOut),
-												 .doutb(readIn)
-												 );
-												 
-	
-	
-	
-	L_mult Weight_Az_L_mult(
-						 .a(L_mult_a),
-						 .b(L_mult_b),
-						 .overflow(),
-						 .product(L_mult_in)
-						 );
-						 
-	L_add Weight_Az_L_add(
-					.a(L_add_a),
-					.b(L_add_b),
-					.overflow(),
-					.sum(L_add_in)
-					);	
-	
-	add Weight_Az_add(
-					.a(add_a),
-					.b(add_b),
-					.overflow(),
-					.sum(add_in)
-					);
 	
 
 	initial begin
