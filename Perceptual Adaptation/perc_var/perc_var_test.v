@@ -81,15 +81,15 @@ module perc_var_test_v;
 	
 	//I/O regs
 	//working regs
-	reg [15:0] gamma1 [0:99];
-	reg [15:0] gamma2 [0:99];
-	reg [15:0] lsfInt [0:399];
-	reg [15:0] lsfNew [0:399];
+	reg [15:0] gamma1 [0:4999];
+	reg [15:0] gamma2 [0:4999];
+	reg [15:0] lsfInt [0:9999];
+	reg [15:0] lsfNew [0:9999];
 	reg [15:0] rc [0:399];
 	
 	
 
-	integer i;
+	integer i,j;
 	// Instantiate the Unit Under Test (UUT)
 	percVarFSM uut (
 		.clk(clk), 
@@ -133,11 +133,11 @@ module perc_var_test_v;
 	//file read in for inputs and output tests
 	initial 
 	begin// samples out are samples from ITU G.729 test vectors
-		$readmemh("1lsf_int_in.out", lsfInt);
-		$readmemh("1lsf_new_in.out", lsfNew);
-		$readmemh("1rc_in.out", rc);
-		$readmemh("1gamma1_out.out", gamma1);
-		$readmemh("1gamma2_out.out", gamma2);
+		$readmemh("tame_percvar_lsf_int_in.out", lsfInt);
+		$readmemh("tame_percvar_lsf_new_in.out", lsfNew);
+		$readmemh("tame_percvar_rc_in.out", rc);
+		$readmemh("tame_percvar_gamma1_out.out", gamma1);
+		$readmemh("tame_percvar_gamma2_out.out", gamma2);
 	end
 	
 	//Instantiated modules
@@ -253,176 +253,96 @@ module perc_var_test_v;
 		reset = 0;
 		start = 0;
 		
-		//TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 
-		percVarMuxSel = 0;
-		percVarMux1Sel = 0;
-		percVarMux2Sel = 0;
-		percVarMux3Sel = 0;
-		testReadAddr = 0;
-		
-		for(i=0;i<10;i=i+1)
-		begin
-			#100;
-			percVarMux1Sel = 1;
-			percVarMux2Sel = 1;
-			percVarMux3Sel = 1;
-			testWriteAddr = {LEVINSON_DURBIN_RC[10:5],i[4:0]};
-			testMemOut = rc[i];
-			testMemWrite = 1;	
-			#100;			
-		end
-		
-		for(i=0;i<10;i=i+1)
-		begin
-			#100;
-			percVarMux1Sel = 1;
-			percVarMux2Sel = 1;
-			percVarMux3Sel = 1;
-			testWriteAddr = {INTERPOLATION_LSF_INT[10:5],i[4:0]};
-			testMemOut = lsfInt[i];
-			testMemWrite = 1;	
-			#100;
-		end
-		
-		for(i=0;i<10;i=i+1)
-		begin
-			#100;
-			percVarMux1Sel = 1;
-			percVarMux2Sel = 1;
-			percVarMux3Sel = 1;
-			testWriteAddr = {INTERPOLATION_LSF_NEW[10:4],i[3:0]};
-			testMemOut = lsfNew[i];
-			testMemWrite = 1;	
-			#100;
-		end
-		
-		percVarMux1Sel = 0;
-		percVarMux2Sel = 0;
-		percVarMux3Sel = 0;		
-
 		#50
 		reset = 1;
 		// Wait 50 ns for global reset to finish
 		#50;
-      reset = 0;
-		
-		#50;		
-		start = 1;
-		#50;
-		start = 0;
-		#50;
-		// Add stimulus here	
-		wait(done);
-		percVarMuxSel = 1;
-		//gamma1 read
-		for (i = 0; i<2;i=i+1)
-		begin				
-				testReadAddr = {PERC_VAR_GAMMA1[11:1],i[0]};
-				@(posedge clk);
-				@(posedge clk);
-				if (memIn != gamma1[i])
-					$display($time, " ERROR: gamma1[%d] = %x, expected = %x", i, memIn, gamma1[i]);
-				else if (memIn == gamma1[i])
-					$display($time, " CORRECT:  gamma1[%d] = %x", i, memIn);
-				@(posedge clk);
-		end	
-		
-		//gamma2 read
-		for (i = 0; i<2;i=i+1)
-		begin				
-				testReadAddr = {PERC_VAR_GAMMA2[11:1],i[0]};
-				@(posedge clk);
-				@(posedge clk);
-				if (memIn != gamma2[i])
-					$display($time, " ERROR: gamma2[%d] = %x, expected = %x", i, memIn, gamma2[i]);
-				else if (memIn == gamma2[i])
-					$display($time, " CORRECT:  gamma2[%d] = %x", i, memIn);
-				@(posedge clk);
-		end
-		
-		//TEST2  TEST2 TEST2 TEST2 TEST2 TEST2 TEST2 TEST2 TEST2 TEST2 TEST2 TEST2 TEST2 TEST2 TEST2 TEST2 TEST2 
-		#100;
-		percVarMuxSel = 0;
-		percVarMux1Sel = 0;
-		percVarMux2Sel = 0;
-		percVarMux3Sel = 0;
-		testReadAddr = 0;
-		
-		for(i=0;i<10;i=i+1)
+		reset = 0;
+			
+		for(j=0;j<60;j=j+1)
 		begin
-			#100;
-			percVarMux1Sel = 1;
-			percVarMux2Sel = 1;
-			percVarMux3Sel = 1;
-			testWriteAddr = {LEVINSON_DURBIN_RC[10:4],i[3:0]};
-			testMemOut = rc[i+300];
-			testMemWrite = 1;	
-			#100;			
-		end
-		
-		for(i=0;i<10;i=i+1)
-		begin
-			#100;
-			percVarMux1Sel = 1;
-			percVarMux2Sel = 1;
-			percVarMux3Sel = 1;
-			testWriteAddr = {INTERPOLATION_LSF_INT[10:4],i[3:0]};
-			testMemOut = lsfInt[i+300];
-			testMemWrite = 1;	
-			#100;
-		end
-		
-		for(i=0;i<10;i=i+1)
-		begin
-			#100;
-			percVarMux1Sel = 1;
-			percVarMux2Sel = 1;
-			percVarMux3Sel = 1;
-			testWriteAddr = {INTERPOLATION_LSF_NEW[10:4],i[3:0]};
-			testMemOut = lsfNew[i+300];
-			testMemWrite = 1;	
-			#100;
-		end
-		
-		percVarMux1Sel = 0;
-		percVarMux2Sel = 0;
-		percVarMux3Sel = 0;		
-
-		#50;		
-		start = 1;
-		#50;
-		start = 0;
-		#50;
-		// Add stimulus here	
-		wait(done);
-		percVarMuxSel = 1;
-		//gamma1 read
-		for (i = 0; i<2;i=i+1)
-		begin				
-				testReadAddr = {PERC_VAR_GAMMA1[11:1],i[0]};
-				@(posedge clk);
-				@(posedge clk);
-				if (memIn != gamma1[i+60])
-					$display($time, " ERROR: gamma1[%d] = %x, expected = %x", i, memIn, gamma1[i+60]);
-				else if (memIn == gamma1[i+60])
-					$display($time, " CORRECT:  gamma1[%d] = %x", i, memIn);
-				@(posedge clk);
-		end	
-		
-		//gamma2 read
-		for (i = 0; i<2;i=i+1)
-		begin				
-				testReadAddr = {PERC_VAR_GAMMA2[11:1],i[0]};
-				@(posedge clk);
-				@(posedge clk);
-				if (memIn != gamma2[i+60])
-					$display($time, " ERROR: gamma2[%d] = %x, expected = %x", i, memIn, gamma2[i+60]);
-				else if (memIn == gamma2[i+60])
-					$display($time, " CORRECT:  gamma2[%d] = %x", i, memIn);
-				@(posedge clk);
-		end
-		
-
+			//TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 
+			percVarMuxSel = 0;
+			percVarMux1Sel = 0;
+			percVarMux2Sel = 0;
+			percVarMux3Sel = 0;
+			testReadAddr = 0;
+			
+			for(i=0;i<10;i=i+1)
+			begin
+				#100;
+				percVarMux1Sel = 1;
+				percVarMux2Sel = 1;
+				percVarMux3Sel = 1;
+				testWriteAddr = {LEVINSON_DURBIN_RC[10:5],i[4:0]};
+				testMemOut = rc[10*j+i];
+				testMemWrite = 1;	
+				#100;			
+			end
+			
+			for(i=0;i<10;i=i+1)
+			begin
+				#100;
+				percVarMux1Sel = 1;
+				percVarMux2Sel = 1;
+				percVarMux3Sel = 1;
+				testWriteAddr = {INTERPOLATION_LSF_INT[10:5],i[4:0]};
+				testMemOut = lsfInt[10*j+i];
+				testMemWrite = 1;	
+				#100;
+			end
+			
+			for(i=0;i<10;i=i+1)
+			begin
+				#100;
+				percVarMux1Sel = 1;
+				percVarMux2Sel = 1;
+				percVarMux3Sel = 1;
+				testWriteAddr = {INTERPOLATION_LSF_NEW[10:4],i[3:0]};
+				testMemOut = lsfNew[10*j+i];
+				testMemWrite = 1;	
+				#100;
+			end
+			
+			percVarMux1Sel = 0;
+			percVarMux2Sel = 0;
+			percVarMux3Sel = 0;		
+	
+			#50;		
+			start = 1;
+			#50;
+			start = 0;
+			#50;
+			// Add stimulus here	
+			wait(done);
+			percVarMuxSel = 1;
+			//gamma1 read
+			for (i = 0; i<2;i=i+1)
+			begin				
+					testReadAddr = {PERC_VAR_GAMMA1[11:1],i[0]};
+					@(posedge clk);
+					@(posedge clk);
+					if (memIn != gamma1[j*2+i])
+						$display($time, " ERROR: gamma1[%d] = %x, expected = %x", i, memIn, gamma1[j*2+i]);
+					else if (memIn == gamma1[j*2+i])
+						$display($time, " CORRECT:  gamma1[%d] = %x", i, memIn);
+					@(posedge clk);
+			end	
+			
+			//gamma2 read
+			for (i = 0; i<2;i=i+1)
+			begin				
+					testReadAddr = {PERC_VAR_GAMMA2[11:1],i[0]};
+					@(posedge clk);
+					@(posedge clk);
+					if (memIn != gamma2[j*2+i])
+						$display($time, " ERROR: gamma2[%d] = %x, expected = %x", i, memIn, gamma2[j*2+i]);
+					else if (memIn == gamma2[j*2+i])
+						$display($time, " CORRECT:  gamma2[%d] = %x", i, memIn);
+					@(posedge clk);
+			end
+			
+		end//j for loop
 	end
  initial forever #10 clk = ~clk;	       
 endmodule

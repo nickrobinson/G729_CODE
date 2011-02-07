@@ -59,6 +59,9 @@ module G729_Pipe (clock,reset,xn,preProcReady,autocorrReady,lagReady,levinsonRea
 	//Scratch Memory signals
 	wire [31:0] memOut;
 		
+	//pre-proc mem wires
+	wire [10:0] preProcMemReadAddr;
+	
 	//Pre-Processor signals		
 	wire [15:0] yn; 
 	wire preProcDone;
@@ -1248,10 +1251,32 @@ module G729_Pipe (clock,reset,xn,preProcReady,autocorrReady,lagReady,levinsonRea
 											.reset(reset), 
 											.In_Done(preProcDone), 
 											.In_Sample(yn), 
-											.Out_Count(autocorrRequested), 
+											.Out_Count(preProcMemReadAddr), 
 											.Out_Sample(autocorrIn), 
 											.frame_done(frame_done)
 											);
+			//pre-proc/autocorr memory read address mux	
+		mux128_11 i_mux128_11_pre_proc_mem_addr(
+														.in0(autocorrRequested),
+														.in1(autocorrRequested),
+														.in2(autocorrRequested),
+														.in3(autocorrRequested),
+														.in4(autocorrRequested),.in5(0),
+		.in6(0),.in7(0),.in8(0),.in9(0),.in10(0),.in11(0),.in12(0),.in13(0),.in14(0),.in15(0),
+		.in16(0),.in17(0),.in18(0),.in19(0),.in20(0),.in21(0),.in22(0),.in23(0),.in24(0),
+		.in25(0),.in26(0),.in27(0),.in28(0),.in29(0),.in30(0),.in31(0),.in32(0),.in33(0),
+		.in34(0),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
+		.in43(0),.in44(0),.in45(0),.in46(0),.in47(0),.in48(0),.in49(0),.in50(0),.in51(0),
+		.in52(0),.in53(0),.in54(0),.in55(0),.in56(),.in57(0),.in58(0),.in59(0),.in60(0),
+		.in61(0),.in62(0),.in63(0),.in64(0),.in65(0),.in66(0),.in67(0),.in68(0),.in69(0),
+		.in70(0),.in71(0),.in72(0),.in73(0),.in74(0),.in75(0),.in76(0),.in77(0),.in78(0),
+		.in79(0),.in80(0),.in81(0),.in82(0),.in83(0),.in84(0),.in85(0),.in86(0),.in87(0),
+		.in88(0),.in89(0),.in90(0),.in91(0),.in92(0),.in93(0),.in94(0),.in95(0),.in96(0),
+		.in97(0),.in98(0),.in99(0),.in100(0),.in101(0),.in102(0),.in103(0),.in104(0),.in105(0),
+		.in106(0),.in107(0),.in108(0),.in109(0),.in110(0),.in111(0),.in112(0),.in113(0),
+		.in114(0),.in115(0),.in116(0),.in117(0),.in118(0),.in119(0),.in120(0),.in121(0),
+		.in122(0),.in123(0),.in124(0),.in125(0),.in126(0),.in127(0),.sel(mathMuxSel),.out(preProcMemReadAddr)
+															);
 	//////////////////////////////////////////////////////////////////////////////////////////////
 	//
 	//		Autocorellation
