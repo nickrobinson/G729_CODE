@@ -82,7 +82,7 @@ wire div_sDone;
 
 //cheb10 wires
 wire [15:0] cheb10L_shrOutNumShift;
-wire [15:0] cheb10L_shrOutVar1;
+wire [31:0] cheb10L_shrOutVar1;
 wire [15:0] cheb10addOutA,cheb10addOutB;
 wire [15:0] cheb10L_multOutA, cheb10L_multOutB;
 wire [15:0] cheb10L_macOutA, cheb10L_macOutB;
