@@ -49,8 +49,6 @@ module Levinson_Durbin_FSM(clock,reset,start,done,abs_in,abs_out,negate_out,nega
 	output reg scratch_mem_write_en;
 	input [31:0] scratch_mem_in;
 	
-								
-								
 	reg mpy_32_start;
 	reg mpy_32_L_mult_overflow, mpy_32_L_mac_overflow, mpy_32_mult_overflow;
 	reg [15:0] mpy_32_mult_in;

@@ -23,7 +23,8 @@ module mpy_32_16(var1, var2, out, L_mult_outa, L_mult_outb,
 					L_mac_overflow, L_mac_in, mult_outa, mult_outb, mult_in, mult_overflow);
 					
 	 input L_mult_overflow, L_mac_overflow, mult_overflow;
-	 input [31:0] var1, L_mult_in, L_mac_in, mult_in;
+	 input [31:0] var1, L_mult_in, L_mac_in;
+	 input [15:0] mult_in;
 	 input [15:0] var2;
 	 output reg [15:0] L_mult_outa, L_mult_outb, L_mac_outa, L_mac_outb, mult_outa, mult_outb;
 	 output reg [31:0] L_mac_outc, out;
