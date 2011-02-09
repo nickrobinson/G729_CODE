@@ -97,7 +97,7 @@ module Weight_Az_test_v;
 		start = 0;
 		clk = 0;
 		reset = 0;
-		A = 11'd512;
+		A = 11'd768;
 		AP = 11'd528;
 		gammaAddr = 11'd448;
 		
@@ -119,7 +119,7 @@ module Weight_Az_test_v;
 			for(i=0;i<11;i=i+1)
 			begin
 				#100;
-				wazWriteRequested = {WEIGHT_AZ_A_IN[10:4],i[3:0]};
+				wazWriteRequested = {A_t[10:4],i[3:0]};
 				wazOut = ac[11*j+i];
 				wazWrite = 1;	
 				#100;			
