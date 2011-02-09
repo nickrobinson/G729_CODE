@@ -97,8 +97,8 @@ module Weight_Az_test_v;
 		start = 0;
 		clk = 0;
 		reset = 0;
-		A = 11'd496;
-		AP = 11'd512;
+		A = 11'd512;
+		AP = 11'd528;
 		gammaAddr = 11'd448;
 		
 		#50
