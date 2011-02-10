@@ -101,20 +101,19 @@ parameter M = 8'd10;				//M is a constant defined in the ld8k.h file
 parameter L_WINDOW = 8'd240;		//L_WINDOW is a constant defined in the ld8k.h file
 parameter INIT = 5'd0;
 parameter S1 = 5'd1;
-parameter MEM_READ1 = 5'd2;
-parameter S2 = 5'd3;
-parameter MEM_READ2 = 5'd4;
-parameter MEM_READ3 = 5'd5;
-parameter S3 = 5'd6;
-parameter MEM_R_WRITE = 5'd7;
-parameter S4 = 5'd8;
-parameter S5 = 5'd9; 
-parameter MEM_READ4 = 5'd10;
-parameter MEM_READ5 = 5'd11;
-parameter MEM_READ6 = 5'd12;
-parameter MEM_R_WRITE1 = 5'd13;
-parameter MEM_WAIT_1 = 5'd14;
-parameter MEM_WAIT_2 = 5'd15;
+parameter MEM_WAIT_1 = 5'd2;
+parameter MEM_READ1 = 5'd3;
+parameter S2 = 5'd4;
+parameter MEM_READ2 = 5'd5;
+parameter MEM_READ3 = 5'd6;
+parameter S3 = 5'd7;
+parameter MEM_R_WRITE = 5'd8;
+parameter S4 = 5'd9;
+parameter S5 = 5'd10; 
+parameter MEM_READ4 = 5'd11;
+parameter MEM_READ5 = 5'd12;
+parameter MEM_READ6 = 5'd13;
+parameter MEM_R_WRITE1 = 5'd14;
 
 //Instantiated modules
 hammingWindowMemory hamMem(
@@ -265,7 +264,6 @@ always @(*) begin
 	norm_lDoneReset = 0;
 	L_shlDoneReset = 0;
 	overflowReset = 0;
-	//overflowLD = 0;
 	norm_lReset = 0;
 	hamIn = 0;
 	xi = 0;
@@ -273,31 +271,47 @@ always @(*) begin
 	yiplusj = 0;	
 	xRequested = 0;
 	//readRequested = 0;
-	//writeRequested = 0;
+	writeRequested = 0;
 	//rRequested = 0;
 	memOut = 0;
 	memYregld = 0;	
-
+	/*norm_lVar1Out = 0;
+	multOutA = 0;
+	multOutB = 0;
+	multRselOut = 0;
+   L_shlReady = 0;
+	L_shlVar1Out = 0; 
+	L_shlNumShiftOut = 0;
+	L_shrVar1Out = 0;
+	L_shrNumShiftOut = 0;
+	shrVar1Out = 0;
+	shrVar2Out = 0;
+	addOutA = 0;
+	addOutB = 0;
+	subOutA = 0;
+	subOutB = 0;
+	memOut = 0;
+*/
 	case(state)
 	
-	INIT: begin	
+	INIT: begin		//state 0
 	done = 0;
 	count1reset = 1;
 	count2reset = 1;
 	count3reset = 1;
 	count4reset = 1;
-	count5reset = 1;
-	
+	count5reset = 1;	
 	norm_lDoneReset = 1;
 	L_shlDoneReset = 1;
+	//R0_resetToOne = 1;
 	
 	if(ready == 0)	//waits on a ready signal from the top level
 		nextstate = INIT;
-	else
+	else if(ready == 1)
 		nextstate = S1;
 	end//end INIT
 	
-	S1: begin
+	S1: begin		//state 1
 		norm_lReset = 1;
 		if(count1 >= L_WINDOW)
 		begin
@@ -311,13 +325,13 @@ always @(*) begin
 		
 	end //end S1
 	
-	MEM_WAIT_1:
+	MEM_WAIT_1:		//state 2
 	begin
 		xRequested = count1;    //tells the memory module which x is requested
 		nextstate = MEM_READ1;
 	end	
 
-	MEM_READ1:
+	MEM_READ1:	//state 3
 	begin
 		xi = xIn;
 		hamIn = count1;		//read from hammingWindow memory			
@@ -332,7 +346,7 @@ always @(*) begin
 		count1ld = 1;		//start incrementing this count variable
 	end			
 
-	S2: begin	
+	S2: begin	//state 4
 			
 			if(count2 >= L_WINDOW) begin //if1	
 				if(overflowReg ==0)
@@ -369,7 +383,7 @@ always @(*) begin
 
 	end //end S2	
 
-	MEM_READ2: begin
+	MEM_READ2: begin	//state 5
 		readRequested = {AUTOCORR_Y[10:8],count2[7:0]};		//tells the memory module which y is requested
 		yi = memIn[15:0]; //read from y[count2] to reg yi							
 		R0_ld = 1;
@@ -380,7 +394,7 @@ always @(*) begin
 		count2ld = 1;		//start incrementing this count variable
 	end //end mem_read2
 	
-	MEM_READ3: begin
+	MEM_READ3: begin	//state 6
 		readRequested = {AUTOCORR_Y[10:8],count3[7:0]};		//tells the memory module which y is requested
 		shrVar1Out = memIn[15:0];
 		shrVar2Out = 16'd2;
@@ -395,7 +409,7 @@ always @(*) begin
 		nextstate = S2;
 	end //end mem_read3	
 	
-	S3: begin
+	S3: begin	//state 7
 		mux1sel = 1;		
 		if((norm_lDoneReg == 0) && (L_shlDoneReg == 0))
 		begin	//if1
@@ -418,7 +432,7 @@ always @(*) begin
 	
 	end//end S3
 	
-	MEM_R_WRITE: 
+	MEM_R_WRITE: 	//state 8
 	begin
 		writeRequested = {AUTOCORR_R[10:8],8'd0};
 		rHigh = sum[31:16]; 	
@@ -430,7 +444,7 @@ always @(*) begin
 		nextstate = S4;
 	end
 	
-	S4: begin		
+	S4: begin	//state 9	
 		
 		if(count4 >= M) 
 		begin //if 1
@@ -452,7 +466,7 @@ always @(*) begin
 		
 	end //end S4	
 	
-	S5: begin	
+	S5: begin		//state 10
 		subOutA = L_WINDOW;
       subOutB = count4;		
 		if(count5 >= subIn[7:0]) 
@@ -477,7 +491,7 @@ always @(*) begin
 	
 	end//end S5	
 
-	MEM_READ4: 
+	MEM_READ4:  	//state 11
 	begin	
 		memYregld = 1;
 		addOutA = count4;
@@ -486,7 +500,7 @@ always @(*) begin
 		nextstate = MEM_READ5;
 	end//end mem_read4
 	
-	MEM_READ5: 
+	MEM_READ5: 		//state 12
 	begin
 		addOutA = count4;
 		addOutB = count5;
@@ -494,7 +508,7 @@ always @(*) begin
 		nextstate = MEM_READ6;
 	end //end mem_read5
 	
-	MEM_READ6: 
+	MEM_READ6: 		//state 13
 	begin		
 		yiplusj = memIn[15:0];//read from y[count4+count5] to reg yiPlusJ
 		mux0sel = 1;
@@ -507,7 +521,7 @@ always @(*) begin
 		nextstate = S5;
 	end //end mem_read5
 	
-	MEM_R_WRITE1: 
+	MEM_R_WRITE1: 	//state 14
 	begin
 		writeRequested = {AUTOCORR_R[10:8],count4[7:0]};
 		rHigh = sum[31:16];
