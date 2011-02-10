@@ -46,8 +46,8 @@ module Az_LSP_Test_v;
 	//file read in for inputs and output tests
 	initial 
 	begin// samples out are samples from ITU G.729 test vectors
-		$readmemh("az_lsp_in.out", aSubI_in);
-		$readmemh("az_lsp_out.out", lspOutMem);
+		$readmemh("lsp_az_lsp_in.out", aSubI_in);
+		$readmemh("lsp_az_lsp_out.out", lspOutMem);
 	end							 
 	
 	// Instantiate the Unit Under Test (UUT)	
