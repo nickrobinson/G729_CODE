@@ -19,7 +19,8 @@
 //////////////////////////////////////////////////////////////////////////////////
 module convolve(clk, reset, start, memIn, memWriteEn, memWriteAddr, memOut, done,
 					    L_macIn, L_macOutA, L_macOutB, L_macOutC, L_shlIn, L_shlOutVar1,
-						 L_shlReady, L_shlDone, L_shlNumShiftOut, xAddr, hAddr, yAddr);
+						 L_shlReady, L_shlDone, L_shlNumShiftOut, xAddr, hAddr, yAddr, L_subOutA,
+						 L_subOutB, L_subIn, L_addOutA, L_addOutB, L_addIn);
 
 `include "paramList.v"
 
@@ -27,11 +28,13 @@ module convolve(clk, reset, start, memIn, memWriteEn, memWriteAddr, memOut, done
 input clk, reset, start;
 input [31:0] memIn;
 input [31:0] L_macIn;
+input [31:0] L_addIn;
+input [31:0] L_subIn;
 input [31:0] L_shlIn;
 input L_shlDone;
 input [10:0] xAddr;
-input [10:0] yAddr;
 input [10:0] hAddr;
+input [10:0] yAddr;
 
 //outputs
 output reg memWriteEn;
@@ -39,6 +42,8 @@ output reg [10:0]  memWriteAddr;
 output reg [31:0] memOut;
 output reg L_shlReady, done;
 output reg [15:0] L_macOutA,L_macOutB;
+output reg [31:0] L_addOutA,L_addOutB;
+output reg [31:0] L_subOutA,L_subOutB;
 output reg [31:0] L_macOutC;
 output reg [31:0] L_shlOutVar1;
 output reg [15:0] L_shlNumShiftOut;
@@ -56,8 +61,8 @@ reg L_shlDoneReg;
 reg L_shlDoneReset;
 
 wire [10:0] xAddr;
-wire [10:0] yAddr;
 wire [10:0] hAddr;
+wire [10:0] yAddr;
 
 //state parameters
 parameter STATE_INIT = 3'd0;
@@ -148,6 +153,10 @@ begin
 	L_macOutA = 0;
 	L_macOutB = 0;
 	L_macOutC = 0;
+	L_subOutA = 0;
+	L_subOutB = 0;
+	L_addOutA = 0;
+	L_addOutB = 0;
 	tempSLd = 0;
 	tempSReset = 0;
 	tempXLd = 0;
@@ -206,7 +215,9 @@ begin
 		begin
 			nexttempX = memIn[15:0];
 			tempXLd = 1;
-			memWriteAddr = {hAddr[10:6], count1[5:0]-count2[5:0]};
+			L_subOutA = count1;
+			L_subOutB = count2;	// L_subIn = count1 - count2
+			memWriteAddr = {hAddr[10:6], L_subIn[5:0]};
 			nextstate = STATE_L_MAC2;
 		end
 		
@@ -217,7 +228,9 @@ begin
 			L_macOutA = memIn[15:0];
 			nexttempS = L_macIn;
 			tempSLd = 1;
-			nextcount2 = count2 + 1;
+			L_addOutA = count2;
+			L_addOutB = 1;
+			nextcount2 = L_addIn;
 			count2Ld = 1;
 			nextstate = STATE_COUNT_LOOP2;
 		end
@@ -244,7 +257,9 @@ begin
 					memOut = {16'd0, L_shlIn[31:16]};
 					memWriteEn = 1;
 					//Increment count 1 since we are done with the outside loop
-					nextcount1 = count1 + 1;
+					L_addOutA = count1;
+					L_addOutB = 1;
+					nextcount1 = L_addIn;
 					count1Ld = 1;
 					nextstate = STATE_COUNT_LOOP1;
 				end

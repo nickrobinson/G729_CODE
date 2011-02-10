@@ -1,4 +1,4 @@
-`timescale 1ns / 1ps
+	`timescale 1ns / 1ps
 
 ////////////////////////////////////////////////////////////////////////////////
 // Company: 
@@ -32,12 +32,14 @@ module convolve_test;
 	reg start;
 	wire [31:0] memIn;
 	wire [31:0] L_macIn;
+	wire [31:0] L_subIn;
+	wire [31:0] L_addIn;
 	wire [31:0] L_shlIn;
 	wire L_shlDone;
 	
 	reg [10:0] xAddr;
+	reg [10:0] hAddr;
 	reg [10:0] yAddr;
-	reg [10:0] hAddr;	
 
 	// Outputs
 	wire memWriteEn;
@@ -47,6 +49,10 @@ module convolve_test;
 	wire [15:0] L_macOutA;
 	wire [15:0] L_macOutB;
 	wire [31:0] L_macOutC;
+	wire [31:0] L_addOutA;
+	wire [31:0] L_addOutB;
+	wire [31:0] L_subOutA;
+	wire [31:0] L_subOutB;
 	wire [31:0] L_shlOutVar1;
 	wire [15:0] L_shlNumShiftOut;
 	wire L_shlReady;
@@ -92,16 +98,34 @@ module convolve_test;
 		.L_shlReady(L_shlReady),
 		.xAddr(xAddr),
 		.hAddr(hAddr),
-		.yAddr(yAddr)
+		.yAddr(yAddr),
+		.L_subOutA(L_subOutA),
+		.L_subOutB(L_subOutB), 
+		.L_subIn(L_subIn), 
+		.L_addOutA(L_addOutA), 
+		.L_addOutB(L_addOutB), 
+		.L_addIn(L_addIn)
 	);
 	
 	//Instanitiate the Multiply and Add block
-	L_mac lag_L_mac(
+	L_mac conv_L_mac(
 					.a(L_macOutA),
 					.b(L_macOutB),
 					.c(L_macOutC),
 					.overflow(),
 					.out(L_macIn));
+					
+	L_add conv_L_add(
+					.a(L_addOutA),
+					.b(L_addOutB),
+					.overflow(),
+					.sum(L_addIn));
+					
+	L_sub conv_L_sub(
+					.a(L_subOutA),
+					.b(L_subOutB),
+					.overflow(),
+					.diff(L_subIn));
 					
 	L_shl L_shl1(
 					 .clk(clk),
@@ -177,9 +201,10 @@ module convolve_test;
 		reset = 0;
 		start = 0;		
 		lagMuxSel = 0;
-		xAddr = 11'd0;
-		yAddr = 11'd64;
-		hAddr = 11'd128;
+		xAddr = 11'd560;
+		hAddr = 11'd624;
+		yAddr = 11'd688;
+		
 		
 		#50 ;		
 		reset = 1;		
