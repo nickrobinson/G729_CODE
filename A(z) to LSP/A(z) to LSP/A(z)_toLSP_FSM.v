@@ -153,6 +153,8 @@ reg sign,nextSign,signLd,signReset;
 reg [4:0] tempSub; 
 reg [15:0] div_sOutA, div_sOutB;
 reg div_sReady;
+reg [10:0] LEVINSON_DURBIN_A, nextLev;
+reg levReset,levLD;
 
 //cheb10 regs
 reg cheb10start;
@@ -340,6 +342,16 @@ begin
 		sign <= 0;
 	else if(signLd)
 		sign <=  nextSign;
+end
+
+always @(posedge clk)
+begin
+	if(reset)
+		LEVINSON_DURBIN_A <= 0;
+	else if(levReset)
+		LEVINSON_DURBIN_A <= 0;
+	else if(levLD)
+		LEVINSON_DURBIN_A <=  nextLev;
 end
 
 //state parameters
@@ -640,7 +652,10 @@ begin
 	nextcount = count;
 	nextjCount = jCount;
 	nextnfCount = nfCount;
+	nextLev = LEVINSON_DURBIN_A;
 	done = 0;
+	levLD = 0;
+	levReset = 0;
 	
 	case(state)
 		INIT: 
@@ -649,6 +664,7 @@ begin
 				nextstate = INIT;
 			else if(start == 1)
 			begin
+				levReset = 1;
 				countReset = 1;
 				jCountReset = 1;
 				nfCountReset = 1;
@@ -679,6 +695,11 @@ begin
 			fTwoOut = 16'd2048;
 			fTwold = 1;
 			nextstate = FOR_LOOP_CHECK1;
+			addOutA = {5'd0,A_T[10:0]};
+			addOutB = 16'd11;
+			nextLev = addIn;
+			levLD = 1;
+			
 		end//MATH_INIT
 		
 		FOR_LOOP_CHECK1:
@@ -1521,7 +1542,7 @@ begin
 	
 	INTERPOLATION6:
 	begin
-		lspWriteRequested = {AZ_TO_LSP_CURRENT[10:5],nfCount};
+		lspWriteRequested = {LSP_NEW[10:5],nfCount};
 		lspOut = {16'd0,xInt};
 		lspWrite = 1;
 		nextxLow = xInt;
@@ -1621,7 +1642,7 @@ begin
 			end
 			else if(count < 10)
 			begin
-				lspReadRequested = {AZ_TO_LSP_OLD[10:5],count};	//reading from old LSP
+				lspReadRequested = {LSP_OLD[10:5],count};	//reading from old LSP
 				nextstate = ROOTS_CHECK_WAIT1;
 			end		
 		end
@@ -1635,7 +1656,7 @@ begin
 			end
 			else if(count < 10)
 			begin
-				lspReadRequested = {AZ_TO_LSP_CURRENT[10:5],count};
+				lspReadRequested = {LSP_NEW[10:5],count};
 				nextstate = ROOTS_CHECK_WAIT2;				
 			end	
 		end
@@ -1643,9 +1664,9 @@ begin
 	
 	ROOTS_CHECK_WAIT1:
 	begin
-		lspReadRequested = {AZ_TO_LSP_OLD[10:5],count};	//reading from old LSP
+		lspReadRequested = {LSP_OLD[10:5],count};	//reading from old LSP
 		lspOut = {16'd0,lspIn};
-		lspWriteRequested = {AZ_TO_LSP_CURRENT[10:5],count};
+		lspWriteRequested = {LSP_NEW[10:5],count};
 		lspWrite = 1;
 		addOutA = count;
 		addOutB = 16'd1;
@@ -1656,9 +1677,9 @@ begin
 	
 	ROOTS_CHECK_WAIT2:
 	begin
-		lspReadRequested = {AZ_TO_LSP_CURRENT[10:5],count};
+		lspReadRequested = {LSP_NEW[10:5],count};
 		lspOut = {16'd0,lspIn};
-		lspWriteRequested = {AZ_TO_LSP_OLD[10:5],count};
+		lspWriteRequested = {LSP_OLD[10:5],count};
 		lspWrite = 1;
 		addOutA = count;
 		addOutB = 16'd1;

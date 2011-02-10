@@ -39,7 +39,8 @@ module Az_LSP_Test_v;
 	//working regs
 	reg [15:0] aSubI_in [0:9999];
 	reg [15:0] lspOutMem [0:9999];
-
+	reg [10:0] temp;
+	
 	integer i,j;
 	
 	//file read in for inputs and output tests
@@ -87,7 +88,8 @@ module Az_LSP_Test_v;
 			begin
 				#100;
 				lspMuxSel = 1;
-				testWriteRequested = {LEVINSON_DURBIN_A[10:4],i[3:0]};
+				temp = A_T + 11'd11;
+				testWriteRequested = {temp[10:4],i[3:0]};
 				testLspOut = aSubI_in[j*11+i];
 				testLspWrite = 1;	
 				#100;
@@ -106,7 +108,7 @@ module Az_LSP_Test_v;
 			lspMuxSel = 1;
 			for (i = 0; i<10;i=i+1)
 			begin				
-					testReadRequested = {AZ_TO_LSP_CURRENT[10:4],i[3:0]};
+					testReadRequested = {LSP_NEW[10:4],i[3:0]};
 					#50;
 					if (lspIn != lspOutMem[10*j+i])
 						$display($time, " ERROR: lsp[%d] = %x, expected = %x", 10*j+i, lspIn, lspOutMem[10*j+i]);
