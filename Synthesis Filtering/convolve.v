@@ -19,7 +19,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 module convolve(clk, reset, start, memIn, memWriteEn, memWriteAddr, memOut, done,
 					    L_macIn, L_macOutA, L_macOutB, L_macOutC, L_shlIn, L_shlOutVar1,
-						 L_shlReady, L_shlDone, L_shlNumShiftOut);
+						 L_shlReady, L_shlDone, L_shlNumShiftOut, xAddr, hAddr, yAddr);
 
 `include "paramList.v"
 
@@ -29,6 +29,9 @@ input [31:0] memIn;
 input [31:0] L_macIn;
 input [31:0] L_shlIn;
 input L_shlDone;
+input [10:0] xAddr;
+input [10:0] yAddr;
+input [10:0] hAddr;
 
 //outputs
 output reg memWriteEn;
@@ -51,6 +54,10 @@ reg [15:0] tempX,nexttempX;
 reg tempXLd,tempXReset;
 reg L_shlDoneReg;
 reg L_shlDoneReset;
+
+wire [10:0] xAddr;
+wire [10:0] yAddr;
+wire [10:0] hAddr;
 
 //state parameters
 parameter STATE_INIT = 3'd0;
@@ -190,7 +197,7 @@ begin
 			end
 			else if(count2 <= count1)
 			begin
-				memWriteAddr = {CONVOLVE_INPUT_VECTOR[10:6], count2};
+				memWriteAddr = {xAddr[10:6], count2[5:0]};
 				nextstate = STATE_L_MAC1;
 			end	
 		end
@@ -199,7 +206,7 @@ begin
 		begin
 			nexttempX = memIn[15:0];
 			tempXLd = 1;
-			memWriteAddr = {CONVOLVE_IMPULSE_RESPONSE[10:6], count1-count2};
+			memWriteAddr = {hAddr[10:6], count1[5:0]-count2[5:0]};
 			nextstate = STATE_L_MAC2;
 		end
 		
@@ -233,7 +240,7 @@ begin
 				begin
 					nexttempS = L_shlIn;
 					tempSLd = 1;
-					memWriteAddr = {CONVOLVE_OUTPUT_VECTOR[10:6], count1};
+					memWriteAddr = {yAddr[10:6], count1[5:0]};
 					memOut = {16'd0, L_shlIn[31:16]};
 					memWriteEn = 1;
 					//Increment count 1 since we are done with the outside loop

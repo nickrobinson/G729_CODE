@@ -34,6 +34,10 @@ module convolve_test;
 	wire [31:0] L_macIn;
 	wire [31:0] L_shlIn;
 	wire L_shlDone;
+	
+	reg [10:0] xAddr;
+	reg [10:0] yAddr;
+	reg [10:0] hAddr;	
 
 	// Outputs
 	wire memWriteEn;
@@ -85,7 +89,10 @@ module convolve_test;
 		.L_shlDone(L_shlDone),
 		.L_shlOutVar1(L_shlOutVar1), 
 		.L_shlNumShiftOut(L_shlNumShiftOut), 
-		.L_shlReady(L_shlReady)
+		.L_shlReady(L_shlReady),
+		.xAddr(xAddr),
+		.hAddr(hAddr),
+		.yAddr(yAddr)
 	);
 	
 	//Instanitiate the Multiply and Add block
@@ -170,6 +177,9 @@ module convolve_test;
 		reset = 0;
 		start = 0;		
 		lagMuxSel = 0;
+		xAddr = 11'd0;
+		yAddr = 11'd64;
+		hAddr = 11'd128;
 		
 		#50 ;		
 		reset = 1;		
@@ -189,7 +199,7 @@ module convolve_test;
 			for(i=0;i<40;i=i+1)
 			begin			
 				#40;
-				testWriteRequested = {CONVOLVE_INPUT_VECTOR[10:6],i[5:0]};
+				testWriteRequested = {xAddr[10:6],i[5:0]};
 				testWriteOut = inVector[(j*40)+i];
 				testWriteEnable = 1;
 				#40;
@@ -198,7 +208,7 @@ module convolve_test;
 			for(i=0;i<40;i=i+1)
 			begin			
 				#40;
-				testWriteRequested = {CONVOLVE_IMPULSE_RESPONSE[10:6],i[5:0]};
+				testWriteRequested = {hAddr[10:6],i[5:0]};
 				testWriteOut = impulse[(j*40)+i];
 				testWriteEnable = 1;
 				#40;
@@ -219,7 +229,7 @@ module convolve_test;
 			lagMuxSel = 1;
 			for(i = 0; i<40;i=i+1)
 			begin			
-				testReadRequested = {CONVOLVE_OUTPUT_VECTOR[10:6],i[5:0]};
+				testReadRequested = {yAddr[10:6],i[5:0]};
 				@(posedge clk);
 				@(posedge clk);
 				if (memIn != outVector[(j*40)+i])
