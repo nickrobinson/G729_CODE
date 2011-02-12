@@ -74,7 +74,8 @@ wire [31:0] mpyOut;
 //temp reg
 reg countld,countReset;
 reg [2:0] mux1sel;
-reg [4:0] state,nextstate;
+//changed width of state, nextstate to 3:0 to match state parameter width, 2/11/2011 tommy morris
+reg [3:0] state,nextstate;
 reg [15:0] temp0high,temp0low,temp1high,temp1low,temp2high,temp2low;
 reg [15:0] nexttemp0high,nexttemp0low,nexttemp1high,nexttemp1low,nexttemp2high,nexttemp2low;
 reg temp0highld,temp0lowld,temp1highld,temp1lowld,temp2highld,temp2lowld;
