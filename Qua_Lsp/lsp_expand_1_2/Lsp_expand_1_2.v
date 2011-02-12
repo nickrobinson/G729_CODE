@@ -148,6 +148,8 @@ begin
 	memWriteAddr = 0;
 	memWriteEn = 0;
 	done = 0;
+	L_subOutA = 0;
+	L_subOutB = 0;
 	
 	case(state)
 		INIT:		//state 0

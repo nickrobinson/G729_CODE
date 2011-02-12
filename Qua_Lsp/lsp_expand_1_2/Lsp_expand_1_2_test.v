@@ -25,31 +25,12 @@ module Lsp_expand_1_2_test;
 	// Inputs
 	reg clk;
 	reg reset;
-	reg start;
-	wire [15:0] subIn;
-	wire [31:0] L_subIn;
-	wire [15:0] shrIn;
-	wire [15:0] addIn;
-	wire [31:0] L_addIn;
-	wire [31:0] memIn;
+	reg start;	
 	reg [10:0] bufAddr;
 	reg [3:0]  gap;
 
-	// Outputs
-	wire [15:0] subOutA;
-	wire [15:0] subOutB;
-	wire [31:0] L_subOutA;
-	wire [31:0] L_subOutB;
-	wire [15:0] shrVar1Out;
-	wire [15:0] shrVar2Out;
-	wire [15:0] addOutA;
-	wire [15:0] addOutB;
-	wire [31:0] L_addOutA;
-	wire [31:0] L_addOutB;
-	wire [31:0] memOut;
-	wire [10:0] memReadAddr;
-	wire [10:0] memWriteAddr;
-	wire memWriteEn;
+	// Outputs	
+	wire [31:0] memIn;
 	wire done;
 	
 	//working regs
@@ -59,19 +40,9 @@ module Lsp_expand_1_2_test;
 	
 	//Mux0 regs	
 	reg expandMuxSel;
-	reg [10:0] expandMuxOut;
 	reg [10:0] testReadAddr;
-	//mux1 regs
-	reg expandMux1Sel;
-	reg [10:0] expandMux1Out;
 	reg [10:0] testWriteAddr;
-	//mux2 regs
-	reg expandMux2Sel;
-	reg [31:0] expandMux2Out;
 	reg [31:0] testMemOut;
-	//mux3regs
-	reg expandMux3Sel;
-	reg expandMux3Out;
 	reg testMemWriteEn;
 
 	integer i,j;
@@ -84,114 +55,24 @@ module Lsp_expand_1_2_test;
 		$readmemh("speech_lsp_expand_1_2_gap.out", expandGapMem);
 	end
 	
-	//expand read address mux
-	always @(*)
-	begin
-		case	(expandMuxSel)	
-			'd0 :	expandMuxOut = memReadAddr;
-			'd1:	expandMuxOut = testReadAddr;
-		endcase
-	end
 	
-	//expand write address mux
-	always @(*)
-	begin
-		case	(expandMux1Sel)	
-			'd0 :	expandMux1Out = memWriteAddr;
-			'd1:	expandMux1Out = testWriteAddr;
-		endcase
-	end
-	
-	//expand write input mux
-	always @(*)
-	begin
-		case	(expandMux2Sel)	
-			'd0 :	expandMux2Out = memOut;
-			'd1:	expandMux2Out = testMemOut;
-		endcase
-	end
-	
-	//expand write enable mux
-	always @(*)
-	begin
-		case	(expandMux3Sel)	
-			'd0 :	expandMux3Out = memWriteEn;
-			'd1:	expandMux3Out = testMemWriteEn;
-		endcase
-	end
 	
 	// Instantiate the Unit Under Test (UUT)
-	Lsp_expand_1_2 uut (
-		.clk(clk), 
-		.reset(reset), 
-		.start(start), 
-		.subIn(subIn), 
-		.L_subIn(L_subIn), 
-		.shrIn(shrIn), 
-		.addIn(addIn),
-		.L_addIn(L_addIn),
-		.memIn(memIn), 
-		.bufAddr(bufAddr),
-		.gap(gap),
-		.subOutA(subOutA), 
-		.subOutB(subOutB), 
-		.L_subOutA(L_subOutA), 
-		.L_subOutB(L_subOutB), 
-		.shrVar1Out(shrVar1Out), 
-		.shrVar2Out(shrVar2Out), 
-		.addOutA(addOutA), 
-		.addOutB(addOutB), 
-		.L_addOutA(L_addOutA), 
-		.L_addOutB(L_addOutB), 
-		.memOut(memOut), 
-		.memReadAddr(memReadAddr), 
-		.memWriteAddr(memWriteAddr), 
-		.memWriteEn(memWriteEn), 
-		.done(done)
-	);
-
-		Scratch_Memory_Controller testMem(
-												 .addra(expandMux1Out),
-												 .dina(expandMux2Out),
-												 .wea(expandMux3Out),
-												 .clk(clk),
-												 .addrb(expandMuxOut),
-												 .doutb(memIn)
-												 );
-	L_sub expand_L_sub(
-								.a(L_subOutA),
-								.b(L_subOutB),
-								.overflow(),
-								.diff(L_subIn)
-							);
-	
-	L_add expand_L_add(
-								.a(L_addOutA),
-								.b(L_addOutB),
-								.overflow(),
-								.sum(L_addIn)
+	Lsp_expand_1_2_pipe uut(
+								.clk(clk),
+								.reset(reset),
+								.start(start),
+								.expandMuxSel(expandMuxSel),
+								.testReadAddr(testReadAddr),
+								.testWriteAddr(testWriteAddr),
+								.testMemOut(testMemOut),
+								.testMemWriteEn(testMemWriteEn),
+								.bufAddr(bufAddr),
+								.gap(gap),
+								.memIn(memIn),
+								.done(done)
 								);
-							
-	sub expand_sub(
-						  .a(subOutA),
-						  .b(subOutB),
-						  .overflow(),
-						  .diff(subIn)
-						);	
-						
-	 shr expand_shr(
-					  .var1(shrVar1Out),
-					  .var2(shrVar2Out),
-					  .overflow(),
-					  .result(shrIn)
-				  );
 	
-	add expand_add(
-							.a(addOutA),
-							.b(addOutB),
-							.overflow(),
-							.sum(addIn)
-						);
 	initial begin
 		// Initialize Inputs
 		clk = 0;
@@ -202,7 +83,7 @@ module Lsp_expand_1_2_test;
 		testMemOut = 0;
 		testMemWriteEn = 0;
 		bufAddr = RELSPWED_BUF;
-		
+		expandMuxSel = 1;
 		// Wait 50 ns for global reset to finish
 		#50;
 		reset = 1;
@@ -213,27 +94,18 @@ module Lsp_expand_1_2_test;
 		begin
 		
 		//writing the previous modules to memory
-			expandMuxSel = 0;
-			expandMux1Sel = 0;
-			expandMux2Sel = 0;
-			expandMux3Sel = 0;
 			gap = expandGapMem[j];
 			
-			for(i=0;i<11;i=i+1)
+			for(i=0;i<10;i=i+1)
 			begin
 				#100;
-				expandMux1Sel = 1;
-				expandMux2Sel = 1;
-				expandMux3Sel = 1;
 				testWriteAddr = {RELSPWED_BUF[10:4],i[3:0]};
 				testMemOut = expandInMem[j*10+i];
 				testMemWriteEn = 1;	
 				#100;
 			end
-			expandMux1Sel = 0;
-			expandMux2Sel = 0;
-			expandMux3Sel = 0;
-			 
+			
+			expandMuxSel = 0;			 
 			start = 1;
 			#50;
 			start = 0;
@@ -246,8 +118,7 @@ module Lsp_expand_1_2_test;
 			for (i = 0; i<10;i=i+1)
 			begin				
 					testReadAddr = {RELSPWED_BUF[10:4],i[3:0]};
-					@(posedge clk);
-					@(posedge clk);
+					#50;
 					if (memIn != expandOutMem[10*j+i])
 						$display($time, " ERROR: buf[%d] = %x, expected = %x", 10*j+i, memIn, expandOutMem[10*j+i]);
 					else if (memIn == expandOutMem[10*j+i])
