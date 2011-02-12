@@ -28,56 +28,15 @@ module perc_var_test_v;
 	reg start;
 
 
-	// Outputs
-	wire [15:0] shlVar1Out;
-	wire [15:0] shlVar2Out;
-	wire [15:0] shrVar1Out;
-	wire [15:0] shrVar2Out;
-	wire [15:0] subOutA;
-	wire [15:0] subOutB;
-	wire [15:0] L_multOutA;
-	wire [15:0] L_multOutB;
-	wire [31:0] L_subOutA;
-	wire [31:0] L_subOutB;
-	wire [31:0] L_shrOutVar1;
-	wire [15:0] L_shrOutNumShift;
-	wire [31:0] L_addOutA;
-	wire [31:0] L_addOutB;
-	wire [15:0] addOutA;
-	wire [15:0] addOutB;
-	wire [15:0] multOutA;
-	wire [15:0] multOutB;
-	wire [10:0] memReadAddr;
-	wire [10:0] memWriteAddr;
-	wire memWrite;
-	wire [31:0] memOut;
-	wire done;
-	
-	//intermediary wires
-	wire [15:0] shlIn;
-	wire [15:0] shrIn;
-	wire [15:0] subIn;
-	wire [31:0] L_multIn;
-	wire [31:0] L_subIn;
-	wire [31:0] L_shrIn;
-	wire [31:0] L_addIn;
-	wire [15:0] addIn;
-	wire [15:0] multIn;
 	wire [31:0] memIn;
+	wire done;	
 	
 	//Memory Mux regs
 	reg percVarMuxSel;
-	reg percVarMux1Sel;
-	reg percVarMux2Sel;
-	reg percVarMux3Sel;
-	reg [10:0] percVarMuxOut;
-	reg [10:0] testWriteAddr;
-	reg [10:0] percVarMux1Out;
-	reg [10:0] testReadAddr;
-	reg [31:0] percVarMux2Out;
-	reg [31:0] testMemOut;
-	reg percVarMux3Out;
 	reg testMemWrite;
+	reg [10:0] testWriteAddr;
+	reg [10:0] testReadAddr;
+	reg [31:0] testMemOut;
 	
 	//I/O regs
 	//working regs
@@ -91,44 +50,20 @@ module perc_var_test_v;
 
 	integer i,j;
 	// Instantiate the Unit Under Test (UUT)
-	percVarFSM uut (
+	percVar_Top_Level uut (
 		.clk(clk), 
 		.reset(reset), 
-		.start(start), 
-		.shlIn(shlIn), 
-		.shrIn(shrIn), 
-		.subIn(subIn), 
-		.L_multIn(L_multIn), 
-		.L_subIn(L_subIn), 
-		.L_shrIn(L_shrIn), 
-		.L_addIn(L_addIn),
-		.addIn(addIn), 
-		.multIn(multIn), 
-		.memIn(memIn), 
-		.shlVar1Out(shlVar1Out), 
-		.shlVar2Out(shlVar2Out), 
-		.shrVar1Out(shrVar1Out), 
-		.shrVar2Out(shrVar2Out), 
-		.subOutA(subOutA), 
-		.subOutB(subOutB), 
-		.L_multOutA(L_multOutA), 
-		.L_multOutB(L_multOutB), 
-		.L_subOutA(L_subOutA), 
-		.L_subOutB(L_subOutB), 
-		.L_shrOutVar1(L_shrOutVar1), 
-		.L_shrOutNumShift(L_shrOutNumShift),
-		.L_addOutA(L_addOutA),
-		.L_addOutB(L_addOutB),
-		.addOutA(addOutA), 
-		.addOutB(addOutB), 
-		.multOutA(multOutA), 
-		.multOutB(multOutB), 
-		.memReadAddr(memReadAddr), 
-		.memWriteAddr(memWriteAddr), 
-		.memWrite(memWrite), 
-		.memOut(memOut), 
+		.start(start),
+		.percVarMuxSel(percVarMuxSel),
+		.testMemWrite(testMemWrite),
+		.testMemOut(testMemOut),
+		.testWriteAddr(testWriteAddr),
+		.testReadAddr(testReadAddr),
+		.memIn(memIn),
 		.done(done)
 	);
+	
+
 
 	//file read in for inputs and output tests
 	initial 
@@ -140,113 +75,8 @@ module perc_var_test_v;
 		$readmemh("tame_percvar_gamma2_out.out", gamma2);
 	end
 	
-	//Instantiated modules
-	
-	//lsp read address mux
-	always @(*)
-	begin
-		case	(percVarMuxSel)	
-			'd0 :	percVarMuxOut = memReadAddr;
-			'd1:	percVarMuxOut = testReadAddr;
-		endcase
-	end
-	
-	//lsp write address mux
-	always @(*)
-	begin
-		case	(percVarMux1Sel)	
-			'd0 :	percVarMux1Out = memWriteAddr;
-			'd1:	percVarMux1Out = testWriteAddr;
-		endcase
-	end
-	
-	//lsp write input mux
-	always @(*)
-	begin
-		case	(percVarMux2Sel)	
-			'd0 :	percVarMux2Out = memOut;
-			'd1:	percVarMux2Out = testMemOut;
-		endcase
-	end
-	
-	//lsp write enable mux
-	always @(*)
-	begin
-		case	(percVarMux3Sel)	
-			'd0 :	percVarMux3Out = memWrite;
-			'd1:	percVarMux3Out = testMemWrite;
-		endcase
-	end
-	
-	Scratch_Memory_Controller testMem(
-												 .addra(percVarMux1Out),
-												 .dina(percVarMux2Out),
-												 .wea(percVarMux3Out),
-												 .clk(clk),
-												 .addrb(percVarMuxOut),
-												 .doutb(memIn)
-												 );
-	L_mult percVar_L_mult(
-								 .a(L_multOutA),
-								 .b(L_multOutB),
-								 .overflow(),
-								 .product(L_multIn)
-								);
-						 
-	L_shr percVar_L_shr(
-								.var1(L_shrOutVar1),
-								.numShift(L_shrOutNumShift),
-								.overflow(),
-								.out(L_shrIn)
-							);
-  
-  L_sub percVar_L_sub(
-								.a(L_subOutA),
-								.b(L_subOutB),
-								.overflow(),
-								.diff(L_subIn)
-								);
-								
-  L_add percVar_L_add (
-								.a(L_addOutA),
-								.b(L_addOutB),
-								.overflow(),
-								.sum(L_addIn)
-								);
-								
-	add percVar_add(
-							.a(addOutA),
-							.b(addOutB),
-							.overflow(),
-							.sum(addIn)
-						);
-						
-   mult percVar_mult(
-							 .a(multOutA),
-							 .b(multOutB),
-							 .overflow(),
-							 .product(multIn)
-							 );
-						
-	sub percVar_sub(
-							.a(subOutA),
-							.b(subOutB),
-							.overflow(),
-							.diff(subIn)
-						);	
-	shr percVar_shr(
-						  .var1(shrVar1Out),
-						  .var2(shrVar2Out),
-						  .overflow(),
-						  .result(shrIn)
-						);
-						
-	shl percVar_shl(
-						  .var1(shlVar1Out),
-						  .var2(shlVar2Out),
-						  .overflow(),
-						  .result(shlIn)
-						);
+
+
 	initial begin
 		// Initialize Inputs
 		clk = 0;
@@ -263,17 +93,12 @@ module perc_var_test_v;
 		begin
 			//TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 
 			percVarMuxSel = 0;
-			percVarMux1Sel = 0;
-			percVarMux2Sel = 0;
-			percVarMux3Sel = 0;
 			testReadAddr = 0;
 			
 			for(i=0;i<10;i=i+1)
 			begin
 				#100;
-				percVarMux1Sel = 1;
-				percVarMux2Sel = 1;
-				percVarMux3Sel = 1;
+				percVarMuxSel = 1;
 				testWriteAddr = {LEVINSON_DURBIN_RC[10:5],i[4:0]};
 				testMemOut = rc[10*j+i];
 				testMemWrite = 1;	
@@ -283,9 +108,7 @@ module perc_var_test_v;
 			for(i=0;i<10;i=i+1)
 			begin
 				#100;
-				percVarMux1Sel = 1;
-				percVarMux2Sel = 1;
-				percVarMux3Sel = 1;
+				percVarMuxSel = 1;
 				testWriteAddr = {INTERPOLATION_LSF_INT[10:5],i[4:0]};
 				testMemOut = lsfInt[10*j+i];
 				testMemWrite = 1;	
@@ -295,18 +118,14 @@ module perc_var_test_v;
 			for(i=0;i<10;i=i+1)
 			begin
 				#100;
-				percVarMux1Sel = 1;
-				percVarMux2Sel = 1;
-				percVarMux3Sel = 1;
+				percVarMuxSel = 1;
 				testWriteAddr = {INTERPOLATION_LSF_NEW[10:4],i[3:0]};
 				testMemOut = lsfNew[10*j+i];
 				testMemWrite = 1;	
 				#100;
 			end
 			
-			percVarMux1Sel = 0;
-			percVarMux2Sel = 0;
-			percVarMux3Sel = 0;		
+			percVarMuxSel = 0;	
 	
 			#50;		
 			start = 1;
