@@ -1,0 +1,41 @@
+Latch and Mismatch Report
+Report Generated From: Autocorr_Windowing/Autocorr_Top.syr
+===============================
+Name of Author: Zach Thornton
+Name of Module: Autocorrelation and Windowing
+===============================
+
+
+====================================================
+====================================================
+====================================================
+
+Synthesizing Unit <hammingWindowMemory>.
+
+WARNING:Xst:737 - Found 16-bit latch for signal <out>. Latches may be generated from incomplete case or if statements. We do not recommend the use of latches in FPGA/CPLD designs, as they may lead to timing problems.
+
+====================================================
+====================================================
+====================================================
+
+Synthesizing Unit <autocorrFSM>.
+
+WARNING:Xst:737 - Found 16-bit latch for signal <shrVar1Out>. Latches may be generated from incomplete case or if statements. We do not recommend the use of latches in FPGA/CPLD designs, as they may lead to timing problems.
+
+WARNING:Xst:737 - Found 16-bit latch for signal <subOutB>. Latches may be generated from incomplete case or if statements. We do not recommend the use of latches in FPGA/CPLD designs, as they may lead to timing problems.
+
+WARNING:Xst:737 - Found 32-bit latch for signal <L_shrVar1Out>. Latches may be generated from incomplete case or if statements. We do not recommend the use of latches in FPGA/CPLD designs, as they may lead to timing problems.
+
+WARNING:Xst:737 - Found 11-bit latch for signal <readRequested>. Latches may be generated from incomplete case or if statements. We do not recommend the use of latches in FPGA/CPLD designs, as they may lead to timing problems.
+
+WARNING:Xst:737 - Found 16-bit latch for signal <addOutB>. Latches may be generated from incomplete case or if statements. We do not recommend the use of latches in FPGA/CPLD designs, as they may lead to timing problems.
+
+WARNING:Xst:737 - Found 16-bit latch for signal <addOutA>. Latches may be generated from incomplete case or if statements. We do not recommend the use of latches in FPGA/CPLD designs, as they may lead to timing problems.
+
+====================================================
+====================================================
+
+Number of Modules with Latches = 2
+Number of Lines in Synthesis Report = 1098
+Number of Parsed Warnings = 7
+Warnings to Lines Percentage = 0.637523%
