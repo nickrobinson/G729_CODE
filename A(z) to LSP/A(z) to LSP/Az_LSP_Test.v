@@ -70,8 +70,14 @@ module Az_LSP_Test_v;
 		reset = 0;
 		start = 0;
 		testReadRequested = 0;	
-		
+		testWriteRequested = 0;	
+	   testLspWrite = 0;
+		lspMuxSel = 0;
+		testLspOut = 0;
+
+		#100;
 		// Wait 100 ns for global reset to finish
+		
 		#50;
 		reset = 1;
 		#50;
@@ -88,6 +94,7 @@ module Az_LSP_Test_v;
 			begin
 				#100;
 				lspMuxSel = 1;
+				#100					//Added Delay BY PARKER
 				temp = A_T + 11'd11;
 				testWriteRequested = {temp[10:4],i[3:0]};
 				testLspOut = aSubI_in[j*11+i];

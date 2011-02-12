@@ -43,7 +43,6 @@ input [31:0] L_subOutA,L_subOutB;
 input [31:0] L_addOutA,L_addOutB;
 input [15:0] addOutA,addOutB;
 input [15:0] multOutA,multOutB;
-input [15:0] norm_sIn;
 input norm_sReady;
 input [15:0] subOutA,subOutB;
 input [15:0] shrOutVar1,shrOutVar2;
@@ -53,7 +52,11 @@ input [10:0] lspReadRequested;
 input [10:0] lspWriteRequested;
 input [31:0] lspOut;
 input lspWrite;
-									  			 
+
+
+output [15:0] norm_sIn;						//CHANGED FROM INPUT TO OUTPUT!!!
+input [15:0] norm_sOut;     				//CHANGED FROM OUTPUT TO INPUT
+
 //Outputs
 output L_multOverflow;
 output [31:0] L_multIn;
@@ -67,7 +70,6 @@ output [31:0] L_subIn;
 output [31:0] L_addIn;
 output [15:0] addIn;
 output [15:0] multIn;
-output [15:0] norm_sOut;
 output norm_sDone;
 output [15:0] subIn;
 output [15:0] shrIn;
