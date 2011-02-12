@@ -11,7 +11,7 @@
 // Tool versions:  Xilinx 9.2i
 // Description: 	 This is an FSM to perform the C-model function "Lsp_Expand_2".
 // 
-// Dependencies: 	 regArraySize6.v, Chebps10_FSM.v, Chebps11_FSM.v, twoway_16bit_mux.v, gridPointsMem.v
+// Dependencies: 	 N/A
 //
 // Revision: 
 // Revision 0.01 - File Created
@@ -64,7 +64,7 @@ parameter FOR_LOOP_BODY3 = 3'd4;
 parameter FOR_LOOP_BODY4 = 3'd5;
 
 //other params
-parameter GAP = 3'd10;	// the constant GAP1 is passed into this function in the C-code by the variable "gap"
+// the constant GAP1 is passed into this function in the C-code by the variable "gap"
 
 //Always blocks for working flip-flops
 
@@ -145,6 +145,8 @@ begin
 	addOutB = 0;
 	L_addOutA = 0;
 	L_addOutB = 0;
+	L_subOutA = 0;
+	L_subOutB = 0;
 	memReadAddr = 0;
 	memWriteAddr = 0;
 	memWriteEn = 0;
