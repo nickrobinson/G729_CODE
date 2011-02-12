@@ -143,6 +143,8 @@ begin
 	addOutB = 0;
 	L_addOutA = 0;
 	L_addOutB = 0;
+	L_subOutA = 0;
+	L_subOutB = 0;
 	memReadAddr = 0;
 	memWriteAddr = 0;
 	memWriteEn = 0;
