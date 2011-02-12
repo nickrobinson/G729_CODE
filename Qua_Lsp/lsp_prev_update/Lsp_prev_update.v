@@ -92,7 +92,7 @@ begin
 	if(reset)
 		state <= 0;
 	else
-		state = nextstate;
+		state <= nextstate;
 end
 
 //k flipflop
@@ -122,6 +122,10 @@ begin
 	memOut = 0;
 	memWriteEn = 0;
 	done = 0;
+	subOutA = 0;
+	subOutB = 0;
+	xAddr = 0;
+	yAddr = 0;
 	
 	case(state)
 	
