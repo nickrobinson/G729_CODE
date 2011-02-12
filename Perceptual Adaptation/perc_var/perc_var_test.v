@@ -82,12 +82,20 @@ module perc_var_test_v;
 		clk = 0;
 		reset = 0;
 		start = 0;
+		percVarMuxSel = 0;
+		testMemWrite = 0;
+		testWriteAddr = 0;
+		testReadAddr = 0;
+		testMemOut = 0;		
 		
-		#50
+		#100;
+		// Wait 100 ns for global reset to finish
+		
+		#50;
 		reset = 1;
-		// Wait 50 ns for global reset to finish
 		#50;
 		reset = 0;
+		#50;
 			
 		for(j=0;j<60;j=j+1)
 		begin
