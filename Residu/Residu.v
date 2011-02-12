@@ -18,7 +18,10 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module Residu(clk, reset, start, done, A, X, Y, LG, FSMdataIn1, FSMdataIn2, FSMwriteEn, FSMreadAddr1, FSMreadAddr2, FSMwriteAddr, FSMdataOut, L_multOutA, L_multOutB, L_multIn, L_macOutA, L_macOutB, L_macOutC, L_macIn, subOutA, subOutB, subIn, L_shlOutA, L_shlOutB, L_shlIn, addOutA, addOutB, addIn, L_addOutA, L_addOutB, L_addIn, L_shlDone, L_shlReady);
+module Residu(clk, reset, start, done, A, X, Y, LG, FSMdataIn1, FSMdataIn2, FSMwriteEn, FSMreadAddr1, 
+				  FSMreadAddr2, FSMwriteAddr, FSMdataOut, L_multOutA, L_multOutB, L_multIn, L_macOutA, 
+				  L_macOutB, L_macOutC, L_macIn, subOutA, subOutB, subIn, L_shlOutA, L_shlOutB, L_shlIn,
+				  addOutA, addOutB, addIn, L_addOutA, L_addOutB, L_addIn, L_shlDone, L_shlReady);
 
 //Inputs
 input clk, reset, start;
@@ -38,7 +41,7 @@ output reg done;
 output reg FSMwriteEn;
 output reg [10:0] FSMreadAddr1, FSMreadAddr2;
 output reg [10:0] FSMwriteAddr;
-output reg [15:0] FSMdataOut;
+output reg [31:0] FSMdataOut;
 output reg [15:0] subOutA, subOutB;
 output reg [15:0] L_multOutA, L_multOutB;
 output reg [15:0] L_macOutA, L_macOutB;
@@ -293,13 +296,17 @@ begin
 			//find round and do what it does
 			L_addOutA = S;
 			L_addOutB = 32'h00008000;
-			FSMdataOut = L_addIn[31:16];
+			if(L_addIn[31] == 1)
+				FSMdataOut = {16'hffff,L_addIn[31:16]};
+			else if(L_addIn[31] == 0)
+				FSMdataOut = {16'd0,L_addIn[31:16]};
 			FSMwriteAddr = {Y[10:6], I[5:0]};
 			FSMwriteEn = 1;
 			addOutA = I;
 			addOutB = 'd1;
 			nextI = addIn;
 			ldI = 1;
+			resetJ = 1;
 			nextstate = S1_FOR1;
 		end
 		

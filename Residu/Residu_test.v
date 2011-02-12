@@ -49,7 +49,7 @@ module Residu_test;
 	wire [10:0] FSMreadAddr1;
 	wire [10:0] FSMreadAddr2;
 	wire [10:0] FSMwriteAddr;
-	wire [15:0] FSMdataOut;
+	wire [31:0] FSMdataOut;
 	wire [15:0] L_multOutA;
 	wire [15:0] L_multOutB;
 	wire [15:0] L_macOutA;
@@ -85,6 +85,7 @@ module Residu_test;
 	
 	//Integers/Chars/Strings/etc
 	integer i,j;
+	reg [10:0] temp;
 	
 	// Instantiate the Unit Under Test (UUT)
 	Residu uut (
@@ -95,7 +96,7 @@ module Residu_test;
 		.A(A), 
 		.X(X), 
 		.Y(Y), 
-		.LG('d40), 
+		.LG(6'd40), 
 		.FSMdataIn1(FSMdataIn1), 
 		.FSMdataIn2(FSMdataIn2), 
 		.FSMwriteEn(FSMwriteEn), 
@@ -233,9 +234,9 @@ module Residu_test;
 	initial 
 	begin
 		// samples out are samples from ITU G.729 test vectors
-		$readmemh("residu_in_a.out", RESIDU_IN_A);
-		$readmemh("residu_in_x.out", RESIDU_IN_X);
-		$readmemh("residu_out_y.out", RESIDU_OUT_Y);
+		$readmemh("residu_a_in.out", RESIDU_IN_A);
+		$readmemh("residu_x_in.out", RESIDU_IN_X);
+		$readmemh("residu_y_out.out", RESIDU_OUT_Y);
     end
 	
 	initial forever #10 clk = ~clk;
@@ -245,8 +246,8 @@ module Residu_test;
 		clk = 0;
 		reset = 0;
 		start = 0;
-		A = 'd0;
-		X = 'd10;
+		A = 'd256;
+		X = 'd64;
 		Y = 'd16;
 		LG = 'd40;
 		MuxSel = 0;
@@ -265,17 +266,18 @@ module Residu_test;
 			for(i = 0; i < 11; i = i + 1)
 			begin
 				#100;
-				TBwriteAddr1 = (j*11+i);
+				TBwriteAddr1 = {A[10:4],i[3:0]};
 				TBdataOut1 = RESIDU_IN_A[j*11+i];
 				TBwriteEn1 = 1;
 				@(posedge clk);
 			end
 			
-			for(i = 0; i < 49; i = i + 1)
+			for(i = 0; i < 50; i = i + 1)
 			begin
 				#100;
-				TBwriteAddr2 = (j*49+i);
-				TBdataOut2 = RESIDU_IN_X[j*49+i];
+				temp = X - 10 + i;
+				TBwriteAddr2 = temp[10:0];
+				TBdataOut2 = RESIDU_IN_X[j*50+i];
 				TBwriteEn2 = 1;
 				@(posedge clk);
 			end
@@ -302,6 +304,7 @@ module Residu_test;
 				else
 					$display($time, " CORRECT:  y[%d] = %x", 40*j+i, FSMdataIn1);
 			end
+			#100;
 		end//j loop
 	end//always 
       
