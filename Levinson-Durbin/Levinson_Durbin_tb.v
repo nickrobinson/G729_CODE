@@ -51,7 +51,7 @@ module Levinson_Durbin_tb_1_v;
 	reg mux3sel;
 	reg testWriteEnable;
 	
-	integer i,j;
+	integer i,j,k;
 	
 	Levinson_Durbin_test_top i_Levinson_Durbin_test_top_1(
 			.clock(clock),
@@ -123,7 +123,8 @@ module Levinson_Durbin_tb_1_v;
 			mux0sel = 1;
 			for(i=0;i<11;i=i+1)
 			begin
-				testReadAddr = {LEVINSON_DURBIN_A[10:4],i[3:0]};
+				k = i + 11;
+				testReadAddr = {A_T[10:4],k[3:0]};
 				@(posedge clock);
 				@(posedge clock);
 				if (scratch_mem_in != levinson_out_a[11*j+i])

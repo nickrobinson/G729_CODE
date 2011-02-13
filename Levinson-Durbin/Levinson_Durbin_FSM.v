@@ -17,6 +17,7 @@
 //
 // Revision: 
 // Revision 0.01 - File Created
+// Revision 0.02 - Updated A_T memory locations
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
@@ -664,7 +665,7 @@ module Levinson_Durbin_FSM(clock,reset,start,done,abs_in,abs_out,negate_out,nega
 				if(iterator1 >= 'd11) begin
 					next_iterator1 = 2;
 					scratch_mem_out = 'd4096;
-					scratch_mem_write_addr = {LEVINSON_DURBIN_A[10:4],4'd0};
+					scratch_mem_write_addr = {A_T[10:4],4'd11};
 					scratch_mem_write_en = 1'd1;
 					nextstate = 29;
 				end
@@ -841,11 +842,13 @@ module Levinson_Durbin_FSM(clock,reset,start,done,abs_in,abs_out,negate_out,nega
 			begin
 				scratch_mem_read_addr = {LEVINSON_DURBIN_AOLD[10:4], iterator4[3:0]};
 				scratch_mem_out = scratch_mem_in;
-				scratch_mem_write_addr = {LEVINSON_DURBIN_A[10:4], iterator4[3:0]};
+				scratch_mem_write_addr = {A_T[10:4], add_in[3:0]};
 				scratch_mem_write_en = 1'd1;
 				add_outa = iterator4;
-				add_outb = 1;
-				next_iterator4 = add_in;
+				add_outb = 'd11;
+				sub_outa = add_in;
+				sub_outb = 'd10;
+				next_iterator4 = sub_in;
 				nextstate = state18;
 			end
 			
@@ -1103,7 +1106,9 @@ module Levinson_Durbin_FSM(clock,reset,start,done,abs_in,abs_out,negate_out,nega
 					L_add_outb = 32'h0000_8000;
 					next_temp2 = L_add_in;
 					scratch_mem_out = L_add_in[31:16];
-					scratch_mem_write_addr = {LEVINSON_DURBIN_A[10:4],iterator6[3:0]};
+					add_outa = iterator6;
+					add_outb = 'd11;
+					scratch_mem_write_addr = {A_T[10:4],add_in[3:0]};
 					scratch_mem_write_en = 1'd1;
 					nextstate = state31;
 				end
