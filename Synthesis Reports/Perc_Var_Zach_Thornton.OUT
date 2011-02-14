@@ -1,0 +1,77 @@
+Latch and Mismatch Report
+Report Generated From: perc_var/percVar_Top_Level.syr
+===============================
+Name of Author: Zach Thornton
+Name of Module: Perc Var
+===============================
+
+
+====================================================
+====================================================
+====================================================
+
+Synthesizing Unit <percVarFSM>.
+
+WARNING:Xst:737 - Found 11-bit latch for signal <memReadAddr>. Latches may be generated from incomplete case or if statements. We do not recommend the use of latches in FPGA/CPLD designs, as they may lead to timing problems.
+
+WARNING:Xst:737 - Found 16-bit latch for signal <shlVar1Out>. Latches may be generated from incomplete case or if statements. We do not recommend the use of latches in FPGA/CPLD designs, as they may lead to timing problems.
+
+WARNING:Xst:737 - Found 16-bit latch for signal <shlVar2Out>. Latches may be generated from incomplete case or if statements. We do not recommend the use of latches in FPGA/CPLD designs, as they may lead to timing problems.
+
+WARNING:Xst:737 - Found 11-bit latch for signal <memWriteAddr>. Latches may be generated from incomplete case or if statements. We do not recommend the use of latches in FPGA/CPLD designs, as they may lead to timing problems.
+
+WARNING:Xst:737 - Found 32-bit latch for signal <memOut>. Latches may be generated from incomplete case or if statements. We do not recommend the use of latches in FPGA/CPLD designs, as they may lead to timing problems.
+
+WARNING:Xst:737 - Found 16-bit latch for signal <addOutA>. Latches may be generated from incomplete case or if statements. We do not recommend the use of latches in FPGA/CPLD designs, as they may lead to timing problems.
+
+WARNING:Xst:737 - Found 16-bit latch for signal <addOutB>. Latches may be generated from incomplete case or if statements. We do not recommend the use of latches in FPGA/CPLD designs, as they may lead to timing problems.
+
+WARNING:Xst:737 - Found 16-bit latch for signal <subOutA>. Latches may be generated from incomplete case or if statements. We do not recommend the use of latches in FPGA/CPLD designs, as they may lead to timing problems.
+
+WARNING:Xst:737 - Found 16-bit latch for signal <subOutB>. Latches may be generated from incomplete case or if statements. We do not recommend the use of latches in FPGA/CPLD designs, as they may lead to timing problems.
+
+WARNING:Xst:737 - Found 16-bit latch for signal <shrVar1Out>. Latches may be generated from incomplete case or if statements. We do not recommend the use of latches in FPGA/CPLD designs, as they may lead to timing problems.
+
+WARNING:Xst:737 - Found 16-bit latch for signal <shrVar2Out>. Latches may be generated from incomplete case or if statements. We do not recommend the use of latches in FPGA/CPLD designs, as they may lead to timing problems.
+
+WARNING:Xst:737 - Found 16-bit latch for signal <L_multOutA>. Latches may be generated from incomplete case or if statements. We do not recommend the use of latches in FPGA/CPLD designs, as they may lead to timing problems.
+
+WARNING:Xst:737 - Found 16-bit latch for signal <L_multOutB>. Latches may be generated from incomplete case or if statements. We do not recommend the use of latches in FPGA/CPLD designs, as they may lead to timing problems.
+
+WARNING:Xst:737 - Found 32-bit latch for signal <L_subOutA>. Latches may be generated from incomplete case or if statements. We do not recommend the use of latches in FPGA/CPLD designs, as they may lead to timing problems.
+
+WARNING:Xst:737 - Found 32-bit latch for signal <L_subOutB>. Latches may be generated from incomplete case or if statements. We do not recommend the use of latches in FPGA/CPLD designs, as they may lead to timing problems.
+
+WARNING:Xst:737 - Found 32-bit latch for signal <L_shrOutVar1>. Latches may be generated from incomplete case or if statements. We do not recommend the use of latches in FPGA/CPLD designs, as they may lead to timing problems.
+
+WARNING:Xst:737 - Found 32-bit latch for signal <L_addOutA>. Latches may be generated from incomplete case or if statements. We do not recommend the use of latches in FPGA/CPLD designs, as they may lead to timing problems.
+
+WARNING:Xst:737 - Found 16-bit latch for signal <multOutA>. Latches may be generated from incomplete case or if statements. We do not recommend the use of latches in FPGA/CPLD designs, as they may lead to timing problems.
+
+WARNING:Xst:737 - Found 16-bit latch for signal <multOutB>. Latches may be generated from incomplete case or if statements. We do not recommend the use of latches in FPGA/CPLD designs, as they may lead to timing problems.
+
+WARNING:Xst:737 - Found 11-bit latch for signal <memWriteAddr$mux0000>. Latches may be generated from incomplete case or if statements. We do not recommend the use of latches in FPGA/CPLD designs, as they may lead to timing problems.
+
+WARNING:Xst:737 - Found 32-bit latch for signal <memOut$mux0000>. Latches may be generated from incomplete case or if statements. We do not recommend the use of latches in FPGA/CPLD designs, as they may lead to timing problems.
+
+WARNING:Xst:737 - Found 16-bit latch for signal <addOutA$mux0000>. Latches may be generated from incomplete case or if statements. We do not recommend the use of latches in FPGA/CPLD designs, as they may lead to timing problems.
+
+WARNING:Xst:737 - Found 16-bit latch for signal <addOutB$mux0000>. Latches may be generated from incomplete case or if statements. We do not recommend the use of latches in FPGA/CPLD designs, as they may lead to timing problems.
+
+WARNING:Xst:737 - Found 16-bit latch for signal <shrVar1Out$mux0000>. Latches may be generated from incomplete case or if statements. We do not recommend the use of latches in FPGA/CPLD designs, as they may lead to timing problems.
+
+WARNING:Xst:737 - Found 16-bit latch for signal <shrVar2Out$mux0000>. Latches may be generated from incomplete case or if statements. We do not recommend the use of latches in FPGA/CPLD designs, as they may lead to timing problems.
+
+WARNING:Xst:737 - Found 16-bit latch for signal <L_multOutA$mux0000>. Latches may be generated from incomplete case or if statements. We do not recommend the use of latches in FPGA/CPLD designs, as they may lead to timing problems.
+
+WARNING:Xst:737 - Found 32-bit latch for signal <L_subOutA$mux0000>. Latches may be generated from incomplete case or if statements. We do not recommend the use of latches in FPGA/CPLD designs, as they may lead to timing problems.
+
+WARNING:Xst:737 - Found 32-bit latch for signal <L_shrOutVar1$mux0000>. Latches may be generated from incomplete case or if statements. We do not recommend the use of latches in FPGA/CPLD designs, as they may lead to timing problems.
+
+====================================================
+====================================================
+
+Number of Modules with Latches = 1
+Number of Lines in Synthesis Report = 1403
+Number of Parsed Warnings = 28
+Warnings to Lines Percentage = 1.995723%
