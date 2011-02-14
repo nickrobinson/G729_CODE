@@ -79,69 +79,29 @@ module syn_filt_test;
 	integer i, j;
 
 	// Instantiate the Unit Under Test (UUT)
-	syn_filt uut (
+	syn_filt_pipe uut (
 		.clk(clk), 
 		.reset(reset), 
 		.start(start), 
 		.memIn(memIn), 
-		.memWriteEn(memWriteEn), 
+		.xAddr(xAddr), 
+		.aAddr(aAddr), 
+		.yAddr(yAddr), 
+		.fMemAddr(fMemAddr), 
+		.updateAddr(updateAddr), 
+      .memWriteEn(memWriteEn), 
 		.memWriteAddr(memWriteAddr), 
 		.memOut(memOut), 
-		.done(done),
-		.xAddr(xAddr),
-		.aAddr(aAddr),
-		.yAddr(yAddr),
-		.updateAddr(updateAddr),
-		.fMemAddr(fMemAddr),
-		.L_addOutA(L_addOutA), 
-		.L_addOutB(L_addOutB), 
-		.L_addIn(L_addIn),
-		.L_multOutA(L_multOutA),
-		.L_multOutB(L_multOutB),
-		.L_multIn(L_multIn),
-		.L_shlIn(L_shlIn), 
-		.L_shlDone(L_shlDone),
-		.L_shlOutVar1(L_shlOutVar1), 
-		.L_shlNumShiftOut(L_shlNumShiftOut), 
-		.L_shlReady(L_shlReady),
-		.L_msuIn(L_msuIn), 
-		.L_msuOutA(L_msuOutA), 
-		.L_msuOutB(L_msuOutB), 
-		.L_msuOutC(L_msuOutC)
+		.done(done), 
+		.lagMuxSel(lagMuxSel), 
+		.lagMux1Sel(lagMux1Sel), 
+		.lagMux2Sel(lagMux2Sel), 
+		.lagMux3Sel(lagMux3Sel), 
+		.testReadRequested(testReadRequested), 
+		.testWriteRequested(testWriteRequested), 
+		.testWriteOut(testWriteOut), 
+		.testWriteEnable(testWriteEnable)
 	);
-	
-	//Instanitiate the Multiply and Add block
-					
-	L_add conv_L_add(
-					.a(L_addOutA),
-					.b(L_addOutB),
-					.overflow(),
-					.sum(L_addIn));
-					
-	L_mult conv_L_mult(
-					.a(L_multOutA),
-					.b(L_multOutB),
-					.overflow(),
-					.product(L_multIn));
-	
-	L_shl L_shl1(
-					 .clk(clk),
-					 .reset(reset),
-					 .ready(L_shlReady),
-					 .overflow(unusedOverflow),
-					 .var1(L_shlOutVar1),
-					 .numShift(L_shlNumShiftOut),
-					 .done(L_shlDone),
-					 .out(L_shlIn)
-					 );
-	
-	L_msu conv_L_msu(
-						 .a(L_msuOutA),
-						 .b(L_msuOutB),
-						 .c(L_msuOutC),
-						 .overflow(unusedOverflow),
-						 .out(L_msuIn)
-						 );		
 					
 	reg [15:0] predictionVector[0:9999];
 	reg [15:0] inVector[0:9999];
@@ -159,51 +119,6 @@ module syn_filt_test;
 			$readmemh("syn_filt_update.out", updateVector);
 			//add update file here
 		end
-					 
-	//lag read address mux
-	always @(*)
-	begin
-		case	(lagMuxSel)	
-			'd0 :	lagMuxOut = memWriteAddr;
-			'd1:	lagMuxOut = testReadRequested;
-		endcase
-	end
-	
-	//lag write address mux
-	always @(*)
-	begin
-		case	(lagMux1Sel)	
-			'd0 :	lagMux1Out = memWriteAddr;
-			'd1:	lagMux1Out = testWriteRequested;
-		endcase
-	end
-	
-	//lag write output mux
-	always @(*)
-	begin
-		case	(lagMux2Sel)	
-			'd0 :	lagMux2Out = memOut;
-			'd1:	lagMux2Out = testWriteOut;
-		endcase
-	end
-	
-		//lag write enable mux
-	always @(*)
-	begin
-		case	(lagMux3Sel)	
-			'd0 :	lagMux3Out = memWriteEn;
-			'd1:	lagMux3Out = testWriteEnable;
-		endcase
-	end
-	
-	Scratch_Memory_Controller convMem(
-												 .addra(lagMux1Out),
-												 .dina(lagMux2Out),
-												 .wea(lagMux3Out),
-												 .clk(clk),
-												 .addrb(lagMuxOut),
-												 .doutb(memIn)
-												 );
 
 	initial begin
 		// Initialize Inputs
