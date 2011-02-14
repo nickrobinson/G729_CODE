@@ -28,9 +28,6 @@ input signed [15:0] var1, var2;
 output reg signed [15:0] result;
 output reg overflow;
 
-wire [15:0] negvar1 = ~var1 + 16'd1;
-wire [15:0] negvar2 = ~var2 + 16'd1;
-wire [15:0] shlresult;
 wire var1gt0 = ~(var1[15]);
 
 //shl i_shl(.var1(var1), .var2(negvar2), .result(shlresult)); 
@@ -39,7 +36,7 @@ always @(*)
   begin
     overflow = 0;
     if (var2[15] == 1) // (var2 < 0)
-      result = shlresult;
+      result = -1;
     else 
 	 begin//else1
 		 
