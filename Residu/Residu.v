@@ -64,8 +64,6 @@ reg resetI, ldI;
 reg resetJ, ldJ;
 reg resettemp, ldtemp;
 reg resetS, ldS;
-reg [15:0] I_minus_J, offset;
-
 
 //Flops
 //state
@@ -171,8 +169,6 @@ begin
 	nextS = S;
 	resetS = 0;
 	ldS = 0;
-	I_minus_J = 0;
-	offset = 0;
 	FSMreadAddr1 = 0;
 	FSMreadAddr2 = 0;
 	done = 0;
@@ -250,12 +246,10 @@ begin
 		begin
 			subOutA = {10'd0, I[5:0]};
 			subOutB = {12'd0, J[3:0]};
-			offset = subIn;
 			//add instead of concatenate
 			addOutA = {5'd0, X[10:0]};
-			addOutB = offset;
-			I_minus_J = addIn;
-			FSMreadAddr2 = I_minus_J[10:0];
+			addOutB = subIn;
+			FSMreadAddr2 = addIn;
 			nexttemp = FSMdataIn1;
 			ldtemp = 1;
 			nextstate = S6_LMAC;

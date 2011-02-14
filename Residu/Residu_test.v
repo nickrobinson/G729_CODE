@@ -87,149 +87,25 @@ module Residu_test;
 	integer i,j;
 	reg [10:0] temp;
 	
-	// Instantiate the Unit Under Test (UUT)
-	Residu uut (
-		.clk(clk), 
-		.reset(reset), 
-		.start(start), 
-		.done(done), 
-		.A(A), 
-		.X(X), 
-		.Y(Y), 
-		.LG(6'd40), 
-		.FSMdataIn1(FSMdataIn1), 
-		.FSMdataIn2(FSMdataIn2), 
-		.FSMwriteEn(FSMwriteEn), 
-		.FSMreadAddr1(FSMreadAddr1), 
-		.FSMreadAddr2(FSMreadAddr2), 
-		.FSMwriteAddr(FSMwriteAddr), 
-		.FSMdataOut(FSMdataOut), 
-		.L_multOutA(L_multOutA), 
-		.L_multOutB(L_multOutB), 
-		.L_multIn(L_multIn), 
-		.L_macOutA(L_macOutA), 
-		.L_macOutB(L_macOutB), 
-		.L_macOutC(L_macOutC), 
-		.L_macIn(L_macIn), 
-		.subOutA(subOutA), 
-		.subOutB(subOutB), 
-		.subIn(subIn), 
-		.L_shlOutA(L_shlOutA), 
-		.L_shlOutB(L_shlOutB), 
-		.L_shlIn(L_shlIn), 
-		.L_shlReady(L_shlReady),
-		.L_shlDone(L_shlDone),
-		.addOutA(addOutA), 
-		.addOutB(addOutB), 
-		.addIn(addIn), 
-		.L_addOutA(L_addOutA), 
-		.L_addOutB(L_addOutB), 
-		.L_addIn(L_addIn)
-	);
+	Residu_pipe _pipe(
+	.clk(clk),
+	.reset(reset),
+	.start(start),
+	.A(A),
+	.X(X),
+	.Y(Y),
+	.MuxSel(MuxSel),
+	.TBwriteAddr1(TBwriteAddr1),
+	.TBwriteAddr2(TBwriteAddr2),
+	.TBdataOut1(TBdataOut1),
+	.TBdataOut2(TBdataOut2),
+	.TBwriteEn1(TBwriteEn1),
+	.TBwriteEn2(TBwriteEn2),
+	.TBreadAddr(TBreadAddr),
 	
-	//memory A,Y
-	Scratch_Memory_Controller Mem1(
-		 .addra(writeAddrMuxOut),
-		 .dina(dataInMuxOut),
-		 .wea(writeEnMuxOut),
-		 .clk(clk),
-		 .addrb(readAddrMuxOut),
-		 .doutb(FSMdataIn1)
-		 );
-	
-	//memory X
-	Scratch_Memory_Controller Mem2(
-		 .addra(TBwriteAddr2),
-		 .dina(TBdataOut2),
-		 .wea(TBwriteEn2),
-		 .clk(clk),
-		 .addrb(FSMreadAddr2),
-		 .doutb(FSMdataIn2)
-		 );
-	
-	
-	add _add(
-		.a(addOutA),
-		.b(addOutB),
-		.overflow(),
-		.sum(addIn)
-		);
-	
-	sub _sub(
-		.a(subOutA),
-		.b(subOutB),
-		.overflow(),
-		.diff(subIn)
-		);
-	
-	L_mult _L_mult(
-		.a(L_multOutA),
-		.b(L_multOutB),
-		.overflow(),
-		.product(L_multIn)
-		);
-	
-	L_mac _L_mac(
-		.a(L_macOutA),
-		.b(L_macOutB),
-		.c(L_macOutC),
-		.overflow(),
-		.out(L_macIn)
-		);
-	
-	L_shl _L_shl(
-		.clk(clk),
-		.reset(reset),
-		.ready(L_shlReady),
-		.overflow(),
-		.var1(L_shlOutA),
-		.numShift(L_shlOutB),
-		.done(L_shlDone),
-		.out(L_shlIn)
-		);
-
-	L_add _L_add(
-		.a(L_addOutA),
-		.b(L_addOutB),
-		.overflow(),
-		.sum(L_addIn)
-		);
-	
-	//write address mux for Memory A,Y
-	always @(*)
-	begin
-		case	(MuxSel)	
-			'd0:	writeAddrMuxOut = TBwriteAddr1;
-			'd1:	writeAddrMuxOut = FSMwriteAddr;
-		endcase
-	end
-	
-	//data in mux for Memory A,Y
-	always @(*)
-	begin
-		case	(MuxSel)	
-			'd0:	dataInMuxOut = TBdataOut1;
-			'd1:	dataInMuxOut = FSMdataOut;
-		endcase
-	end
-		
-	//write enable mux for Memory A,Y
-	always @(*)
-	begin
-		case	(MuxSel)	
-			'd0:	writeEnMuxOut = TBwriteEn1;
-			'd1:	writeEnMuxOut = FSMwriteEn;
-		endcase
-	end
-			
-	//read address mux for Memory A,Y
-	always @(*)
-	begin
-		case	(MuxSel)	
-			'd0:	readAddrMuxOut = TBreadAddr;
-			'd1:	readAddrMuxOut = FSMreadAddr1;
-		endcase
-	end
+	.done(done),
+	.FSMdataIn1(FSMdataIn1)
+);	
 	
 	initial 
 	begin
@@ -249,7 +125,6 @@ module Residu_test;
 		A = 'd256;
 		X = 'd64;
 		Y = 'd16;
-		LG = 'd40;
 		MuxSel = 0;
 		
 		#100;
