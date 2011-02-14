@@ -29,7 +29,7 @@ parameter XXXXXXXX = 11'd688;						//OPEN 64 blocks
 parameter XXXXXXX = 11'd752;						//OPEN 16 Blocks
 parameter A_T = 11'd768;							//A_t uses 32 Blocks
 parameter AQ_T = 11'd800;							//Aq_t uses 32 Blocks
-parameter XXXXXXXXXXXX = 11'd832;					//OPEN 128 Blocks
+parameter SYN_FILT_TEMP = 11'd832;					//OPEN 128 Blocks
 parameter XXXXXXXXXXX = 11'd960;					//OPEN 256 Blocks
 parameter XXXXXXXXXX = 11'd1216;					//OPEN 1024 Blocks
 
