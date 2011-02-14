@@ -237,7 +237,7 @@ begin
 			end
 			else if(count1 < M)
 			begin
-				memWriteAddr = {fMemAddr[10:8], 2'd0, count1[5:0]};
+				memWriteAddr = {fMemAddr[10:6], count1[5:0]};
 				nextstate = STATE_COUNT_LOOP1_2;
 			end	
 		end
@@ -372,7 +372,6 @@ begin
 				memWriteAddr = updateAddr[10:0];
 				count1Reset = 1;
 				nextstate = STATE_UPDATE_1;
-				$display("LEAVING LAST LOOP");
 			end
 			else if(count1 < L)
 			begin
@@ -397,8 +396,6 @@ begin
 		begin
 			if(memIn == 1)
 			begin
-				$display("UPDATING\n");
-				$display("memOut: %x\n", memOut);
 				nextstate = STATE_UPDATE_2;
 			end
 			else
@@ -425,7 +422,7 @@ begin
 		
 		STATE_UPDATE_3:
 		begin
-			memWriteAddr = {fMemAddr[10:8], 2'd0, count1[5:0]};
+			memWriteAddr = {fMemAddr[10:6], count1[5:0]};
 			memOut = memIn;
 			memWriteEn = 1;
 			L_addOutA = count1;

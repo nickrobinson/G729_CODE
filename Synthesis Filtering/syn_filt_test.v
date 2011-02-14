@@ -214,8 +214,8 @@ module syn_filt_test;
 		xAddr = 11'd560;
 		aAddr = 11'd624;
 		yAddr = 11'd688;
-		fMemAddr = 11'd128;
-		updateAddr = 11'd624;
+		fMemAddr = 11'd816;
+		updateAddr = 11'd944;
 		
 		#50 ;		
 		reset = 1;		
