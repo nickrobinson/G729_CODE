@@ -18,14 +18,14 @@
 //
 //////////////////////////////////////////////////////////////////////////////////
 module syn_filt_pipe(clk, reset, start, memIn, xAddr, aAddr, yAddr, fMemAddr, updateAddr, 
-                     memWriteEn, memWriteAddr, memOut, done, lagMuxSel, lagMux1Sel, lagMux2Sel, 
-							lagMux3Sel, testReadRequested, testWriteRequested, testWriteOut, testWriteEnable);
+                     done, lagMuxSel, lagMux1Sel, lagMux2Sel, lagMux3Sel, testReadRequested, 
+							testWriteRequested, testWriteOut, testWriteEnable);
 	 
 	 // Inputs
 	input clk;
 	input reset;
 	input start;
-	input [31:0] memIn;
+	
 	
 	input [10:0] xAddr;
 	input [10:0] aAddr;
@@ -34,10 +34,8 @@ module syn_filt_pipe(clk, reset, start, memIn, xAddr, aAddr, yAddr, fMemAddr, up
 	input [10:0] updateAddr;
 
 	// Outputs
-	output memWriteEn;
-	output [10:0] memWriteAddr;
-	output [31:0] memOut;
 	output done;
+	output [31:0] memIn;
 	
 	wire [31:0] L_addOutA;
 	wire [31:0] L_addOutB;
@@ -53,6 +51,9 @@ module syn_filt_pipe(clk, reset, start, memIn, xAddr, aAddr, yAddr, fMemAddr, up
 	wire [31:0] L_multIn;
 	wire [31:0] L_shlIn;
 	wire [31:0] L_msuIn;
+	wire [31:0] memOut;
+	wire memWriteEn;
+	wire [10:0] memWriteAddr;
 	
 	wire unusedOverflow;
 	
