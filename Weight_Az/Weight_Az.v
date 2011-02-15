@@ -92,8 +92,15 @@ module Weight_Az(start, clk, done, reset, A, AP, gammaAddr, readAddr, readIn, wr
 	always@(*)
 		begin
 		nextstate = state;
+		nextgamma = gamma;
 		nextfac = fac;
 		nextiter = iter;
+		add_a = 0;
+		add_b = 0;
+		L_add_a = 0;
+		L_add_b = 0;
+		L_mult_a = 0;
+		L_mult_b = 0;
 		writeAddr = 0;
 		writeOut = 0;
 		writeEn = 0;
