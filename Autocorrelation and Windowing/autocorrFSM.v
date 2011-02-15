@@ -78,7 +78,7 @@ reg [7:0] nextcount1,nextcount2,nextcount3,nextcount4,nextcount5;
 reg count1ld,count2ld,count3ld,count4ld,count5ld;
 reg count1reset,count2reset,count3reset,count4reset,count5reset;
 reg signed [31:0] memOut;
-reg signed [15:0] rHigh,rLow,rLowTemp;  
+reg signed [15:0] rHigh,rLow;  
 reg [7:0] hamIn;
 
 //working wires
@@ -270,28 +270,20 @@ always @(*) begin
 	yi = 0;
 	yiplusj = 0;	
 	xRequested = 0;
-	//readRequested = 0;
-	writeRequested = 0;
-	//rRequested = 0;
-	memOut = 0;
-	memYregld = 0;	
-	/*norm_lVar1Out = 0;
-	multOutA = 0;
-	multOutB = 0;
-	multRselOut = 0;
-   L_shlReady = 0;
-	L_shlVar1Out = 0; 
-	L_shlNumShiftOut = 0;
 	L_shrVar1Out = 0;
 	L_shrNumShiftOut = 0;
+	writeRequested = 0;
+	memOut = 0;
+	memYregld = 0;	
+	subOutA = 0;
+	subOutB = 0;
 	shrVar1Out = 0;
 	shrVar2Out = 0;
 	addOutA = 0;
 	addOutB = 0;
-	subOutA = 0;
-	subOutB = 0;
+	readRequested = 0;
 	memOut = 0;
-*/
+	
 	case(state)
 	
 	INIT: begin		//state 0
