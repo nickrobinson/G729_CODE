@@ -146,7 +146,7 @@ module perc_var_test_v;
 			//gamma1 read
 			for (i = 0; i<2;i=i+1)
 			begin				
-					testReadAddr = {PERC_VAR_GAMMA1[11:1],i[0]};
+					testReadAddr = {PERC_VAR_GAMMA1[10:1],i[0]};
 					@(posedge clk);
 					@(posedge clk);
 					if (memIn != gamma1[j*2+i])
@@ -159,7 +159,7 @@ module perc_var_test_v;
 			//gamma2 read
 			for (i = 0; i<2;i=i+1)
 			begin				
-					testReadAddr = {PERC_VAR_GAMMA2[11:1],i[0]};
+					testReadAddr = {PERC_VAR_GAMMA2[10:1],i[0]};
 					@(posedge clk);
 					@(posedge clk);
 					if (memIn != gamma2[j*2+i])

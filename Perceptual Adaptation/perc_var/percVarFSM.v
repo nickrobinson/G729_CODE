@@ -289,7 +289,28 @@ begin
    smoothReset = 0;
 	smoothLD = 0;
 	memWrite = 0;
+	memReadAddr = 0;
+	memWriteAddr = 0;
+	memOut = 0;
 	done = 0;
+	shlVar1Out = 0;
+	shlVar2Out = 0;
+	addOutA = 0;
+	addOutB = 0;
+	subOutA = 0;
+	subOutB = 0;
+	shrVar1Out = 0;
+	shrVar2Out = 0;
+	L_multOutA = 0;
+	L_multOutB = 0;
+	L_subOutA = 0;
+	L_subOutB = 0;
+	L_shrOutVar1 = 0;
+	L_shrOutNumShift = 0;
+	L_addOutA = 0;
+	L_addOutB = 0;
+	multOutA = 0;
+	multOutB = 0;
 	
 	case(state)
 	

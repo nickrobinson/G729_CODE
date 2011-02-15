@@ -22,7 +22,7 @@ module percVar_Pipe(clk,percVarMuxSel,testMemWrite,testMemOut,testWriteAddr,test
 						  L_multOutB,L_subOutA,L_subOutB,L_shrOutVar1,L_shrOutNumShift,L_addOutA,
 						  L_addOutB,addOutA,addOutB,multOutA,multOutB,memReadAddr,memWriteAddr,
 						  memWrite,memOut,L_multIn,multIn,shlIn,shrIn,subIn,L_subIn,L_addIn,memIn,
-						  addIn,L_shrIn,memIn);
+						  addIn,L_shrIn);
 
 	//Inputs
 	input clk;
@@ -122,6 +122,7 @@ add percVar_add(
 mult percVar_mult(
 	.a(multOutA),
 	.b(multOutB),
+	.multRsel(1'd0),
 	.overflow(),
 	.product(multIn)
  );

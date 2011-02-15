@@ -74,7 +74,7 @@ percVarFSM ipercVarFSM(
 .clk(clk),
 .reset(reset),
 .start(start),
-.shlIn(sh1In),
+.shlIn(shlIn),
 .shrIn(shrIn),
 .subIn(subIn),
 .L_multIn(L_multIn),
