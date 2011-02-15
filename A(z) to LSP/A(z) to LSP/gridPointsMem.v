@@ -25,7 +25,7 @@ input [5:0] in;
 output reg [15:0] out;
 
 always @(*) begin
-
+out = 16'd0;
 case (in)
 
 	'd0: out = 16'd32760;

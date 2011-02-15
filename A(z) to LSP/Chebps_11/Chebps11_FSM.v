@@ -261,24 +261,30 @@ begin
 	L_shlReset = 0;
 	done = 0;
 	xReset = 0;
-	/*
-	L_shlReady = 0;
-	L_multOutA = 0;
-	L_multOutB = 0; 
-	L_macOutA = 0;
-	L_macOutB = 0;
-	L_macOutC = 0;
+	addOutA = 0;
+	addOutB = 0;
+	cheb = 0;
 	L_msuOutA = 0;
 	L_msuOutB = 0;
 	L_msuOutC = 0;
-	L_shlVar1Out = 0;
-	L_shlNumShiftOut = 0; 
-	L_shlReady = 0;
-	done = 0;
-	cheb = 0;
 	multOutA = 0;
 	multOutB = 0;
-	*/
+	nexttemp1low = temp1low;
+	nexttemp1high = temp1high;
+	L_macOutA = 0;
+	L_macOutB = 0;
+	L_macOutC = 0;	
+	L_multOutA = 0;
+	L_multOutB = 0;
+	nexttemp2low = temp2low;
+	nexttemp2high = temp2high;
+	L_shlReady = 0;		
+	L_shlVar1Out = 0;
+	L_shlNumShiftOut = 0; 
+	L_shlReady = 0;	
+	L_shrOutVar1 = 0;
+	L_shrOutNumShift = 1;	
+
 	
 	case(state)
 		INIT:

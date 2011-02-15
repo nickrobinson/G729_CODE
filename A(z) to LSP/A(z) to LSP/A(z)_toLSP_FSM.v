@@ -119,7 +119,8 @@ wire signed [31:0] L_multIn;
 wire signed [31:0] div_sL_subOutA,div_sL_subOutB;
 
 //Working regs
-reg pChebpsSel;
+reg pChebpsSel,nextpChebpsSel;
+reg chebLD,chebReset;
 reg coeffSel,nextcoeffSel,coeffSelld;
 reg lowMidsel;
 reg overflowReg,overflowReset,overflowld;
@@ -354,6 +355,15 @@ begin
 		LEVINSON_DURBIN_A <=  nextLev;
 end
 
+always @(posedge clk)
+begin
+	if(reset)
+		pChebpsSel <= 0;
+	else if(chebReset)
+		pChebpsSel <= 0;
+	else if(chebLD)
+		pChebpsSel <=  nextpChebpsSel;
+end
 //state parameters
 parameter INIT = 6'd0;
 parameter MATH_INIT = 6'd1;
@@ -395,7 +405,7 @@ parameter MEM_WAIT5 = 6'd36;
 parameter MEM_WAIT6 = 6'd37;
 parameter MEM_WAIT7 = 6'd38;
 parameter MEM_WAIT8 = 6'd39;
-parameter CHEB3_5 = 6'd30;
+parameter CHEB3_5 = 6'd40;
 parameter CHEBPS_10 = 1'd0;
 parameter CHEBPS_11 = 1'd1;
 
@@ -643,7 +653,6 @@ begin
    L_shlVar1Out = 0;
 	L_shlNumShiftOut = 0;
 	L_shlReady = 0;
-	//norm_sOut = 0;
 	norm_sReady = 0;
 	div_sReady = 0;
 	nextSign = sign;
@@ -656,7 +665,36 @@ begin
 	done = 0;
 	levLD = 0;
 	levReset = 0;
+	shrOutVar1 = 0;
+	shrOutVar1 = 0;
+	nexttempX = tempX;
+	lspWriteRequested = 0;
+	lspOut = 0;
+	lspReadRequested = 0;
+	div_sOutA = 0;
+	div_sOutB = 0;
+	L_subOutA = 0;
+	L_subOutB = 0;
+	L_addOutA = 0;
+	L_addOutB = 0;
+	subOutA = 0;
+	subOutB = 0;	
+	L_shrOutVar1 = 0;
+	L_shrOutNumShift = 0;
+	norm_sOut = 0;	
+	fOneRequested = 0;
+	fOneOut = 0;
+	fTwoRequested = 0;
+	fTwoOut = 0;	
+	nextcoeffSel = coeffSel;
+	nexttempY = tempY;
+	nextpChebpsSel = pChebpsSel;
+	chebLD = 0;
+	chebReset = 0;
+	/*		
+	pChebpsSel = 0; //DON'T MESS WITH THIS ONE!!!!!!!!!!!!!!!!	
 	
+	*/
 	case(state)
 		INIT: 
 		begin
@@ -664,6 +702,7 @@ begin
 				nextstate = INIT;
 			else if(start == 1)
 			begin
+				chebReset = 1;
 				levReset = 1;
 				countReset = 1;
 				jCountReset = 1;
@@ -687,7 +726,8 @@ begin
 		
 		MATH_INIT:
 		begin
-			pChebpsSel = CHEBPS_11;
+			nextpChebpsSel = CHEBPS_11;
+			chebLD = 1;
 			fOneRequested = 0;
 			fOneOut = 16'd2048;
 			fOneld = 1;
@@ -893,7 +933,8 @@ begin
 		begin
 			if(overflowReg)
 			begin
-				pChebpsSel = CHEBPS_10;
+				nextpChebpsSel = CHEBPS_10;
+				chebLD = 1;
 				fOneRequested = 0;
 				fTwoRequested = 0;
 				fOneOut = 16'd1024;

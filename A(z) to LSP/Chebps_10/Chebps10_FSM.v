@@ -73,7 +73,7 @@ wire [31:0] mpyOut;
 //temp reg
 reg countld,countReset;
 reg [2:0] mux1sel;
-reg [4:0] state,nextstate;
+reg [3:0] state,nextstate;
 reg [15:0] temp0high,temp0low,temp1high,temp1low,temp2high,temp2low;
 reg [15:0] nexttemp0high,nexttemp0low,nexttemp1high,nexttemp1low,nexttemp2high,nexttemp2low;
 reg temp0highld,temp0lowld,temp1highld,temp1lowld,temp2highld,temp2lowld;
@@ -255,24 +255,30 @@ begin
 	L_shlReady = 0;
 	L_shlReset = 0;
 	done = 0;
-	/*
-	L_shlReady = 0;
-	L_multOutA = 0;
-	L_multOutB = 0; 
-	L_macOutA = 0;
-	L_macOutB = 0;
-	L_macOutC = 0;
+	cheb = 0;
+	addOutA = 0;
+	addOutB = 0;
+	nextcount = count;
 	L_msuOutA = 0;
 	L_msuOutB = 0;
 	L_msuOutC = 0;
+	L_shlReady = 0;
 	L_shlVar1Out = 0;
 	L_shlNumShiftOut = 0; 
 	L_shlReady = 0;
-	done = 0;
-	cheb = 0;
 	multOutA = 0;
 	multOutB = 0;
-	*/
+	nexttemp1low = temp1low;
+	L_shrOutVar1 = 0;
+	L_shrOutNumShift = 0;
+	nexttemp1high = temp1high;
+	L_multOutA = 0;
+	L_multOutB = 0; 
+	nexttemp2low = temp2low;
+	nexttemp2high = temp2high;
+	L_macOutA = 0;
+	L_macOutB = 0;
+	L_macOutC = 0;	
 	
 	case(state)
 		INIT:
@@ -310,7 +316,7 @@ begin
 			nextTZero = L_macIn;
 			nexttemp1high = L_macIn[31:16];
 			temp1highld = 1;
-			L_shrOutVar1 = {0,L_macIn[15:0]};
+			L_shrOutVar1 = {16'd0,L_macIn[15:0]};
 			L_shrOutNumShift = 16'd1;
 			nexttemp1low = L_shrIn;
 			temp1lowld = 1;
@@ -370,7 +376,7 @@ begin
 			tZerold = 1;
 			nexttemp0high = L_macIn[31:16];
 			temp0highld = 1;
-			L_shrOutVar1 = {0,L_macIn[15:0]};
+			L_shrOutVar1 = {16'd0,L_macIn[15:0]};
 			L_shrOutNumShift = 16'd1;			
 			nexttemp0low = L_shrIn;
 			temp0lowld = 1;

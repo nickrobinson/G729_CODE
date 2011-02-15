@@ -182,7 +182,7 @@ Scratch_Memory_Controller testMem(
    mult Az_mult(
 					 .a(multOutA),
 					 .b(multOutB),
-					 .multRsel(),
+					 .multRsel(1'd0),
 					 .overflow(),
 					 .product(multIn)
 					 );
