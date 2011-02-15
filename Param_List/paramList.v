@@ -1,7 +1,7 @@
 parameter AUTOCORR_Y		= 11'd0;				//Autocorr Y uses 256 blocks
 parameter AUTOCORR_R		= 11'd256;				//Autocorr R uses 16 blocks
 parameter LAG_WINDOW_R_PRIME 	= 11'd272;			//Lag window rPrime uses 16 blocks
-parameter XXXXX 	= 11'd288;						//OPEN 16 blocks
+parameter LSPGETQ_BUF 	= 11'd288;						//Lsp_get_quant's buf uses 16 blocks
 parameter LEVINSON_DURBIN_ANEXT	= 11'd304;			//Levinson Durbin A next uses 16 blocks
 parameter LEVINSON_DURBIN_AOLD	= 11'd320;			//Levinson Durbin A old uses 16 blocks
 parameter LEVINSON_DURBIN_ATEMP	= 11'd336;			//Levinson Durbin A temp uses 16 blocks
