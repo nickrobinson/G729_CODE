@@ -55,7 +55,8 @@ module syn_filt_pipe(clk, reset, start, memIn, xAddr, aAddr, yAddr, fMemAddr, up
 	wire memWriteEn;
 	wire [10:0] memWriteAddr;
 	
-	wire unusedOverflow;
+	wire unusedOverflow1;
+	wire unusedOverflow2;
 	
 	//Mux0 regs	
 	input lagMuxSel;
@@ -73,7 +74,7 @@ module syn_filt_pipe(clk, reset, start, memIn, xAddr, aAddr, yAddr, fMemAddr, up
 	input lagMux3Sel;
 	reg lagMux3Out;
 	input testWriteEnable;
-	integer i, j;
+	//integer i, j;
 
 	// Instantiate the Unit Under Test (UUT)
 	syn_filt fsm(
@@ -132,7 +133,7 @@ module syn_filt_pipe(clk, reset, start, memIn, xAddr, aAddr, yAddr, fMemAddr, up
 					 .clk(clk),
 					 .reset(reset),
 					 .ready(L_shlReady),
-					 .overflow(unusedOverflow),
+					 .overflow(unusedOverflow1),
 					 .var1(L_shlOutVar1),
 					 .numShift(L_shlNumShiftOut),
 					 .done(L_shlDone),
@@ -143,7 +144,7 @@ module syn_filt_pipe(clk, reset, start, memIn, xAddr, aAddr, yAddr, fMemAddr, up
 						 .a(L_msuOutA),
 						 .b(L_msuOutB),
 						 .c(L_msuOutC),
-						 .overflow(unusedOverflow),
+						 .overflow(unusedOverflow2),
 						 .out(L_msuIn)
 						 );		
 					 
