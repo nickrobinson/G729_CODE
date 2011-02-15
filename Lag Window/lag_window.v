@@ -59,7 +59,7 @@ reg [15:0] lagLow;
 
 reg countLd,countReset;
 reg [3:0] count,nextcount;
-reg [4:0] state,nextstate;
+reg [3:0] state,nextstate;
 reg productLd,productReset;
 reg [31:0] product,nextproduct;
 reg [31:0] temp,nexttemp;

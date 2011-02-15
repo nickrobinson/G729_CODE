@@ -77,6 +77,7 @@ module Lag_Window_Pipe(clk,L_multOutA,L_multOutB,multOutA,multOutB,L_macOutA,L_m
 	 mult lag_mult(
 						.a(multOutA), 
 						.b(multOutB),
+						.multRsel(1'd0),
 						.overflow(),
 						.product(multIn)
 						);
