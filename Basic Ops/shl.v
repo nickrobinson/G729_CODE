@@ -28,16 +28,16 @@ input [15:0] var1, var2;
 output reg [15:0] result;
 output reg [15:0] overflow;
 
-wire [15:0] negvar2 = ~(var2) + 16'd1;
-wire [15:0] shrresult;
-
-shr i_shr(.var1(var1), .var2(negvar2), .result(shrresult)); 
+wire [15:0] negvar2 = ~(var2) + 16'd1; 
 
 always @(*)
 begin
   overflow = 0;
   if (var2[15] == 1'b1) // (var2 < 0)
-    result = shrresult;
+  begin
+	 overflow = 1;
+    result = 16'hffff;
+  end
   else 
   begin
 		if((var2 > 16'd15) && (var1 != 0))
