@@ -88,58 +88,74 @@ module perc_var_test_v;
 		testReadAddr = 0;
 		testMemOut = 0;		
 		
-		#100;
+		#105;
 		// Wait 100 ns for global reset to finish
 		
-		#50;
+		#55;
 		reset = 1;
-		#50;
+		#55;
 		reset = 0;
-		#50;
+		#55;
 			
 		for(j=0;j<60;j=j+1)
 		begin
 			//TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 
+         @(posedge clk) #5;  
 			percVarMuxSel = 0;
 			testReadAddr = 0;
 			
 			for(i=0;i<10;i=i+1)
-			begin
-				#100;
+			begin				
+				@(posedge clk);
+				@(posedge clk);
+				@(posedge clk) #5;
 				percVarMuxSel = 1;
 				testWriteAddr = {LEVINSON_DURBIN_RC[10:5],i[4:0]};
 				testMemOut = rc[10*j+i];
 				testMemWrite = 1;	
-				#100;			
+				@(posedge clk);
+				@(posedge clk);
+				@(posedge clk) #5;			
 			end
 			
 			for(i=0;i<10;i=i+1)
 			begin
-				#100;
+				@(posedge clk);
+				@(posedge clk);
+				@(posedge clk) #5;
 				percVarMuxSel = 1;
 				testWriteAddr = {INTERPOLATION_LSF_INT[10:5],i[4:0]};
 				testMemOut = lsfInt[10*j+i];
 				testMemWrite = 1;	
-				#100;
+				@(posedge clk);
+				@(posedge clk);
+				@(posedge clk) #5;
 			end
 			
 			for(i=0;i<10;i=i+1)
 			begin
-				#100;
+				@(posedge clk);
+				@(posedge clk);
+				@(posedge clk) #5;				
 				percVarMuxSel = 1;
 				testWriteAddr = {INTERPOLATION_LSF_NEW[10:4],i[3:0]};
 				testMemOut = lsfNew[10*j+i];
 				testMemWrite = 1;	
-				#100;
+				@(posedge clk);
+				@(posedge clk);
+				@(posedge clk) #5;
 			end
 			
 			percVarMuxSel = 0;	
 	
-			#50;		
+			@(posedge clk);
+			@(posedge clk) #5;
 			start = 1;
-			#50;
+			@(posedge clk);
+			@(posedge clk) #5;
 			start = 0;
-			#50;
+			@(posedge clk);
+			@(posedge clk) #5;
 			// Add stimulus here	
 			wait(done);
 			percVarMuxSel = 1;
@@ -148,12 +164,12 @@ module perc_var_test_v;
 			begin				
 					testReadAddr = {PERC_VAR_GAMMA1[10:1],i[0]};
 					@(posedge clk);
-					@(posedge clk);
+					@(posedge clk) #5;
 					if (memIn != gamma1[j*2+i])
 						$display($time, " ERROR: gamma1[%d] = %x, expected = %x", i, memIn, gamma1[j*2+i]);
 					else if (memIn == gamma1[j*2+i])
 						$display($time, " CORRECT:  gamma1[%d] = %x", i, memIn);
-					@(posedge clk);
+					@(posedge clk) #5;
 			end	
 			
 			//gamma2 read
@@ -161,12 +177,12 @@ module perc_var_test_v;
 			begin				
 					testReadAddr = {PERC_VAR_GAMMA2[10:1],i[0]};
 					@(posedge clk);
-					@(posedge clk);
+					@(posedge clk) #5;
 					if (memIn != gamma2[j*2+i])
 						$display($time, " ERROR: gamma2[%d] = %x, expected = %x", i, memIn, gamma2[j*2+i]);
 					else if (memIn == gamma2[j*2+i])
 						$display($time, " CORRECT:  gamma2[%d] = %x", i, memIn);
-					@(posedge clk);
+					@(posedge clk) #5;
 			end
 			
 		end//j for loop
