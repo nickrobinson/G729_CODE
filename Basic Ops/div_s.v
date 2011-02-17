@@ -20,14 +20,16 @@
 //
 //////////////////////////////////////////////////////////////////////////////////
 module div_s(clock, reset, a, b, div_err, out, start, done, subouta, suboutb, subin,
-					overflow);
+					add_outa,add_outb,add_in);
 	input clock, reset, start;
    input [15:0] a;
    input [15:0] b;
 	input [31:0] subin;
-	output reg done, div_err, overflow;
+	input [15:0] add_in;
+	output reg done, div_err;
    output reg [15:0] out;
 	output reg [31:0] subouta, suboutb;
+	output reg [15:0] add_outa, add_outb;
 	
 	parameter MIN_16 = 16'h8000;
 	parameter MAX_16 = 16'h7fff;
@@ -42,39 +44,50 @@ module div_s(clock, reset, a, b, div_err, out, start, done, subouta, suboutb, su
 	
 	reg [2:0] currentstate, nextstate;
 	
-	reg [3:0] iteration;
-	reg [3:0] next_iteration;
+	reg [3:0] iterator;
+	reg [3:0] next_iterator;
 	
-	reg [15:0] next_out, next_temp_L_num;
-	wire [31:0] L_denom, L_num, L_out;
-	reg [31:0] temp_L_num, temp_L_out;
+	reg [15:0] next_out;
 	
-	assign L_num = {16'd0,a};
-	assign L_denom = {16'd0,b};	
-	assign L_out = {16'd0,out};
+	reg [31:0] L_denom, L_num, L_out;
+	reg [31:0] next_L_denom, next_L_num, next_L_out;
+	
+	always@(posedge clock) begin
+		if(reset)
+			currentstate = init;
+		else
+			currentstate = nextstate;
+	end
 	
 	//temp_L_num_flop
 	always@(posedge clock) begin
 		if(reset)
-			temp_L_num = L_num;
+			L_num = 0;
 		else
-			temp_L_num = next_temp_L_num;
+			L_num = next_L_num;
+	end
+	
+	//temp_L_num_flop
+	always@(posedge clock) begin
+		if(reset)
+			L_denom = 0;
+		else
+			L_denom = next_L_denom;
+	end
+	
+	always@(posedge clock) begin
+		if(reset)
+			out = 0;
+		else
+			out = next_out;
 	end
 	
 	//iteration flop
 	always@(posedge clock) begin
 		if(reset)
-			iteration = 0;
+			iterator = 0;
 		else
-			iteration = next_iteration;
-	end
-	
-	//out flop
-	always@(posedge clock) begin
-		if(reset)
-			out = 'd0;
-		else
-			out = next_out;
+			iterator = next_iterator;
 	end
 	
 	always@(posedge clock) begin
@@ -84,15 +97,25 @@ module div_s(clock, reset, a, b, div_err, out, start, done, subouta, suboutb, su
 			currentstate = nextstate;
 	end
 	
+	
+	
 	always@(*) begin
-		next_temp_L_num = temp_L_num;
+		next_L_num = L_num;
+		next_L_denom = L_denom;
 		next_out = out;
-		next_iteration = iteration;
+		next_iterator = iterator;
 		nextstate = currentstate;
 		done = 0;
 		div_err = 0;
-		overflow = 0;
+		
+		subouta = 0;
+		suboutb = 0;
+		
+		add_outa = 0;
+		add_outb = 0;
+		
 		case(currentstate)
+		
 		
 			init: begin
 				next_out = 0;
@@ -105,71 +128,71 @@ module div_s(clock, reset, a, b, div_err, out, start, done, subouta, suboutb, su
 			check_state: begin
 				if((a>b) || (a[15]==1) || (b[15]==1) || (b==0))
 					nextstate = err_state;
-				else if(a==0)
+				else if(a==0) begin
+					next_out = 'd0;
 					nextstate = zero_state;
-				else if(a==b)
+					end
+				else if(a==b) begin
+					next_out = MAX_16;
 					nextstate = max_state;
+				end
 				else begin
-					next_temp_L_num = L_num;
+					next_L_num = {16'd0,a};
+					next_L_denom = {16'd0,b};
 					nextstate = div_state1;
 				end
 			end
-			
+
 			err_state: begin
 				div_err = 1;
-				done = 1;
 			end
 			
 			zero_state: begin
-				next_out = 'd0;
 				done = 'd1;
 				nextstate = init;
 			end
 			
 			max_state: begin
-				next_out = MAX_16;
 				done = 'd1;
 				nextstate = init;
 			end
-			
+
 			div_state1: begin
-				if(iteration >= 'd15) begin
-					next_iteration = 0;
+				if(iterator >= 'd15) begin
+					next_iterator = 0;
 					done = 1;
 					nextstate = init;
 				end
 				else begin
 					next_out = out << 1;
-					next_temp_L_num = temp_L_num << 1;
-					next_iteration = iteration + 'd1;
+					next_L_num = L_num << 1;
 					nextstate = div_state2;
 				end
 			end
 			
 			div_state2: begin
-				if(temp_L_num < L_denom)
+				if(L_num < L_denom) begin
+					add_outa = iterator;
+					add_outb = 'd1;
+					next_iterator = add_in;
 					nextstate = div_state1;
+				end
 				else begin
-					subouta = temp_L_num;
+					subouta = L_num;
 					suboutb = L_denom;
-					temp_L_out = L_out + 1;
+					next_L_num = subin;
+					add_outa = out;
+					add_outb = 'd1;
+					next_out = add_in;
 					nextstate = div_state3;
 				end
 			end
 			
 			div_state3: begin
-				next_temp_L_num = subin;
-				if(temp_L_out > 32'h0000_7fff ) begin
-					overflow = 1;
-					next_out = MAX_16;
-				end
-				else if((temp_L_out[31] == 1) && (temp_L_out > 32'hffff_8000)) begin
-					overflow = 1;
-					next_out = MIN_16;
-				end
-				else
-					next_out = temp_L_out[15:0];
-					nextstate = div_state1;
+				add_outa = iterator;
+				add_outb = 'd1;
+				next_iterator = add_in;
+				nextstate = div_state1;
 			end
 		endcase
 	end
