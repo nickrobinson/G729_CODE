@@ -43,7 +43,7 @@ module Mpy_32(clock, reset, start, done, var1, var2, out, L_mult_outa, L_mult_ou
 	parameter state3 = 4'd3;
 	parameter state4 = 4'd4;
 	
-	reg [4:0] currentstate, nextstate;
+	reg [3:0] currentstate, nextstate;
 	reg [31:0] product,nextproduct;	
 	always@(posedge clock) begin
 		if(reset)
@@ -73,6 +73,8 @@ module Mpy_32(clock, reset, start, done, var1, var2, out, L_mult_outa, L_mult_ou
 		L_mac_outa = 0;
 		L_mac_outb = 0;
 		L_mac_outc = 0;
+		
+		out = 0;
 		
 		case(currentstate)
 		
