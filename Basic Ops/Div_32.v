@@ -21,25 +21,27 @@
 module Div_32(clock, reset, start, done, num, denom, out, subouta, suboutb, subin,
 					L_mult_outa, L_mult_outb, L_mult_in, L_mult_overflow, mult_outa, mult_outb,
 					mult_in, mult_overflow, L_mac_outa, L_mac_outb, L_mac_outc, L_mac_in, 
-					L_mac_overflow);
+					L_mac_overflow,L_shl_outa,L_shl_outb,L_shl_in,L_shl_start,L_shl_done,add_outa,
+					add_outb,add_in);
 					
-   input clock, reset, start, L_mult_overflow, mult_overflow, L_mac_overflow;
-	input [15:0] mult_in;
-   input [31:0] num, denom, subin, L_mult_in, L_mac_in;
-	output reg done;
-	output reg [15:0] L_mult_outa, L_mult_outb, mult_outa, mult_outb, L_mac_outa, L_mac_outb;
-   output reg [31:0] subouta, suboutb, out, L_mac_outc;
+   input clock, reset, start, L_mult_overflow, mult_overflow, L_mac_overflow,L_shl_done;
+	input [15:0] mult_in,add_in;
+   input [31:0] num, denom, subin, L_mult_in, L_mac_in,L_shl_in;
+	output reg done,L_shl_start;
+	output reg [15:0] L_mult_outa, L_mult_outb, mult_outa, mult_outb, L_mac_outa, L_mac_outb,L_shl_outb,add_outa,add_outb;
+   output reg [31:0] subouta, suboutb, out, L_mac_outc,L_shl_outa;
 	
-	reg [15:0] div_s_ina, div_s_inb;
+	reg [15:0] div_s_ina, div_s_inb, div_s_add_in;
 	reg [31:0] div_s_subin;
 	reg div_s_start;
-	wire [15:0] div_s_out;
+	wire [15:0] div_s_out,div_s_add_outa,div_s_add_outb;
 	wire [31:0] div_s_subouta, div_s_suboutb;
-	wire div_s_err, div_s_done, div_s_overflow;
+	wire div_s_err, div_s_done;
 	
 	div_s i_div_s(.clock(clock),.reset(reset),.a(div_s_ina),.b(div_s_inb),.div_err(div_s_err),
 							.out(div_s_out),.start(div_s_start),.done(div_s_done),.subouta(div_s_subouta),
-							.suboutb(div_s_suboutb),.subin(subin),.overflow(div_s_overflow));
+							.suboutb(div_s_suboutb),.subin(subin),.add_outa(div_s_add_outa),.add_outb(div_s_add_outb),
+							.add_in(div_s_add_in));
 							
 	reg mpy_32_16_L_mult_overflow, mpy_32_16_L_mac_overflow, mpy_32_16_mult_overflow;
 	reg [31:0] mpy_32_16_ina;
@@ -56,7 +58,7 @@ module Div_32(clock, reset, start, done, num, denom, out, subouta, suboutb, subi
 									.L_mult_in(mpy_32_16_L_mult_in),.L_mac_outa(mpy_32_16_L_mac_outa),.L_mac_outb(mpy_32_16_L_mac_outb),
 									.L_mac_outc(mpy_32_16_L_mac_outc),.L_mac_overflow(mpy_32_16_L_mac_overflow),
 									.L_mac_in(mpy_32_16_L_mac_in),.mult_outa(mpy_32_16_mult_outa),.mult_outb(mpy_32_16_mult_outb),
-									.mult_in(mpy_32_16_mult_in),.mult_overflow(mult_32_16_mult_overflow));
+									.mult_in(mpy_32_16_mult_in),.mult_overflow(mpy_32_16_mult_overflow));
 									
 	
 	reg mpy_32_start;
@@ -73,19 +75,8 @@ module Div_32(clock, reset, start, done, num, denom, out, subouta, suboutb, subi
 							.L_mac_outb(mpy_32_L_mac_outb),.L_mac_outc(mpy_32_L_mac_outc),.L_mac_overflow(mpy_32_L_mac_overflow), 
 							.L_mac_in(mpy_32_L_mac_in),.mult_outa(mpy_32_mult_outa),.mult_outb(mpy_32_mult_outb),
 							.mult_in(mpy_32_mult_in),.mult_overflow(mpy_32_mult_overflow));
-							
-	wire L_shl_overflow;
-	reg [31:0] L_shl_ina, mpy_32_product; 
-	reg [15:0] L_shl_inb;
-	reg L_shl_start;
-	wire L_shl_done; 
-	wire [31:0] L_shl_out;
-							
-	L_shl i_L_shl(.clk(clock),.reset(reset),.ready(L_shl_start),.overflow(L_shl_overflow),.var1(L_shl_ina),.numShift(L_shl_inb),
-							.done(L_shl_done),.out(L_shl_out));
-							
 
-	reg [31:0] approx, next_approx, mpy_32_16_product, next_mpy_32_16_product, diff, next_diff, next_mpy_32_product;
+	reg [31:0] approx, next_approx, mpy_32_16_product, next_mpy_32_16_product, diff, next_diff, mpy_32_product, next_mpy_32_product;
 	reg [15:0] div_s_quotient, next_div_s_quotient;
 	
 	//MPY_32_16 flop
@@ -154,21 +145,54 @@ module Div_32(clock, reset, start, done, num, denom, out, subouta, suboutb, subi
 		next_mpy_32_16_product = mpy_32_16_product;
 		next_approx = approx;
 		nextstate = currentstate;
-		subouta = div_s_subouta;
-		suboutb = div_s_suboutb;
-		L_shl_ina = mpy_32_product;
-		L_shl_inb = 16'd2;
+		
+
+		
+		add_outa = div_s_add_outa;
+		add_outb = div_s_add_outb;
+		
+		L_shl_outa = mpy_32_product;
+		L_shl_outb = 16'd2;
+		L_shl_start = 1'd0;
+		
 		mult_outa = 32'd0;
 		mult_outb = 32'd0;
+		
 		L_mult_outa = 32'd0;
 		L_mult_outb = 32'd0;
+		
 		L_mac_outa = 32'd0;
 		L_mac_outb = 32'd0;
 		L_mac_outc = 16'd0;
-		out = 16'd0;
+		
+		out = 32'd0;
+		
 		mpy_32_start = 1'd0;
+		mpy_32_ina = 'd0;
+		mpy_32_inb = 'd0;
+		mpy_32_L_mult_in = L_mult_in;
+		mpy_32_L_mult_overflow = L_mult_overflow;
+		mpy_32_mult_in = mult_in;
+		mpy_32_mult_overflow = mult_overflow;
+		mpy_32_L_mac_in = L_mac_in;
+		mpy_32_L_mac_overflow = L_mac_overflow;
+		
 		div_s_start = 1'd0;
-		L_shl_start = 1'd0;
+		div_s_ina = 'd0;
+		div_s_inb = 'd0;
+		div_s_add_in = add_in;
+		subouta = div_s_subouta;
+		suboutb = div_s_suboutb;
+		
+		mpy_32_16_ina = 'd0;
+		mpy_32_16_inb = 'd0;
+		mpy_32_16_L_mult_in = L_mult_in;
+		mpy_32_16_L_mult_overflow = L_mult_overflow;
+		mpy_32_16_mult_in = mult_in;
+		mpy_32_16_mult_overflow = mult_overflow;
+		mpy_32_16_L_mac_in = L_mac_in;
+		mpy_32_16_L_mac_overflow = L_mac_overflow;
+		
 		case(currentstate)
 		
 		init: begin
@@ -209,8 +233,11 @@ module Div_32(clock, reset, start, done, num, denom, out, subouta, suboutb, subi
 				next_mpy_32_16_product = mpy_32_16_out;
 				nextstate = state3;
 			end
-			else
+			else begin
+				div_s_ina = 16'h3fff;
+				div_s_inb = denom[31:16];
 				nextstate = state2;
+			end
 		end
 		
 		state3: begin
@@ -253,6 +280,8 @@ module Div_32(clock, reset, start, done, num, denom, out, subouta, suboutb, subi
 				nextstate = state7;
 			end
 			else begin 
+				mpy_32_ina = {num[31:16],1'd0,num[15:1]};
+				mpy_32_inb = {mpy_32_16_product[31:16],1'd0,mpy_32_16_product[15:1]};
 				L_mult_outa = mpy_32_L_mult_outa;
 				L_mult_outb = mpy_32_L_mult_outb;
 				mpy_32_L_mult_in = L_mult_in;
@@ -278,7 +307,7 @@ module Div_32(clock, reset, start, done, num, denom, out, subouta, suboutb, subi
 		state8: begin
 			if(L_shl_done == 1) begin
 				done = 1;
-				out = L_shl_out;
+				out = L_shl_in;
 				nextstate = init;
 			end
 			else
