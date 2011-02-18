@@ -65,12 +65,13 @@ module Levinson_Durbin_FSM(clock,reset,start,done,abs_in,abs_out,negate_out,nega
 							.L_mac_in(mpy_32_L_mac_in),.mult_outa(mpy_32_mult_outa),.mult_outb(mpy_32_mult_outb),
 							.mult_in(mpy_32_mult_in),.mult_overflow(mpy_32_mult_overflow));
 	
-	reg div_32_start;
-	reg [15:0] div_32_mult_in;
-	reg [31:0] div_32_ina, div_32_inb,div_32_subin,div_32_L_mult_in,div_32_L_mac_in;
-	wire div_32_done,div_32_L_mult_overflow,div_32_mult_overflow,div_32_L_mac_overflow;
-	wire [15:0] div_32_L_mult_outa,div_32_L_mult_outb,div_32_mult_outa,div_32_mult_outb,div_32_L_mac_outa,div_32_L_mac_outb;
-	wire [31:0] div_32_out,div_32_subouta,div_32_suboutb,div_32_L_mac_outc;
+	reg div_32_start,div_32_L_shl_done;
+	reg [15:0] div_32_mult_in,div_32_add_in;
+	reg [31:0] div_32_ina, div_32_inb,div_32_subin,div_32_L_mult_in,div_32_L_mac_in,div_32_L_shl_in;
+	wire div_32_done,div_32_L_mult_overflow,div_32_mult_overflow,div_32_L_mac_overflow,div_32_L_shl_start;
+	wire [15:0] div_32_L_mult_outa,div_32_L_mult_outb,div_32_mult_outa,div_32_mult_outb,div_32_L_mac_outa,div_32_L_mac_outb,div_32_L_shl_outb;
+	wire [15:0] div_32_add_outa,div_32_add_outb;
+	wire [31:0] div_32_out,div_32_subouta,div_32_suboutb,div_32_L_mac_outc,div_32_L_shl_outa;
 	reg [31:0] r0,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10;
 	reg [31:0] nextr0,nextr1,nextr2,nextr3,nextr4,nextr5,nextr6,nextr7,nextr8,nextr9,nextr10;
 							
@@ -78,7 +79,9 @@ module Levinson_Durbin_FSM(clock,reset,start,done,abs_in,abs_out,negate_out,nega
 							.subouta(div_32_subouta),.suboutb(div_32_suboutb),.subin(div_32_subin),.L_mult_outa(div_32_L_mult_outa),
 							.L_mult_outb(div_32_L_mult_outb),.L_mult_in(div_32_L_mult_in),.L_mult_overflow(div_32_L_mult_overflow),.mult_outa(div_32_mult_outa),
 							.mult_outb(div_32_mult_outb),.mult_in(div_32_mult_in),.mult_overflow(div_32_mult_overflow),.L_mac_outa(div_32_L_mac_outa),
-							.L_mac_outb(div_32_L_mac_outb),.L_mac_outc(div_32_L_mac_outc),.L_mac_in(div_32_L_mac_in),.L_mac_overflow(div_32_L_mac_overflow));
+							.L_mac_outb(div_32_L_mac_outb),.L_mac_outc(div_32_L_mac_outc),.L_mac_in(div_32_L_mac_in),.L_mac_overflow(div_32_L_mac_overflow),
+							.L_shl_outa(div_32_L_shl_outa),.L_shl_outb(div_32_L_shl_outb),.L_shl_in(div_32_L_shl_in),.L_shl_start(div_32_L_shl_start),
+							.L_shl_done(div_32_L_shl_done),.add_outa(div_32_add_outa),.add_outb(div_32_add_outb),.add_in(div_32_add_in));
 							
 	reg [3:0] r_mux_sel,a_mux_sel;
 	wire [31:0] r_mux_out;
@@ -199,6 +202,8 @@ module Levinson_Durbin_FSM(clock,reset,start,done,abs_in,abs_out,negate_out,nega
 	parameter stateR8 = 6'd50;
 	parameter stateR9 = 6'd51;
 	parameter stateR10 = 6'd52;
+	parameter state15_5 = 6'd53;
+	parameter L_shl_wait = 6'd54;
 	
 
 	reg [3:0] iterator1,iterator2,iterator3,iterator4,iterator5,iterator6;
@@ -364,6 +369,8 @@ module Levinson_Durbin_FSM(clock,reset,start,done,abs_in,abs_out,negate_out,nega
 		div_32_L_mult_in = 32'd0;
 		div_32_mult_in = 32'd0;
 		div_32_L_mac_in = 32'd0;
+		div_32_L_shl_in = 32'd0;
+		div_32_L_shl_done = L_shl_done;
 		
 		negate_out = 32'd0;
 		
@@ -528,6 +535,7 @@ module Levinson_Durbin_FSM(clock,reset,start,done,abs_in,abs_out,negate_out,nega
 			
 			state2: begin
 				if(div_32_done == 1) begin
+					div_32_L_shl_in = L_shl_in;
 					if(r1[31] == 0) begin
 						negate_out = div_32_out;
 						next_temp2 = negate_in;
@@ -547,6 +555,8 @@ module Levinson_Durbin_FSM(clock,reset,start,done,abs_in,abs_out,negate_out,nega
 					div_32_L_mult_in = L_mult_in;
 					div_32_mult_in = mult_in;
 					div_32_L_mac_in = L_mac_in;
+					div_32_L_shl_in = L_shl_in;
+					div_32_add_in = add_in;
 					L_sub_outa = div_32_subouta;
 					L_sub_outb = div_32_suboutb;
 					L_mult_outa = div_32_L_mult_outa;
@@ -556,6 +566,11 @@ module Levinson_Durbin_FSM(clock,reset,start,done,abs_in,abs_out,negate_out,nega
 					L_mac_outc = div_32_L_mac_outc;
 					mult_outa = div_32_mult_outa;
 					mult_outb = div_32_mult_outb;
+					add_outa = div_32_add_outa;
+					add_outb = div_32_add_outb;
+					L_shl_outa = div_32_L_shl_outa;
+					L_shl_outb = div_32_L_shl_outb;
+					L_shl_start = div_32_L_shl_start;
 					nextstate = state2;
 				end
 			end
@@ -757,20 +772,19 @@ module Levinson_Durbin_FSM(clock,reset,start,done,abs_in,abs_out,negate_out,nega
 			
 			state15: begin
 				if(div_32_done == 1) begin
+					div_32_L_shl_in = L_shl_in;
 					next_temp2 = div_32_out;
 					if(temp1[31] == 0 && temp1 > 0) begin
 						negate_out = div_32_out;
-						L_shl_outa = negate_in;
 						next_temp3 = negate_in;
 						next_k = {negate_in[31:16],1'd0,negate_in[15:1]};
 					end
 					else begin
-						L_shl_outa = div_32_out;
 						next_temp3 = div_32_out;
 					end
 					L_shl_outb = alp_exp;
 					L_shl_start = 1;
-					nextstate = state16;
+					nextstate = L_shl_wait;
 				end
 				else begin
 					div_32_ina = temp2;
@@ -779,6 +793,9 @@ module Levinson_Durbin_FSM(clock,reset,start,done,abs_in,abs_out,negate_out,nega
 					div_32_L_mult_in = L_mult_in;
 					div_32_mult_in = mult_in;
 					div_32_L_mac_in = L_mac_in;
+					div_32_L_shl_in = L_shl_in;
+					div_32_L_shl_done = L_shl_done;
+					div_32_add_in = add_in;
 					L_sub_outa = div_32_subouta;
 					L_sub_outb = div_32_suboutb;
 					L_mult_outa = div_32_L_mult_outa;
@@ -788,8 +805,24 @@ module Levinson_Durbin_FSM(clock,reset,start,done,abs_in,abs_out,negate_out,nega
 					L_mac_outc = div_32_L_mac_outc;
 					mult_outa = div_32_mult_outa;
 					mult_outb = div_32_mult_outb;
+					add_outa = div_32_add_outa;
+					add_outb = div_32_add_outb;
+					L_shl_outa = div_32_L_shl_outa;
+					L_shl_outb = div_32_L_shl_outb;
+					L_shl_start = div_32_L_shl_start;
 					nextstate = state15;
 				end
+			end
+			
+			L_shl_wait: begin
+				nextstate = state15_5;
+			end
+			
+			state15_5: begin
+				L_shl_outa = temp3;
+				L_shl_outb = alp_exp;
+				L_shl_start = 'd1;
+				nextstate = state16;
 			end
 			
 			state16: begin
