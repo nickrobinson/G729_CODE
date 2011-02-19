@@ -38,7 +38,9 @@ module div_s_tb_v;
 	wire done;
 	wire [31:0] subouta;
 	wire [31:0] suboutb;
-	wire overflow;
+	wire [15:0] add_outa;
+	wire [15:0] add_outb;
+	wire [15:0] add_in;
 
 	// Instantiate the Unit Under Test (UUT)
 	div_s uut (
@@ -53,10 +55,25 @@ module div_s_tb_v;
 		.subouta(subouta), 
 		.suboutb(suboutb), 
 		.subin(subin), 
-		.overflow(overflow)
+		.add_outa(add_outa),
+		.add_outb(add_outb),
+		.add_in(add_in)
 	);
 
 	L_sub i_L_sub_1(.a(subouta),.b(suboutb),.overflow(sub_overflow),.diff(subin));
+	
+	add i_add(.a(add_outa),.b(add_outb),.overflow(),.sum(add_in));
+	
+	reg [15:0] div_s_in [0:9999];
+	reg [15:0] div_s_out [0:9999];
+	
+	initial 
+	begin// samples out are samples from ITU G.729 test vectors
+		$readmemh("div_s_in.out", div_s_in);
+		$readmemh("div_s_out.out", div_s_out);
+	end
+	
+	integer j;
 	
 	initial begin
 		// Initialize Inputs
@@ -74,14 +91,23 @@ module div_s_tb_v;
 		#50;
 		reset = 0;
 		#100;
+		
+		for(j=0;j<60;j=j+1)
+		begin
 		a = 16'h3fff;
-		b = 16'h6d16;
+		b = div_s_in[j];
 		#50;
 		
 		start = 1;
 		#50;
 		start = 0;
 		
+		wait(done)
+		if (out != div_s_out[j])
+					$display($time, " ERROR: A[%d] = %x, expected = %x", j, out,div_s_out[j]);
+		else if (out == div_s_out[j])
+					$display($time, " CORRECT:  A[%d] = %x",j,out);
+		end
 	end
       
 		

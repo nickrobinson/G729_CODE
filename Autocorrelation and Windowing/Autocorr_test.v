@@ -94,40 +94,49 @@ module Autocorr_test;
         
 		for(j=0;j<120;j=j+1)
 		begin
-		autocorrMuxSel = 0;
+		
+		@(posedge clk) #5;
+		autocorrMuxSel = 1;		  
 		//writing the previous modules to memory					
 			for(i=0;i<240;i=i+1)
 			begin
-				#100;					
+				@(posedge clk);
+				@(posedge clk);
+				@(posedge clk) #5;				
 				xMemAddr = i[7:0];
 				xMemOut = autocorrInMem[j*240+i];
 				xMemEn = 1;	
-				#100;
+				@(posedge clk);
+				@(posedge clk);
+				@(posedge clk) #5;		
 			end
 			
+			autocorrMuxSel = 0;
 			xMemEn = 0;
 			start = 1;
-			#50;
+			@(posedge clk);
+			@(posedge clk) #5;
 			start = 0;
-			#50;
+			@(posedge clk);
+			@(posedge clk) #5;		
 			
 			wait(done);
-			#100;
+			@(posedge clk) #5;	
 			// Add stimulus here				
 			autocorrMuxSel = 1;
 			
 			for (i = 0; i<11;i=i+1)
 			begin				
+					@(posedge clk);
+					@(posedge clk) #5;
 					testReadRequested = {AUTOCORR_R[10:4],i[3:0]};
 					#50;
 					if (memIn != autocorrOutMem[11*j+i])
 						$display($time, " ERROR: r[%d] = %x, expected = %x", 11*j+i, memIn, autocorrOutMem[11*j+i]);
 					else if (memIn == autocorrOutMem[11*j+i])
 						$display($time, " CORRECT:  r[%d] = %x", 11*j+i, memIn);
-					@(posedge clk);
-	
-				end
-				#100;
+					@(posedge clk) #5;	
+				end				
 		end// for loop j		
 	end//end initial
  

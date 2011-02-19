@@ -117,6 +117,7 @@ assign leftShiftDone = L_shlDone;
 wire signed [31:0] L_multIn;
 
 wire signed [31:0] div_sL_subOutA,div_sL_subOutB;
+wire [15:0] div_sAddOutA,div_sAddOutB;
 
 //Working regs
 reg pChebpsSel,nextpChebpsSel;
@@ -576,9 +577,10 @@ div_s divS(
 				.subouta(div_sL_subOutA),
 				.suboutb(div_sL_subOutB),
 				.subin(L_subIn),
-				.overflow()
+				.add_outa(div_sAddOutA),
+				.add_outb(div_sAddOutB),
+				.add_in(addIn)
 			);				
-							
 
 //overflow always block
 always @(*)
@@ -1530,6 +1532,8 @@ begin
 		div_sReady = 1;
 		L_subOutA = div_sL_subOutA;
 		L_subOutB = div_sL_subOutB;
+		addOutA = div_sAddOutA;
+		addOutB = div_sAddOutB;		
 		if(div_sDone == 0)		
 			nextstate = INTERPOLATION3_5;
 		else if(div_sDone == 1)

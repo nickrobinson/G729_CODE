@@ -74,56 +74,72 @@ module Az_LSP_Test_v;
 	   testLspWrite = 0;
 		lspMuxSel = 0;
 		testLspOut = 0;
-
-		#100;
+		
+		@(posedge clk);
+		@(posedge clk);
+		@(posedge clk) #5;
 		// Wait 100 ns for global reset to finish
 		
-		#50;
+		@(posedge clk);
+		@(posedge clk) #5;
 		reset = 1;
-		#50;
+		@(posedge clk);
+		@(posedge clk) #5;
 		reset = 0;
-		#50;
+		@(posedge clk);
+		@(posedge clk) #5;
 		
 		for(j=0;j<120;j=j+1)
 		begin
 		
+		@(posedge clk);
+		@(posedge clk) #5;
 		//writing the previous modules to memory
-			lspMuxSel = 0;
-					
+			lspMuxSel = 0;					
 			for(i=0;i<11;i=i+1)
 			begin
-				#100;
+				@(posedge clk);
+				@(posedge clk);
+				@(posedge clk) #5;
 				lspMuxSel = 1;
-				#100					//Added Delay BY PARKER
+				@(posedge clk);
+				@(posedge clk);
+				@(posedge clk) #5;					//Added Delay BY PARKER
 				temp = A_T + 11'd11;
 				testWriteRequested = {temp[10:4],i[3:0]};
 				testLspOut = aSubI_in[j*11+i];
 				testLspWrite = 1;	
-				#100;
+				@(posedge clk);
+				@(posedge clk);
+				@(posedge clk) #5;
 			end
 			
 			lspMuxSel = 0;
 			 
 			start = 1;
-			#50;
+			@(posedge clk);
+			@(posedge clk) #5;
 			start = 0;
-			#50;
+			@(posedge clk);
+			@(posedge clk) #5;
 			// Add stimulus here		
 		
 			wait(done);
-			#100;
+			@(posedge clk);
+			@(posedge clk);
+			@(posedge clk) #5;
 			lspMuxSel = 1;
 			for (i = 0; i<10;i=i+1)
 			begin				
 					testReadRequested = {LSP_NEW[10:4],i[3:0]};
-					#50;
+					@(posedge clk);
+					@(posedge clk) #5;
 					if (lspIn != lspOutMem[10*j+i])
 						$display($time, " ERROR: lsp[%d] = %x, expected = %x", 10*j+i, lspIn, lspOutMem[10*j+i]);
 					else if (lspIn == lspOutMem[10*j+i])
 						$display($time, " CORRECT:  lsp[%d] = %x", 10*j+i, lspIn);
-					@(posedge clk);
-	
-				end
+					@(posedge clk) #5;	
+			end
 		end// for loop j
 
 	end//initial

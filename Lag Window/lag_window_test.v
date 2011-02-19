@@ -71,48 +71,57 @@ module lag_window_test_v;
 		clk = 0;
 		reset = 0;
 		start = 0;		
-		lagMuxSel = 0;
+		lagMuxSel = 1;
 		
-		#50 ;		
+		@(posedge clk) #5; 		
 		reset = 1;		
-		#50;		
+		@(posedge clk) #5; 		
 		reset = 0;
 		// Wait 100 ns for global reset to finish
-		#100;
+		
+		@(posedge clk); 
+		@(posedge clk) #5; 		
+		
 		for(j=0;j<100;j=j+1)
 		begin	
+		
 			//Test # 1
-			lagMuxSel = 1;		
+			@(posedge clk); 
+			@(posedge clk) #5; 					
 			for(i=0;i<11;i=i+1)
 			begin			
-				#40;
+				@(posedge clk); 
+				@(posedge clk) #5; 			
 				testWriteRequested = {AUTOCORR_R[10:4],i[3:0]};
 				testWriteOut = rMem[j*11+i];
 				testWriteEnable = 1;
-				#40;
+				@(posedge clk); 
+				@(posedge clk) #5;			
 			end
 			
 			lagMuxSel = 0;		
 			
 			// Add stimulus here
 			start = 1;
-			#50
+			@(posedge clk); 
+			@(posedge clk) #5;		
 			start = 0;
-			#50;
+			@(posedge clk); 
+			@(posedge clk) #5;			
 			
 			wait(done);
 			lagMuxSel = 1;
 			for(i = 0; i<11;i=i+1)
 			begin			
 				testReadRequested = {LAG_WINDOW_R_PRIME[10:4],i[3:0]};
-				#35;
+				@(posedge clk); 
+				@(posedge clk) #5;			
 				if (rPrimeIn != rPrimeMem[j*11+i])
 						$display($time, " ERROR: r'[%d] = %x, expected = %x", j*11+i, rPrimeIn, rPrimeMem[j*11+i]);
-					else
-						$display($time, " CORRECT:  r'[%d] = %x", j*11+i, rPrimeIn);
+				else if (rPrimeIn == rPrimeMem[j*11+i])
+					$display($time, " CORRECT:  r'[%d] = %x", j*11+i, rPrimeIn);
+				@(posedge clk) #5;	
 			end
-			lagMuxSel = 0;
-			#100;
 		end//	for joop j
 	
 	end//always
