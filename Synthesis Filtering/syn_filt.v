@@ -201,6 +201,8 @@ begin
 	tempYReset = 0;
 	tempALd = 0;
 	tempAReset = 0;
+	tempXLd = 0;
+	tempXReset = 0;
 	L_msuOutA = 0;
 	L_msuOutB = 0;
    L_msuOutC = 0;
