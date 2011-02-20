@@ -32,37 +32,12 @@ module Residu_test;
 	reg [10:0] X;
 	reg [10:0] Y;
 	reg [5:0] LG;
-	wire [31:0] FSMdataIn1;
-	wire [31:0] FSMdataIn2;
-	wire [31:0] L_multIn;
-	wire [31:0] L_macIn;
-	wire [15:0] subIn;
-	wire [31:0] L_shlIn;
-	wire L_shlDone;
-	wire L_shlReady;
-	wire [15:0] addIn;
-	wire [31:0] L_addIn;
+	
 
 	// Outputs
 	wire done;
-	wire FSMwriteEn;
-	wire [10:0] FSMreadAddr1;
-	wire [10:0] FSMreadAddr2;
-	wire [10:0] FSMwriteAddr;
-	wire [31:0] FSMdataOut;
-	wire [15:0] L_multOutA;
-	wire [15:0] L_multOutB;
-	wire [15:0] L_macOutA;
-	wire [15:0] L_macOutB;
-	wire [31:0] L_macOutC;
-	wire [15:0] subOutA;
-	wire [15:0] subOutB;
-	wire [31:0] L_shlOutA;
-	wire [15:0] L_shlOutB;
-	wire [15:0] addOutA;
-	wire [15:0] addOutB;
-	wire [31:0] L_addOutA;
-	wire [31:0] L_addOutB;
+	wire [31:0] FSMdataIn1;
+	wire [31:0] FSMdataIn2;
 	
 	//regs/wires inside TB
 	reg MuxSel;	//0 = TB, 1 = FSM
@@ -101,8 +76,7 @@ module Residu_test;
 	.TBdataOut2(TBdataOut2),
 	.TBwriteEn1(TBwriteEn1),
 	.TBwriteEn2(TBwriteEn2),
-	.TBreadAddr(TBreadAddr),
-	
+	.TBreadAddr(TBreadAddr),	
 	.done(done),
 	.FSMdataIn1(FSMdataIn1)
 );	
