@@ -20,9 +20,9 @@
 //////////////////////////////////////////////////////////////////////////////////
 module Lag_Window_Pipe(clk,L_multOutA,L_multOutB,multOutA,multOutB,L_macOutA,L_macOutB,L_macOutC,
 							  L_msuOutA,L_msuOutB,L_msuOutC,addOutA,addOutB,L_shrOutNumShift,L_shrOutVar1,
-							  rPrimeWrite,rPrimeRequested,rPrimeOut,lagMuxSel,L_multIn,multIn,L_macIn,
-							  L_msuIn,addIn,L_shrIn,rPrimeIn,testWriteEnable,testWriteOut,testWriteRequested,
-							  testReadRequested
+							  rPrimeWrite,rPrimeRequested,rPrimeReadAddr,rPrimeOut,lagMuxSel,L_multIn,multIn,
+							  L_macIn,L_msuIn,addIn,L_shrIn,rPrimeIn,testWriteEnable,testWriteOut,
+							  testWriteRequested,testReadRequested
 							  );
 	 
 	// Inputs
@@ -43,6 +43,7 @@ module Lag_Window_Pipe(clk,L_multOutA,L_multOutB,multOutA,multOutB,L_macOutA,L_m
 	input [31:0] L_shrOutVar1;
 	input rPrimeWrite;
 	input [10:0] rPrimeRequested;
+	input [10:0] rPrimeReadAddr;
 	input [31:0] rPrimeOut;
 	input lagMuxSel;
 	input testWriteEnable;
@@ -125,7 +126,7 @@ module Lag_Window_Pipe(clk,L_multOutA,L_multOutB,multOutA,multOutB,L_macOutA,L_m
 	always @(*)
 	begin
 		case	(lagMuxSel)	
-			'd0 :	lagMuxOut = rPrimeRequested;
+			'd0 :	lagMuxOut = rPrimeReadAddr;
 			'd1:	lagMuxOut = testReadRequested;
 		endcase
 	end

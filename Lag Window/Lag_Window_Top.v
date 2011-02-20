@@ -42,6 +42,7 @@ module Lag_Window_Top(clk,reset,start,lagMuxSel,testWriteEnable,testWriteOut,tes
 	wire [31:0] L_shrIn;
 	wire rPrimeWrite;
 	wire [10:0] rPrimeRequested;
+	wire [10:0] rPrimeReadAddr;
 	wire [15:0] L_multOutA;
 	wire [15:0] L_multOutB;
 	wire [15:0] multOutA;
@@ -73,6 +74,7 @@ module Lag_Window_Top(clk,reset,start,lagMuxSel,testWriteEnable,testWriteOut,tes
 		.L_shrIn(L_shrIn),
 		.rPrimeWrite(rPrimeWrite), 
 		.rPrimeRequested(rPrimeRequested), 
+		.rPrimeReadAddr(rPrimeReadAddr),
 		.L_multOutA(L_multOutA), 
 		.L_multOutB(L_multOutB), 
 		.multOutA(multOutA), 
@@ -108,6 +110,7 @@ module Lag_Window_Top(clk,reset,start,lagMuxSel,testWriteEnable,testWriteOut,tes
 						 .L_shrOutVar1(L_shrOutVar1),
 						 .rPrimeWrite(rPrimeWrite),
 						 .rPrimeRequested(rPrimeRequested),
+						 .rPrimeReadAddr(rPrimeReadAddr),
 						 .rPrimeOut(rPrimeOut),
 						 .lagMuxSel(lagMuxSel),
 						 .L_multIn(L_multIn),

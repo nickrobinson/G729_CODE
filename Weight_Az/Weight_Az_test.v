@@ -119,7 +119,7 @@ module Weight_Az_test_v;
 			for(i=0;i<11;i=i+1)
 			begin
 				#100;
-				wazWriteRequested = {A_t[10:4],i[3:0]};
+				wazWriteRequested = {A_T[10:4],i[3:0]};
 				wazOut = ac[11*j+i];
 				wazWrite = 1;	
 				#100;			

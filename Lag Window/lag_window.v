@@ -18,9 +18,9 @@
 //
 //////////////////////////////////////////////////////////////////////////////////
 module lag_window(clk,reset,start,rPrimeIn,L_multIn,multIn,L_macIn,L_msuIn,addIn,L_shrIn,rPrimeWrite,
-						rPrimeRequested,L_multOutA,L_multOutB,multOutA,multOutB,L_macOutA,L_macOutB,L_macOutC,
-						L_msuOutA,L_msuOutB,L_msuOutC,rPrimeOut,addOutA, addOutB,L_shrOutVar1,L_shrOutNumShift,
-						done);
+						rPrimeRequested,rPrimeReadAddr,L_multOutA,L_multOutB,multOutA,multOutB,L_macOutA,
+						L_macOutB,L_macOutC,L_msuOutA,L_msuOutB,L_msuOutC,rPrimeOut,addOutA, addOutB,
+						L_shrOutVar1,L_shrOutNumShift,done);
 `include "paramList.v"
 //inputs 
 input clk, reset,start;
@@ -34,7 +34,8 @@ input [31:0] L_shrIn;
 
 //outputs
 output reg rPrimeWrite;
-output reg [10:0]  rPrimeRequested;
+output reg [10:0] rPrimeReadAddr; 
+output reg [10:0] rPrimeRequested;
 output reg [15:0] L_multOutA,L_multOutB;
 output reg [15:0] multOutA,multOutB;
 output reg [15:0] L_macOutA,L_macOutB;
@@ -129,6 +130,7 @@ begin
 	countLd = 0;
 	productLd = 0;
 	done = 0;
+	rPrimeReadAddr = 0;
 	rPrimeRequested = 0;
 	rPrimeWrite = 0;
 	countReset = 0;
@@ -165,13 +167,13 @@ begin
 			else 
 			begin
 				nextstate = STATE_FIRST_R1;
-				rPrimeRequested = {AUTOCORR_R[10:4],4'd0};
+				rPrimeReadAddr = {AUTOCORR_R[10:4],4'd0};
 			end
 		end
 		
 		STATE_FIRST_R1:
 		begin
-			rPrimeRequested = {AUTOCORR_R[10:4],4'd0};
+			rPrimeReadAddr = {AUTOCORR_R[10:4],4'd0};
 			nexttemp = rPrimeIn;
 			templd = 1;
 			nextstate = STATE_FIRST_R2;		
@@ -195,7 +197,7 @@ begin
 			end
 			else if(count <= M)
 			begin
-				rPrimeRequested = {AUTOCORR_R[10:4],count};
+				rPrimeReadAddr = {AUTOCORR_R[10:4],count};
 				nextstate = STATE_L_MULT;	
 			end			
 
@@ -203,7 +205,7 @@ begin
 		
 		STATE_L_MULT:
 		begin
-			rPrimeRequested = {AUTOCORR_R[10:4],count};
+			rPrimeReadAddr = {AUTOCORR_R[10:4],count};
 			L_multOutA = rHigh;
 			L_multOutB = lagHigh;
 			nextproduct = L_multIn;
@@ -213,7 +215,7 @@ begin
 		
 		STATE_L_MAC1:
 		begin
-			rPrimeRequested = {AUTOCORR_R[10:4],count};
+			rPrimeReadAddr = {AUTOCORR_R[10:4],count};
 			multOutA = rHigh;
 			multOutB = lagLow;
 			L_macOutA = multIn;
@@ -226,7 +228,7 @@ begin
 		
 		STATE_L_MAC2:
 		begin
-			rPrimeRequested = {AUTOCORR_R[10:4],count};
+			rPrimeReadAddr = {AUTOCORR_R[10:4],count};
 			multOutA = rLow;
 			multOutB = lagHigh;
 			L_macOutA = multIn;
