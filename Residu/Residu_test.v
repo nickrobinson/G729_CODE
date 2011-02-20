@@ -36,8 +36,7 @@ module Residu_test;
 
 	// Outputs
 	wire done;
-	wire [31:0] FSMdataIn1;
-	wire [31:0] FSMdataIn2;
+	wire [31:0] FSMdataIn1;	
 	
 	//regs/wires inside TB
 	reg MuxSel;	//0 = TB, 1 = FSM
