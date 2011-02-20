@@ -29,36 +29,16 @@ module syn_filt_test;
 	// Inputs
 	reg clk;
 	reg reset;
-	reg start;
-	wire [31:0] memIn;
-	wire [31:0] L_addIn;
-	wire [31:0] L_multIn;
-	wire [31:0] L_shlIn;
-	wire [31:0] L_msuIn;
-	
+	reg start;		
 	reg [10:0] xAddr;
 	reg [10:0] aAddr;
 	reg [10:0] yAddr;
 	reg [10:0] fMemAddr;
 	reg [10:0] updateAddr;
 
-	// Outputs
-	wire memWriteEn;
-	wire [10:0] memWriteAddr;
-	wire [31:0] memOut;
+	// Outputs	
 	wire done;
-	wire [31:0] L_addOutA;
-	wire [31:0] L_addOutB;
-	wire [15:0] L_multOutA;
-	wire [15:0] L_multOutB;
-	wire [31:0] L_shlOutVar1;
-	wire [15:0] L_shlNumShiftOut;
-	wire L_shlReady;
-	wire [15:0] L_msuOutA;
-	wire [15:0] L_msuOutB;
-	wire [31:0] L_msuOutC;
-	
-	wire unusedOverflow;
+	wire [31:0] memIn;
 	
 	//Mux0 regs	
 	reg lagMuxSel;
