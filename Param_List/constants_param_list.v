@@ -1,7 +1,7 @@
 parameter LSPCB1	=	'd0;		//lsp code book1; 2048 blocks;[10,4]->row;[3:0]->column
 parameter LSPCB2	=	'd2048;		//lsp code book2; 512 blocks;[9,4]->row;[3:0]->column
 parameter TAB_ZONE	=	'd2560;		//tab_zone; 256 blocks;
-parameter OPEN		=	'd2816;		//OPEN 128 blocks OPEN 128 blocks OPEN 128 blocks
+parameter FG		=	'd2816;		//fg; 128 blocks;[6]->block;[5:4]->row;[3:0]->column
 parameter TABLE1	=	'd2944;		//table1; 128 blocks;
 parameter TAB_HUP_L	=	'd3072;		//tab_hup_l; 128 blocks;
 parameter GRID		=	'd3200;		//grid; 64 blocks;
@@ -12,7 +12,7 @@ parameter SLOPE		=	'd3456;		//slope; 64 blocks;
 parameter TABLE2	=	'd3520;		//table2; 64 blocks;
 parameter SLOPE_COS	=	'd3584;		//slope_cos; 64 blocks;
 parameter SLOPE_ACOS	=	'd3648;		//slope_acos; 64 blocks;
-parameter XXXX		=	'd3712;		//OPEN 64 Blocks
+parameter XXXXXXXXXXXXXX =	'd3712;		//OPEN 64 blocks;
 parameter FG_SUM	=	'd3776;		//fg_sum; 32 blocks;[4]->row;[3:0]->column;
 parameter FG_SUM_INV	=	'd3808;		//fg_sum_inv; 32 blocks;[4]->row;[3:0]->column;
 parameter INTER_3L	=	'd3840;		//inter_3l; 32 blocks;
