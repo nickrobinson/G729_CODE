@@ -26,7 +26,7 @@ parameter XX = 11'd512;									//OPEN 16 blocks
 parameter WEIGHT_AZ_AP_OUT = 11'd528;				//Weight_Az AP uses 16 blocks
 parameter RELSPWED_BUF = 11'd544;					//Relspwed buf uses 16 blocks
 parameter FREQ_PREV = 11'd560;						//freq_prev uses 64 blocks
-parameter XXXXXXXXX = = 11'd624;						//OPEN 64 Blocks
+parameter XXXXXXXXX = 11'd624;						//OPEN 64 Blocks
 parameter XXXXXXXX = 11'd688;							//OPEN 64 blocks
 parameter XXXXXXX = 11'd752;							//OPEN 16 Blocks
 parameter A_T = 11'd768;								//A_t uses 32 Blocks
