@@ -20,7 +20,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 module Lsp_prev_compose_pipe(clk, L_mult_a, L_mult_b, add_a, add_b, L_mac_a, L_mac_b, L_mac_c, Mux0Sel, Mux1Sel, Mux2Sel, 
 										Mux3Sel, readAddr, writeAddr, writeOut, writeEn, testReadRequested, testWriteRequested, 
-										testWriteOut, testWrite, L_mac_in, add_in, readIn, L_mult_in);
+										testWriteOut, testWrite, constantMemAddr,L_mac_in, add_in, readIn, L_mult_in,constantMemIn);
 
 
 	//Inputs
@@ -41,18 +41,27 @@ module Lsp_prev_compose_pipe(clk, L_mult_a, L_mult_b, add_a, add_b, L_mac_a, L_m
 	input [10:0] testWriteRequested;
 	input [31:0] testWriteOut;
 	input testWrite;
-
+	input [11:0] constantMemAddr;
 	//Outputs
 	output [31:0] L_mult_in;
 	output [31:0] L_mac_in;
 	output [15:0] add_in;
 	output [31:0] readIn;
+	output [31:0] constantMemIn;
 	
 		//working regs
 	reg [10:0] Mux0Out;
 	reg [10:0] Mux1Out;
 	reg [31:0] Mux2Out;
 	reg Mux3Out;
+	
+	Constant_Memory_Controller constantMem(
+														.addra(constantMemAddr),
+														.dina(32'd0),
+														.wea(1'd0),
+														.clock(clk),
+														.douta(constantMemIn)
+														);
 	
 	Scratch_Memory_Controller testMem(
 	.addra(Mux1Out),

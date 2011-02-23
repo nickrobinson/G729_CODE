@@ -33,11 +33,10 @@ module Lsp_prev_compose_top(clk, start, reset, done, Mux0Sel, Mux1Sel, Mux2Sel, 
 	input Mux2Sel; 
 	input Mux3Sel;
 	input [10:0] lspele;
-	input [10:0] fg;
-	input [10:0] fg_sum;
+	input [11:0] fg;
+	input [11:0] fg_sum;
 	input [10:0] freq_prev;
 	input [10:0] lsp;
-
 	output done;
 	output [31:0] readIn;
 
@@ -55,7 +54,8 @@ module Lsp_prev_compose_top(clk, start, reset, done, Mux0Sel, Mux1Sel, Mux2Sel, 
 	wire [15:0] L_mac_a;
 	wire [15:0] L_mac_b;
 	wire [31:0] L_mac_c;
-
+	wire [11:0] constantMemAddr;
+	wire [31:0] constantMemIn;
 Lsp_prev_compose_pipe i_pipe(
 	.clk(clk), 
 	.L_mult_a(L_mult_a), 
@@ -80,7 +80,9 @@ Lsp_prev_compose_pipe i_pipe(
 	.L_mac_in(L_mac_in), 
 	.add_in(add_in), 
 	.readIn(readIn), 
-	.L_mult_in(L_mult_in)
+	.L_mult_in(L_mult_in),
+	.constantMemIn(constantMemIn),
+	.constantMemAddr(constantMemAddr)
 	);
 
 Lsp_prev_compose i_fsm(
@@ -107,7 +109,9 @@ Lsp_prev_compose i_fsm(
 	.L_mac_a(L_mac_a), 
 	.L_mac_b(L_mac_b), 
 	.L_mac_c(L_mac_c), 
-	.L_mac_in(L_mac_in)
+	.L_mac_in(L_mac_in),
+	.constantMemIn(constantMemIn),
+	.constantMemAddr(constantMemAddr)
 	);
 
 

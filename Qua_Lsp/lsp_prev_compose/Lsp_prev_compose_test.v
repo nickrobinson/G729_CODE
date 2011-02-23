@@ -20,13 +20,14 @@
 //////////////////////////////////////////////////////////////////////////////////
 module Lsp_prev_compose_test;
 `include "paramList.v"
+`include "constants_param_list.v"
 
 	reg start;
 	reg clk;
 	reg reset;
 	reg [10:0] lspele;
-	reg [10:0] fg;
-	reg [10:0] fg_sum;
+	reg [11:0] fg;
+	reg [11:0] fg_sum;
 	reg [10:0] freq_prev;
 	reg [10:0] lsp;
 	
@@ -48,8 +49,7 @@ module Lsp_prev_compose_test;
 
 	//I/O regs
 	reg [15:0] lspelec [0:9999];
-	reg [15:0] fgc [0:9999];
-	reg [15:0] fg_sumc [0:9999];
+	reg mode_index [0:9999];
 	reg [15:0] freq_prevc [0:9999];
 	reg [15:0] lspc [0:9999];
 	
@@ -58,8 +58,7 @@ module Lsp_prev_compose_test;
 	initial 
 		begin// samples out are samples from ITU G.729 test vectors
 			$readmemh("LSP_PREV_COMP_LSP_ELE_IN.out", lspelec);
-			$readmemh("LSP_PREV_COMP_FG_IN.out", fgc);
-			$readmemh("LSP_PREV_COMP_FG_SUM_IN.out", fg_sumc);
+			$readmemh("mode_index.out", mode_index);			
 			$readmemh("LSP_PREV_COMP_FREQ_PREV_IN.out", freq_prevc);
 			$readmemh("LSP_PREV_COMP_LSP_OUT.out", lspc);
 		end
@@ -92,10 +91,8 @@ module Lsp_prev_compose_test;
 		start = 0;
 		clk = 0;
 		reset = 0;
-		lspele = 11'd288;
-		fg = 11'd384;
-		freq_prev = 11'd320;
-		fg_sum = 11'd304;
+		lspele = 11'd288;		
+		freq_prev = 11'd320;		
 		lsp = 11'd448;
 		
 		#50
@@ -106,6 +103,8 @@ module Lsp_prev_compose_test;
 		
 		for(j=0;j<60;j=j+1)
 		begin
+			fg_sum = FG_SUM + (mode_index[j]*16);
+			fg = FG + (mode_index[j]*64);
 			//TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 
 			Mux0Sel = 1;
 			Mux1Sel = 0;
@@ -121,23 +120,10 @@ module Lsp_prev_compose_test;
 				testWrite = 1;	
 				#100;			
 
-			
-				#100;
-				testWriteRequested = {fg_sum[10:4], i[3:0]};
-				testWriteOut = fg_sumc[10*j+i];
-				testWrite = 1;	
-				#100;
 			end
 			
 			for(i=0;i<40;i=i+1)
 			begin
-				#100;
-				testWriteRequested = {fg[10:6],i[5:0]};
-				testWriteOut = fgc[40*j+i];
-				testWrite = 1;	
-				#100;			
-
-			
 				#100;
 				testWriteRequested = {freq_prev[10:6], i[5:0]};
 				testWriteOut = freq_prevc[40*j+i];
@@ -167,7 +153,7 @@ module Lsp_prev_compose_test;
 					@(posedge clk);
 					@(posedge clk);
 					if (readIn != lspc[j*10+i])
-						$display($time, " ERROR: lspc[%d] = %x, expected = %x", j*11+i, readIn, lspc[j*10+i]);
+						$display($time, " ERROR: lspc[%d] = %x, expected = %x", j*10+i, readIn, lspc[j*10+i]);
 					else if (readIn == lspc[j*10+i])
 						$display($time, " CORRECT:  lspc[%d] = %x", j*10+i, readIn);
 					@(posedge clk);

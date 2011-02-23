@@ -19,23 +19,26 @@
 //
 //////////////////////////////////////////////////////////////////////////////////
 module Lsp_prev_compose(start, clk, done, reset, lspele, fg, fg_sum, freq_prev, lsp, readAddr, readIn, writeAddr, writeOut, writeEn,
-						L_mult_in, add_in, L_mult_a, L_mult_b, add_a, add_b, L_mac_a, L_mac_b, L_mac_c, L_mac_in);
+						L_mult_in, add_in, L_mult_a, L_mult_b, add_a, add_b, L_mac_a, L_mac_b, L_mac_c, L_mac_in,
+						constantMemIn,constantMemAddr);
 
 	input start;
    input clk;
    input reset;
 	input [10:0] lspele;
-	input [10:0] fg;
-	input [10:0] fg_sum;
+	input [11:0] fg;
+	input [11:0] fg_sum;
 	input [10:0] freq_prev;
 	input [10:0] lsp;
 	input [31:0] readIn;
-
+	input [31:0] constantMemIn;
+	
 	output reg done;
 	output reg [10:0] writeAddr;
 	output reg [31:0] writeOut;
 	output reg writeEn;
 	output reg [10:0] readAddr;
+	output reg [11:0] constantMemAddr;
 	
 	input [31:0] L_mult_in, L_mac_in;
 	input [15:0] add_in;
@@ -52,8 +55,8 @@ module Lsp_prev_compose(start, clk, done, reset, lspele, fg, fg_sum, freq_prev, 
 	parameter S6 = 6;
 	
 	wire [10:0] lspele;
-	wire [10:0] fg;
-	wire [10:0] fg_sum;
+	wire [11:0] fg;
+	wire [11:0] fg_sum;
 	wire [10:0] freq_prev;
 	wire [10:0] lsp;
 	reg [15:0] temp_lspele, temp_freq_prev, next_temp_lspele, next_temp_freq_prev;
@@ -134,7 +137,7 @@ module Lsp_prev_compose(start, clk, done, reset, lspele, fg, fg_sum, freq_prev, 
 			L_mac_a = 0;
 			L_mac_b = 0;
 			L_mac_c = 0;
-			
+			constantMemAddr = 0;
 	
 			case(state)
 				INIT:
@@ -157,7 +160,7 @@ module Lsp_prev_compose(start, clk, done, reset, lspele, fg, fg_sum, freq_prev, 
 						else
 							begin
 								next_temp_lspele = readIn[15:0];
-								readAddr = {fg_sum[10:4], j[3:0]};
+								constantMemAddr = {fg_sum[11:4], j[3:0]};
 								nextstate = S2;
 							end
 					end
@@ -165,7 +168,7 @@ module Lsp_prev_compose(start, clk, done, reset, lspele, fg, fg_sum, freq_prev, 
 				S2:   //L_acc = lsp_ele[j] * fg_sum[j]
 					begin
 						L_mult_a = temp_lspele;
-						L_mult_b = readIn;
+						L_mult_b = constantMemIn;
 						next_L_acc = L_mult_in;
 						nextstate = S3;
 					end
@@ -187,7 +190,7 @@ module Lsp_prev_compose(start, clk, done, reset, lspele, fg, fg_sum, freq_prev, 
 						
 						else
 							begin
-								readAddr = {freq_prev[10:6],  j[3:0], k[1:0]};
+								readAddr = {freq_prev[10:6],j[3:0],k[1:0]};
 								nextstate = S4;					
 							end
 					end
@@ -195,7 +198,7 @@ module Lsp_prev_compose(start, clk, done, reset, lspele, fg, fg_sum, freq_prev, 
 				S4:
 					begin
 						next_temp_freq_prev = readIn[15:0];
-						readAddr = {fg[10:6], j[3:0], k[1:0]};
+						constantMemAddr = {fg[11:6],k[1:0],j[3:0]};
 						nextstate = S5;
 					end
 				
@@ -203,7 +206,7 @@ module Lsp_prev_compose(start, clk, done, reset, lspele, fg, fg_sum, freq_prev, 
 					begin
 						L_mac_c = L_acc;
 						L_mac_a = temp_freq_prev;
-						L_mac_b = readIn[15:0];
+						L_mac_b = constantMemIn[15:0];
 						next_L_acc = L_mac_in;
 						add_a = k;
 						add_b = 1'd1;
