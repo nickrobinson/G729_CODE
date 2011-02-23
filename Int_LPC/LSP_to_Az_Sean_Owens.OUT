@@ -1,0 +1,15 @@
+Latch and Mismatch Report
+Report Generated From: LSP_to_Az.syr
+==================================================
+Name of Author: Sean Owens
+Name of Module: LSP_to_Az
+==================================================
+
+
+==================================================
+==================================================
+
+Number of Modules with Latches = 0
+Number of Lines in Synthesis Report = 827
+Number of Parsed Warnings = 7
+Warnings to Lines Percentage = 0.846433%
