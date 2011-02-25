@@ -146,6 +146,9 @@ module Lsp_prev_compose(start, clk, done, reset, lspele, fg, fg_sum, freq_prev, 
 						
 						if(start)
 							nextstate = S1;
+						else if(start == 0)
+							nextstate = INIT;
+							
 					end
 			
 				S1:	//start of j loop
@@ -190,7 +193,7 @@ module Lsp_prev_compose(start, clk, done, reset, lspele, fg, fg_sum, freq_prev, 
 						
 						else
 							begin
-								readAddr = {freq_prev[10:6],j[3:0],k[1:0]};
+								readAddr = {freq_prev[10:6],k[1:0],j[3:0]};
 								nextstate = S4;					
 							end
 					end

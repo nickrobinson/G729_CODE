@@ -122,11 +122,11 @@ module Lsp_prev_compose_test;
 
 			end
 			
-			for(i=0;i<40;i=i+1)
+			for(i=0;i<64;i=i+1)
 			begin
 				#100;
 				testWriteRequested = {freq_prev[10:6], i[5:0]};
-				testWriteOut = freq_prevc[40*j+i];
+				testWriteOut = freq_prevc[64*j+i];
 				testWrite = 1;	
 				#100;
 			end
