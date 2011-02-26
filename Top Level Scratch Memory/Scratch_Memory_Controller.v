@@ -27,14 +27,15 @@ input clk;
 input [10:0] addrb;
 output [31:0] doutb;
 
-scratch_memory_V1 Az_scratch_mem(
+wire [31:0] douta;
+scratch_memory_V1 Scratch_mem(
 						.clka(clk),
 						.dina(dina),
-						.addra(addra),
+						.addra(addra),						
 						.wea(wea),
-						.clkb(clk),
+						.clkb(clk),						
 						.addrb(addrb),
-						.doutb(doutb)
+						.doutb(doutb)						
 						);
 
 endmodule

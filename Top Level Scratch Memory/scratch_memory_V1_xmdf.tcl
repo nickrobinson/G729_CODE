@@ -36,8 +36,24 @@ utilities_xmdf::xmdfSetData $instance FileSet $fcount type logical_library
 utilities_xmdf::xmdfSetData $instance FileSet $fcount logical_library unisim
 incr fcount
 
+utilities_xmdf::xmdfSetData $instance FileSet $fcount relative_path blk_mem_gen_ds512.pdf
+utilities_xmdf::xmdfSetData $instance FileSet $fcount type AnyView
+incr fcount
+
+utilities_xmdf::xmdfSetData $instance FileSet $fcount relative_path blk_mem_gen_readme.txt
+utilities_xmdf::xmdfSetData $instance FileSet $fcount type text
+incr fcount
+
+utilities_xmdf::xmdfSetData $instance FileSet $fcount relative_path scratch_memory_V1.asy
+utilities_xmdf::xmdfSetData $instance FileSet $fcount type asy
+incr fcount
+
 utilities_xmdf::xmdfSetData $instance FileSet $fcount relative_path scratch_memory_V1.ngc
 utilities_xmdf::xmdfSetData $instance FileSet $fcount type ngc
+incr fcount
+
+utilities_xmdf::xmdfSetData $instance FileSet $fcount relative_path scratch_memory_V1.sym
+utilities_xmdf::xmdfSetData $instance FileSet $fcount type symbol
 incr fcount
 
 utilities_xmdf::xmdfSetData $instance FileSet $fcount relative_path scratch_memory_V1.v
@@ -48,12 +64,16 @@ utilities_xmdf::xmdfSetData $instance FileSet $fcount relative_path scratch_memo
 utilities_xmdf::xmdfSetData $instance FileSet $fcount type verilog_template
 incr fcount
 
-utilities_xmdf::xmdfSetData $instance FileSet $fcount relative_path scratch_memory_V1.xco
-utilities_xmdf::xmdfSetData $instance FileSet $fcount type coregen_ip
+utilities_xmdf::xmdfSetData $instance FileSet $fcount relative_path scratch_memory_V1.vhd
+utilities_xmdf::xmdfSetData $instance FileSet $fcount type vhdl
 incr fcount
 
-utilities_xmdf::xmdfSetData $instance FileSet $fcount relative_path scratch_memory_V1_blk_mem_gen_v2_4_xst_1_vhdl.prj
-utilities_xmdf::xmdfSetData $instance FileSet $fcount type AnyView
+utilities_xmdf::xmdfSetData $instance FileSet $fcount relative_path scratch_memory_V1.vho
+utilities_xmdf::xmdfSetData $instance FileSet $fcount type vhdl_template
+incr fcount
+
+utilities_xmdf::xmdfSetData $instance FileSet $fcount relative_path scratch_memory_V1.xco
+utilities_xmdf::xmdfSetData $instance FileSet $fcount type coregen_ip
 incr fcount
 
 utilities_xmdf::xmdfSetData $instance FileSet $fcount relative_path scratch_memory_V1_xmdf.tcl
