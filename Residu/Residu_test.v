@@ -30,9 +30,7 @@ module Residu_test;
 	reg start;
 	reg [10:0] A;
 	reg [10:0] X;
-	reg [10:0] Y;
-	reg [5:0] LG;
-	
+	reg [10:0] Y;	
 
 	// Outputs
 	wire done;
@@ -47,10 +45,6 @@ module Residu_test;
 	reg TBwriteEn1;
 	reg TBwriteEn2;
 	reg [10:0] TBreadAddr;
-	reg [10:0] writeAddrMuxOut;
-	reg [31:0] dataInMuxOut;
-	reg writeEnMuxOut;
-	reg [10:0] readAddrMuxOut;
 	
 	//Memory Regs
 	reg [31:0] RESIDU_IN_A [0:9999];		  
@@ -100,36 +94,45 @@ module Residu_test;
 		Y = 'd16;
 		MuxSel = 0;
 		
-		#100;
+		@(posedge clk) #5;
 		reset = 1;
 		// Wait 100 ns for global reset to finish
-		#100;
+		@(posedge clk) #5;
 		reset = 0;
-		#100;
+
+		@(posedge clk);
+		@(posedge clk) #5;
 		
 		for(j=0;j<120;j=j+1)
 		begin
-			#100;
+		@(posedge clk);
+		@(posedge clk) #5;
 			// Add stimulus here
 			for(i = 0; i < 11; i = i + 1)
 			begin
-				#100;
+				@(posedge clk);
+				@(posedge clk) #5;
 				TBwriteAddr1 = {A[10:4],i[3:0]};
 				TBdataOut1 = RESIDU_IN_A[j*11+i];
 				TBwriteEn1 = 1;
 				@(posedge clk);
+				@(posedge clk) #5;
 			end
 			
 			for(i = 0; i < 50; i = i + 1)
 			begin
-				#100;
+				@(posedge clk);
+				@(posedge clk) #5;
 				temp = X - 10 + i;
 				TBwriteAddr2 = temp[10:0];
 				TBdataOut2 = RESIDU_IN_X[j*50+i];
 				TBwriteEn2 = 1;
 				@(posedge clk);
+				@(posedge clk) #5;
 			end
 			
+			@(posedge clk);
+			@(posedge clk) #5;
 			TBwriteEn1 = 0;
 			TBwriteEn2 = 0;
 			MuxSel = 1;
