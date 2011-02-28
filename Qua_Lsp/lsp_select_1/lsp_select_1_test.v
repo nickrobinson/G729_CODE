@@ -104,12 +104,15 @@ module lsp_select_1_test;
 		lagMuxSel = 0;
 		lspcb1Addr = LSPCB1 + (80*16);
 		
-		#50 ;		
+		@(posedge clk); 
+		@(posedge clk) #5;
 		reset = 1;		
-		#50;		
+		@(posedge clk); 
+		@(posedge clk) #5;	
 		reset = 0;
 		// Wait 100 ns for global reset to finish
-		#100;
+		@(posedge clk); 
+		@(posedge clk) #5;
         
 		for(j=0;j<5;j=j+1)
 		begin
@@ -119,26 +122,33 @@ module lsp_select_1_test;
 			lagMux1Sel = 1;
 			lagMux2Sel = 1;
 			lagMux3Sel = 1;
-			#100
+			@(posedge clk); 
+			@(posedge clk) #10;
 			
 			for(i=0;i<5;i=i+1)
 			begin			
-				#40;
+				@(posedge clk); 
+				@(posedge clk) #5;
 				testWriteRequested = {LSP_SELECT_1_RBUF[10:3],i[2:0]};
 				testWriteOut = rbufVector[(j*5)+i];
 				testWriteEnable = 1;
-				#40;
+				@(posedge clk); 
+				@(posedge clk) #5;
 			end
 			
 			for(i=0;i<5;i=i+1)
 			begin			
-				#40;
+				@(posedge clk); 
+				@(posedge clk) #5;
 				testWriteRequested = {LSP_SELECT_1_WEGT[10:3],i[2:0]};
 				testWriteOut = wegtVector[(j*5)+i];
 				testWriteEnable = 1;
-				#40;
+				@(posedge clk); 
+				@(posedge clk) #5;
 			end
 			
+			@(posedge clk); 
+			@(posedge clk) #5;			
 			lagMux1Sel = 0;
 			lagMux2Sel = 0;
 			lagMux3Sel = 0;
@@ -146,9 +156,11 @@ module lsp_select_1_test;
 			
 			// Add stimulus here
 			start = 1;
-			#50
+			@(posedge clk); 
+			@(posedge clk) #5;
 			start = 0;
-			#50;
+			@(posedge clk); 
+			@(posedge clk) #5;
 			
 			wait(done);
 			lagMuxSel = 1;
@@ -156,7 +168,7 @@ module lsp_select_1_test;
 			begin			
 				testReadRequested = {LSP_SELECT_1_INDEX[10:0]};
 				@(posedge clk);
-				@(posedge clk);
+				@(posedge clk) #5;
 				if (memIn[15:0] != indexVector[(j*1)+i])
 						$display($time, " ERROR: index'[%d] = %x, expected = %x", (j*1)+i, memIn, indexVector[(j*1)+i]);
 					else

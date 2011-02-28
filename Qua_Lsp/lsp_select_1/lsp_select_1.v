@@ -302,7 +302,6 @@ begin
 				count1Reset = 1;
 				nextstate = STATE_INIT;
 				done = 1;
-				$display("SUCCESS");
 			end
 			else if(count1 < NC1)
 			begin
