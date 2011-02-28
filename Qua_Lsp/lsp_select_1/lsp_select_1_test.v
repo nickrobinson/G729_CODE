@@ -84,9 +84,6 @@ module lsp_select_1_test;
 	);
 					
 	reg [15:0] rbufVector[0:9999];
-	reg [15:0] lspcb1Vector[0:9999];
-	reg [15:0] bufVector[0:9999];
-	reg [15:0] lspcb2Vector[0:9999];
 	reg [15:0] wegtVector[0:9999];
 	reg [15:0] indexVector[0:9999];
 					 
@@ -94,9 +91,6 @@ module lsp_select_1_test;
 		begin
 			// samples out are samples from ITU G.729 test vectors
 			$readmemh("input_rbuf.out", rbufVector);
-			$readmemh("input_lspcb1.out", lspcb1Vector);
-			$readmemh("output_buf.out", bufVector);
-			$readmemh("input_lspcb2.out", lspcb2Vector);
 			$readmemh("input_wegt.out", wegtVector);
 			$readmemh("output_index.out", indexVector);
 			//add update file here
