@@ -113,7 +113,7 @@ L_shl L_shl1(
 	always @(*)
 	begin
 		case	(lagMux1Sel)	
-			'd0 :	lagMux1Out = memWriteAddr;//This IS A PROBLEM
+			'd0 :	lagMux1Out = memWriteAddr;
 			'd1:	lagMux1Out = testWriteRequested;
 		endcase
 	end

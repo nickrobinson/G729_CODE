@@ -102,7 +102,8 @@ module convolve_test_v;
 		for(j=0;j<10;j=j+1)
 		begin
 			//Test # 1
-			
+			@(posedge clk);
+			@(posedge clk) #5;			
 			lagMuxSel = 0;
 			lagMux1Sel = 1;
 			
@@ -144,7 +145,7 @@ module convolve_test_v;
 			begin			
 				testReadRequested = {yAddr[10:6],i[5:0]};
 				@(posedge clk);
-				@(posedge clk);
+				@(posedge clk) #5;
 				if (memIn != outVector[(j*40)+i])
 						$display($time, " ERROR: r'[%d] = %x, expected = %x", (j*40)+i, memIn, outVector[(j*40)+i]);
 					else
