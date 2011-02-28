@@ -115,16 +115,16 @@ module Lsp_prev_extract(start, clk, done, reset, lspele, fg, fg_sum_inv, freq_pr
 	always @(*)
 		begin
 			nextstate = state;
-			nextj = j;
-			nextk = k;
-			next_L_temp = L_temp;
-			next_temp = temp;
-			next_temp_freq_prev = temp_freq_prev;
 			writeAddr = 0;
 			writeOut = 0;
 			writeEn = 0;
 			readAddr = 0;
 			done = 0;
+			nextj = j;
+			nextk = k;
+			next_L_temp = L_temp;
+			next_temp = temp;
+			next_temp_freq_prev = temp_freq_prev;
 			L_mult_a = 0;
 			L_mult_b = 0;
 			L_msu_a = 0;
