@@ -90,42 +90,6 @@ reg autocorrMux3Out;
 wire [31:0] memTemp;
 assign xIn = {16'd0,memTemp[15:0]};
 
-//autocorr read address mux
-	always @(*)
-	begin
-		case	(autocorrMuxSel)	
-			'd0 :	autocorrMuxOut = readRequested;
-			'd1:	autocorrMuxOut = testReadRequested;
-		endcase
-	end	
-	
- 	//autocorr write address mux
-	always @(*)
-	begin
-		case	(autocorrMuxSel)	
-			'd0 :	autocorrMux1Out = writeRequested;
-			'd1:	autocorrMux1Out = testWriteRequested;
-		endcase
-	end
-	
-	//autocorr write input mux
-	always @(*)
-	begin
-		case	(autocorrMuxSel)	
-			'd0 :	autocorrMux2Out = memOut;
-			'd1:	autocorrMux2Out = testMemOut;
-		endcase
-	end
-	
-	//autocorr write enable mux
-	always @(*)
-	begin
-		case	(autocorrMuxSel)	
-			'd0 :	autocorrMux3Out = writeEn;
-			'd1:	autocorrMux3Out = testMemWrite;
-		endcase
-	end
-
 Scratch_Memory_Controller testMem(
 											 .addra(autocorrMux1Out),
 											 .dina(autocorrMux2Out),
@@ -199,4 +163,42 @@ Scratch_Memory_Controller testMem2(
 						.overflow(),
 						.sum(addIn)
 					);
+
+//autocorr read address mux
+	always @(*)
+	begin
+		case	(autocorrMuxSel)	
+			'd0 :	autocorrMuxOut = readRequested;
+			'd1:	autocorrMuxOut = testReadRequested;
+		endcase
+	end	
+	
+ 	//autocorr write address mux
+	always @(*)
+	begin
+		case	(autocorrMuxSel)	
+			'd0 :	autocorrMux1Out = writeRequested;
+			'd1:	autocorrMux1Out = testWriteRequested;
+		endcase
+	end
+	
+	//autocorr write input mux
+	always @(*)
+	begin
+		case	(autocorrMuxSel)	
+			'd0 :	autocorrMux2Out = memOut;
+			'd1:	autocorrMux2Out = testMemOut;
+		endcase
+	end
+	
+	//autocorr write enable mux
+	always @(*)
+	begin
+		case	(autocorrMuxSel)	
+			'd0 :	autocorrMux3Out = writeEn;
+			'd1:	autocorrMux3Out = testMemWrite;
+		endcase
+	end
+
+
 endmodule

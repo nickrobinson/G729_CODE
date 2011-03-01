@@ -79,36 +79,35 @@ module Autocorr_test;
 		xMemAddr = 0;
 		xMemOut = 0;
 		xMemEn = 0;
-		autocorrMuxSel = 0;
+		autocorrMuxSel = 1;
 		testReadRequested = 0;
-		testWriteRequested = 0;
+		testWriteRequested = 0;		
 		testMemOut = 0;
 		testMemWrite = 0;
 
 		// Wait 150 ns for global reset to finish
-		#50;
+		@(posedge clk) #5;
 		reset = 1;
-		#50;
+		@(posedge clk) #5;
 		reset = 0;
-		#50;
-        
+		@(posedge clk);
+		@(posedge clk) #5;
+		
 		for(j=0;j<120;j=j+1)
 		begin
-		
+		@(posedge clk);		
 		@(posedge clk) #5;
 		autocorrMuxSel = 1;		  
 		//writing the previous modules to memory					
 			for(i=0;i<240;i=i+1)
 			begin
-				@(posedge clk);
-				@(posedge clk);
-				@(posedge clk) #5;				
+//				@(posedge clk);		//When I removed this it reduced the memory collision count by 1
+//				@(posedge clk) #5;	//When I removed this it reduced the memory collision count by 1			
 				xMemAddr = i[7:0];
 				xMemOut = autocorrInMem[j*240+i];
 				xMemEn = 1;	
-				@(posedge clk);
-				@(posedge clk);
-				@(posedge clk) #5;		
+//				@(posedge clk);		//When I removed this it reduced the memory collision count by 1
+//				@(posedge clk) #5;	//When I removed this it reduced the memory collision count by 1	
 			end
 			
 			autocorrMuxSel = 0;
@@ -121,16 +120,15 @@ module Autocorr_test;
 			@(posedge clk) #5;		
 			
 			wait(done);
-			@(posedge clk) #5;	
+//			@(posedge clk) #5;	
 			// Add stimulus here				
 			autocorrMuxSel = 1;
 			
 			for (i = 0; i<11;i=i+1)
 			begin				
-					@(posedge clk);
-					@(posedge clk) #5;
 					testReadRequested = {AUTOCORR_R[10:4],i[3:0]};
-					#50;
+					@(posedge clk);		
+					@(posedge clk) #5;
 					if (memIn != autocorrOutMem[11*j+i])
 						$display($time, " ERROR: r[%d] = %x, expected = %x", 11*j+i, memIn, autocorrOutMem[11*j+i]);
 					else if (memIn == autocorrOutMem[11*j+i])
