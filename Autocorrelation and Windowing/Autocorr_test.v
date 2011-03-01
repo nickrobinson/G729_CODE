@@ -101,13 +101,13 @@ module Autocorr_test;
 		//writing the previous modules to memory					
 			for(i=0;i<240;i=i+1)
 			begin
-//				@(posedge clk);		//When I removed this it reduced the memory collision count by 1
-//				@(posedge clk) #5;	//When I removed this it reduced the memory collision count by 1			
+				@(posedge clk);		//When I removed this it reduced the memory collision count by 1
+				@(posedge clk) #5;	//When I removed this it reduced the memory collision count by 1			
 				xMemAddr = i[7:0];
 				xMemOut = autocorrInMem[j*240+i];
 				xMemEn = 1;	
-//				@(posedge clk);		//When I removed this it reduced the memory collision count by 1
-//				@(posedge clk) #5;	//When I removed this it reduced the memory collision count by 1	
+				@(posedge clk);		//When I removed this it reduced the memory collision count by 1
+				@(posedge clk) #5;	//When I removed this it reduced the memory collision count by 1	
 			end
 			
 			autocorrMuxSel = 0;
