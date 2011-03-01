@@ -109,16 +109,19 @@ module syn_filt_test;
 		fMemAddr = 11'd816;
 		updateAddr = 11'd944;
 		
-		#50 ;		
+		@(posedge clk) #5; 	
 		reset = 1;		
-		#50;		
+		@(posedge clk) #5; 	
 		reset = 0;
 		// Wait 100 ns for global reset to finish
-		#100;
+		@(posedge clk); 		
+		@(posedge clk) #10; 
         
 		for(j=0;j<2;j=j+1)
 		begin
 			//Test # 1
+			@(posedge clk); 
+			@(posedge clk) #5; 			
 			lagMuxSel = 0;
 			lagMux1Sel = 1;
 			lagMux2Sel = 1;
@@ -126,49 +129,61 @@ module syn_filt_test;
 			
 			for(i=0;i<10;i=i+1)
 			begin			
-				#40;
+				@(posedge clk); 
+				@(posedge clk) #5; 
 				testWriteRequested = {fMemAddr[10:6],i[5:0]};
 				testWriteOut = filterMemVector[(j*10)+i];
 				testWriteEnable = 1;
-				#40;
+				@(posedge clk); 
+				@(posedge clk) #5; 
 			end
 			
 			for(i=0;i<40;i=i+1)
 			begin			
-				#40;
+				@(posedge clk); 
+				@(posedge clk) #5; 
 				testWriteRequested = {xAddr[10:6],i[5:0]};
 				testWriteOut = inVector[(j*40)+i];
 				testWriteEnable = 1;
-				#40;
+				@(posedge clk); 
+				@(posedge clk) #5; 
 			end
 			
 			for(i=0;i<11;i=i+1)
 			begin			
-				#40;
+				@(posedge clk); 
+				@(posedge clk) #5; 
 				testWriteRequested = {aAddr[10:6],i[5:0]};
 				testWriteOut = predictionVector[(j*11)+i];
 				testWriteEnable = 1;
-				#40;
+				@(posedge clk); 
+				@(posedge clk) #5; 
 			end
 			
 			for(i=0;i<40;i=i+1)
 			begin			
-				#40;
+				@(posedge clk); 
+				@(posedge clk) #5; 
 				testWriteRequested = {yAddr[10:6],i[5:0]};
 				testWriteOut = outVector[(j*40)+i];
 				testWriteEnable = 1;
-				#40;
+				@(posedge clk); 
+				@(posedge clk) #5; 
 			end
 			
 			for(i=0;i<1;i=i+1)
 			begin			
-				#40;
+				@(posedge clk); 
+				@(posedge clk) #5; 
 				testWriteRequested = {updateAddr[10:0]};
 				testWriteOut = updateVector[(j*1)];
 				testWriteEnable = 1;
-				#40;
+				@(posedge clk); 
+				@(posedge clk) #5; 
 			end
 			
+			@(posedge clk); 
+			@(posedge clk) #5; 			
 			lagMux1Sel = 0;
 			lagMux2Sel = 0;
 			lagMux3Sel = 0;
@@ -176,17 +191,18 @@ module syn_filt_test;
 			
 			// Add stimulus here
 			start = 1;
-			#50
+			@(posedge clk); 
+			@(posedge clk) #5; 
 			start = 0;
-			#50;
-			
+			@(posedge clk); 
+			@(posedge clk) #5; 
 			wait(done);
 			lagMuxSel = 1;
 			for(i = 0; i<40;i=i+1)
 			begin			
 				testReadRequested = {yAddr[10:6],i[5:0]};
 				@(posedge clk);
-				@(posedge clk);
+				@(posedge clk) #5;
 				if (memIn != outVector[(j*40)+i])
 						$display($time, " ERROR: y'[%d] = %x, expected = %x", (j*40)+i, memIn, outVector[(j*40)+i]);
 					else
