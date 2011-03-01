@@ -104,9 +104,9 @@ module lsp_select_2_test;
 		lagMuxSel = 0;
 		lspcb1Addr = LSPCB1 + (80*16);
 		
-		#50 ;		
+		@(posedge clk) #5;	
 		reset = 1;		
-		#50;		
+		@(posedge clk) #5;
 		reset = 0;
 		// Wait 100 ns for global reset to finish
 		#100;
