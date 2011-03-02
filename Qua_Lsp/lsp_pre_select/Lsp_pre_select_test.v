@@ -34,6 +34,7 @@ module Lsp_pre_select_test;
 	wire [11:0] const_addr;
 	wire [10:0] writeAddr;
 	wire [31:0] writeOut;	
+	wire [6:0] cand;
 	integer i, j;
 
 	reg Mux0Sel;
@@ -76,7 +77,8 @@ module Lsp_pre_select_test;
 		.readIn(readIn),
 		.const_addr(const_addr),
 		.const_in(const_in),
-		.rbuf(rbuf));
+		.rbuf(rbuf),
+		.cand(cand));
 	
 		initial begin
 		// Initialize Inputs
@@ -120,17 +122,16 @@ module Lsp_pre_select_test;
 			#50;
 			// Add stimulus here	
 			wait(done);
-			Mux0Sel = 0;
-			
+			Mux0Sel = 0;		
 
 				
-					testReadRequested = QUA_LSP_CAND;
+					testReadRequested = 0;
 					@(posedge clk);
 					@(posedge clk);
-					if (readIn != candc[j])
-						$display($time, " ERROR: candc[%d] = %x, expected = %x", j, readIn, candc[j]);
-					else if (readIn == candc[j])
-						$display($time, " CORRECT:  candc[%d] = %x", j, readIn);
+					if (cand != candc[j])
+						$display($time, " ERROR: candc[%d] = %x, expected = %x", j, cand, candc[j]);
+					else if (cand == candc[j])
+						$display($time, " CORRECT:  candc[%d] = %x", j, cand);
 					@(posedge clk);	
 				
 		end//j for loop
