@@ -25,32 +25,20 @@ module Inv_sqrtTest;
 	reg clk;
 	reg start;
 	reg reset;
-	reg [10:0] L_xAddr;
-	reg [10:0] L_yAddr;
-	reg sqrtMuxSel;
-	reg [10:0] testReadAddr;
-	reg [10:0] testWriteAddr;
-	reg [31:0] testMemOut;
-	reg testMemWriteEn;
+	reg [31:0] in;		
 
 	// Outputs
 	wire done;
-	wire [31:0] memIn;
+	wire [31:0] out;
 
 	// Instantiate the Unit Under Test (UUT)
 	Inv_sqrtPipe uut (
 		.clk(clk), 
 		.start(start), 
 		.reset(reset), 
-		.L_xAddr(L_xAddr), 
-		.L_yAddr(L_yAddr), 
-		.sqrtMuxSel(sqrtMuxSel), 
-		.testReadAddr(testReadAddr), 
-		.testWriteAddr(testWriteAddr), 
-		.testMemOut(testMemOut), 
-		.testMemWriteEn(testMemWriteEn), 
+		.in(in),
 		.done(done), 
-		.memIn(memIn)
+		.out(out)
 	);
 	
 	//temp regs
@@ -72,14 +60,7 @@ module Inv_sqrtTest;
 		// Initialize Inputs
 		clk = 0;
 		start = 0;
-		reset = 0;
-		L_xAddr = 512;
-		L_yAddr = 1024;
-		sqrtMuxSel = 1;
-		testReadAddr = 0;
-		testWriteAddr = 0;
-		testMemOut = 0;
-		testMemWriteEn = 0;
+		reset = 0;		
 
 		@(posedge clk);
 		@(posedge clk) #5;
@@ -95,14 +76,11 @@ module Inv_sqrtTest;
 			@(posedge clk);
 			@(posedge clk);
 			@(posedge clk) #5;				
-			testMemOut = sqrtInMem[j];				
-			testWriteAddr = L_xAddr;				
-			testMemWriteEn = 1;	
+			in = sqrtInMem[j];			
 			@(posedge clk);
 			@(posedge clk);
 			@(posedge clk) #5;
-
-         sqrtMuxSel = 0;	
+			
 			start = 1;			
 			@(posedge clk) #5;
 			start = 0;			
@@ -111,14 +89,11 @@ module Inv_sqrtTest;
 			@ (posedge clk);
 			@ (posedge clk);
 			@ (posedge clk) #5;
-			sqrtMuxSel = 1;
-			testReadAddr = L_yAddr;
-			@(posedge clk);
-			@(posedge clk) #5;
-			if (memIn != sqrtOutMem[j])
-				$display($time, " ERROR: sqrt[%d] = %x, expected = %x", j, memIn, sqrtOutMem[j]);
-			else if (memIn == sqrtOutMem[j])
-				$display($time, " CORRECT:  sqrt[%d] = %x", j, memIn);
+			
+			if (out != sqrtOutMem[j])
+				$display($time, " ERROR: sqrt[%d] = %x, expected = %x", j, out, sqrtOutMem[j]);
+			else if (out == sqrtOutMem[j])
+				$display($time, " CORRECT:  sqrt[%d] = %x", j, out);
 			@(posedge clk)#5; 
 	
 		end//j for loop

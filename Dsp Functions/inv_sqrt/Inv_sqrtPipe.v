@@ -20,18 +20,12 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module Inv_sqrtPipe(clk,start,reset,L_xAddr,L_yAddr,sqrtMuxSel,testReadAddr,testWriteAddr,testMemOut,
-						  testMemWriteEn,done,memIn);
+module Inv_sqrtPipe(clk,start,reset,in,done,out);
 	
 	//Inputs
 	input clk,start,reset;
-	input [10:0] L_xAddr;
-	input [10:0] L_yAddr;
-	input sqrtMuxSel;
-	input [10:0] testReadAddr,testWriteAddr;
-	input [31:0] testMemOut;
-	input testMemWriteEn;
-
+	input [31:0] in;	
+	
 	//Internal Wires
 	wire [15:0] norm_lIn;
 	wire norm_lDone;
@@ -55,26 +49,17 @@ module Inv_sqrtPipe(clk,start,reset,L_xAddr,L_yAddr,sqrtMuxSel,testReadAddr,test
 	wire [15:0] addOutA,addOutB;
 	wire [15:0] L_msuOutA,L_msuOutB;
 	wire [31:0] L_msuOutC;
-	wire memWriteEn;
-	wire [10:0] memReadAddr,memWriteAddr;
-	wire [31:0] memOut;
 	wire [11:0] constantMemAddr;
-	
-	//Internal regs	
-	reg [10:0] sqrtMuxOut,sqrtMux1Out;
-	reg [31:0] sqrtMux2Out;
-	reg sqrtMux3Out;
 	
 	//Outputs
 	output done;
-	output [31:0] memIn;
+	output [31:0] out;
 	
 Inv_sqrt fsm(
 				  .clk(clk),
 				  .start(start),
 				  .reset(reset),
-				  .L_xAddr(L_xAddr),
-				  .L_yAddr(L_yAddr),
+				  .in(in),
 				  .norm_lIn(norm_lIn),
 				  .norm_lDone(norm_lDone),
 				  .L_shlIn(L_shlIn),
@@ -83,8 +68,7 @@ Inv_sqrt fsm(
 				  .L_shrIn(L_shrIn),
 				  .shrIn(shrIn),
 				  .addIn(addIn),
-				  .L_msuIn(L_msuIn),
-				  .memIn(memIn),
+				  .L_msuIn(L_msuIn),				  
 				  .constantMemIn(constantMemIn),
 				  .norm_lVar1Out(norm_lVar1Out),
 				  .norm_lReady(norm_lReady),
@@ -101,13 +85,10 @@ Inv_sqrt fsm(
 				  .addOutB(addOutB),
 				  .L_msuOutA(L_msuOutA),
 				  .L_msuOutB(L_msuOutB),
-				  .L_msuOutC(L_msuOutC),
-				  .memWriteEn(memWriteEn),
-				  .memReadAddr(memReadAddr),
-				  .memWriteAddr(memWriteAddr),
-				  .memOut(memOut),
+				  .L_msuOutC(L_msuOutC),				  
 				  .constantMemAddr(constantMemAddr),
-				  .done(done)
+				  .done(done),
+				  .out(out)
 				  );
 				  
 L_msu sqrt_Lmsu(
@@ -172,47 +153,5 @@ Constant_Memory_Controller constantMem(
 													 .clock(clk),
 													 .douta(constantMemIn)
 													);
-Scratch_Memory_Controller scratchMem(
-												 .addra(sqrtMux1Out),
-												 .dina(sqrtMux2Out),
-												 .wea(sqrtMux3Out),
-												 .clk(clk),
-												 .addrb(sqrtMuxOut),
-												 .doutb(memIn)
-												 );
-//read address mux
-	always @(*)
-	begin
-		case	(sqrtMuxSel)	
-			'd0 :	sqrtMuxOut = memReadAddr;
-			'd1:	sqrtMuxOut = testReadAddr;
-		endcase
-	end
-	
-	//write address mux
-	always @(*)
-	begin
-		case	(sqrtMuxSel)	
-			'd0 :	sqrtMux1Out = memWriteAddr;
-			'd1:	sqrtMux1Out = testWriteAddr;
-		endcase
-	end
-	
-	//write input mux
-	always @(*)
-	begin
-		case	(sqrtMuxSel)	
-			'd0 :	sqrtMux2Out = memOut;
-			'd1:	sqrtMux2Out = testMemOut;
-		endcase
-	end
-	
-	//write enable mux
-	always @(*)
-	begin
-		case	(sqrtMuxSel)	
-			'd0 :	sqrtMux3Out = memWriteEn;
-			'd1:	sqrtMux3Out = testMemWriteEn;
-		endcase
-	end
+
 endmodule

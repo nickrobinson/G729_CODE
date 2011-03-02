@@ -18,18 +18,16 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module Inv_sqrt(clk,start,reset,L_xAddr,L_yAddr,norm_lIn,norm_lDone,L_shlIn,L_shlDone,subIn,L_shrIn,shrIn,
-					 addIn,L_msuIn,memIn,constantMemIn,norm_lVar1Out,norm_lReady,L_shlVar1Out,L_shlNumShiftOut,
+module Inv_sqrt(clk,start,reset,in,norm_lIn,norm_lDone,L_shlIn,L_shlDone,subIn,L_shrIn,shrIn,
+					 addIn,L_msuIn,constantMemIn,norm_lVar1Out,norm_lReady,L_shlVar1Out,L_shlNumShiftOut,
 					 L_shlReady,subOutA,subOutB,L_shrVar1Out,L_shrNumShiftOut,shrVar1Out,shrVar2Out,addOutA,
-					 addOutB,L_msuOutA,L_msuOutB,L_msuOutC,memWriteEn,memReadAddr,memWriteAddr,memOut,
-					 constantMemAddr,done);
+					 addOutB,L_msuOutA,L_msuOutB,L_msuOutC,constantMemAddr,done,out);
 					 
 `include "constants_param_list.v"
 
 //Inputs	 
 input clk,start,reset;
-input [10:0] L_xAddr;
-input [10:0] L_yAddr;
+input [31:0] in;
 input [15:0] norm_lIn;
 input norm_lDone;
 input [31:0] L_shlIn;
@@ -39,7 +37,6 @@ input [31:0] L_shrIn;
 input [15:0] shrIn;
 input [15:0] addIn;
 input [31:0] L_msuIn;
-input [31:0] memIn;
 input [31:0] constantMemIn;
 
 //Outputs
@@ -55,11 +52,9 @@ output reg [15:0] shrVar1Out,shrVar2Out;
 output reg [15:0] addOutA,addOutB;
 output reg [15:0] L_msuOutA,L_msuOutB;
 output reg [31:0] L_msuOutC;
-output reg memWriteEn;
-output reg [10:0] memReadAddr,memWriteAddr;
-output reg [31:0] memOut;
 output reg [11:0] constantMemAddr;
 output reg done;
+output reg [31:0] out;
 
 //internal regs
 reg [3:0] state,nextstate;
@@ -203,12 +198,9 @@ begin
 	L_msuOutA = 0;
 	L_msuOutB = 0;
 	L_msuOutC = 0;
-	constantMemAddr = 0;
-	memWriteEn = 0;
-	memReadAddr = 0;
-	memWriteAddr = 0;
-	memOut = 0;
+	constantMemAddr = 0;	
 	done = 0;
+	out = L_y;
 	
 	case(state)
 	
@@ -223,8 +215,8 @@ begin
 				tempReset = 1;
 				aReset = 1;
 				L_yReset = 1;
-				L_xReset = 1;
-				memReadAddr = L_xAddr;
+				nextL_x = in;
+				L_xLD = 1;
 				nextstate = S1;
 			end
 		end//INIT
@@ -232,21 +224,19 @@ begin
 		/*if( L_x <= (Word32)0)	
 			return ( (Word32)0x3fffffffL);*/
 		S1:
-		begin
-			nextL_x = memIn;
-			L_xLD = 1;
-			if(memIn[31] == 1 || memIn == 32'd0)
+		begin			
+			if(L_x[31] == 1 || L_x == 32'd0)
 			begin				
-				memOut = 32'h3fff_ffff;
-				memWriteEn = 1;
-				memWriteAddr = L_yAddr;
+				nextL_y = 32'h3fff_ffff;
+				L_yLD = 1;
+				out = nextL_y;
 				done = 1;
 				nextstate = INIT;
 			end
 			
-			else if(memIn[31] == 0 && memIn != 32'd0)
+			else if(L_x[31] == 0 && L_x != 32'd0)
 			begin
-				norm_lVar1Out = memIn;
+				norm_lVar1Out = L_x;
 				norm_lReady = 1;
 				nextstate = S2;
 			end
@@ -372,21 +362,14 @@ begin
 			L_msuOutB = a;
 			L_msuOutC = L_y;
 			L_shrVar1Out = L_msuIn;
-			L_shrNumShiftOut = exp;
-			memWriteAddr = L_yAddr;
-			memOut = L_shrIn;
-			memWriteEn = 1;
-			nextstate = S9;
-		end//S8
-		
-		S9:
-		begin
-			memWriteAddr = L_xAddr;
-			memOut = L_x;
-			memWriteEn = 1;
+			L_shrNumShiftOut = exp;			
+			nextL_y = L_shrIn;
+			L_yLD = 1;
+			out = nextL_y;
 			done = 1;
 			nextstate = INIT;
-		end//S9
+		end//S8
+
 	endcase
 end//always
 
