@@ -102,7 +102,6 @@ module lsp_select_1_test;
 		reset = 0;
 		start = 0;		
 		lagMuxSel = 0;
-		lspcb1Addr = LSPCB1 + (80*16);
 		
 		@(posedge clk); 
 		@(posedge clk) #5;
@@ -116,6 +115,12 @@ module lsp_select_1_test;
         
 		for(j=0;j<5;j=j+1)
 		begin
+			
+			// Make sure to update these values if you exand this test
+			if(j <4)
+				lspcb1Addr = LSPCB1 + (80*16);
+			else
+				lspcb1Addr = LSPCB1 + (72*16);
 			
 			//Test # 1
 			lagMuxSel = 0;
