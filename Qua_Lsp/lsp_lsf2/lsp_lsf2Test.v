@@ -5,13 +5,13 @@
 // Engineer: Zach Thornton
 // 
 // Create Date:    20:17:03 02/28/2011
-// Module Name:    lsf_lsp2Test.v 
+// Module Name:    lsp_lsf2Test.v 
 // Project Name: 	 ITU G.729 Hardware Implementation
 // Target Devices: Virtex 5
 // Tool versions:  Xilinx 9.2i
-// Verilog Test Fixture created by ISE for module: lsf_lspPipe
+// Verilog Test Fixture created by ISE for module: lsp_lsfPipe
 // 
-// Dependencies: 	 lsf_lspPipe.v
+// Dependencies: 	 lsp_lsfPipe.v
 //
 // Revision: 
 // Revision 0.01 - File Created
@@ -19,7 +19,7 @@
 //
 //////////////////////////////////////////////////////////////////////////////////
 
-module lsf_lsp2Test;
+module lsp_lsf2Test;
 
 	// Inputs
 	reg start;
@@ -53,7 +53,7 @@ module lsf_lsp2Test;
 		end
 
 	// Instantiate the Unit Under Test (UUT)
-	lsf_lspPipe uut (
+	lsp_lsfPipe uut (
 		.start(start), 
 		.clk(clk), 
 		.reset(reset), 

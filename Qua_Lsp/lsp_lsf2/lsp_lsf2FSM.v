@@ -5,11 +5,11 @@
 // Engineer: Zach Thornton
 // 
 // Create Date:    17:07:48 02/28/2011 
-// Module Name:    lsf_lsp2FSM.v 
+// Module Name:    lsp_lsf2FSM.v 
 // Project Name: 	 ITU G.729 Hardware Implementation
 // Target Devices: Virtex 5
 // Tool versions:  Xilinx 9.2i
-// Description: 	 This is an FSM to perform the C-model function "lsf_lsp2"
+// Description: 	 This is an FSM to perform the C-model function "lsp_lsf2"
 // 
 // Dependencies: 	 N/A
 //
@@ -18,7 +18,7 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module lsf_lsp2FSM(start,clk,reset,subIn,L_subIn,L_multIn,addIn,shlIn,L_shrIn,multIn,memIn,
+module lsp_lsf2FSM(start,clk,reset,subIn,L_subIn,L_multIn,addIn,shlIn,L_shrIn,multIn,memIn,
 						 constantMemIn,lspAddr,lsfAddr,subOutA,subOutB,L_subOutA,L_subOutB,L_multOutA,L_multOutB,
 						 addOutA,addOutB,shlOutA,shlOutB,L_shrVar1Out,L_shrNumShiftOut,multOutA,multOutB,
 						 shlVar1Out,shlVar2Out,memReadAddr,memWriteAddr,memOut,memWriteEn,constantMemAddr,done);
