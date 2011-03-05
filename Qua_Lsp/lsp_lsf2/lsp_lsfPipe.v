@@ -5,14 +5,14 @@
 // Engineer: Zach Thornton
 // 
 // Create Date:    19:45:40 02/28/2011
-// Module Name:    lsf_lspPipe.v 
+// Module Name:    lsp_lsfPipe.v 
 // Project Name: 	 ITU G.729 Hardware Implementation
 // Target Devices: Virtex 5
 // Tool versions:  Xilinx 9.2i
-// Description: 	 This is an module to instantiate all the math and memory needed for lsf_lsp2, 
+// Description: 	 This is an module to instantiate all the math and memory needed for lsp_lsf2, 
 //						 as well as the FSM
 // 
-// Dependencies: 	 L_mult.v, L_shr.v, add.v, lsf_lsp2FSM, mult.v,shl.v,sub.v, Scratch_Memory_Controller.v,
+// Dependencies: 	 L_mult.v, L_shr.v, add.v, lsp_lsf2FSM, mult.v,shl.v,sub.v, Scratch_Memory_Controller.v,
 //						 Constant_Memory_Controller.v
 //
 // Revision: 
@@ -20,7 +20,7 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module lsf_lspPipe(start,clk,reset,lspAddr,lsfAddr,testReadAddr,testWriteAddr,testMemOut,testWriteEn,memMuxSel,
+module lsp_lsfPipe(start,clk,reset,lspAddr,lsfAddr,testReadAddr,testWriteAddr,testMemOut,testWriteEn,memMuxSel,
 						 done,memIn);
 
 //Inputs
@@ -64,7 +64,7 @@ reg [31:0] Mux2Out;
 reg Mux3Out;
 
 //Instantiated modules
-lsf_lsp2FSM fsm(
+lsp_lsf2FSM fsm(
 					  .start(start),
 					  .clk(clk),
 					  .reset(reset),
@@ -120,28 +120,28 @@ Scratch_Memory_Controller scratchMem(
 												 .doutb(memIn)
 												 );
 
-L_mult lsfLSP2_L_mult(
+L_mult lspLSF2_L_mult(
 							  .a(L_multOutA),
 							  .b(L_multOutB),
 							  .overflow(),
 							  .product(L_multIn)							
 							);
 									
-L_shr lsfLSP2_L_shr(
+L_shr lspLSF2_L_shr(
 							 .var1(L_shrVar1Out),
 							 .numShift(L_shrNumShiftOut),
 							 .overflow(),
 							 .out(L_shrIn)
 							 );
 							 
-add lsfLSP2_add(
+add lspLSF2_add(
 						.a(addOutA),
 						.b(addOutB),
 						.overflow(),
 						.sum(addIn)
 						);
 						
-mult lsfLSP2_mult(
+mult lspLSF2_mult(
 							.a(multOutA),
 							.b(multOutB),
 							.multRsel(1'd0),
@@ -149,7 +149,7 @@ mult lsfLSP2_mult(
 							.product(multIn)
 						);
 					
-shl lsfLSP2_shl
+shl lspLSF2_shl
 					(
 					  .var1(shlVar1Out),
 					  .var2(shlVar2Out),
@@ -157,13 +157,13 @@ shl lsfLSP2_shl
 					  .result(shlIn)
 					);
 					
-sub lsfLSP2_sub(
+sub lspLSF2_sub(
 						.a(subOutA),
 						.b(subOutB),
 						.overflow(),
 						.diff(subIn)
 					);
-L_sub lsfLSP2_L_sub(
+L_sub lspLSF2_L_sub(
 							.a(L_subOutA),
 							.b(L_subOutB),
 							.overflow(),

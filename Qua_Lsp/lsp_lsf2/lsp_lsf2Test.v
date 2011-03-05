@@ -5,13 +5,13 @@
 // Engineer: Zach Thornton
 // 
 // Create Date:    20:17:03 02/28/2011
-// Module Name:    lsf_lsp2Test.v 
+// Module Name:    lsp_lsf2Test.v 
 // Project Name: 	 ITU G.729 Hardware Implementation
 // Target Devices: Virtex 5
 // Tool versions:  Xilinx 9.2i
-// Verilog Test Fixture created by ISE for module: lsf_lspPipe
+// Verilog Test Fixture created by ISE for module: lsp_lsfPipe
 // 
-// Dependencies: 	 lsf_lspPipe.v
+// Dependencies: 	 lsp_lsfPipe.v
 //
 // Revision: 
 // Revision 0.01 - File Created
@@ -19,7 +19,7 @@
 //
 //////////////////////////////////////////////////////////////////////////////////
 
-module lsf_lsp2Test;
+module lsp_lsf2Test;
 
 	// Inputs
 	reg start;
@@ -48,12 +48,12 @@ module lsf_lsp2Test;
 	//file read in for inputs and output tests
 	initial 
 		begin// samples out are samples from ITU G.729 test vectors
-			$readmemh("speech_lsflsp2_lsp_out.out", lspMem);
-			$readmemh("speech_lsflsp2_lsf_in.out", lsfMem);			
+			$readmemh("lsp_lsplsf2_lsp.out", lspMem);
+			$readmemh("lsp_lsplsf2_lsf.out", lsfMem);			
 		end
 
 	// Instantiate the Unit Under Test (UUT)
-	lsf_lspPipe uut (
+	lsp_lsfPipe uut (
 		.start(start), 
 		.clk(clk), 
 		.reset(reset), 
@@ -97,8 +97,8 @@ module lsf_lsp2Test;
 				@(posedge clk);
 				@(posedge clk);
 				@(posedge clk) #5;				
-				testMemOut = lsfMem[10*j+i];				
-				testWriteAddr = {lsfAddr[10:4], i[3:0]};				
+				testMemOut = lspMem[10*j+i];				
+				testWriteAddr = {lspAddr[10:4], i[3:0]};				
 				testWriteEn = 1;	
 				@(posedge clk);
 				@(posedge clk);
@@ -122,13 +122,13 @@ module lsf_lsp2Test;
 			//mem read
 			for (i = 0; i<10;i=i+1)
 			begin				
-					testReadAddr = {lspAddr[10:4],i[3:0]};
+					testReadAddr = {lsfAddr[10:4],i[3:0]};
 					@(posedge clk);
 					@(posedge clk) #5;
-					if (memIn != lspMem[j*10+i])
-						$display($time, " ERROR: lsp[%d] = %x, expected = %x", j*10+i, memIn, lspMem[j*10+i]);
-					else if (memIn == lspMem[j*10+i])
-						$display($time, " CORRECT:  lsp[%d] = %x", j*10+i, memIn);
+					if (memIn != lsfMem[j*10+i])
+						$display($time, " ERROR: lsf[%d] = %x, expected = %x", j*10+i, memIn, lsfMem[j*10+i]);
+					else if (memIn == lsfMem[j*10+i])
+						$display($time, " CORRECT:  lsf[%d] = %x", j*10+i, memIn);
 					@(posedge clk)#5; 
 			end	
 			
@@ -142,3 +142,4 @@ module lsf_lsp2Test;
 	initial forever #10 clk = ~clk;   
       
 endmodule
+
