@@ -213,6 +213,8 @@ begin
 	tempSftReset = 0;
 	subOutA = 0;
 	subOutB = 0;
+	L_addOutA = 0;
+	L_addOutB = 0;
 	L_subOutA = 0;
 	L_subOutB = 0;
 	L_multOutA = 0;
