@@ -27,8 +27,8 @@ module Lag_Window_Top(clk,reset,start,lagMuxSel,testWriteEnable,testWriteOut,tes
 	input lagMuxSel;
 	input testWriteEnable;
 	input [31:0] testWriteOut;
-	input [10:0] testWriteRequested;
-	input [10:0] testReadRequested;
+	input [11:0] testWriteRequested;
+	input [11:0] testReadRequested;
 	
 	//Outputs
 	output done;
@@ -41,8 +41,8 @@ module Lag_Window_Top(clk,reset,start,lagMuxSel,testWriteEnable,testWriteOut,tes
 	wire [15:0] addIn;
 	wire [31:0] L_shrIn;
 	wire rPrimeWrite;
-	wire [10:0] rPrimeRequested;
-	wire [10:0] rPrimeReadAddr;
+	wire [11:0] rPrimeRequested;
+	wire [11:0] rPrimeReadAddr;
 	wire [15:0] L_multOutA;
 	wire [15:0] L_multOutB;
 	wire [15:0] multOutA;

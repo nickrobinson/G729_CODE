@@ -42,14 +42,14 @@ module Lag_Window_Pipe(clk,L_multOutA,L_multOutB,multOutA,multOutB,L_macOutA,L_m
 	input [15:0] L_shrOutNumShift;
 	input [31:0] L_shrOutVar1;
 	input rPrimeWrite;
-	input [10:0] rPrimeRequested;
-	input [10:0] rPrimeReadAddr;
+	input [11:0] rPrimeRequested;
+	input [11:0] rPrimeReadAddr;
 	input [31:0] rPrimeOut;
 	input lagMuxSel;
 	input testWriteEnable;
 	input [31:0] testWriteOut;
-	input [10:0] testWriteRequested;
-	input [10:0] testReadRequested;
+	input [11:0] testWriteRequested;
+	input [11:0] testReadRequested;
 	
 	//output
 	output [31:0] L_multIn;
@@ -61,8 +61,8 @@ module Lag_Window_Pipe(clk,L_multOutA,L_multOutB,multOutA,multOutB,L_macOutA,L_m
 	output [31:0] rPrimeIn;
 	
 	//working regs		
-	reg [10:0] lagMuxOut;
-	reg [10:0] lagMux1Out;	
+	reg [11:0] lagMuxOut;
+	reg [11:0] lagMux1Out;	
 	reg [31:0] lagMux2Out;
 	reg lagMux3Out;
 

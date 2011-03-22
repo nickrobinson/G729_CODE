@@ -29,8 +29,8 @@ module lag_window_test_v;
 	reg reset;
 	reg start;	
 	reg lagMuxSel;
-	reg [10:0] testReadRequested;
-	reg [10:0] testWriteRequested;
+	reg [11:0] testReadRequested;
+	reg [11:0] testWriteRequested;
 	reg [31:0] testWriteOut;
 	reg testWriteEnable;
 	

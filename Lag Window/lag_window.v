@@ -34,8 +34,8 @@ input [31:0] L_shrIn;
 
 //outputs
 output reg rPrimeWrite;
-output reg [10:0] rPrimeReadAddr; 
-output reg [10:0] rPrimeRequested;
+output reg [11:0] rPrimeReadAddr; 
+output reg [11:0] rPrimeRequested;
 output reg [15:0] L_multOutA,L_multOutB;
 output reg [15:0] multOutA,multOutB;
 output reg [15:0] L_macOutA,L_macOutB;
