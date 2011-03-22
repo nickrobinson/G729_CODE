@@ -25,9 +25,9 @@ module Az_LSP_Test_v;
 	reg reset;
 	reg start;	
 	reg lspMuxSel;
-	reg [10:0] testReadRequested;
+	reg [11:0] testReadRequested;
 	//mux1 regs
-	reg [10:0] testWriteRequested;
+	reg [11:0] testWriteRequested;
 	//mux2 regs
 	reg [31:0] testLspOut;
 	//mux3regs

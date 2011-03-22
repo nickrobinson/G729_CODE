@@ -23,8 +23,8 @@ module Az_LSP_Top(clk,reset,start,lspMuxSel,testReadRequested,testWriteRequested
 //Inputs
 input clk,reset,start;
 input lspMuxSel;
-input [10:0] testReadRequested;
-input [10:0] testWriteRequested;
+input [11:0] testReadRequested;
+input [11:0] testWriteRequested;
 input [31:0] testLspOut;
 input testLspWrite;
 
@@ -63,8 +63,8 @@ output [31:0] lspIn;
 	wire L_shlReady;
 	wire [15:0] norm_sOut;
 	wire norm_sReady;
-	wire [10:0] lspWriteRequested;
-	wire [10:0] lspReadRequested;
+	wire [11:0] lspWriteRequested;
+	wire [11:0] lspReadRequested;
 	wire [31:0] lspOut;
 	wire lspWrite;
 	wire divErr;   

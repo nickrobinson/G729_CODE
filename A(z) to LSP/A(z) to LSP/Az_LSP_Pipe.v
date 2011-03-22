@@ -27,8 +27,8 @@ module Az_LSP_Pipe(clk,reset,lspMuxSel,testReadRequested,testWriteRequested,test
 //Inputs
 input clk,reset;
 input lspMuxSel;
-input [10:0] testReadRequested;
-input [10:0] testWriteRequested;
+input [11:0] testReadRequested;
+input [11:0] testWriteRequested;
 input [31:0] testLspOut;
 input testLspWrite;
 input [15:0] L_multOutA,L_multOutB;
@@ -48,14 +48,12 @@ input [15:0] subOutA,subOutB;
 input [15:0] shrOutVar1,shrOutVar2;
 input [31:0] L_shrOutVar1;
 input [15:0] L_shrOutNumShift;
-input [10:0] lspReadRequested;
-input [10:0] lspWriteRequested;
+input [11:0] lspReadRequested;
+input [11:0] lspWriteRequested;
 input [31:0] lspOut;
 input lspWrite;
-
-
-output [15:0] norm_sIn;						//CHANGED FROM INPUT TO OUTPUT!!!
-input [15:0] norm_sOut;     				//CHANGED FROM OUTPUT TO INPUT
+output [15:0] norm_sIn;						
+input [15:0] norm_sOut;     				
 
 //Outputs
 output L_multOverflow;
@@ -77,8 +75,8 @@ output [31:0] L_shrIn;
 output [31:0] lspIn;
 					
 //mux regs 
-reg [10:0] lspMuxOut;
-reg [10:0] lspMux1Out;
+reg [11:0] lspMuxOut;
+reg [11:0] lspMux1Out;
 reg [31:0] lspMux2Out;
 reg lspMux3Out;
 
