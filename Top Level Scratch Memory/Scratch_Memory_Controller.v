@@ -20,22 +20,21 @@
 //////////////////////////////////////////////////////////////////////////////////
 module Scratch_Memory_Controller(addra,dina,wea,clk,addrb,doutb);
 
-input [10:0] addra;
+input [11:0] addra;
 input [31:0] dina;
 input wea;
 input clk;
-input [10:0] addrb;
+input [11:0] addrb;
 output [31:0] doutb;
 
-wire [31:0] douta;
-scratch_memory_V1 Scratch_mem(
+scratch_memory_V1 scratch_mem(
 						.clka(clk),
 						.dina(dina),
-						.addra(addra),						
+						.addra(addra),
 						.wea(wea),
-						.clkb(clk),						
+						.clkb(clk),
 						.addrb(addrb),
-						.doutb(doutb)						
+						.doutb(doutb)
 						);
 
 endmodule
