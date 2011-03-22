@@ -34,8 +34,8 @@ input [31:0] L_shrIn;
 input [15:0] multIn;
 input [31:0] memIn;
 input [31:0] constantMemIn;
-input [10:0] lspAddr;
-input [10:0] lsfAddr;
+input [11:0] lspAddr;
+input [11:0] lsfAddr;
 
 //Outputs
 output reg [15:0] subOutA,subOutB;
@@ -47,8 +47,8 @@ output reg [31:0] L_shrVar1Out;
 output reg [15:0] L_shrNumShiftOut;
 output reg [15:0] multOutA,multOutB;
 output reg [15:0] shlVar1Out,shlVar2Out;
-output reg [10:0] memReadAddr;
-output reg [10:0] memWriteAddr;
+output reg [11:0] memReadAddr;
+output reg [11:0] memWriteAddr;
 output reg [31:0] memOut;
 output reg memWriteEn;
 output reg [11:0] constantMemAddr;

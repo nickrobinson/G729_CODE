@@ -25,8 +25,8 @@ module lsp_lsfPipe(start,clk,reset,lspAddr,lsfAddr,testReadAddr,testWriteAddr,te
 
 //Inputs
 input start,clk,reset;
-input [10:0] lspAddr,lsfAddr;
-input [10:0] testReadAddr,testWriteAddr;
+input [11:0] lspAddr,lsfAddr;
+input [11:0] testReadAddr,testWriteAddr;
 input [31:0] testMemOut;
 input testWriteEn;
 input memMuxSel;
@@ -49,7 +49,7 @@ wire [31:0] L_shrVar1Out;
 wire [15:0] L_shrNumShiftOut;
 wire [15:0] multOutA,multOutB;
 wire [15:0] shlVar1Out,shlVar2Out;
-wire [10:0] memReadAddr,memWriteAddr;
+wire [11:0] memReadAddr,memWriteAddr;
 wire [31:0] memOut;
 wire memWriteEn;
 wire [11:0] constantMemAddr;
@@ -59,7 +59,7 @@ output done;
 output [31:0] memIn;
 
 //Internal regs
-reg [10:0] Mux0Out,Mux1Out;
+reg [11:0] Mux0Out,Mux1Out;
 reg [31:0] Mux2Out;
 reg Mux3Out;
 
