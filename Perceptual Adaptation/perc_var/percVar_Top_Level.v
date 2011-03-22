@@ -27,8 +27,8 @@ module percVar_Top_Level(clk,reset,start,percVarMuxSel,testMemWrite,testMemOut,
 	input percVarMuxSel;
 	input testMemWrite;
 	input [31:0] testMemOut;
-	input [10:0] testWriteAddr;
-	input [10:0] testReadAddr;
+	input [11:0] testWriteAddr;
+	input [11:0] testReadAddr;
 	
 	//Outputs
 	output done;
@@ -52,8 +52,8 @@ module percVar_Top_Level(clk,reset,start,percVarMuxSel,testMemWrite,testMemOut,
 	wire [15:0] addOutB;
 	wire [15:0] multOutA;
 	wire [15:0] multOutB;
-	wire [10:0] memReadAddr;
-	wire [10:0] memWriteAddr;
+	wire [11:0] memReadAddr;
+	wire [11:0] memWriteAddr;
 	wire memWrite;
 	wire [31:0] memOut;
 	wire done;

@@ -26,16 +26,14 @@ module perc_var_test_v;
 	reg clk;
 	reg reset;
 	reg start;
-
-
 	wire [31:0] memIn;
 	wire done;	
 	
 	//Memory Mux regs
 	reg percVarMuxSel;
 	reg testMemWrite;
-	reg [10:0] testWriteAddr;
-	reg [10:0] testReadAddr;
+	reg [11:0] testWriteAddr;
+	reg [11:0] testReadAddr;
 	reg [31:0] testMemOut;
 	
 	//I/O regs

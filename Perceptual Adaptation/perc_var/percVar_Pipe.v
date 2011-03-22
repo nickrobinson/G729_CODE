@@ -29,8 +29,8 @@ module percVar_Pipe(clk,percVarMuxSel,testMemWrite,testMemOut,testWriteAddr,test
 	input percVarMuxSel;
 	input testMemWrite;
 	input [31:0] testMemOut;
-	input [10:0] testWriteAddr;
-	input [10:0] testReadAddr;
+	input [11:0] testWriteAddr;
+	input [11:0] testReadAddr;
 
 	input [15:0] shlVar1Out;
 	input [15:0] shlVar2Out;
@@ -50,8 +50,8 @@ module percVar_Pipe(clk,percVarMuxSel,testMemWrite,testMemOut,testWriteAddr,test
 	input [15:0] addOutB;
 	input [15:0] multOutA;
 	input [15:0] multOutB;
-	input [10:0] memReadAddr;
-	input [10:0] memWriteAddr;
+	input [11:0] memReadAddr;
+	input [11:0] memWriteAddr;
 	input memWrite;
 	input [31:0] memOut;
 
@@ -70,8 +70,8 @@ module percVar_Pipe(clk,percVarMuxSel,testMemWrite,testMemOut,testWriteAddr,test
 	output [31:0] memIn;
 	
 	//working regs		
-	reg [10:0] percVarMuxOut;
-	reg [10:0] percVarMux1Out;	
+	reg [11:0] percVarMuxOut;
+	reg [11:0] percVarMux1Out;	
 	reg [31:0] percVarMux2Out;
 	reg percVarMux3Out;
 
