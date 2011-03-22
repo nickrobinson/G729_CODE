@@ -26,7 +26,7 @@ module lsf_lsp2FSM(start,clk,reset,lsfAddr,lspAddr,multIn,shrIn,subIn,L_multIn,a
 
 //Inputs
 input start,clk,reset;
-input [10:0] lsfAddr,lspAddr;
+input [11:0] lsfAddr,lspAddr;
 input [15:0] multIn;
 input [15:0] shrIn;
 input [15:0] subIn;
@@ -45,7 +45,7 @@ output reg [15:0] addOutA,addOutB;
 output reg [31:0] L_shrVar1Out;
 output reg [15:0] L_shrNumShiftOut;
 output reg [11:0] constantMemAddr;
-output reg [10:0] memReadAddr,memWriteAddr;
+output reg [11:0] memReadAddr,memWriteAddr;
 output reg [31:0] memOut;
 output reg memWriteEn;
 output reg done;
