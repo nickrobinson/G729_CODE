@@ -26,7 +26,7 @@ module copy_test;
 	reg clk;
 	reg reset;
 	reg start;
-	reg [10:0] xAddr,yAddr;
+	reg [11:0] xAddr,yAddr;
 	reg [15:0] L;
 	wire [31:0] L_addIn;
 	wire [15:0] addIn;
@@ -38,8 +38,8 @@ module copy_test;
 	wire [15:0] addOutA;
 	wire [15:0] addOutB;	
 	wire [31:0] memOut;
-	wire [10:0] memReadAddr;
-	wire [10:0] memWriteAddr;
+	wire [11:0] memReadAddr;
+	wire [11:0] memWriteAddr;
 	wire memWriteEn;
 	wire done;
 	
@@ -50,12 +50,12 @@ module copy_test;
 	
 	//Mux0 regs	
 	reg copyMuxSel;
-	reg [10:0] copyMuxOut;
-	reg [10:0] testReadAddr;
+	reg [11:0] copyMuxOut;
+	reg [11:0] testReadAddr;
 	//mux1 regs
 	reg copyMux1Sel;
-	reg [10:0] copyMux1Out;
-	reg [10:0] testWriteAddr;
+	reg [11:0] copyMux1Out;
+	reg [11:0] testWriteAddr;
 	//mux2 regs
 	reg copyMux2Sel;
 	reg [31:0] copyMux2Out;

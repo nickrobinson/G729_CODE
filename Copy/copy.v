@@ -24,7 +24,7 @@ module copy(clk,reset,start,xAddr,yAddr,L,memIn,addIn,L_addIn,
 				addOutA,addOutB,L_addOutA,L_addOutB,memWriteAddr,memReadAddr,memWriteEn,memOut,done);
 //inputs				
 input clk,reset,start;
-input [10:0] xAddr,yAddr;
+input [11:0] xAddr,yAddr;
 input [15:0] L;
 input [31:0] memIn;
 input [15:0] addIn;
@@ -33,7 +33,7 @@ input [31:0] L_addIn;
 //outputs
 output reg [15:0] addOutA,addOutB;
 output reg [31:0] L_addOutA,L_addOutB;
-output reg [10:0] memWriteAddr,memReadAddr;
+output reg [11:0] memWriteAddr,memReadAddr;
 output reg memWriteEn;
 output reg [31:0] memOut;
 output reg done;
@@ -42,8 +42,11 @@ output reg done;
 reg [2:0] state,nextstate;
 reg [15:0] count,nextcount;
 reg countLD,countReset;
-reg [10:0] tempAddr,nexttempAddr;
-reg tempAddrLD, tempAddrReset;
+
+//state parameters				
+parameter INIT = 3'd0;
+parameter COUNT_LOOP = 3'd1;
+parameter COPY_STATE = 3'd2;
 
 //state flip flop
 always@(posedge clk)
@@ -65,17 +68,13 @@ begin
 		count <= nextcount;
 end
 
-//state parameters				
-parameter INIT = 3'd0;
-parameter COUNT_LOOP = 3'd1;
-parameter COPY_STATE = 3'd2;
+
 
 always @(*)
 begin
 
 	nextstate = state;
-	nextcount = count;
-	nexttempAddr = tempAddr;
+	nextcount = count;	
 	countLD = 0;
 	countReset = 0;
 	done = 0;
