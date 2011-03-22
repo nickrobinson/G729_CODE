@@ -28,13 +28,14 @@ parameter RELSPWED_BUF = 11'd544;					//Relspwed buf uses 16 blocks
 parameter FREQ_PREV = 11'd560;						//freq_prev uses 128 blocks
 parameter LSP_SELECT_1_WEGT = 11'd688;				//LSP Select 1 WEGT uses 8 blocks
 parameter XXXXXXX = 11'd696;							//OPEN 8 blocks
-parameter GET_WEGT_BUF = 11'd704;					//GET_WEGT_BUF 16 blocks
-parameter XXXXXXXXX = 11'd720;					//OPEN 32 blocks
+parameter XXXXXXXX = 11'd704;							//OPEN 16 blocks
+parameter XXXXXXXXX = 11'd720;						//OPEN 32 blocks
 parameter LSP_SELECT_1_RBUF = 11'd752;				//LSP Select 1 RBUF uses 8 blocks
 parameter LSP_SELECT_1_BUF = 11'd760;				//LSP Select 1 internal Buf uses 8 blocks
 parameter A_T = 11'd768;								//A_t uses 32 Blocks
 parameter AQ_T = 11'd800;								//Aq_t uses 32 Blocks
-parameter SYN_FILT_TEMP = 11'd832;					//OPEN 128 Blocks
-parameter XXXXXXXXXXX = 11'd960;						//OPEN 256 Blocks
-parameter XXXXXXXXXX = 11'd1216;						//OPEN 1024 Blocks
-
+parameter SYN_FILT_TEMP = 11'd832;					//syn filt temp uses 128 Blocks
+parameter COR_H = 11'd960;								//Cor_h uses 64 Blocks
+parameter ACELP_RR = 11'd1024;						//Acelp rr uses 640 blocks
+parameter ACELP_H = 11'd1664;							//Acelp h uses 64 blocks
+parameter xxxxxxxxxxxxxxxxxxxxxxxxx					//OPEN 2048 blocks
