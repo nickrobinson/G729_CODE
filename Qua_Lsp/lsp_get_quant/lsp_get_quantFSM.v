@@ -37,9 +37,9 @@ module lsp_get_quantFSM(clk,reset,start,L_addIn,L_subIn,L_multIn,L_macIn,addIn,s
 	input [31:0] memIn;
 	input [15:0] code0,code1,code2;
 	input [11:0] fgAddr;
-	input [10:0] freq_prevAddr;
+	input [11:0] freq_prevAddr;
 	input [11:0] fg_sumAddr;
-	input [10:0] lspqAddr;
+	input [11:0] lspqAddr;
 	input [31:0] constantMemIn;
 	
 	//Outputs
@@ -53,8 +53,8 @@ module lsp_get_quantFSM(clk,reset,start,L_addIn,L_subIn,L_multIn,L_macIn,addIn,s
 	output reg [15:0] shrVar1Out;
 	output reg [15:0] shrVar2Out;		
 	output reg [31:0] memOut;
-	output reg [10:0] memReadAddr;
-	output reg [10:0] memWriteAddr;
+	output reg [11:0] memReadAddr;
+	output reg [11:0] memWriteAddr;
 	output reg memWriteEn;
 	output reg [11:0] constantMemAddr;
 	output reg done;

@@ -26,8 +26,8 @@ module Lsp_prev_update_test;
 	reg clk;
 	reg reset;
 	reg start;
-	reg [10:0] lsp_eleAddr;
-	reg [10:0] freq_prevAddr;
+	reg [11:0] lsp_eleAddr;
+	reg [11:0] freq_prevAddr;
 
    //Outputs
 	wire [31:0] memIn;
@@ -38,8 +38,8 @@ module Lsp_prev_update_test;
 	reg [15:0] updateInEleMem [0:9999];
 	reg [15:0] updateOutMem [0:9999];
 	reg updateMuxSel;
-	reg [10:0] testReadAddr;	
-	reg [10:0] testWriteAddr;
+	reg [11:0] testReadAddr;	
+	reg [11:0] testWriteAddr;
 	reg [31:0] testMemOut;	
 	reg testMemWriteEn;
 
@@ -81,8 +81,8 @@ module Lsp_prev_update_test;
 		testWriteAddr = 0;
 		testMemOut = 0;
 		testMemWriteEn = 0;
-		freq_prevAddr = 11'd64;
-		lsp_eleAddr = 11'd1024;
+		freq_prevAddr = 12'd64;
+		lsp_eleAddr = 12'd1024;
 		updateMuxSel = 1;
 		// Wait 50 ns for global reset to finish
 		#50;

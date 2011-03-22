@@ -26,12 +26,12 @@ module lsp_get_quant_pipe(clk,reset,start,code0,code1,code2,fgAddr,freq_prevAddr
 	input clk,reset,start;	
 	input [15:0] code0,code1,code2;
 	input [11:0] fgAddr;
-	input [10:0] freq_prevAddr;
+	input [11:0] freq_prevAddr;
 	input [11:0] fg_sumAddr;
-	input [10:0] lspqAddr;	
+	input [11:0] lspqAddr;	
 	input getQuantMuxSel;
-	input [10:0] testReadAddr;	
-	input [10:0] testWriteAddr;
+	input [11:0] testReadAddr;	
+	input [11:0] testWriteAddr;
 	input [31:0] testMemOut;	
 	input testMemWriteEn;
 	//Outputs
@@ -57,13 +57,13 @@ module lsp_get_quant_pipe(clk,reset,start,code0,code1,code2,fgAddr,freq_prevAddr
 	wire [15:0] shrVar1Out;
 	wire [15:0] shrVar2Out;		
 	wire [31:0] memOut;
-	wire [10:0] memReadAddr;
-	wire [10:0] memWriteAddr;
+	wire [11:0] memReadAddr;
+	wire [11:0] memWriteAddr;
 	wire memWriteEn;
 	wire [11:0] constantMemAddr;
 	
-	reg [10:0] getQuantMuxOut;
-	reg [10:0] getQuantMux1Out;
+	reg [11:0] getQuantMuxOut;
+	reg [11:0] getQuantMux1Out;
 	reg [31:0] getQuantMux2Out;
 	reg getQuantMux3Out;
 	

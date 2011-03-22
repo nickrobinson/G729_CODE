@@ -28,15 +28,15 @@ input [15:0] addIn;
 input [15:0] subIn; 
 input [31:0] L_addIn;
 input [31:0] memIn;
-input [10:0] lsp_eleAddr;
-input [10:0] freq_prevAddr;
+input [11:0] lsp_eleAddr;
+input [11:0] freq_prevAddr;
 
 //outputs
 output reg [15:0] addOutA,addOutB;
 output reg [15:0] subOutA,subOutB;
 output reg [31:0] L_addOutA,L_addOutB;
-output reg [10:0] memReadAddr;
-output reg [10:0] memWriteAddr;
+output reg [11:0] memReadAddr;
+output reg [11:0] memWriteAddr;
 output reg [31:0] memOut;
 output reg memWriteEn;
 output reg done;
@@ -48,11 +48,11 @@ reg kLD,kReset;
 
 //copy regs and wires
 reg copyStart;
-reg [10:0] xAddr,yAddr;
+reg [11:0] xAddr,yAddr;
 wire [15:0] copyAddOutA,copyAddOutB;
 wire [31:0] copyL_addOutA,copyL_addOutB;
-wire [10:0] copyMemWriteAddr;
-wire [10:0] copyMemReadAddr;
+wire [11:0] copyMemWriteAddr;
+wire [11:0] copyMemReadAddr;
 wire copyMemWriteEn;
 wire [31:0] copyMemOut;
 wire copyDone;

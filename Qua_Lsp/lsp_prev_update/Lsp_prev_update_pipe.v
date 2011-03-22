@@ -24,12 +24,12 @@ module Lsp_prev_update_pipe(clk,reset,start,updateMuxSel,testReadAddr,testWriteA
 //Inputs
 	input clk,reset,start;
 	input updateMuxSel;
-	input [10:0] testReadAddr;	
-	input [10:0] testWriteAddr;
+	input [11:0] testReadAddr;	
+	input [11:0] testWriteAddr;
 	input [31:0] testMemOut;	
 	input testMemWriteEn;
-   input [10:0] lsp_eleAddr;
-	input [10:0] freq_prevAddr;
+   input [11:0] lsp_eleAddr;
+	input [11:0] freq_prevAddr;
 	
 //Outputs
 	output [31:0] memIn;
@@ -43,13 +43,13 @@ module Lsp_prev_update_pipe(clk,reset,start,updateMuxSel,testReadAddr,testWriteA
 	wire [15:0] addOutA,addOutB;
 	wire [15:0] addIn;	
 	wire [31:0] memOut;
-	wire [10:0] memReadAddr;
-	wire [10:0] memWriteAddr;
+	wire [11:0] memReadAddr;
+	wire [11:0] memWriteAddr;
 	wire memWriteEn;
 	
 //Internal regs
-	reg [10:0] updateMuxOut;
-   reg [10:0] updateMux1Out;
+	reg [11:0] updateMuxOut;
+   reg [11:0] updateMux1Out;
 	reg [31:0] updateMux2Out;
 	reg updateMux3Out;
 	

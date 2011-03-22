@@ -32,12 +32,12 @@ module lsp_get_quant_test;
 	reg [15:0] code1;
 	reg [15:0] code2;
 	reg [11:0] fgAddr;
-	reg [10:0] freq_prevAddr;
+	reg [11:0] freq_prevAddr;
 	reg [11:0] fg_sumAddr;
-	reg [10:0] lspqAddr;
+	reg [11:0] lspqAddr;
 	reg getQuantMuxSel;
-	reg [10:0] testReadAddr;
-	reg [10:0] testWriteAddr;
+	reg [11:0] testReadAddr;
+	reg [11:0] testWriteAddr;
 	reg [31:0] testMemOut;
 	reg testMemWriteEn;
 
@@ -97,8 +97,8 @@ module lsp_get_quant_test;
 		testWriteAddr = 0;
 		testMemOut = 0;
 		testMemWriteEn = 0;
-		lspqAddr = 11'd256;
-		freq_prevAddr = 11'd512;				
+		lspqAddr = 12'd256;
+		freq_prevAddr = 12'd512;				
 
 		@(posedge clk);
 		@(posedge clk) #5;
