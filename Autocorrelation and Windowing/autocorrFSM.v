@@ -56,7 +56,7 @@ output reg [15:0] addOutA,addOutB;
 output reg [15:0] subOutA,subOutB;
 output reg writeEn;
 output reg [7:0] xRequested;
-output reg [10:0] writeRequested,readRequested;
+output reg [11:0] writeRequested,readRequested;
 output [31:0] memOut;
 output reg done;
 

@@ -44,12 +44,12 @@ input [15:0] addOutB;
 input [15:0] subOutA; 
 input [15:0] subOutB;
 input writeEn;
-input [10:0] readRequested; 
-input [10:0] writeRequested; 
+input [11:0] readRequested; 
+input [11:0] writeRequested; 
 input [31:0] memOut;
 input autocorrMuxSel;
-input [10:0] testReadRequested;
-input [10:0] testWriteRequested;
+input [11:0] testReadRequested;
+input [11:0] testWriteRequested;
 input [31:0] testMemOut;
 input testMemWrite;
 input [7:0] xRequested;
@@ -81,8 +81,8 @@ output [15:0] xIn;
 output overflow;
 	
 	//mux regs 
-reg [10:0] autocorrMuxOut;
-reg [10:0] autocorrMux1Out;
+reg [11:0] autocorrMuxOut;
+reg [11:0] autocorrMux1Out;
 reg [31:0] autocorrMux2Out;
 reg autocorrMux3Out;
 
@@ -99,11 +99,11 @@ Scratch_Memory_Controller testMem(
 											 .doutb(memIn)
 											);
 Scratch_Memory_Controller testMem2(
-											 .addra({3'd0,xMemAddr[7:0]}),
+											 .addra({4'd0,xMemAddr[7:0]}),
 											 .dina(xMemOut),
 											 .wea(xMemEn),
 											 .clk(clk),
-											 .addrb({3'd0,xRequested[7:0]}),
+											 .addrb({4'd0,xRequested[7:0]}),
 											 .doutb(memTemp)
 											);
 											

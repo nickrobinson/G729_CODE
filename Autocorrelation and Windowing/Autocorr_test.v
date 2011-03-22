@@ -32,8 +32,8 @@ module Autocorr_test;
 	reg [31:0] xMemOut;
 	reg xMemEn;
 	reg autocorrMuxSel;
-	reg [10:0] testReadRequested;
-	reg [10:0] testWriteRequested;
+	reg [11:0] testReadRequested;
+	reg [11:0] testWriteRequested;
 	reg [31:0] testMemOut;
 	reg testMemWrite;
 
