@@ -1,7 +1,7 @@
 ##############################################################
 #
 # Xilinx Core Generator version 12.4
-# Date: Sat Feb 26 20:50:16 2011
+# Date: Tue Mar 22 20:13:53 2011
 #
 ##############################################################
 #
@@ -17,7 +17,7 @@ SET addpads = false
 SET asysymbol = true
 SET busformat = BusFormatAngleBracketNotRipped
 SET createndf = false
-SET designentry = Verilog
+SET designentry = Advanced
 SET device = xc5vlx50t
 SET devicefamily = virtex5
 SET flowvendor = Foundation_ISE
@@ -52,8 +52,8 @@ CSET error_injection_type=Single_Bit_Error_Injection
 CSET fill_remaining_memory_locations=false
 CSET load_init_file=false
 CSET memory_type=Simple_Dual_Port_RAM
-CSET operating_mode_a=READ_FIRST
-CSET operating_mode_b=WRITE_FIRST
+CSET operating_mode_a=WRITE_FIRST
+CSET operating_mode_b=READ_FIRST
 CSET output_reset_value_a=0
 CSET output_reset_value_b=0
 CSET pipeline_stages=0
@@ -85,9 +85,9 @@ CSET use_regcea_pin=false
 CSET use_regceb_pin=false
 CSET use_rsta_pin=false
 CSET use_rstb_pin=false
-CSET write_depth_a=2048
+CSET write_depth_a=4096
 CSET write_width_a=32
 CSET write_width_b=32
 # END Parameters
 GENERATE
-# CRC: f44ca652
+# CRC: df47e565

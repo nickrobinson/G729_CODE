@@ -53,10 +53,10 @@
 scratch_memory_V1 YourInstanceName (
 	.clka(clka),
 	.wea(wea), // Bus [0 : 0] 
-	.addra(addra), // Bus [10 : 0] 
+	.addra(addra), // Bus [11 : 0] 
 	.dina(dina), // Bus [31 : 0] 
 	.clkb(clkb),
-	.addrb(addrb), // Bus [10 : 0] 
+	.addrb(addrb), // Bus [11 : 0] 
 	.doutb(doutb)); // Bus [31 : 0] 
 
 // INST_TAG_END ------ End INSTANTIATION Template ---------

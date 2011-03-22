@@ -52,10 +52,10 @@ component scratch_memory_V1
 	port (
 	clka: in std_logic;
 	wea: in std_logic_vector(0 downto 0);
-	addra: in std_logic_vector(10 downto 0);
+	addra: in std_logic_vector(11 downto 0);
 	dina: in std_logic_vector(31 downto 0);
 	clkb: in std_logic;
-	addrb: in std_logic_vector(10 downto 0);
+	addrb: in std_logic_vector(11 downto 0);
 	doutb: out std_logic_vector(31 downto 0));
 end component;
 
