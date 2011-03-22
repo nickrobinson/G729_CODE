@@ -38,8 +38,8 @@ module Lsp_expand_2_test;
 	
 	//Mux0 regs	
 	reg expand2MuxSel;
-	reg [10:0] testReadAddr;
-	reg [10:0] testWriteAddr;
+	reg [11:0] testReadAddr;
+	reg [11:0] testWriteAddr;
 	reg [31:0] testMemOut;
 	reg testMemWriteEn;
 
