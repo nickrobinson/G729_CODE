@@ -26,7 +26,7 @@ module Lsp_expand_1_2_test;
 	reg clk;
 	reg reset;
 	reg start;	
-	reg [10:0] bufAddr;
+	reg [11:0] bufAddr;
 	reg [3:0]  gap;
 
 	// Outputs	
@@ -40,8 +40,8 @@ module Lsp_expand_1_2_test;
 	
 	//Mux0 regs	
 	reg expandMuxSel;
-	reg [10:0] testReadAddr;
-	reg [10:0] testWriteAddr;
+	reg [11:0] testReadAddr;
+	reg [11:0] testWriteAddr;
 	reg [31:0] testMemOut;
 	reg testMemWriteEn;
 
@@ -50,9 +50,9 @@ module Lsp_expand_1_2_test;
 		//file read in for inputs and output tests
 	initial 
 	begin// samples out are samples from ITU G.729 test vectors
-		$readmemh("speech_lsp_expand_1_2_in.out", expandInMem);
-		$readmemh("speech_lsp_expand_1_2_out.out", expandOutMem);
-		$readmemh("speech_lsp_expand_1_2_gap.out", expandGapMem);
+		$readmemh("tame_lsp_expand_1_2_in.out", expandInMem);
+		$readmemh("tame_lsp_expand_1_2_out.out", expandOutMem);
+		$readmemh("tame_lsp_expand_1_2_gap.out", expandGapMem);
 	end
 	
 	

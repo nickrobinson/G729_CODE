@@ -31,7 +31,7 @@ input [15:0] shrIn;
 input [15:0] addIn;
 input [31:0] L_addIn;
 input [31:0] memIn;
-input [10:0] bufAddr;
+input [11:0] bufAddr;
 input [3:0] gap;
 
 //outputs
@@ -42,8 +42,8 @@ output reg [31:0] L_subOutA,L_subOutB;
 output reg [15:0] shrVar1Out,shrVar2Out;
 output reg [15:0] addOutA,addOutB;
 output reg [31:0] L_addOutA,L_addOutB;
-output reg [10:0] memReadAddr;
-output reg [10:0] memWriteAddr;
+output reg [11:0] memReadAddr;
+output reg [11:0] memWriteAddr;
 output reg memWriteEn;
 
 //Working regs

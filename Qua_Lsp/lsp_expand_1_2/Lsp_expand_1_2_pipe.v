@@ -23,11 +23,11 @@ module Lsp_expand_1_2_pipe(clk, reset,start,expandMuxSel,testReadAddr,testWriteA
 //Inputs
 	input clk, reset,start;
 	input expandMuxSel;
-	input [10:0] testReadAddr;
-	input [10:0] testWriteAddr;
+	input [11:0] testReadAddr;
+	input [11:0] testWriteAddr;
 	input [31:0] testMemOut;
 	input testMemWriteEn;	
-	input [10:0] bufAddr;
+	input [11:0] bufAddr;
 	input [3:0] gap;
 	
 	//Outputs
@@ -35,12 +35,12 @@ module Lsp_expand_1_2_pipe(clk, reset,start,expandMuxSel,testReadAddr,testWriteA
 	output done;
 	
 	//Temp wires & regs	
-	reg [10:0] expandMuxOut;
-	reg [10:0] expandMux1Out;
+	reg [11:0] expandMuxOut;
+	reg [11:0] expandMux1Out;
 	reg [31:0] expandMux2Out;
 	reg expandMux3Out;
-	wire [10:0] memReadAddr;
-	wire [10:0] memWriteAddr;
+	wire [11:0] memReadAddr;
+	wire [11:0] memWriteAddr;
 	wire [31:0] memOut;
 	wire memWriteEn;
 	wire [31:0] L_addOutA,L_addOutB;
