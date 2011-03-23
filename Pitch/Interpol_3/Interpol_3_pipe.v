@@ -22,10 +22,10 @@ module Interpol_3_pipe(
 	input clk,
 	input reset,
 	input start,
-	input [10:0] x,
+	input [11:0] x,
 	input [15:0] frac,
 	input [11:0] inter_3,
-	input [10:0] TBwriteAddrScratch,
+	input [11:0] TBwriteAddrScratch,
 	input [31:0] TBwriteDataScratch,
 	input TBwriteEnScratch,
 	output [15:0] returnS,
@@ -47,7 +47,7 @@ module Interpol_3_pipe(
 	wire [15:0] L_macOutA;
 	wire [15:0] L_macOutB;
 	wire [31:0] L_macOutC;
-	wire [10:0] FSMreadAddrScratch;
+	wire [11:0] FSMreadAddrScratch;
 	wire [11:0] FSMreadAddrConstant;
 
 	Interpol_3 uut(

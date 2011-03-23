@@ -28,10 +28,10 @@ module Interpol_3_test;
 	reg clk;
 	reg reset;
 	reg start;
-	reg [10:0] x;
+	reg [11:0] x;
 	reg [15:0] frac;
 	reg [11:0] inter_3;
-	reg [10:0] TBwriteAddrScratch;
+	reg [11:0] TBwriteAddrScratch;
 	reg [31:0] TBwriteDataScratch;
 	reg TBwriteEnScratch;
 

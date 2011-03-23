@@ -22,7 +22,7 @@ module Interpol_3(
 	input clk,
 	input reset,
 	input start,
-	input [10:0] x,
+	input [11:0] x,
 	input [15:0] frac,
 	input [11:0] inter_3,
 	input [15:0] addIn,
@@ -41,7 +41,7 @@ module Interpol_3(
 	output reg [15:0] L_macOutA,
 	output reg [15:0] L_macOutB,
 	output reg [31:0] L_macOutC,
-	output reg [10:0] FSMreadAddrScratch,
+	output reg [11:0] FSMreadAddrScratch,
 	output reg [11:0] FSMreadAddrConstant,
 	output reg [15:0] returnS,
 	output reg done
@@ -63,7 +63,7 @@ module Interpol_3(
 	parameter UP_SAMP = 'd3;
 	
 	reg [3:0] state, nextstate;
-	reg [10:0] X, nextX;
+	reg [11:0] X, nextX;
 	reg resetX, ldX;
 	reg [15:0] FRAC, nextFRAC;
 	reg resetFRAC, ldFRAC;
@@ -251,7 +251,7 @@ module Interpol_3(
 		L_macOutA = 0;
 		L_macOutB = 0;
 		L_macOutC = 0;
-		FSMreadAddrScratch = 11'bzzzzzzzzzzz;
+		FSMreadAddrScratch = 12'bzzzzzzzzzzz;
 		FSMreadAddrConstant = 0;
 		done = 0;
 		case (state)
