@@ -20,33 +20,31 @@
 //////////////////////////////////////////////////////////////////////////////////
 module Lsp_prev_extract_test;
 `include "paramList.v"
+`include "constants_param_list.v"
 
 	reg start;
 	reg clk;
 	reg reset;
-	reg [10:0] lspele;
-	reg [10:0] fg;
-	reg [10:0] fg_sum_inv;
-	reg [10:0] freq_prev;
-	reg [10:0] lsp;
+	reg [11:0] lspele;
+	reg [11:0] freq_prev;
+	reg [11:0] lsp;
 	
 	//Outputs
 	wire done;
-	wire [31:0] readIn;
-	wire [10:0] readAddr;
-	wire [10:0] writeAddr;
-	wire [31:0] writeOut;	
+	wire [31:0] readIn;	
 	integer i, j;
 
 	reg Mux0Sel;
-	reg [10:0] testReadRequested;
+	reg [11:0] testReadRequested;
 	reg Mux1Sel;
-	reg [10:0] testWriteRequested;
+	reg [11:0] testWriteRequested;
 	reg Mux2Sel;
 	reg [31:0] testWriteOut;
 	reg Mux3Sel;
 	reg testWrite;
-
+	reg [11:0] fgAddr;
+	reg [11:0] fg_sum_invAddr;
+	
 
 	//I/O regs
 	reg [15:0] lspelec [0:40000];
@@ -73,21 +71,17 @@ module Lsp_prev_extract_test;
 		.Mux0Sel(Mux0Sel), 
 		.Mux1Sel(Mux1Sel), 
 		.Mux2Sel(Mux2Sel), 
-		.Mux3Sel(Mux3Sel), 
-		.readAddr(readAddr), 
-		.writeAddr(writeAddr), 
-		.writeOut(writeOut), 
-		.writeEn(writeEn), 
+		.Mux3Sel(Mux3Sel), 		
 		.testReadRequested(testReadRequested), 
 		.testWriteRequested(testWriteRequested), 
 		.testWriteOut(testWriteOut), 
 		.testWrite(testWrite), 
 		.readIn(readIn),
 		.lspele(lspele),
-		.fg(fg),
-		.fg_sum_inv(fg_sum_inv),
 		.freq_prev(freq_prev),
-		.lsp(lsp)
+		.lsp(lsp),
+		.fgAddr(fgAddr),
+		.fg_sum_invAddr(fg_sum_invAddr)
 		);
 	
 		initial begin
@@ -95,11 +89,9 @@ module Lsp_prev_extract_test;
 		start = 0;
 		clk = 0;
 		reset = 0;
-		lspele = 11'd288;
-		fg = 11'd384;
-		freq_prev = 11'd320;
-		fg_sum_inv = 11'd304;
-		lsp = 11'd448;
+		lspele = 12'd288;
+		freq_prev = 12'd320;
+		lsp = 12'd448;
 		
 		#50
 		reset = 1;
@@ -119,30 +111,18 @@ module Lsp_prev_extract_test;
 			for(i=0;i<10;i=i+1)
 			begin
 				#100;
-				testWriteRequested = {lsp[10:4],i[3:0]};
+				testWriteRequested = {lsp[11:4],i[3:0]};
 				testWriteOut = lspc[10*j+i];
 				testWrite = 1;	
 				#100;			
 
-			
-				#100;
-				testWriteRequested = {fg_sum_inv[10:4], i[3:0]};
-				testWriteOut = fg_sum_invc[10*j+i];
-				testWrite = 1;	
-				#100;
 			end
 			
 			for(i=0;i<40;i=i+1)
 			begin
-				#100;
-				testWriteRequested = {fg[10:6],i[5:0]};
-				testWriteOut = fgc[40*j+i];
-				testWrite = 1;	
-				#100;			
-
 			
 				#100;
-				testWriteRequested = {freq_prev[10:6], i[5:0]};
+				testWriteRequested = {freq_prev[11:6], i[5:0]};
 				testWriteOut = freq_prevc[40*j+i];
 				testWrite = 1;	
 				#100;
@@ -150,8 +130,20 @@ module Lsp_prev_extract_test;
 			
 			Mux1Sel = 1;
 			Mux2Sel = 1;
-			Mux3Sel = 1;		
-	
+			Mux3Sel = 1;	
+			
+			if(j%2==1)
+			begin
+				fgAddr = FG + 64;
+				fg_sum_invAddr = FG_SUM_INV + 16;	
+			end
+			
+			else
+			begin
+				fgAddr = FG;
+				fg_sum_invAddr = FG_SUM_INV;
+			end
+			
 			#50;		
 			start = 1;
 			#50;
@@ -166,7 +158,7 @@ module Lsp_prev_extract_test;
 			//ap read
 			for (i = 0; i<10;i=i+1)
 			begin				
-					testReadRequested = {lspele[10:4],i[3:0]};
+					testReadRequested = {lspele[11:4],i[3:0]};
 					@(posedge clk);
 					@(posedge clk);
 					if (readIn != lspelec[j*10+i])
