@@ -32,13 +32,13 @@ input [31:0] L_addIn;
 input [31:0] L_subIn;
 input [31:0] L_shlIn;
 input L_shlDone;
-input [10:0] xAddr;
-input [10:0] hAddr;
-input [10:0] yAddr;
+input [11:0] xAddr;
+input [11:0] hAddr;
+input [11:0] yAddr;
 
 //outputs
 output reg memWriteEn;
-output reg [10:0]  memWriteAddr;
+output reg [11:0]  memWriteAddr;
 output reg [31:0] memOut;
 output reg L_shlReady, done;
 output reg [15:0] L_macOutA,L_macOutB;
@@ -60,9 +60,9 @@ reg tempXLd,tempXReset;
 reg L_shlDoneReg;
 reg L_shlDoneReset;
 
-wire [10:0] xAddr;
-wire [10:0] hAddr;
-wire [10:0] yAddr;
+wire [11:0] xAddr;
+wire [11:0] hAddr;
+wire [11:0] yAddr;
 
 //state parameters
 parameter STATE_INIT = 3'd0;

@@ -31,17 +31,17 @@ module convolve_test_v;
 	reg start;
 	reg lagMuxSel;
 	reg lagMux1Sel;
-	reg [10:0] testReadRequested;
-	reg [10:0] testWriteRequested;
+	reg [11:0] testReadRequested;
+	reg [11:0] testWriteRequested;
 	reg [31:0] testWriteOut;
 	reg testWriteEnable;
 	
 	wire done;
 	wire [31:0] memIn;	
 
-	reg [10:0] xAddr;
-	reg [10:0] hAddr;
-	reg [10:0] yAddr;	
+	reg [11:0] xAddr;
+	reg [11:0] hAddr;
+	reg [11:0] yAddr;	
 	
 	reg [15:0] inVector[0:9999];
 	reg [15:0] impulse[0:9999];
@@ -86,9 +86,9 @@ module convolve_test_v;
 		testWriteRequested = 0;
 		testWriteOut = 0;
 		testWriteEnable = 0;		
-		xAddr = 11'd560;
-		hAddr = 11'd624;
-		yAddr = 11'd688;
+		xAddr = 12'd560;
+		hAddr = 12'd624;
+		yAddr = 12'd688;
 		
 		
 		@(posedge clk) #5;
@@ -111,7 +111,7 @@ module convolve_test_v;
 			begin			
 				@(posedge clk);
 				@(posedge clk) #5;
-				testWriteRequested = {xAddr[10:6],i[5:0]};
+				testWriteRequested = {xAddr[11:6],i[5:0]};
 				testWriteOut = inVector[(j*40)+i];
 				testWriteEnable = 1;
 				@(posedge clk);
@@ -122,7 +122,7 @@ module convolve_test_v;
 			begin			
 				@(posedge clk);			
 				@(posedge clk) #5;
-				testWriteRequested = {hAddr[10:6],i[5:0]};
+				testWriteRequested = {hAddr[11:6],i[5:0]};
 				testWriteOut = impulse[(j*40)+i];
 				testWriteEnable = 1;
 				@(posedge clk);			
@@ -143,7 +143,7 @@ module convolve_test_v;
 			lagMuxSel = 1;
 			for(i = 0; i<40;i=i+1)
 			begin			
-				testReadRequested = {yAddr[10:6],i[5:0]};
+				testReadRequested = {yAddr[11:6],i[5:0]};
 				@(posedge clk);
 				@(posedge clk) #5;
 				if (memIn != outVector[(j*40)+i])

@@ -37,13 +37,13 @@ module Convolve_Pipe(clk,reset,lagMuxSel,lagMux1Sel,testReadRequested,testWriteR
 	input [15:0] L_shlNumShiftOut;
 	input L_shlReady;
 	input memWriteEn;
-	input [10:0] memWriteAddr;
+	input [11:0] memWriteAddr;
 	input [31:0] memOut;
 	input lagMuxSel;
 	input lagMux1Sel;
 	input testWriteEnable;
-	input [10:0] testReadRequested;
-	input [10:0] testWriteRequested;
+	input [11:0] testReadRequested;
+	input [11:0] testWriteRequested;
 	input [31:0] testWriteOut;
 	
 	//output
@@ -57,8 +57,8 @@ module Convolve_Pipe(clk,reset,lagMuxSel,lagMux1Sel,testReadRequested,testWriteR
 	wire unusedOverflow;	
 	
 	//working regs
-	reg [10:0] lagMuxOut;
-	reg [10:0] lagMux1Out;
+	reg [11:0] lagMuxOut;
+	reg [11:0] lagMux1Out;
 	reg [31:0] lagMux2Out;
 	reg lagMux3Out;
 	

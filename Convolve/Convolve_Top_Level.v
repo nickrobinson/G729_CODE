@@ -29,11 +29,11 @@ module Convolve_Top_Level(clk,reset,start,done,memIn,lagMuxSel,lagMux1Sel,
 	input start;
 	input lagMuxSel;
 	input lagMux1Sel;
-	input [10:0] xAddr;
-	input [10:0] hAddr;
-	input [10:0] yAddr;
-	input [10:0] testReadRequested;
-	input [10:0] testWriteRequested;
+	input [11:0] xAddr;
+	input [11:0] hAddr;
+	input [11:0] yAddr;
+	input [11:0] testReadRequested;
+	input [11:0] testWriteRequested;
 	input [31:0] testWriteOut;
 	input testWriteEnable;		
 
@@ -41,7 +41,7 @@ module Convolve_Top_Level(clk,reset,start,done,memIn,lagMuxSel,lagMux1Sel,
 	output [31:0] memIn;
 	
 	wire memWriteEn;
-	wire [10:0] memWriteAddr;
+	wire [11:0] memWriteAddr;
 	wire [31:0] memOut;
 	wire [31:0] L_macIn;
 	wire [31:0] L_subIn;
