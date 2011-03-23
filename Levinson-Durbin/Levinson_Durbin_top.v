@@ -26,7 +26,7 @@ module Levinson_Durbin_test_top(clock,reset,start,mux0sel,mux1sel,mux2sel,mux3se
 	input clock,reset,start;
 	input mux0sel,mux1sel,mux2sel,mux3sel;
 	input testWriteEnable;
-	input [10:0] testWriteAddr,testReadAddr;
+	input [11:0] testWriteAddr,testReadAddr;
 	input [31:0] testWriteOut;
 	
 	output done;
@@ -72,8 +72,8 @@ module Levinson_Durbin_test_top(clock,reset,start,mux0sel,mux1sel,mux2sel,mux3se
 	wire [15:0] sub_outb;
 	wire sub_overflow;
 	wire [15:0] sub_in;
-	wire [10:0] scratch_mem_read_addr;
-	wire [10:0] scratch_mem_write_addr;
+	wire [11:0] scratch_mem_read_addr;
+	wire [11:0] scratch_mem_write_addr;
 	wire [31:0] scratch_mem_out;
 	wire scratch_mem_write_en;
 	wire [31:0] scratch_mem_in;

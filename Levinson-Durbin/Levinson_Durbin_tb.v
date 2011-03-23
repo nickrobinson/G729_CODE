@@ -40,10 +40,10 @@ module Levinson_Durbin_tb_1_v;
 	reg [15:0] levinson_out_rc [0:9999];
 	//mux0regs
 	reg mux0sel;
-	reg [10:0] testReadAddr;
+	reg [11:0] testReadAddr;
 	//mux1regs
 	reg mux1sel;
-	reg [10:0] testWriteAddr;
+	reg [11:0] testWriteAddr;
 	//mux2regs
 	reg mux2sel;
 	reg [31:0] testWriteOut;
@@ -104,7 +104,7 @@ module Levinson_Durbin_tb_1_v;
 			for(i=0;i<11;i=i+1)
 			begin
 				#50;
-				testWriteAddr = {LAG_WINDOW_R_PRIME[10:4],i[3:0]};
+				testWriteAddr = {LAG_WINDOW_R_PRIME[11:4],i[3:0]};
 				testWriteOut = levinson_in[j*11+i];
 				testWriteEnable = 1;
 				#50;
@@ -124,7 +124,7 @@ module Levinson_Durbin_tb_1_v;
 			for(i=0;i<11;i=i+1)
 			begin
 				k = i + 11;
-				testReadAddr = {A_T[10:4],k[3:0]};
+				testReadAddr = {A_T[11:4],k[3:0]};
 				@(posedge clock);
 				@(posedge clock);
 				if (scratch_mem_in != levinson_out_a[11*j+i])

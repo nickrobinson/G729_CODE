@@ -45,7 +45,7 @@ module Levinson_Durbin_FSM(clock,reset,start,done,abs_in,abs_out,negate_out,nega
 	output reg [15:0] mult_outa,mult_outb,L_mult_outa,L_mult_outb,L_mac_outa,L_mac_outb;
 	output reg [31:0] L_mac_outc;
 	
-	output reg [10:0] scratch_mem_read_addr,scratch_mem_write_addr;
+	output reg [11:0] scratch_mem_read_addr,scratch_mem_write_addr;
 	output reg [31:0] scratch_mem_out;
 	output reg scratch_mem_write_en;
 	input [31:0] scratch_mem_in;

@@ -83,12 +83,12 @@ module Levinson_Durbin_test_pipe(clock,reset,L_sub_outa,L_sub_outb,L_sub_overflo
 	input mux2sel;
 	input mux3sel;
 	
-	input [10:0] scratch_mem_write_addr;
-	input [10:0] scratch_mem_read_addr;
+	input [11:0] scratch_mem_write_addr;
+	input [11:0] scratch_mem_read_addr;
 	input [31:0] scratch_mem_out;
 	input scratch_mem_write_en;
-	input [10:0] testWriteAddr;
-	input [10:0] testReadAddr;
+	input [11:0] testWriteAddr;
+	input [11:0] testReadAddr;
 	input [31:0] testWriteOut;
 	input testWriteEnable;
 	
@@ -119,8 +119,8 @@ module Levinson_Durbin_test_pipe(clock,reset,L_sub_outa,L_sub_outb,L_sub_overflo
 		
 		sub i_sub_1(.a(sub_outa),.b(sub_outb),.overflow(sub_overflow),.diff(sub_in));
 		
-	reg [10:0] mux0out;
-	reg [10:0] mux1out;
+	reg [11:0] mux0out;
+	reg [11:0] mux1out;
 	reg [31:0] mux2out;
 	reg mux3out;
 		
