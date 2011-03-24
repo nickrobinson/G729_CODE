@@ -24,19 +24,19 @@ module lsp_lsf_pipe(clock,reset,start,mem_Mux1Sel,mem_Mux2Sel,mem_Mux3Sel,mem_Mu
 
 	input clock,reset,start;
 	input mem_Mux1Sel,mem_Mux2Sel,mem_Mux3Sel,mem_Mux4Sel;
-	input [10:0] lsf_addr;
-	input [10:0] test_write_addr,test_read_addr;
+	input [11:0] lsf_addr;
+	input [11:0] test_write_addr,test_read_addr;
 	input [31:0] test_write;
 	input test_write_en;
 	
 	output done;
 	output [31:0] scratch_mem_in;
 	
-	wire [10:0] scratch_mem_write_addr,scratch_mem_read_addr;
+	wire [11:0] scratch_mem_write_addr,scratch_mem_read_addr;
 	wire [31:0] scratch_mem_out;
 	wire scratch_mem_write_en;
 	
-	reg [10:0] mem_Mux1Out,mem_Mux4Out;
+	reg [11:0] mem_Mux1Out,mem_Mux4Out;
 	reg [31:0] mem_Mux2Out;
 	reg mem_Mux3Out;
 	

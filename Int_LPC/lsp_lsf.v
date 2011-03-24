@@ -30,12 +30,12 @@ module lsp_lsf(clock,reset,start,done,scratch_mem_read_addr,scratch_mem_write_ad
 	
 	input clock,reset,start;
 	
-	input [10:0] lsf_addr;
+	input [11:0] lsf_addr;
 	
 	input [31:0] scratch_mem_in;
 	input [31:0] constant_mem_in;
 	
-	output reg [10:0] scratch_mem_read_addr,scratch_mem_write_addr;
+	output reg [11:0] scratch_mem_read_addr,scratch_mem_write_addr;
 	output reg [31:0] scratch_mem_out;
 	output reg scratch_mem_write_en;
 	

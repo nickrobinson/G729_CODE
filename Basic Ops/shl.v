@@ -26,7 +26,7 @@ input [15:0] var1, var2;
 
 // result = result after shifting
 output reg [15:0] result;
-output reg [15:0] overflow;
+output reg overflow;
 
 wire [15:0] negvar2 = ~(var2) + 16'd1; 
 
