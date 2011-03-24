@@ -20,12 +20,12 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 module LSP_stability_test;
-
+`include "constants_param_list.v"
 	// Inputs
 	reg clk;
 	reg reset;
 	reg start;
-	reg [10:0] bufAddr;
+	reg [11:0] bufAddr;
 	
 	// Outputs
 	wire done;
@@ -36,8 +36,8 @@ module LSP_stability_test;
 	reg [15:0] stabilityOutMem [0:9999];	
 
 	reg stabilityMuxSel;
-	reg [10:0] testReadAddr;
-	reg [10:0] testWriteAddr;
+	reg [11:0] testReadAddr;
+	reg [11:0] testWriteAddr;
 	reg [31:0] testMemOut;	
 	reg testMemWriteEn;
 	
@@ -46,8 +46,8 @@ module LSP_stability_test;
 		//file read in for inputs and output tests
 	initial 
 	begin// samples out are samples from ITU G.729 test vectors
-		$readmemh("lsp_lsp_stability_in.out", stabilityInMem);
-		$readmemh("lsp_lsp_stability_out.out", stabilityOutMem);
+		$readmemh("speech_lsp_stability_in.out", stabilityInMem);
+		$readmemh("speech_lsp_stability_out.out", stabilityOutMem);
 	end   
 	
 	// Instantiate the Unit Under Test (UUT)
@@ -90,7 +90,7 @@ module LSP_stability_test;
 			for(i=0;i<10;i=i+1)
 			begin
 				#100;				
-				testWriteAddr = {bufAddr[10:4],i[3:0]};
+				testWriteAddr = {bufAddr[11:4],i[3:0]};
 				testMemOut = stabilityInMem[j*10+i];
 				testMemWriteEn = 1;	
 				#100;
@@ -108,7 +108,7 @@ module LSP_stability_test;
 			stabilityMuxSel = 1;
 			for (i = 0; i<10;i=i+1)
 			begin				
-					testReadAddr = {bufAddr[10:4],i[3:0]};
+					testReadAddr = {bufAddr[11:4],i[3:0]};
 					#50;
 					if (memIn != stabilityOutMem[10*j+i])
 						$display($time, " ERROR: buf[%d] = %x, expected = %x", 10*j+i, memIn, stabilityOutMem[10*j+i]);

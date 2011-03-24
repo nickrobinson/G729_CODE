@@ -23,23 +23,23 @@ module LSP_stability_pipe(clk, reset,start,stabilityMuxSel,testReadAddr,testWrit
 	//Inputs
 	input clk, reset,start;
 	input stabilityMuxSel;
-	input [10:0] testReadAddr;
-	input [10:0] testWriteAddr;
+	input [11:0] testReadAddr;
+	input [11:0] testWriteAddr;
 	input [31:0] testMemOut;
 	input testMemWriteEn;	
-	input [10:0] bufAddr;
+	input [11:0] bufAddr;
 	
 	//Outputs
 	output [31:0] memIn;
 	output done;
 	
 	//Temp wires & regs	
-	reg [10:0] stabilityMuxOut;
-	reg [10:0] stabilityMux1Out;
+	reg [11:0] stabilityMuxOut;
+	reg [11:0] stabilityMux1Out;
 	reg [31:0] stabilityMux2Out;
 	reg stabilityMux3Out;
-	wire [10:0] memReadAddr;
-	wire [10:0] memWriteAddr;
+	wire [11:0] memReadAddr;
+	wire [11:0] memWriteAddr;
 	wire [31:0] memOut;
 	wire memWriteEn;
 	wire [31:0] L_addOutA,L_addOutB;

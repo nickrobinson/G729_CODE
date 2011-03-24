@@ -24,7 +24,7 @@ module Lsp_stability_FSM(clk,reset,start,bufAddr,addIn,subIn,L_addIn,L_subIn,mem
 
 //Inputs
 input clk,reset,start;
-input [10:0] bufAddr;
+input [11:0] bufAddr;
 input [15:0] addIn;
 input [15:0] subIn;
 input [31:0] L_addIn;
@@ -36,8 +36,8 @@ output reg [15:0] addOutA,addOutB;
 output reg [15:0] subOutA,subOutB;
 output reg [31:0] L_addOutA,L_addOutB;
 output reg [31:0] L_subOutA,L_subOutB;
-output reg [10:0] memReadAddr;
-output reg [10:0] memWriteAddr;
+output reg [11:0] memReadAddr;
+output reg [11:0] memWriteAddr;
 output reg [31:0] memOut;
 output reg memWriteEn;
 output reg done;
@@ -190,13 +190,13 @@ begin
 			if(j>=9)
 			begin
 				nextstate = STABILITY_LOW;
-				memReadAddr = {bufAddr[10:4],4'd0};
+				memReadAddr = {bufAddr[11:4],4'd0};
 			end
 			else if(j<9)
 			begin
 				addOutA = {12'd0,j[3:0]};
 				addOutB = 16'd1;
-				memReadAddr = {bufAddr[10:4],addIn[3:0]};
+				memReadAddr = {bufAddr[11:4],addIn[3:0]};
 				nextstate = FOR_LOOP1_BODY1;
 			end
 		end//FOR_LOOP1
@@ -209,7 +209,7 @@ begin
 			else if(memIn[15] == 0)
 				nextL_acc = {16'd0,memIn[15:0]};
 			L_accLD = 1;
-			memReadAddr = {bufAddr[10:4],j[3:0]};
+			memReadAddr = {bufAddr[11:4],j[3:0]};
 			nextstate = FOR_LOOP1_BODY2;
 		end//FOR_LOOP1_BODY1
 		
@@ -246,7 +246,7 @@ begin
 		begin
 			addOutA = {12'd0,j[3:0]};
 			addOutB = 16'd1;
-			memReadAddr = {bufAddr[10:4],addIn[3:0]};
+			memReadAddr = {bufAddr[11:4],addIn[3:0]};
 			nextstate = FOR_LOOP1_BODY4;
 		end//FOR_LOOP1_BODY3
 		
@@ -254,7 +254,7 @@ begin
 		begin
 			nexttemp = memIn;
 			tempLD = 1;
-			memReadAddr = {bufAddr[10:4],j[3:0]};
+			memReadAddr = {bufAddr[11:4],j[3:0]};
 			nextstate = FOR_LOOP1_BODY5;
 		end//FOR_LOOP1_BODY4
 		
@@ -263,7 +263,7 @@ begin
 		begin
 			addOutA = {12'd0,j[3:0]};
 			addOutB = 16'd1;
-			memWriteAddr = {bufAddr[10:4],addIn[3:0]};
+			memWriteAddr = {bufAddr[11:4],addIn[3:0]};
 			memOut = memIn;
 			memWriteEn = 1;
 			nextstate = FOR_LOOP1_BODY6;
@@ -272,7 +272,7 @@ begin
 		//buf[j] = tmp;
 		FOR_LOOP1_BODY6:		//state 7
 		begin
-			memWriteAddr = {bufAddr[10:4],j[3:0]};
+			memWriteAddr = {bufAddr[11:4],j[3:0]};
 			memOut = temp;
 			memWriteEn = 1;
 			addOutA = {12'd0,j[3:0]};
@@ -290,7 +290,7 @@ begin
 			subOutB = 16'd40;
 			if(subIn[15] == 1)
 			begin
-				memWriteAddr = {bufAddr[10:4],4'd0};
+				memWriteAddr = {bufAddr[11:4],4'd0};
 				memOut = 31'd40;
 				memWriteEn = 1;
 			end
@@ -304,13 +304,13 @@ begin
 			if(j>=9)
 			begin
 				nextstate = STABILITY_HIGH;
-				memReadAddr = {bufAddr[10:4],4'd9};
+				memReadAddr = {bufAddr[11:4],4'd9};
 			end
 			else if(j<9)
 			begin
 				addOutA = {12'd0,j[3:0]};
 				addOutB = 16'd1;
-				memReadAddr = {bufAddr[10:4],addIn[3:0]};
+				memReadAddr = {bufAddr[11:4],addIn[3:0]};
 				nextstate = FOR_LOOP2_BODY1;
 			end
 		end//FOR_LOOP2
@@ -323,7 +323,7 @@ begin
 			else if(memIn[15] == 0)
 				nextL_acc = {16'd0,memIn[15:0]};
 			L_accLD = 1;
-			memReadAddr = {bufAddr[10:4],j[3:0]};
+			memReadAddr = {bufAddr[11:4],j[3:0]};
 			nextstate = FOR_LOOP2_BODY2;
 		end//FOR_LOOP2_BODY1
 		
@@ -352,7 +352,7 @@ begin
 			L_subOutB = 32'd321;
 			if(L_subIn[31] == 1)
 			begin
-				memReadAddr = {bufAddr[10:4],j[3:0]};
+				memReadAddr = {bufAddr[11:4],j[3:0]};
 				nextstate = FOR_LOOP2_BODY4;
 			end
 			else
@@ -373,7 +373,7 @@ begin
 			memOut = {16'd0,addIn[15:0]};
 			L_addOutA = {27'd0,j[3:0]};
 			L_addOutB = 32'd1;
-			memWriteAddr = {bufAddr[10:4],L_addIn[3:0]};
+			memWriteAddr = {bufAddr[11:4],L_addIn[3:0]};
 			memWriteEn = 1;
 			nextstate  = FOR_LOOP2_BODY5;
 		end//FOR_LOOP2_BODY4
@@ -396,7 +396,7 @@ begin
 			subOutB = 16'd25681;
 			if(subIn[15] == 0)
 			begin
-				memWriteAddr = {bufAddr[10:4],4'd9};
+				memWriteAddr = {bufAddr[11:4],4'd9};
 				memOut = 32'd25681;
 				memWriteEn = 1;
 			end
