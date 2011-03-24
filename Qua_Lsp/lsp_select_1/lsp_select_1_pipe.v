@@ -49,7 +49,7 @@ module lsp_select_1_pipe(clk, reset, start, memIn, done, lagMuxSel, lagMux1Sel, 
 	wire [15:0] L_macOutB;
 	wire [31:0] L_macOutC;
 	wire memWriteEn;
-	wire [10:0] memWriteAddr;
+	wire [11:0] memWriteAddr;
 	wire [11:0] constMemAddr;
 	wire [31:0] constMemIn;
 	
@@ -57,12 +57,12 @@ module lsp_select_1_pipe(clk, reset, start, memIn, done, lagMuxSel, lagMux1Sel, 
 	
 	//Mux0 regs	
 	input lagMuxSel;
-	reg [10:0] lagMuxOut;
-	input [10:0] testReadRequested;
+	reg [11:0] lagMuxOut;
+	input [11:0] testReadRequested;
 	//Mux1 regs	
 	input lagMux1Sel;
-	reg [10:0] lagMux1Out;
-	input [10:0] testWriteRequested;
+	reg [11:0] lagMux1Out;
+	input [11:0] testWriteRequested;
 	//Mux2 regs	
 	input lagMux2Sel;
 	reg [31:0] lagMux2Out;
