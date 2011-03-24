@@ -24,15 +24,15 @@ module Lsp_last_select(clk, start, reset, done, L_tdist, readIn, writeAddr, writ
 	input clk;
 	input start;
 	input reset;
-	input [10:0] L_tdist;
+	input [11:0] L_tdist;
 	input [31:0] readIn;
 	
 	
 	output reg done;
-	output reg [10:0] writeAddr;
+	output reg [11:0] writeAddr;
 	output reg [31:0] writeOut;
 	output reg writeEn;
-	output reg [10:0] readAddr;
+	output reg [11:0] readAddr;
 	
 	input [31:0] L_sub_in;
 	output reg [31:0] L_sub_a, L_sub_b;
@@ -43,7 +43,7 @@ module Lsp_last_select(clk, start, reset, done, L_tdist, readIn, writeAddr, writ
 	parameter S3 = 3;
 	
 	
-	wire [10:0] L_tdist;
+	wire [11:0] L_tdist;
 	reg [31:0] temp_L_tdist, next_temp_L_tdist;
 	reg [31:0] L_temp, next_L_temp;
 	reg [1:0] state, nextstate;
@@ -98,14 +98,14 @@ module Lsp_last_select(clk, start, reset, done, L_tdist, readIn, writeAddr, writ
 						writeAddr = QUA_LSP_MODE_INDEX;
 						writeOut = 0;
 						writeEn = 1;															//*mode_index = 0;
-						readAddr = {L_tdist[10:1], 1'd0};
+						readAddr = {L_tdist[11:1], 1'd0};
 						nextstate = S2;
 					end
 					
 				S2:
 					begin
 						next_temp_L_tdist = readIn;
-						readAddr = {L_tdist[10:1], 1'd1};
+						readAddr = {L_tdist[11:1], 1'd1};
 						nextstate = S3;
 					end
 					

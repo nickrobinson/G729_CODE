@@ -26,17 +26,17 @@ module Lsp_last_select_pipe(clk, start, reset, done, Mux0Sel, Mux1Sel, Mux2Sel, 
 	input reset;
 	input start;
 	input Mux0Sel, Mux1Sel, Mux2Sel, Mux3Sel;
-	input [10:0] testReadRequested;
-	input [10:0] testWriteRequested;
+	input [11:0] testReadRequested;
+	input [11:0] testWriteRequested;
 	input [31:0] testWriteOut;
 	input testWrite;
-	input [10:0] L_tdist;
+	input [11:0] L_tdist;
 		
 	//Outputs
-	output [10:0] readAddr;
+	output [11:0] readAddr;
 	output [31:0] readIn;	
 	output done;
-	output [10:0] writeAddr;
+	output [11:0] writeAddr;
 	output [31:0] writeOut;
 	output writeEn;
 
@@ -47,8 +47,8 @@ module Lsp_last_select_pipe(clk, start, reset, done, Mux0Sel, Mux1Sel, Mux2Sel, 
 	
 		
 	//working regs
-	reg [10:0] Mux0Out;
-	reg [10:0] Mux1Out;
+	reg [11:0] Mux0Out;
+	reg [11:0] Mux1Out;
 	reg [31:0] Mux2Out;
 	reg Mux3Out;
 	
