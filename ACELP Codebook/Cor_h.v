@@ -55,58 +55,58 @@ output reg [31:0] L_add1OutA,L_add1OutB;
 output reg [31:0] L_add2OutA,L_add2OutB;
 output reg [31:0] L_add3OutA,L_add3OutB;
 output reg [31:0] L_add4OutA,L_add4OutB;
-output reg [10:0] memReadAddr,memWriteAddr;
+output reg [11:0] memReadAddr,memWriteAddr;
 output reg [31:0] memOut;
 output reg memWriteEn;
 output reg done;
 
 //internal registers
 reg [6:0] state,nextstate;
-reg [10:0] rri0i0,nextrri0i0;
+reg [11:0] rri0i0,nextrri0i0;
 reg rri0i0Reset,rri0i0LD;
-reg [10:0] rri1i1,nextrri1i1;
+reg [11:0] rri1i1,nextrri1i1;
 reg rri1i1Reset,rri1i1LD;
-reg [10:0] rri2i2,nextrri2i2;
+reg [11:0] rri2i2,nextrri2i2;
 reg rri2i2Reset,rri2i2LD;
-reg [10:0] rri3i3,nextrri3i3;
+reg [11:0] rri3i3,nextrri3i3;
 reg rri3i3Reset,rri3i3LD;
-reg [10:0] rri4i4,nextrri4i4;
+reg [11:0] rri4i4,nextrri4i4;
 reg rri4i4Reset,rri4i4LD;
-reg [10:0] rri0i1,nextrri0i1;
+reg [11:0] rri0i1,nextrri0i1;
 reg rri0i1Reset,rri0i1LD;
-reg [10:0] rri0i2,nextrri0i2;
+reg [11:0] rri0i2,nextrri0i2;
 reg rri0i2Reset,rri0i2LD;
-reg [10:0] rri0i3,nextrri0i3;
+reg [11:0] rri0i3,nextrri0i3;
 reg rri0i3Reset,rri0i3LD;
-reg [10:0] rri0i4,nextrri0i4;
+reg [11:0] rri0i4,nextrri0i4;
 reg rri0i4Reset,rri0i4LD;
-reg [10:0] rri1i2,nextrri1i2;
+reg [11:0] rri1i2,nextrri1i2;
 reg rri1i2Reset,rri1i2LD;
-reg [10:0] rri1i3,nextrri1i3;
+reg [11:0] rri1i3,nextrri1i3;
 reg rri1i3Reset,rri1i3LD;
-reg [10:0] rri1i4,nextrri1i4;
+reg [11:0] rri1i4,nextrri1i4;
 reg rri1i4Reset,rri1i4LD;
-reg [10:0] rri2i3,nextrri2i3;
+reg [11:0] rri2i3,nextrri2i3;
 reg rri2i3Reset,rri2i3LD;
-reg [10:0] rri2i4,nextrri2i4;
+reg [11:0] rri2i4,nextrri2i4;
 reg rri2i4Reset,rri2i4LD;
-reg [10:0] p0,nextp0;
+reg [11:0] p0,nextp0;
 reg p0Reset,p0LD;
-reg [10:0] p1,nextp1;
+reg [11:0] p1,nextp1;
 reg p1Reset,p1LD;
-reg [10:0] p2,nextp2;
+reg [11:0] p2,nextp2;
 reg p2Reset,p2LD;
-reg [10:0] p3,nextp3;
+reg [11:0] p3,nextp3;
 reg p3Reset,p3LD;
-reg [10:0] p4,nextp4;
+reg [11:0] p4,nextp4;
 reg p4Reset,p4LD;
-reg [10:0] ptr_hd,nextptr_hd;
+reg [11:0] ptr_hd,nextptr_hd;
 reg ptr_hdReset,ptr_hdLD;
-reg [10:0] ptr_hf,nextptr_hf;
+reg [11:0] ptr_hf,nextptr_hf;
 reg ptr_hfReset,ptr_hfLD;
-reg [10:0] ptr_h1,nextptr_h1;
+reg [11:0] ptr_h1,nextptr_h1;
 reg ptr_h1Reset,ptr_h1LD;
-reg [10:0] ptr_h2,nextptr_h2;
+reg [11:0] ptr_h2,nextptr_h2;
 reg ptr_h2Reset,ptr_h2LD;
 reg [31:0] cor,nextcor;
 reg corReset,corLD;
@@ -728,7 +728,7 @@ begin
 			nextstate = S3;
 		else if(i<40)
 		begin
-			memReadAddr = {ACELP_H[10:6],i[5:0]};
+			memReadAddr = {ACELP_H[11:6],i[5:0]};
 			nextstate = S2;
 		end		
 	end//S1
@@ -772,7 +772,7 @@ begin
 			nextstate = S9;
 		else if(i<40)
 		begin
-			memReadAddr = {ACELP_H[10:6],i[5:0]};
+			memReadAddr = {ACELP_H[11:6],i[5:0]};
 			nextstate = S5;
 		end
 	end//S4
@@ -784,7 +784,7 @@ begin
 		shrVar2Out = 16'd1;
 		memOut = shrIn;
 		memWriteEn = 1;
-		memWriteAddr = {COR_H[10:6],i[5:0]};
+		memWriteAddr = {COR_H[11:6],i[5:0]};
 		addOutA = i;
 		addOutB = 16'd1;
 		nexti = addIn[5:0];
@@ -819,7 +819,7 @@ begin
 			nextstate = S9;
 		else if(i<40)
 		begin
-			memReadAddr = {ACELP_H[10:6],i[5:0]};
+			memReadAddr = {ACELP_H[11:6],i[5:0]};
 			nextstate = S8;
 		end
 	end//S7
@@ -831,7 +831,7 @@ begin
 		shlVar2Out = k;
 		memOut = shlIn;
 		memWriteEn = 1;
-		memWriteAddr = {COR_H[10:6],i[5:0]};
+		memWriteAddr = {COR_H[11:6],i[5:0]};
 		addOutA = i;
 		addOutB = 16'd1;
 		nexti = addIn[5:0];
@@ -864,41 +864,41 @@ begin
 	begin
 	   nextrri0i0 = ACELP_RR;
 		rri0i0LD = 1;
-		nextrri1i1 = {ACELP_RR[10:4],4'd8};
+		nextrri1i1 = {ACELP_RR[11:4],4'd8};
 		rri1i1LD = 1;
-		nextrri2i2 = {ACELP_RR[10:5],5'd16};
+		nextrri2i2 = {ACELP_RR[11:5],5'd16};
 		rri2i2LD = 1;
-		nextrri3i3 = {ACELP_RR[10:5],5'd24};
+		nextrri3i3 = {ACELP_RR[11:5],5'd24};
 		rri3i3LD = 1;
-		nextrri4i4 = {ACELP_RR[10:6],6'd32};
+		nextrri4i4 = {ACELP_RR[11:6],6'd32};
 		rri4i4LD = 1;
-		nextrri0i1 = {ACELP_RR[10:6],6'd40};
+		nextrri0i1 = {ACELP_RR[11:6],6'd40};
 		rri0i1LD = 1;			
-		nextrri0i2 = {ACELP_RR[10:7],7'd104};
+		nextrri0i2 = {ACELP_RR[11:7],7'd104};
 		rri0i2LD = 1;
-		nextrri0i3 = {ACELP_RR[10:8],8'd168};
+		nextrri0i3 = {ACELP_RR[11:8],8'd168};
 		rri0i3LD = 1;		
-		nextrri0i4 = {ACELP_RR[10:8],8'd232};
+		nextrri0i4 = {ACELP_RR[11:8],8'd232};
 		rri0i4LD = 1;		
-		nextrri1i2 = {ACELP_RR[10:9],9'd296};
+		nextrri1i2 = {ACELP_RR[11:9],9'd296};
 		rri1i2LD = 1;
-		nextrri1i3 = {ACELP_RR[10:9],9'd360};
+		nextrri1i3 = {ACELP_RR[11:9],9'd360};
 		rri1i3LD = 1;
-		nextrri1i4 = {ACELP_RR[10:9],9'd424};
+		nextrri1i4 = {ACELP_RR[11:9],9'd424};
 		rri1i4LD = 1;
-		nextrri2i3 = {ACELP_RR[10:9],9'd488}; 
+		nextrri2i3 = {ACELP_RR[11:9],9'd488}; 
 		rri2i3LD = 1;
 		nextrri2i4 = {ACELP_RR[10],10'd552}; 
 		rri2i4LD = 1;
-		nextp0 = {ACELP_RR[10:3],3'd7};
+		nextp0 = {ACELP_RR[11:3],3'd7};
 		p0LD = 1;
-		nextp1 = {ACELP_RR[10:4],4'd15};
+		nextp1 = {ACELP_RR[11:4],4'd15};
 		p1LD = 1;
-		nextp2 = {ACELP_RR[10:5],5'd23};
+		nextp2 = {ACELP_RR[11:5],5'd23};
 		p2LD = 1;
-		nextp3 = {ACELP_RR[10:5],5'd31};
+		nextp3 = {ACELP_RR[11:5],5'd31};
 		p3LD = 1;
-		nextp4 = {ACELP_RR[10:6],6'd39};
+		nextp4 = {ACELP_RR[11:6],6'd39};
 		p4LD = 1;
 		nextptr_h1 = COR_H;
 		ptr_h1LD = 1;
@@ -938,11 +938,11 @@ begin
 		memWriteAddr = p4;
 		memOut = L_macIn[31:16];
 		memWriteEn = 1;
-		L_subOutA = {21'd0,p4[10:0]};
+		L_subOutA = {20'd0,p4[11:0]};
 		L_subOutB = 32'd1;
-		nextp4 = L_subIn[10:0];
+		nextp4 = L_subIn[11:0];
 		p4LD = 1;
-		memReadAddr = addIn[10:0];
+		memReadAddr = addIn[11:0];
 		nextstate = S12;
 	end//S11
 	
@@ -962,11 +962,11 @@ begin
 		memWriteAddr = p3;
 		memOut = L_macIn[31:16];
 		memWriteEn = 1;
-		L_subOutA = {21'd0,p3[10:0]};
+		L_subOutA = {20'd0,p3[11:0]};
 		L_subOutB = 32'd1;
-		nextp3 = L_subIn[10:0];
+		nextp3 = L_subIn[11:0];
 		p3LD = 1;
-		memReadAddr = addIn[10:0];
+		memReadAddr = addIn[11:0];
 		nextstate = S13;
 	end//S12
 	
@@ -986,11 +986,11 @@ begin
 		memWriteAddr = p2;
 		memOut = L_macIn[31:16];
 		memWriteEn = 1;
-		L_subOutA = {21'd0,p2[10:0]};
+		L_subOutA = {20'd0,p2[11:0]};
 		L_subOutB = 32'd1;
-		nextp2 = L_subIn[10:0];
+		nextp2 = L_subIn[11:0];
 		p2LD = 1;
-		memReadAddr = addIn[10:0];
+		memReadAddr = addIn[11:0];
 		nextstate = S14;
 	end//S13
 	
@@ -1010,11 +1010,11 @@ begin
 		memWriteAddr = p1;
 		memOut = L_macIn[31:16];
 		memWriteEn = 1;
-		L_subOutA = {21'd0,p1[10:0]};
+		L_subOutA = {20'd0,p1[11:0]};
 		L_subOutB = 32'd1;
-		nextp1 = L_subIn[10:0];
+		nextp1 = L_subIn[11:0];
 		p1LD = 1;
-		memReadAddr = addIn[10:0];
+		memReadAddr = addIn[11:0];
 		nextstate = S15;
 	end//S14
 	
@@ -1034,11 +1034,11 @@ begin
 		memWriteAddr = p0;
 		memOut = L_macIn[31:16];
 		memWriteEn = 1;
-		L_subOutA = {21'd0,p0[10:0]};
+		L_subOutA = {20'd0,p0[11:0]};
 		L_subOutB = 32'd1;
-		nextp0 = L_subIn[10:0];
+		nextp0 = L_subIn[11:0];
 		p0LD = 1;
-		memReadAddr = addIn[10:0];
+		memReadAddr = addIn[11:0];
 		L_addOutA = i;
 		L_addOutB = 32'd1;
 		nexti = L_addIn;
@@ -1083,19 +1083,19 @@ begin
 		begin
 			L_addOutA = rri2i3;
 			L_addOutB = l_fin_sup;
-			nextp3 = L_addIn[10:0];
+			nextp3 = L_addIn[11:0];
 			p3LD = 1;
 			L_add2OutA = rri1i2;
 			L_add2OutB = l_fin_sup;
-			nextp2 = L_add2In[10:0];
+			nextp2 = L_add2In[11:0];
 			p2LD = 1;
 			L_add3OutA = rri0i1;
 			L_add3OutB = l_fin_sup;
-			nextp1 = L_add3In[10:0];
+			nextp1 = L_add3In[11:0];
 			p1LD = 1;
 			L_add4OutA = rri0i4;
 			L_add4OutB = l_fin_inf;
-			nextp0 = L_add4In[10:0];
+			nextp0 = L_add4In[11:0];
 			p0LD = 1;
 			corReset = 1;
 			nextptr_h1 = ptr_hd;
@@ -1286,11 +1286,11 @@ begin
 	begin
 		subOutA = p3;
 		subOutB = ldec;
-		nextp3 = subIn[10:0];
+		nextp3 = subIn[11:0];
 		p3LD = 1;
 		L_subOutA = p2;
 		L_subOutB = ldec;
-		nextp2 = L_subIn[10:0];
+		nextp2 = L_subIn[11:0];
 		p2LD = 1;
 		nextstate = S30;
 	end//S29
@@ -1301,11 +1301,11 @@ begin
 	begin
 		subOutA = p1;
 		subOutB = ldec;
-		nextp1 = subIn[10:0];
+		nextp1 = subIn[11:0];
 		p1LD = 1;
 		L_subOutA = p0;
 		L_subOutB = ldec;
-		nextp0 = L_subIn[10:0];
+		nextp0 = L_subIn[11:0];
 		p0LD = 1;
 		addOutA = i;
 		addOutB = 16'd1;

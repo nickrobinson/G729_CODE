@@ -24,7 +24,7 @@ module Cor_hPipe(clk,reset,start,corHMuxSel,testReadAddr,testWriteAddr,testMemOu
 //Inputs
 input clk,reset,start;
 input corHMuxSel;
-input [10:0] testReadAddr,testWriteAddr;
+input [11:0] testReadAddr,testWriteAddr;
 input [31:0] testMemOut;
 input testMemWriteEn;
 
@@ -60,11 +60,11 @@ wire [31:0] L_add1OutA,L_add1OutB;
 wire [31:0] L_add2OutA,L_add2OutB;
 wire [31:0] L_add3OutA,L_add3OutB;
 wire [31:0] L_add4OutA,L_add4OutB;
-wire [10:0] memReadAddr,memWriteAddr;
+wire [11:0] memReadAddr,memWriteAddr;
 wire memWriteEn;
 
 //Internal regs
-reg [10:0] corHMuxOut,corHMux1Out;
+reg [11:0] corHMuxOut,corHMux1Out;
 reg [31:0] corHMux2Out;
 reg corHMux3Out;
 //Instantiated modules	
