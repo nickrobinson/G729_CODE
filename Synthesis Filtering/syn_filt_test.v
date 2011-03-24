@@ -30,11 +30,11 @@ module syn_filt_test;
 	reg clk;
 	reg reset;
 	reg start;		
-	reg [10:0] xAddr;
-	reg [10:0] aAddr;
-	reg [10:0] yAddr;
-	reg [10:0] fMemAddr;
-	reg [10:0] updateAddr;
+	reg [11:0] xAddr;
+	reg [11:0] aAddr;
+	reg [11:0] yAddr;
+	reg [11:0] fMemAddr;
+	reg [11:0] updateAddr;
 
 	// Outputs	
 	wire done;
@@ -42,12 +42,12 @@ module syn_filt_test;
 	
 	//Mux0 regs	
 	reg lagMuxSel;
-	reg [10:0] lagMuxOut;
-	reg [10:0] testReadRequested;
+	reg [11:0] lagMuxOut;
+	reg [11:0] testReadRequested;
 	//Mux1 regs	
 	reg lagMux1Sel;
-	reg [10:0] lagMux1Out;
-	reg [10:0] testWriteRequested;
+	reg [11:0] lagMux1Out;
+	reg [11:0] testWriteRequested;
 	//Mux2 regs	
 	reg lagMux2Sel;
 	reg [31:0] lagMux2Out;
@@ -103,11 +103,11 @@ module syn_filt_test;
 		reset = 0;
 		start = 0;		
 		lagMuxSel = 0;
-		xAddr = 11'd560;
-		aAddr = 11'd624;
-		yAddr = 11'd688;
-		fMemAddr = 11'd816;
-		updateAddr = 11'd944;
+		xAddr = 12'd560;
+		aAddr = 12'd624;
+		yAddr = 12'd688;
+		fMemAddr = 12'd816;
+		updateAddr = 12'd944;
 		
 		@(posedge clk) #5; 	
 		reset = 1;		
@@ -131,7 +131,7 @@ module syn_filt_test;
 			begin			
 				@(posedge clk); 
 				@(posedge clk) #5; 
-				testWriteRequested = {fMemAddr[10:6],i[5:0]};
+				testWriteRequested = {fMemAddr[11:6],i[5:0]};
 				testWriteOut = filterMemVector[(j*10)+i];
 				testWriteEnable = 1;
 				@(posedge clk); 
@@ -142,7 +142,7 @@ module syn_filt_test;
 			begin			
 				@(posedge clk); 
 				@(posedge clk) #5; 
-				testWriteRequested = {xAddr[10:6],i[5:0]};
+				testWriteRequested = {xAddr[11:6],i[5:0]};
 				testWriteOut = inVector[(j*40)+i];
 				testWriteEnable = 1;
 				@(posedge clk); 
@@ -153,7 +153,7 @@ module syn_filt_test;
 			begin			
 				@(posedge clk); 
 				@(posedge clk) #5; 
-				testWriteRequested = {aAddr[10:6],i[5:0]};
+				testWriteRequested = {aAddr[11:6],i[5:0]};
 				testWriteOut = predictionVector[(j*11)+i];
 				testWriteEnable = 1;
 				@(posedge clk); 
@@ -164,7 +164,7 @@ module syn_filt_test;
 			begin			
 				@(posedge clk); 
 				@(posedge clk) #5; 
-				testWriteRequested = {yAddr[10:6],i[5:0]};
+				testWriteRequested = {yAddr[11:6],i[5:0]};
 				testWriteOut = outVector[(j*40)+i];
 				testWriteEnable = 1;
 				@(posedge clk); 
@@ -175,7 +175,7 @@ module syn_filt_test;
 			begin			
 				@(posedge clk); 
 				@(posedge clk) #5; 
-				testWriteRequested = {updateAddr[10:0]};
+				testWriteRequested = {updateAddr[11:0]};
 				testWriteOut = updateVector[(j*1)];
 				testWriteEnable = 1;
 				@(posedge clk); 
@@ -200,7 +200,7 @@ module syn_filt_test;
 			lagMuxSel = 1;
 			for(i = 0; i<40;i=i+1)
 			begin			
-				testReadRequested = {yAddr[10:6],i[5:0]};
+				testReadRequested = {yAddr[11:6],i[5:0]};
 				@(posedge clk);
 				@(posedge clk) #5;
 				if (memIn != outVector[(j*40)+i])

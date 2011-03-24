@@ -27,11 +27,11 @@ module syn_filt(clk, reset, start, memIn, memWriteEn, memWriteAddr, memOut, done
 //inputs
 input clk, reset, start;
 input [31:0] memIn;
-input [10:0] xAddr;
-input [10:0] aAddr;
-input [10:0] yAddr;
-input [10:0] fMemAddr;
-input [10:0] updateAddr;
+input [11:0] xAddr;
+input [11:0] aAddr;
+input [11:0] yAddr;
+input [11:0] fMemAddr;
+input [11:0] updateAddr;
 input [31:0] L_addIn;
 input [31:0] L_multIn;
 input [31:0] L_msuIn;
@@ -40,7 +40,7 @@ input L_shlDone;
 
 //outputs
 output reg memWriteEn;
-output reg [10:0]  memWriteAddr;
+output reg [11:0]  memWriteAddr;
 output reg [31:0] memOut;
 output reg [31:0] L_addOutA, L_addOutB;
 output reg [15:0] L_multOutA, L_multOutB;
@@ -67,11 +67,11 @@ reg tempALd,tempAReset;
 reg L_shlDoneReg;
 reg L_shlDoneReset;
 
-wire [10:0] xAddr;
-wire [10:0] hAddr;
-wire [10:0] yAddr;
-wire [10:0] fMemAddr;
-wire [10:0] updateAddr;
+wire [11:0] xAddr;
+wire [11:0] hAddr;
+wire [11:0] yAddr;
+wire [11:0] fMemAddr;
+wire [11:0] updateAddr;
 
 //state parameters
 parameter STATE_INIT = 5'd0;
@@ -239,7 +239,7 @@ begin
 			end
 			else if(count1 < M)
 			begin
-				memWriteAddr = {fMemAddr[10:6], count1[5:0]};
+				memWriteAddr = {fMemAddr[11:6], count1[5:0]};
 				nextstate = STATE_COUNT_LOOP1_2;
 			end	
 		end
@@ -247,7 +247,7 @@ begin
 		STATE_COUNT_LOOP1_2: //state 2
 		begin
 			memOut = memIn[15:0];
-			memWriteAddr = {SYN_FILT_TEMP[10:8], 2'd0, count1[5:0]};
+			memWriteAddr = {SYN_FILT_TEMP[11:8], 2'd0, count1[5:0]};
 			memWriteEn = 1;
 			L_addOutA = count1;
 			L_addOutB = 1;
@@ -266,7 +266,7 @@ begin
 			end
 			else if(count1 < L)
 			begin
-				memWriteAddr = {xAddr[10:6], count1[5:0]};
+				memWriteAddr = {xAddr[11:6], count1[5:0]};
 				nextstate = STATE_COUNT_LOOP2_2;
 			end	
 		end
@@ -275,7 +275,7 @@ begin
 		begin
 			nexttempX = memIn[15:0];
 			tempXLd = 1;
-			memWriteAddr = {aAddr[10:6], 6'd0};
+			memWriteAddr = {aAddr[11:6], 6'd0};
 			nextstate = STATE_COUNT_LOOP2_3;
 		end
 		
@@ -299,7 +299,7 @@ begin
 			end
 			else if(count2 <= M)
 			begin
-				memWriteAddr = {aAddr[10:6], count2[5:0]};
+				memWriteAddr = {aAddr[11:6], count2[5:0]};
 				nextstate = STATE_COUNT_INNER_LOOP1_2;
 			end
 		end
@@ -308,7 +308,7 @@ begin
 		begin
 			nexttempA = memIn[15:0];
 			tempALd = 1;
-			memWriteAddr = {SYN_FILT_TEMP[10:8], 2'd0, (M-count2[5:0]) + count1[5:0]};
+			memWriteAddr = {SYN_FILT_TEMP[11:8], 2'd0, (M-count2[5:0]) + count1[5:0]};
 			nextstate = STATE_COUNT_INNER_LOOP1_3;
 		end
 		
@@ -352,7 +352,7 @@ begin
 		begin
 			L_addOutA = tempS;
 			L_addOutB = 32'h0008000;
-			memWriteAddr = {SYN_FILT_TEMP[10:8], 2'd0, M + count1[5:0]};
+			memWriteAddr = {SYN_FILT_TEMP[11:8], 2'd0, M + count1[5:0]};
 			memWriteEn = 1;
 			memOut = L_addIn[31:16];
 			nextstate = STATE_ROUND_2;
@@ -371,20 +371,20 @@ begin
 		begin
 			if(count1 >= L)
 			begin
-				memWriteAddr = updateAddr[10:0];
+				memWriteAddr = updateAddr[11:0];
 				count1Reset = 1;
 				nextstate = STATE_UPDATE_1;
 			end
 			else if(count1 < L)
 			begin
-				memWriteAddr = {SYN_FILT_TEMP[10:8], 2'd0, (M + count1[5:0])};
+				memWriteAddr = {SYN_FILT_TEMP[11:8], 2'd0, (M + count1[5:0])};
 				nextstate = STATE_COUNT_LOOP3_2;
 			end
 		end
 		
 		STATE_COUNT_LOOP3_2:
 		begin
-			memWriteAddr = {yAddr[10:6], count1[5:0]};
+			memWriteAddr = {yAddr[11:6], count1[5:0]};
 			memOut = memIn[15:0];
 			memWriteEn = 1;
 			L_addOutA = count1;
@@ -417,14 +417,14 @@ begin
 			end
 			else if(count1 < M)
 			begin
-				memWriteAddr = {yAddr[10:6], (L-M+count1[5:0])};
+				memWriteAddr = {yAddr[11:6], (L-M+count1[5:0])};
 				nextstate = STATE_UPDATE_3;
 			end
 		end
 		
 		STATE_UPDATE_3:
 		begin
-			memWriteAddr = {fMemAddr[10:6], count1[5:0]};
+			memWriteAddr = {fMemAddr[11:6], count1[5:0]};
 			memOut = memIn;
 			memWriteEn = 1;
 			L_addOutA = count1;
