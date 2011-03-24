@@ -22,15 +22,15 @@ module Lsp_get_tdist_pipe(
 	input clk,
 	input reset,
 	input start,
-	input [10:0] wegt,
-	input [10:0] buff,
-	input [10:0] L_tdist,
-	input [10:0] rbuf,
-	input [12:0] fg_sum,
-	input [10:0] TBwriteAddrScratch,
+	input [11:0] wegt,
+	input [11:0] buff,
+	input [11:0] L_tdist,
+	input [11:0] rbuf,
+	input [11:0] fg_sum,
+	input [11:0] TBwriteAddrScratch,
 	input [31:0] TBwriteDataScratch,
 	input TBwriteEnScratch,
-	input [10:0] TBreadAddrScratch,
+	input [11:0] TBreadAddrScratch,
 	input writeAddrScratchSel,
 	input writeDataScratchSel,
 	input writeEnScratchSel,
@@ -62,20 +62,20 @@ module Lsp_get_tdist_pipe(
 	wire [15:0] addIn;
 	wire [15:0] addOutA;
 	wire [15:0] addOutB;
-	wire [12:0] readAddrConstant;
+	wire [11:0] readAddrConstant;
 	wire [31:0] dataInConstant;
 	
 	//Memory Wires
-	wire [10:0] FSMwriteAddrScratch;
+	wire [11:0] FSMwriteAddrScratch;
 	wire [31:0] FSMwriteDataScratch;
 	wire FSMwriteEnScratch;
-	wire [10:0] FSMreadAddrScratch;
+	wire [11:0] FSMreadAddrScratch;
 	
 	//Mux Regs
-	reg [10:0] writeAddrScratch;
+	reg [11:0] writeAddrScratch;
 	reg [31:0] writeDataScratch;
 	reg writeEnScratch;
-	reg [10:0] readAddrScratch;
+	reg [11:0] readAddrScratch;
 	
 	Lsp_get_tdist uut(
 		.clk(clk), 
@@ -160,8 +160,8 @@ module Lsp_get_tdist_pipe(
 	
 	Constant_Memory_Controller _constant(
 		.addra(readAddrConstant),
-		.dina(0),
-		.wea(0),
+		.dina(32'd0),
+		.wea(1'd0),
 		.clock(clk),
 		.douta(dataInConstant)
 		);
@@ -207,24 +207,6 @@ module Lsp_get_tdist_pipe(
 		.b(L_multOutB),
 		.product(L_multIn)
 		);
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
-
-
-
-
-
-
-
 
 
 endmodule

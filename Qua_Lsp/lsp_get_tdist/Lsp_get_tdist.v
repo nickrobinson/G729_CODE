@@ -22,11 +22,11 @@ module Lsp_get_tdist(
 	input clk,
 	input reset,
 	input start,
-	input [10:0] wegt,
-	input [10:0] buff,
-	input [10:0] L_tdist,
-	input [10:0] rbuf,
-	input [12:0] fg_sum,
+	input [11:0] wegt,
+	input [11:0] buff,
+	input [11:0] L_tdist,
+	input [11:0] rbuf,
+	input [11:0] fg_sum,
 	input [15:0] subIn,
 	input [15:0] multIn,
 	input [31:0] L_multIn,
@@ -51,11 +51,11 @@ module Lsp_get_tdist(
 	output reg [31:0] L_macOutC,
 	output reg [15:0] addOutA,
 	output reg [15:0] addOutB,
-	output reg [10:0] FSMwriteAddrScratch,
+	output reg [11:0] FSMwriteAddrScratch,
 	output reg [31:0] FSMwriteDataScratch,
 	output reg FSMwriteEnScratch,
-	output reg [10:0] FSMreadAddrScratch,
-	output reg [12:0] readAddrConstant,
+	output reg [11:0] FSMreadAddrScratch,
+	output reg [11:0] readAddrConstant,
 	output reg done	
    );
 	 
@@ -171,7 +171,7 @@ module Lsp_get_tdist(
 			begin
 				if(J < M)
 				begin
-					FSMreadAddrScratch = {buff[10:4], J[3:0]};
+					FSMreadAddrScratch = {buff[11:4], J[3:0]};
 					nextstate = S2_SUB1;
 				end
 				else
@@ -179,14 +179,14 @@ module Lsp_get_tdist(
 			end
 			S2_SUB1:
 			begin
-				FSMreadAddrScratch = {rbuf[10:4], J[3:0]};
+				FSMreadAddrScratch = {rbuf[11:4], J[3:0]};
 				nexttmp = dataInScratch;
 				ldtmp = 1;
 				nextstate = S3_SUB2;
 			end
 			S3_SUB2:
 			begin
-				readAddrConstant = {fg_sum[12:4], J[3:0]};
+				readAddrConstant = {fg_sum[11:4], J[3:0]};
 				subOutA = tmp;
 				subOutB = dataInScratch;
 				nexttmp = subIn;
@@ -195,7 +195,7 @@ module Lsp_get_tdist(
 			end
 			S4_MULT:
 			begin
-				FSMreadAddrScratch = {wegt[10:4], J[3:0]};
+				FSMreadAddrScratch = {wegt[11:4], J[3:0]};
 				multOutA = tmp;
 				multOutB = dataInConstant;
 				nexttmp = multIn;

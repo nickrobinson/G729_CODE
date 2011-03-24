@@ -28,15 +28,15 @@ module Lsp_get_tdist_test;
 	reg clk;
 	reg reset;
 	reg start;
-	reg [10:0] wegt;
-	reg [10:0] buff;
-	reg [10:0] L_tdist;
-	reg [10:0] rbuf;
-	reg [12:0] fg_sum;
-	reg [10:0] TBwriteAddrScratch;
+	reg [11:0] wegt;
+	reg [11:0] buff;
+	reg [11:0] L_tdist;
+	reg [11:0] rbuf;
+	reg [11:0] fg_sum;
+	reg [11:0] TBwriteAddrScratch;
 	reg [31:0] TBwriteDataScratch;
 	reg TBwriteEnScratch;
-	reg [10:0] TBreadAddrScratch;
+	reg [11:0] TBreadAddrScratch;
 	reg writeAddrScratchSel;
 	reg writeDataScratchSel;
 	reg writeEnScratchSel;
@@ -124,7 +124,7 @@ module Lsp_get_tdist_test;
 			for(i = 0; i < 10; i = i + 1)
 			begin
 				@(posedge clk) #5;
-				TBwriteAddrScratch = {wegt[10:4],i[3:0]};
+				TBwriteAddrScratch = {wegt[11:4],i[3:0]};
 				TBwriteDataScratch = Lsp_get_tdist_in_wegt[j*10+i];
 				TBwriteEnScratch = 1;
 				@(posedge clk) #5;
@@ -133,7 +133,7 @@ module Lsp_get_tdist_test;
 			for(i = 0; i < 10; i = i + 1)
 			begin
 				@(posedge clk) #5;
-				TBwriteAddrScratch = {buff[10:4],i[3:0]};
+				TBwriteAddrScratch = {buff[11:4],i[3:0]};
 				TBwriteDataScratch = Lsp_get_tdist_in_buf[j*10+i];
 				TBwriteEnScratch = 1;
 				@(posedge clk) #5;
@@ -142,7 +142,7 @@ module Lsp_get_tdist_test;
 			for(i = 0; i < 10; i = i + 1)
 			begin
 				@(posedge clk) #5;
-				TBwriteAddrScratch = {rbuf[10:4],i[3:0]};
+				TBwriteAddrScratch = {rbuf[11:4],i[3:0]};
 				TBwriteDataScratch = Lsp_get_tdist_in_rbuf[j*10+i];
 				TBwriteEnScratch = 1;
 				@(posedge clk) #5;
