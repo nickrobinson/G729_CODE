@@ -53,8 +53,8 @@ module get_lsp_pol_test_pipe(clock,reset,L_sub_outa,L_sub_outb,L_sub_overflow,L_
 	output [31:0] scratch_mem_in;
 	
 	input clock, reset;
-	input [10:0] test_read_addr;
-	input [10:0] test_write_addr;
+	input [11:0] test_read_addr;
+	input [11:0] test_write_addr;
 	input [31:0] test_write;
 	input test_write_en;
 	input [31:0] abs_out;
@@ -79,8 +79,8 @@ module get_lsp_pol_test_pipe(clock,reset,L_sub_outa,L_sub_outb,L_sub_overflow,L_
 	input [31:0] L_add_outb;
 	input [15:0] sub_outa;
 	input [15:0] sub_outb;
-	input [10:0] scratch_mem_read_addr;
-	input [10:0] scratch_mem_write_addr;
+	input [11:0] scratch_mem_read_addr;
+	input [11:0] scratch_mem_write_addr;
 	input [31:0] scratch_mem_out;
 	input scratch_mem_write_en;
 	input [15:0] add_outa;
@@ -122,8 +122,8 @@ module get_lsp_pol_test_pipe(clock,reset,L_sub_outa,L_sub_outb,L_sub_overflow,L_
 	L_msu i_L_msu_1(.a(L_msu_outa),.b(L_msu_outb),.c(L_msu_outc),.overflow(L_msu_overflow),.out(L_msu_in));
 	
 	
-	reg [10:0] mem_Mux4Out;
-	reg [10:0] mem_Mux1Out;
+	reg [11:0] mem_Mux4Out;
+	reg [11:0] mem_Mux1Out;
 	reg [31:0] mem_Mux2Out;
 	reg mem_Mux3Out;
 	

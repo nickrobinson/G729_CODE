@@ -40,9 +40,9 @@ module get_lsp_pol_tb_v;
 	reg mem_Mux2Sel;
 	reg mem_Mux3Sel;
 
-	reg [10:0] test_write_addr;
+	reg [11:0] test_write_addr;
 
-	reg [10:0] test_read_addr;
+	reg [11:0] test_read_addr;
 
 	reg [31:0] test_write;
 
@@ -114,7 +114,7 @@ module get_lsp_pol_tb_v;
 				mem_Mux1Sel = 1;
 				mem_Mux2Sel = 1;
 				mem_Mux3Sel = 1;
-				test_write_addr = {INT_LPC_LSP_TEMP[10:4],i[3:0]};
+				test_write_addr = {INT_LPC_LSP_TEMP[11:4],i[3:0]};
 				test_write = lsp_in[10*j+i];
 				test_write_en = 1;	
 				#100;			
@@ -126,7 +126,7 @@ module get_lsp_pol_tb_v;
 				mem_Mux1Sel = 1;
 				mem_Mux2Sel = 1;
 				mem_Mux3Sel = 1;
-				test_write_addr = {INT_LPC_F1[10:5],F_OPT,i[3:0]};
+				test_write_addr = {INT_LPC_F1[11:5],F_OPT,i[3:0]};
 				test_write = f_in[10*j+i];
 				test_write_en = 1;	
 				#100;
@@ -148,7 +148,7 @@ module get_lsp_pol_tb_v;
 			//gamma1 read
 			for (i = 0; i<6;i=i+1)
 			begin				
-					test_read_addr = {INT_LPC_F1[10:5],F_OPT,i[3:0]};
+					test_read_addr = {INT_LPC_F1[11:5],F_OPT,i[3:0]};
 					#50;
 					if (scratch_mem_in != f_out[j*6+i])
 						$display($time, " ERROR: f[%d] = %x, expected = %x", i, scratch_mem_in, f_out[j*6+i]);

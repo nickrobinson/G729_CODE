@@ -27,8 +27,8 @@ module get_lsp_pol_test_top(clock,reset,start,mem_Mux4Sel,mem_Mux1Sel,mem_Mux2Se
 	input mem_Mux1Sel;
 	input mem_Mux2Sel;
 	input mem_Mux3Sel;
-	input [10:0] test_write_addr;
-	input [10:0] test_read_addr;
+	input [11:0] test_write_addr;
+	input [11:0] test_read_addr;
 	input [31:0] test_write;
 	input test_write_en;
 	input F_OPT;
@@ -77,8 +77,8 @@ module get_lsp_pol_test_top(clock,reset,start,mem_Mux4Sel,mem_Mux1Sel,mem_Mux2Se
 	wire [31:0] L_add_outb;
 	wire [15:0] sub_outa;
 	wire [15:0] sub_outb;
-	wire [10:0] scratch_mem_read_addr;
-	wire [10:0] scratch_mem_write_addr;
+	wire [11:0] scratch_mem_read_addr;
+	wire [11:0] scratch_mem_write_addr;
 	wire [31:0] scratch_mem_out;
 	wire scratch_mem_write_en;
 	wire [15:0] add_outa;
