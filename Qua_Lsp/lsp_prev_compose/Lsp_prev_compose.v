@@ -25,19 +25,19 @@ module Lsp_prev_compose(start, clk, done, reset, lspele, fg, fg_sum, freq_prev, 
 	input start;
    input clk;
    input reset;
-	input [10:0] lspele;
+	input [11:0] lspele;
 	input [11:0] fg;
 	input [11:0] fg_sum;
-	input [10:0] freq_prev;
-	input [10:0] lsp;
+	input [11:0] freq_prev;
+	input [11:0] lsp;
 	input [31:0] readIn;
 	input [31:0] constantMemIn;
 	
 	output reg done;
-	output reg [10:0] writeAddr;
+	output reg [11:0] writeAddr;
 	output reg [31:0] writeOut;
 	output reg writeEn;
-	output reg [10:0] readAddr;
+	output reg [11:0] readAddr;
 	output reg [11:0] constantMemAddr;
 	
 	input [31:0] L_mult_in, L_mac_in;
@@ -54,11 +54,11 @@ module Lsp_prev_compose(start, clk, done, reset, lspele, fg, fg_sum, freq_prev, 
 	parameter S5 = 5;
 	parameter S6 = 6;
 	
-	wire [10:0] lspele;
+	wire [11:0] lspele;
 	wire [11:0] fg;
 	wire [11:0] fg_sum;
-	wire [10:0] freq_prev;
-	wire [10:0] lsp;
+	wire [11:0] freq_prev;
+	wire [11:0] lsp;
 	reg [15:0] temp_lspele, temp_freq_prev, next_temp_lspele, next_temp_freq_prev;
 	reg [31:0] L_acc, next_L_acc;
 	reg [3:0] state, nextstate;
@@ -142,7 +142,7 @@ module Lsp_prev_compose(start, clk, done, reset, lspele, fg, fg_sum, freq_prev, 
 			case(state)
 				INIT:
 					begin
-						readAddr = {lspele[10:4], j[3:0]};
+						readAddr = {lspele[11:4], j[3:0]};
 						
 						if(start)
 							nextstate = S1;
@@ -180,8 +180,8 @@ module Lsp_prev_compose(start, clk, done, reset, lspele, fg, fg_sum, freq_prev, 
 					begin
 						if(k == 4)
 						begin
-							readAddr = {lspele[10:4], add_in[3:0]};
-							writeAddr = {lsp[10:4], j[3:0]};
+							readAddr = {lspele[11:4], add_in[3:0]};
+							writeAddr = {lsp[11:4], j[3:0]};
 							writeOut  = L_acc[31:16];
 							writeEn = 1;
 							add_a = j;
@@ -193,7 +193,7 @@ module Lsp_prev_compose(start, clk, done, reset, lspele, fg, fg_sum, freq_prev, 
 						
 						else
 							begin
-								readAddr = {freq_prev[10:6],k[1:0],j[3:0]};
+								readAddr = {freq_prev[11:6],k[1:0],j[3:0]};
 								nextstate = S4;					
 							end
 					end

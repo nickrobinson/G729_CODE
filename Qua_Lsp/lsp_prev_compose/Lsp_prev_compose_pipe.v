@@ -33,12 +33,12 @@ module Lsp_prev_compose_pipe(clk, L_mult_a, L_mult_b, add_a, add_b, L_mac_a, L_m
 	input [15:0] L_mac_b;
 	input [15:0] L_mac_a;
 	input Mux0Sel, Mux1Sel, Mux2Sel, Mux3Sel;
-	input [10:0] readAddr;
-	input [10:0] writeAddr;
+	input [11:0] readAddr;
+	input [11:0] writeAddr;
 	input [31:0] writeOut;
 	input writeEn;
-	input [10:0] testReadRequested;
-	input [10:0] testWriteRequested;
+	input [11:0] testReadRequested;
+	input [11:0] testWriteRequested;
 	input [31:0] testWriteOut;
 	input testWrite;
 	input [11:0] constantMemAddr;
@@ -50,8 +50,8 @@ module Lsp_prev_compose_pipe(clk, L_mult_a, L_mult_b, add_a, add_b, L_mac_a, L_m
 	output [31:0] constantMemIn;
 	
 		//working regs
-	reg [10:0] Mux0Out;
-	reg [10:0] Mux1Out;
+	reg [11:0] Mux0Out;
+	reg [11:0] Mux1Out;
 	reg [31:0] Mux2Out;
 	reg Mux3Out;
 	
