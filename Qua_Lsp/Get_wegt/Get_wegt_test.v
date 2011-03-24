@@ -26,8 +26,8 @@ module Get_wegt_test;
 	reg clk;
 	reg reset;
 	reg start;
-	reg [10:0] flspAddr;
-	reg [10:0] wegtAddr;
+	reg [11:0] flspAddr;
+	reg [11:0] wegtAddr;
 
 	// Outputs	
 	wire [31:0] memIn;
@@ -40,8 +40,8 @@ module Get_wegt_test;
 	
 	//Mux0 regs	
 	reg getWegtMuxSel;
-	reg [10:0] testReadAddr;
-	reg [10:0] testWriteAddr;
+	reg [11:0] testReadAddr;
+	reg [11:0] testWriteAddr;
 	reg [31:0] testMemOut;
 	reg testMemWriteEn;
 
@@ -102,7 +102,7 @@ module Get_wegt_test;
 			for(i=0;i<10;i=i+1)
 			begin
 				#100;
-				testWriteAddr = {flspAddr[10:4],i[3:0]};
+				testWriteAddr = {flspAddr[11:4],i[3:0]};
 				testMemOut = flspMem[(j*10)+i];
 				testMemWriteEn = 1;	
 				#100;
@@ -125,7 +125,7 @@ module Get_wegt_test;
 			getWegtMuxSel = 1;
 			for (i = 0; i<10;i=i+1)
 			begin				
-					testReadAddr = {wegtAddr[10:4],i[3:0]};
+					testReadAddr = {wegtAddr[11:4],i[3:0]};
 					#50;
 					if (memIn != wegtMem[(j*10)+i])
 						$display($time, " ERROR: wegt[%d] = %x, expected = %x", (j*10)+i, memIn, wegtMem[(j*10)+i]);

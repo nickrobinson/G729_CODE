@@ -24,25 +24,25 @@ module Get_wegt_pipe(clk, reset,start,getWegtMuxSel,testReadAddr,testWriteAddr,t
 //Inputs
 	input clk, reset,start;
 	input getWegtMuxSel;
-	input [10:0] testReadAddr;
-	input [10:0] testWriteAddr;
+	input [11:0] testReadAddr;
+	input [11:0] testWriteAddr;
 	input [31:0] testMemOut;
 	input testMemWriteEn;	
-	input [10:0] flspAddr;
-	input [10:0] wegtAddr;
+	input [11:0] flspAddr;
+	input [11:0] wegtAddr;
 	
 	//Outputs
 	output [31:0] memIn;
 	output done;
 	
 	//Temp wires & regs	
-	reg [10:0] MuxOut;
-	reg [10:0] getWegtMuxOut;
-	reg [10:0] getWegtMux1Out;
+	reg [11:0] MuxOut;
+	reg [11:0] getWegtMuxOut;
+	reg [11:0] getWegtMux1Out;
 	reg [31:0] getWegtMux2Out;
 	reg getWegtMux3Out;
-	wire [10:0] memReadAddr;
-	wire [10:0] memWriteAddr;
+	wire [11:0] memReadAddr;
+	wire [11:0] memWriteAddr;
 	wire [31:0] memOut;
 	wire memWriteEn;
 	wire [15:0] addOutA,addOutB;

@@ -29,8 +29,8 @@ module Get_wegt(clk, reset, start, memIn, memWriteEn, memWriteAddr, memReadAddr,
 //inputs
 input clk, reset, start;
 input [31:0] memIn;
-input [10:0] wegtAddr;
-input [10:0] flspAddr;
+input [11:0] wegtAddr;
+input [11:0] flspAddr;
 input [15:0] subIn;
 input [15:0] addIn;
 input [31:0] L_subIn;
@@ -43,8 +43,8 @@ input norm_sDone;
 
 //outputs
 output reg memWriteEn;
-output reg [10:0]  memWriteAddr;
-output reg [10:0]  memReadAddr;
+output reg [11:0]  memWriteAddr;
+output reg [11:0]  memReadAddr;
 output reg [31:0] memOut;
 output reg [15:0] subOutA, subOutB;
 output reg [15:0] addOutA, addOutB;
@@ -74,8 +74,8 @@ reg L_shlDoneReg;
 reg L_shlDoneReset;
 
 
-wire [10:0] flspAddr;
-wire [10:0] wegtAddr;
+wire [11:0] flspAddr;
+wire [11:0] wegtAddr;
 
 //state parameters
 parameter STATE_INIT = 5'd0;
@@ -238,9 +238,9 @@ begin
 			else if(start == 1)
 			begin
 				//Read from FLSP[1] addr
-				addOutA = flspAddr[10:0];
+				addOutA = flspAddr[11:0];
 				addOutB = 1;
-				memReadAddr = addIn[10:0];
+				memReadAddr = addIn[11:0];
 				nextstate = STATE_SUB_1;
 			end
 		end	
@@ -266,14 +266,14 @@ begin
 				count1Reset = 1;
 				subOutA = M;
 				subOutB = 2;
-				memReadAddr = {flspAddr[10:4], subIn[3:0]};
+				memReadAddr = {flspAddr[11:4], subIn[3:0]};
 				nextstate = STATE_5;
 			end
 			else if(count1 < M1)
 			begin
 				addOutA = count1;
 				addOutB = 1;
-				memReadAddr = {flspAddr[10:4], addIn[3:0]};
+				memReadAddr = {flspAddr[11:4], addIn[3:0]};
 				nextstate = STATE_COUNT_LOOP2;
 			end	
 		end
@@ -284,7 +284,7 @@ begin
 			tempFlspLd = 1;
 			subOutA = count1;
 			subOutB = 1;
-			memReadAddr = {flspAddr[10:4], subIn[3:0]};
+			memReadAddr = {flspAddr[11:4], subIn[3:0]};
 			nextstate = STATE_COUNT_LOOP3;
 		end
 		
@@ -301,7 +301,7 @@ begin
 		begin
 			subOutA = temp1;
 			subOutB = 16'd8192;
-			memWriteAddr = {GET_WEGT_BUF[10:4], count1[3:0]};
+			memWriteAddr = {GET_WEGT_BUF[11:4], count1[3:0]};
 			memOut = subIn;
 			memWriteEn = 1;
 			//Increment Counter
@@ -321,7 +321,7 @@ begin
 			subOutB = memIn;
 			addOutA = M1;
 			addOutB = 0;
-			memWriteAddr = {GET_WEGT_BUF[10:4], addIn[3:0]};
+			memWriteAddr = {GET_WEGT_BUF[11:4], addIn[3:0]};
 			memOut = subIn;
 			memWriteEn = 1;
 			nextstate = STATE_COUNT2_LOOP1;
@@ -332,12 +332,12 @@ begin
 			if(count1 >= M)
 			begin
 				count1Reset = 1;
-				memReadAddr = {wegtAddr[10:4], 4'd4};
+				memReadAddr = {wegtAddr[11:4], 4'd4};
 				nextstate = STATE_12;
 			end
 			else if(count1 < M)
 			begin
-				memReadAddr = {GET_WEGT_BUF[10:4], count1[3:0]};
+				memReadAddr = {GET_WEGT_BUF[11:4], count1[3:0]};
 				nextstate = STATE_COUNT2_LOOP2;
 			end
 		end
@@ -346,7 +346,7 @@ begin
 		begin
 			if(memIn[15] == 0)
 			begin
-				memWriteAddr = {wegtAddr[10:4], count1[3:0]};
+				memWriteAddr = {wegtAddr[11:4], count1[3:0]};
 				memOut = 32'd2048;
 				memWriteEn = 1;
 				addOutA = count1;
@@ -357,7 +357,7 @@ begin
 			end
 			else
 			begin
-				memReadAddr = {GET_WEGT_BUF[10:4], count1[3:0]};
+				memReadAddr = {GET_WEGT_BUF[11:4], count1[3:0]};
 				nextstate = STATE_COUNT2_LOOP3;
 				//do stuff
 			end
@@ -429,7 +429,7 @@ begin
 		begin
 			addOutA = temp1;
 			addOutB = 16'd2048;
-			memWriteAddr = {wegtAddr[10:4], count1[3:0]};
+			memWriteAddr = {wegtAddr[11:4], count1[3:0]};
 			memOut = addIn[15:0];
 			memWriteEn = 1;
 			L_addOutA = {28'd0, count1[3:0]};
@@ -464,7 +464,7 @@ begin
 				end
 			else
 				begin
-					memWriteAddr = {wegtAddr[10:4], 4'd4};
+					memWriteAddr = {wegtAddr[11:4], 4'd4};
 					memOut = L_shlIn[31:16];
 					memWriteEn = 1;
 					nextstate = STATE_15;
@@ -473,7 +473,7 @@ begin
 		
 		STATE_15:
 		begin
-			memReadAddr = {wegtAddr[10:4], 4'd5};
+			memReadAddr = {wegtAddr[11:4], 4'd5};
 			nextstate = STATE_16;
 		end
 		
@@ -502,7 +502,7 @@ begin
 				end
 			else
 				begin
-					memWriteAddr = {wegtAddr[10:4], 4'd5};
+					memWriteAddr = {wegtAddr[11:4], 4'd5};
 					memOut = L_shlIn[31:16];
 					memWriteEn = 1;
 					nexttemp1 = 0;
@@ -520,7 +520,7 @@ begin
 			end
 			else if(count1 < M)
 			begin
-				memReadAddr = {wegtAddr[10:4], count1[3:0]};
+				memReadAddr = {wegtAddr[11:4], count1[3:0]};
 				nextstate = STATE_COUNT3_LOOP2;
 			end
 		end
@@ -574,7 +574,7 @@ begin
 			end
 			else if(count1 < M)
 			begin
-				memReadAddr = {wegtAddr[10:4], count1[3:0]};
+				memReadAddr = {wegtAddr[11:4], count1[3:0]};
 				nextstate = STATE_COUNT4_LOOP2;
 			end
 		end
@@ -595,7 +595,7 @@ begin
 				end
 			else
 				begin
-					memWriteAddr = {wegtAddr[10:4], count1[3:0]};
+					memWriteAddr = {wegtAddr[11:4], count1[3:0]};
 					memOut = L_shlIn[15:0];
 					memWriteEn = 1;
 					addOutA = count1;
