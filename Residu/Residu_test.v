@@ -28,9 +28,9 @@ module Residu_test;
 	reg clk;
 	reg reset;
 	reg start;
-	reg [10:0] A;
-	reg [10:0] X;
-	reg [10:0] Y;	
+	reg [11:0] A;
+	reg [11:0] X;
+	reg [11:0] Y;	
 
 	// Outputs
 	wire done;
@@ -38,13 +38,13 @@ module Residu_test;
 	
 	//regs/wires inside TB
 	reg MuxSel;	//0 = TB, 1 = FSM
-	reg [10:0] TBwriteAddr1;
-	reg [10:0] TBwriteAddr2;
+	reg [11:0] TBwriteAddr1;
+	reg [11:0] TBwriteAddr2;
 	reg [31:0] TBdataOut1;
 	reg [31:0] TBdataOut2;
 	reg TBwriteEn1;
 	reg TBwriteEn2;
-	reg [10:0] TBreadAddr;
+	reg [11:0] TBreadAddr;
 	
 	//Memory Regs
 	reg [31:0] RESIDU_IN_A [0:9999];		  
@@ -53,7 +53,7 @@ module Residu_test;
 	
 	//Integers/Chars/Strings/etc
 	integer i,j;
-	reg [10:0] temp;
+	reg [11:0] temp;
 	
 	Residu_pipe _pipe(
 	.clk(clk),
@@ -112,7 +112,7 @@ module Residu_test;
 			begin
 				@(posedge clk);
 				@(posedge clk) #5;
-				TBwriteAddr1 = {A[10:4],i[3:0]};
+				TBwriteAddr1 = {A[11:4],i[3:0]};
 				TBdataOut1 = RESIDU_IN_A[j*11+i];
 				TBwriteEn1 = 1;
 				@(posedge clk);
@@ -124,7 +124,7 @@ module Residu_test;
 				@(posedge clk);
 				@(posedge clk) #5;
 				temp = X - 10 + i;
-				TBwriteAddr2 = temp[10:0];
+				TBwriteAddr2 = temp[11:0];
 				TBdataOut2 = RESIDU_IN_X[j*50+i];
 				TBwriteEn2 = 1;
 				@(posedge clk);

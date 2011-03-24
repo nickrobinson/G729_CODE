@@ -22,27 +22,27 @@ module Residu_pipe(
 	input clk,
 	input reset,
 	input start,
-	input [10:0] A,
-	input [10:0] X,
-	input [10:0] Y,
+	input [11:0] A,
+	input [11:0] X,
+	input [11:0] Y,
 	input MuxSel,
-	input [10:0] TBwriteAddr1,
-	input [10:0] TBwriteAddr2,
+	input [11:0] TBwriteAddr1,
+	input [11:0] TBwriteAddr2,
 	input [31:0] TBdataOut1,
 	input [31:0] TBdataOut2,
 	input TBwriteEn1,
 	input TBwriteEn2,
-	input [10:0] TBreadAddr,
+	input [11:0] TBreadAddr,
 	
 	output done,
 	output [31:0] FSMdataIn1
 );
 	
 	//mux regs
-	reg [10:0] writeAddrMuxOut;
+	reg [11:0] writeAddrMuxOut;
 	reg [31:0] dataInMuxOut;
 	reg writeEnMuxOut;
-	reg [10:0] readAddrMuxOut;
+	reg [11:0] readAddrMuxOut;
 	
 	wire [31:0] FSMdataIn2;
 	wire [31:0] L_multIn;
@@ -54,9 +54,9 @@ module Residu_pipe(
 	wire [15:0] addIn;
 	wire [31:0] L_addIn;
 	wire FSMwriteEn;
-	wire [10:0] FSMreadAddr1;
-	wire [10:0] FSMreadAddr2;
-	wire [10:0] FSMwriteAddr;
+	wire [11:0] FSMreadAddr1;
+	wire [11:0] FSMreadAddr2;
+	wire [11:0] FSMwriteAddr;
 	wire [31:0] FSMdataOut;
 	wire [15:0] L_multOutA;
 	wire [15:0] L_multOutB;

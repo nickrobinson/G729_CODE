@@ -25,7 +25,7 @@ module Residu(clk, reset, start, done, A, X, Y, LG, FSMdataIn1, FSMdataIn2, FSMw
 
 //Inputs
 input clk, reset, start;
-input [10:0] A, X, Y;
+input [11:0] A, X, Y;
 input [5:0] LG;
 input [31:0] FSMdataIn1, FSMdataIn2;
 input [31:0] L_multIn;
@@ -39,8 +39,8 @@ input L_shlDone;
 //Outputs
 output reg done;
 output reg FSMwriteEn;
-output reg [10:0] FSMreadAddr1, FSMreadAddr2;
-output reg [10:0] FSMwriteAddr;
+output reg [11:0] FSMreadAddr1, FSMreadAddr2;
+output reg [11:0] FSMwriteAddr;
 output reg [31:0] FSMdataOut;
 output reg [15:0] subOutA, subOutB;
 output reg [15:0] L_multOutA, L_multOutB;
@@ -207,7 +207,7 @@ begin
 		begin
 			if (I < LG)
 			begin
-				FSMreadAddr2 = {X[10:6], I[5:0]};
+				FSMreadAddr2 = {X[11:6], I[5:0]};
 				nextstate = S2_MEM1;
 			end
 			else 
@@ -216,7 +216,7 @@ begin
 		
 		S2_MEM1:
 		begin
-			FSMreadAddr1 = A[10:0];
+			FSMreadAddr1 = A[11:0];
 			nexttemp = FSMdataIn2;
 			ldtemp = 1;
 			nextstate = S3_LMULT;
@@ -235,7 +235,7 @@ begin
 		begin
 			if (J <= M)
 			begin
-				FSMreadAddr1 = {A[10:4], J[3:0]};
+				FSMreadAddr1 = {A[11:4], J[3:0]};
 				nextstate = S5_MEM2;
 			end
 			else
