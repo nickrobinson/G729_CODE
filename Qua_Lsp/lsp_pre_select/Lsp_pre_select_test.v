@@ -25,22 +25,22 @@ module Lsp_pre_select_test;
 	reg start;
 	reg clk;
 	reg reset;
-	reg [10:0] rbuf;
+	reg [11:0] rbuf;
 
 	//Outputs
 	wire done;
 	wire [31:0] readIn, const_in;
-	wire [10:0] readAddr;
+	wire [11:0] readAddr;
 	wire [11:0] const_addr;
-	wire [10:0] writeAddr;
+	wire [11:0] writeAddr;
 	wire [31:0] writeOut;	
 	wire [6:0] cand;
 	integer i, j;
 
 	reg Mux0Sel;
-	reg [10:0] testReadRequested;
+	reg [11:0] testReadRequested;
 	reg Mux1Sel;
-	reg [10:0] testWriteRequested;
+	reg [11:0] testWriteRequested;
 	reg Mux2Sel;
 	reg [31:0] testWriteOut;
 	reg Mux3Sel;
@@ -85,7 +85,7 @@ module Lsp_pre_select_test;
 		start = 0;
 		clk = 0;
 		reset = 0;
-		rbuf = 11'd288;
+		rbuf = 12'd288;
 		
 		#50
 		reset = 1;
@@ -105,7 +105,7 @@ module Lsp_pre_select_test;
 			for(i=0;i<10;i=i+1)
 			begin
 				#100;
-				testWriteRequested = {rbuf[10:4],i[3:0]};
+				testWriteRequested = {rbuf[11:4],i[3:0]};
 				testWriteOut = rbufc[10*j+i];
 				testWrite = 1;	
 				#100;			

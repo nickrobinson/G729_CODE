@@ -27,20 +27,20 @@ module Lsp_pre_select_pipe(clk, reset, start, done, Mux0Sel, Mux1Sel, Mux2Sel, M
 	input reset;
 	input start;
 	input Mux0Sel, Mux1Sel, Mux2Sel, Mux3Sel;
-	input [10:0] testReadRequested;
-	input [10:0] testWriteRequested;
+	input [11:0] testReadRequested;
+	input [11:0] testWriteRequested;
 	input [31:0] testWriteOut;
 	input testWrite;
 	
-	input [10:0] rbuf;
+	input [11:0] rbuf;
 	
 	//Outputs
-	output [10:0] readAddr;
+	output [11:0] readAddr;
 	output [31:0] readIn;
 	output [11:0] const_addr;	
 	output [31:0] const_in;
 	output done;
-	output [10:0] writeAddr;
+	output [11:0] writeAddr;
 	output [31:0] writeOut;
 	output writeEn;
 	output [6:0] cand;
@@ -51,8 +51,8 @@ module Lsp_pre_select_pipe(clk, reset, start, done, Mux0Sel, Mux1Sel, Mux2Sel, M
 	wire [31:0] L_mac_c, L_sub_a, L_sub_b;
 	
 	//working regs
-	reg [10:0] Mux0Out;
-	reg [10:0] Mux1Out;
+	reg [11:0] Mux0Out;
+	reg [11:0] Mux1Out;
 	reg [31:0] Mux2Out;
 	reg Mux3Out;
 	

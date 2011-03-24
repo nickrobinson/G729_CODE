@@ -25,15 +25,15 @@ module Lsp_pre_select(clk, start, reset, done, rbuf, sub_a, sub_b, sub_in, L_mac
 `include "paramList.v"
 
 	input clk, start, reset;
-	input [10:0] rbuf;
+	input [11:0] rbuf;
 	input [31:0] readIn, const_in;
 
 
 	output reg done;
-	output reg [10:0] writeAddr;
+	output reg [11:0] writeAddr;
 	output reg [31:0] writeOut;
 	output reg writeEn;
-	output reg [10:0] readAddr;
+	output reg [11:0] readAddr;
 	output reg [11:0] const_addr;
 	output reg [6:0] cand;
 	
@@ -47,7 +47,7 @@ module Lsp_pre_select(clk, start, reset, done, rbuf, sub_a, sub_b, sub_in, L_mac
 	parameter S2 = 2;
 	parameter S3 = 3;
 	
-	wire [10:0] rbuf;
+	wire [11:0] rbuf;
 	reg [3:0] state, nextstate;
 	reg [15:0] i, nexti, j, nextj;
 	reg [15:0] tmp, next_tmp;
@@ -186,7 +186,7 @@ module Lsp_pre_select(clk, start, reset, done, rbuf, sub_a, sub_b, sub_in, L_mac
 							
 						else
 							begin
-								readAddr = {rbuf[10:4], j[3:0]};
+								readAddr = {rbuf[11:4], j[3:0]};
 								const_addr = {i[7:0], j[3:0]};
 								nextstate = S3;
 							end
