@@ -38,7 +38,7 @@ input [11:0] lspcb1Addr;
 
 //outputs
 output reg memWriteEn;
-output reg [10:0] memWriteAddr;
+output reg [11:0] memWriteAddr;
 output reg [11:0] constMemAddr;
 output reg [31:0] memOut;
 output reg done;

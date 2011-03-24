@@ -39,7 +39,7 @@ module lsp_select_2_test;
 
 	// Outputs
 	wire memWriteEn;
-	wire [10:0] memWriteAddr;
+	wire [11:0] memWriteAddr;
 	wire [11:0] constMemAddr;
 	wire [31:0] memOut;
 	wire done;
@@ -48,12 +48,12 @@ module lsp_select_2_test;
 	
 	//Mux0 regs	
 	reg lagMuxSel;
-	reg [10:0] lagMuxOut;
-	reg [10:0] testReadRequested;
+	reg [11:0] lagMuxOut;
+	reg [11:0] testReadRequested;
 	//Mux1 regs	
 	reg lagMux1Sel;
-	reg [10:0] lagMux1Out;
-	reg [10:0] testWriteRequested;
+	reg [11:0] lagMux1Out;
+	reg [11:0] testWriteRequested;
 	//Mux2 regs	
 	reg lagMux2Sel;
 	reg [31:0] lagMux2Out;
@@ -128,7 +128,7 @@ module lsp_select_2_test;
 			begin			
 				@(posedge clk); 
 				@(posedge clk) #5;
-				testWriteRequested = {LSP_SELECT_1_RBUF[10:4],i[3:0]};
+				testWriteRequested = {LSP_SELECT_1_RBUF[11:4],i[3:0]};
 				testWriteOut = rbufVector[(j*10)+i];
 				testWriteEnable = 1;
 				@(posedge clk); 
@@ -139,7 +139,7 @@ module lsp_select_2_test;
 			begin			
 				@(posedge clk); 
 				@(posedge clk) #5;
-				testWriteRequested = {LSP_SELECT_1_WEGT[10:4],i[3:0]};
+				testWriteRequested = {LSP_SELECT_1_WEGT[11:4],i[3:0]};
 				testWriteOut = wegtVector[(j*10)+i];
 				testWriteEnable = 1;
 				@(posedge clk); 
@@ -165,7 +165,7 @@ module lsp_select_2_test;
 			lagMuxSel = 1;
 			for(i = 0; i<1; i=i+1)
 			begin			
-				testReadRequested = {LSP_SELECT_1_INDEX[10:0]};
+				testReadRequested = {LSP_SELECT_1_INDEX[11:0]};
 				@(posedge clk);
 				@(posedge clk) #5;
 				if (memIn[15:0] != indexVector[(j*1)+i])
