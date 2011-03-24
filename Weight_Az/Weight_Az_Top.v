@@ -23,23 +23,23 @@ module Weight_Az_Top(start, clk, reset, done, A, AP, gammaAddr, wazReadRequested
 	input start;
 	input clk;
 	input reset;
-	input [10:0] wazReadRequested;
-	input [10:0] wazWriteRequested;
+	input [11:0] wazReadRequested;
+	input [11:0] wazWriteRequested;
 	input [31:0] wazOut;
 	input wazWrite;
 	input wazMuxSel;
 	input wazMux1Sel; 
 	input wazMux2Sel; 
 	input wazMux3Sel;
-	input [10:0] A;
-	input [10:0] AP;
-	input [10:0] gammaAddr;
+	input [11:0] A;
+	input [11:0] AP;
+	input [11:0] gammaAddr;
 	
 	output done;
 	output [31:0] readIn;
 
-	wire [10:0] readAddr;
-	wire [10:0] writeAddr;
+	wire [11:0] readAddr;
+	wire [11:0] writeAddr;
 	wire [31:0] writeOut;
 	wire writeEn;
 	wire [31:0] L_mult_in;

@@ -24,13 +24,13 @@ module Weight_Az(start, clk, done, reset, A, AP, gammaAddr, readAddr, readIn, wr
    input clk;
    input reset;
 	input [31:0] readIn;
-	input [10:0] A, AP;
-	input [10:0] gammaAddr;
+	input [11:0] A, AP;
+	input [11:0] gammaAddr;
 	output reg done;
-	output reg [10:0] writeAddr;
+	output reg [11:0] writeAddr;
 	output reg [31:0] writeOut;
 	output reg writeEn;
-	output reg [10:0] readAddr;
+	output reg [11:0] readAddr;
 	
 	input [31:0] L_mult_in, L_add_in;
 	input [15:0] add_in;
@@ -48,8 +48,8 @@ module Weight_Az(start, clk, done, reset, A, AP, gammaAddr, readAddr, readIn, wr
 	
 	parameter m = 10;
 	wire [31:0] readIn;
-	wire [10:0] A, AP;
-	wire [10:0] gammaAddr;
+	wire [11:0] A, AP;
+	wire [11:0] gammaAddr;
 	reg [3:0] state, nextstate;
 	reg [15:0] fac, nextfac, iter, nextiter;
 	reg [15:0] gamma, nextgamma;
@@ -110,7 +110,7 @@ module Weight_Az(start, clk, done, reset, A, AP, gammaAddr, readAddr, readIn, wr
 			case(state)
 				INIT:	//read in a[0]
 					begin
-						readAddr = {A[10:4], 4'd0};
+						readAddr = {A[11:4], 4'd0};
 						if(start)
 							begin
 								nextstate = S1;
@@ -121,7 +121,7 @@ module Weight_Az(start, clk, done, reset, A, AP, gammaAddr, readAddr, readIn, wr
 		
 				S1: //ap[0] = ap[0];  //read in gamma
 					begin
-						writeAddr = {AP[10:4], 4'd0};
+						writeAddr = {AP[11:4], 4'd0};
 						writeOut = readIn;
 						writeEn = 1;
 						readAddr = gammaAddr;
@@ -140,13 +140,13 @@ module Weight_Az(start, clk, done, reset, A, AP, gammaAddr, readAddr, readIn, wr
 						if(iter == m)
 							begin
 								nextiter = 1;
-								readAddr = {A[10:4], 4'd10};
+								readAddr = {A[11:4], 4'd10};
 								nextstate = S6;
 							end
 						
 						else
 							begin
-								readAddr = {A[10:4], iter[3:0]};
+								readAddr = {A[11:4], iter[3:0]};
 								nextstate = S4;
 							end
 					end
@@ -157,7 +157,7 @@ module Weight_Az(start, clk, done, reset, A, AP, gammaAddr, readAddr, readIn, wr
 						L_mult_b = fac;
 						L_add_a = L_mult_in;
 						L_add_b = 32'h00008000;
-						writeAddr = {AP[10:4], iter[3:0]};
+						writeAddr = {AP[11:4], iter[3:0]};
 						writeOut = L_add_in[31:16];
 						writeEn = 1;
 						nextstate = S5;
@@ -182,7 +182,7 @@ module Weight_Az(start, clk, done, reset, A, AP, gammaAddr, readAddr, readIn, wr
 						L_mult_b = fac;
 						L_add_a = L_mult_in;
 						L_add_b = 32'h00008000;
-						writeAddr = {AP[10:4], 4'd10};
+						writeAddr = {AP[11:4], 4'd10};
 						writeOut = L_add_in[31:16];
 						writeEn = 1;
 						done = 1;

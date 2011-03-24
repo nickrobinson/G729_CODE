@@ -30,12 +30,12 @@ module Weight_Az_Pipe(clk, L_mult_a, L_mult_b, add_a, add_b, L_add_a, L_add_b, w
 	input [31:0] L_add_a;
 	input [31:0] L_add_b;
 	input wazMuxSel, wazMux1Sel, wazMux2Sel, wazMux3Sel;
-	input [10:0] readAddr;
-	input [10:0] writeAddr;
+	input [11:0] readAddr;
+	input [11:0] writeAddr;
 	input [31:0] writeOut;
 	input writeEn;
-	input [10:0] wazReadRequested;
-	input [10:0] wazWriteRequested;
+	input [11:0] wazReadRequested;
+	input [11:0] wazWriteRequested;
 	input [31:0] wazOut;
 	input wazWrite;
 
@@ -46,8 +46,8 @@ module Weight_Az_Pipe(clk, L_mult_a, L_mult_b, add_a, add_b, L_add_a, L_add_b, w
 	output [31:0] L_mult_in;	
 
 	//working regs
-	reg [10:0] wazMuxOut;
-	reg [10:0] wazMux1Out;
+	reg [11:0] wazMuxOut;
+	reg [11:0] wazMux1Out;
 	reg [31:0] wazMux2Out;
 	reg wazMux3Out;
 	

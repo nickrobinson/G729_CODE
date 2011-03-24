@@ -29,9 +29,9 @@ module Weight_Az_test_v;
 	reg start;
 	reg clk;
 	reg reset;
-	reg [10:0] A;
-	reg [10:0] AP;
-	reg [10:0] gammaAddr;	
+	reg [11:0] A;
+	reg [11:0] AP;
+	reg [11:0] gammaAddr;	
 	
 	//Outputs
 	wire done;
@@ -43,9 +43,9 @@ module Weight_Az_test_v;
 	integer i, j;
 	
 	reg wazMuxSel;
-	reg [10:0] wazReadRequested;
+	reg [11:0] wazReadRequested;
 	reg wazMux1Sel;
-	reg [10:0] wazWriteRequested;
+	reg [11:0] wazWriteRequested;
 	reg wazMux2Sel;
 	reg [31:0] wazOut;
 	reg wazMux3Sel;
@@ -97,9 +97,9 @@ module Weight_Az_test_v;
 		start = 0;
 		clk = 0;
 		reset = 0;
-		A = 11'd768;
-		AP = 11'd528;
-		gammaAddr = 11'd448;
+		A = 12'd768;
+		AP = 12'd528;
+		gammaAddr = 12'd448;
 		
 		#50
 		reset = 1;
@@ -119,14 +119,14 @@ module Weight_Az_test_v;
 			for(i=0;i<11;i=i+1)
 			begin
 				#100;
-				wazWriteRequested = {A_T[10:4],i[3:0]};
+				wazWriteRequested = {A_T[11:4],i[3:0]};
 				wazOut = ac[11*j+i];
 				wazWrite = 1;	
 				#100;			
 			end
 			
 			#100;
-				wazWriteRequested = {PERC_VAR_GAMMA1[10:0]};
+				wazWriteRequested = {PERC_VAR_GAMMA1[11:0]};
 				wazOut = gammac[j];
 				wazWrite = 1;	
 				#100;
@@ -149,7 +149,7 @@ module Weight_Az_test_v;
 			//ap read
 			for (i = 0; i<11;i=i+1)
 			begin				
-					wazReadRequested = {WEIGHT_AZ_AP_OUT[10:4],i[3:0]};
+					wazReadRequested = {WEIGHT_AZ_AP_OUT[11:4],i[3:0]};
 					@(posedge clk);
 					@(posedge clk);
 					if (readIn != apc[j*11+i])
