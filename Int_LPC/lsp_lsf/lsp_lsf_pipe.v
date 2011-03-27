@@ -1,30 +1,41 @@
 `timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
+// Mississippi State University
+// ECE 4532-4542 Senior Design
+// Engineer: Sean Owens
 // 
 // Create Date:    16:14:07 02/23/2011 
-// Design Name: 
 // Module Name:    lsp_lsf_pipe 
-// Project Name: 
-// Target Devices: 
-// Tool versions: 
-// Description: 
+// Project Name:   ITU G.729 Hardware Implementation
+// Target Devices: Virtex 5 - XC5VLX110T - 1FF1136
+// Tool versions:  Xilinx ISE 12.4
+// Description:    This module instantiates the lsp_lsf module, memory core and math
+//							modules necessary for testing the lsp_lsf module.
 //
-// Dependencies: 
+// Dependencies:   lsp_lsf.v
+//						 add.v
+//						 sub.v
+//						 shl.v
+//						 L_add.v
+//						 L_mult.v
+//						 L_shl.v
+//						 Scratch_Memory_Controller.v
+//						 Constant_Memory_Controller.v
 //
 // Revision: 
 // Revision 0.01 - File Created
+// Revision 0.02 - Updated to support address input lines
+// Revision 0.03 - Updated to support 12 bit memory address wires
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module lsp_lsf_pipe(clock,reset,start,mem_Mux1Sel,mem_Mux2Sel,mem_Mux3Sel,mem_Mux4Sel,lsf_addr,test_write_addr,
-							test_read_addr,test_write,test_write_en,done,scratch_mem_in
+module lsp_lsf_pipe(clock,reset,start,mem_Mux1Sel,mem_Mux2Sel,mem_Mux3Sel,mem_Mux4Sel,lsf_addr1,lsf_addr2,
+							test_write_addr,test_read_addr,test_write,test_write_en,done,scratch_mem_in
     );
 
 	input clock,reset,start;
 	input mem_Mux1Sel,mem_Mux2Sel,mem_Mux3Sel,mem_Mux4Sel;
-	input [11:0] lsf_addr;
+	input [11:0] lsf_addr1,lsf_addr2;
 	input [11:0] test_write_addr,test_read_addr;
 	input [31:0] test_write;
 	input test_write_en;
@@ -66,7 +77,8 @@ module lsp_lsf_pipe(clock,reset,start,mem_Mux1Sel,mem_Mux2Sel,mem_Mux3Sel,mem_Mu
 		.scratch_mem_in(scratch_mem_in),
 		.constant_mem_read_addr(constant_mem_read_addr),
 		.constant_mem_in(constant_mem_in),
-		.lsf_addr(lsf_addr),
+		.lsf_addr1(lsf_addr1),
+		.lsf_addr2(lsf_addr2),
 		.add_outa(add_outa),
 		.add_outb(add_outb),
 		.add_in(add_in),

@@ -1,20 +1,36 @@
 `timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
+// Mississippi State University
+// ECE 4532-4542 Senior Design
+// Engineer: Sean Owens
 // 
-// Create Date:    17:08:57 02/14/2011 
-// Design Name: 
+// Create Date:    17:08:57 02/14/2011
 // Module Name:    lsp_to_az_pipe 
-// Project Name: 
-// Target Devices: 
-// Tool versions: 
-// Description: 
+// Project Name: 	 ITU G.729 Hardware Implementation
+// Target Devices: Virtex 5 - XC5VLX110T - 1FF1136
+// Tool versions:  Xilinx ISE 12.4
+// Description: 	 This module instantiates the lsp_to_az module and math modules
+//							necessary to test the lsp_to_az module.
 //
-// Dependencies: 
+// Dependencies:   LSP_to_Az.v
+//						 L_sub.v
+//						 L_mac.v
+//						 L_mult.v
+//						 mult.v
+//						 L_shl.v
+//						 norm_l.v
+//						 L_shr.v
+//						 L_negate.v
+//						 L_abs.v
+//						 L_add.v
+//						 add.v
+//						 sub.v
+//						 L_msu.v
+//						 Scratch_Memory_Controller.v
 //
 // Revision: 
 // Revision 0.01 - File Created
+// Revision 0.02 - Updated to support 12 bit memory address wires
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
@@ -31,7 +47,9 @@ module lsp_to_az_pipe(
 					mem_Mux4Sel,
 					done,
 					scratch_mem_in,
-					clock
+					clock,
+					lsp_az_addr1,
+					lsp_az_addr2
 			);
 	
 	`include "paramList.v"	
@@ -41,11 +59,12 @@ module lsp_to_az_pipe(
 	input [10:0] test_write_addr;
 	input test_write_en;
 	input [31:0] test_write;
-	input [10:0] test_read_addr;
+	input [11:0] test_read_addr;
 	input mem_Mux1Sel;
 	input mem_Mux2Sel;
 	input mem_Mux3Sel;
 	input mem_Mux4Sel;
+	input [11:0] lsp_az_addr1,lsp_az_addr2;
 	output done;
 	output [31:0] scratch_mem_in;
 
@@ -61,20 +80,21 @@ module lsp_to_az_pipe(
 	wire [15:0] mult_outa,mult_outb,L_mult_outa,L_mult_outb,L_mac_outa,L_mac_outb,L_msu_outa,L_msu_outb;
 	wire [31:0] L_mac_outc,L_msu_outc;
 	
-	wire [10:0] scratch_mem_read_addr,scratch_mem_write_addr;
+	wire [11:0] scratch_mem_read_addr,scratch_mem_write_addr;
 	
 	wire [31:0] scratch_mem_out;
 	
-	reg [10:0] mem_Mux1Out;
+	reg [11:0] mem_Mux1Out;
 	reg [31:0] mem_Mux2Out;
 	reg mem_Mux3Out;
-	reg [10:0] mem_Mux4Out;
+	reg [11:0] mem_Mux4Out;
 
 LSP_to_Az lsp_to_az(
 	.clock(clock),
 	.reset(reset),
 	.start(start),
 	.done(done),
+	.lsp_az_addr1(lsp_az_addr1),.lsp_az_addr2(lsp_az_addr2),
 	.abs_in(abs_in),.abs_out(abs_out),
 	.negate_out(negate_out),.negate_in(negate_in),
 	.L_shr_outa(L_shr_outa),.L_shr_outb(L_shr_outb),.L_shr_in(L_shr_in),

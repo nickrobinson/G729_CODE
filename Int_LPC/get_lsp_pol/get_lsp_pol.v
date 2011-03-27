@@ -1,24 +1,26 @@
 `timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
+// Mississippi State University
+// ECE 4532-4542 Senior Design
+// Engineer: Sean Owens
 // 
 // Create Date:    17:18:34 11/16/2010 
-// Design Name: 
 // Module Name:    get_lsp_pol 
-// Project Name: 
-// Target Devices: 
-// Tool versions: 
-// Description: 
+// Project Name:   ITU G.729 Hardware Implementation
+// Target Devices: Virtex 5 - XC5VLX110T - 1FF1136
+// Tool versions:  Xilinx ISE 12.4
+// Description:    This FSM performs the operations done by the Get_lsp_pol function
 //
-// Dependencies: 
+// Dependencies:   mpy_32_16.v
 //
-// Revision: 
+// Revision:
 // Revision 0.01 - File Created
+// Revision 0.02 - Updated to include address lines as inputs
+// Revision 0.03 - Updated to support a 12 bit memory address line
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module get_lsp_pol(clock,reset,start,F_OPT,done,abs_in,abs_out,negate_out,
+module get_lsp_pol(clock,reset,start,get_lsp_pol_addr1,F_OPT,LSP_OPT,done,abs_in,abs_out,negate_out,
 								negate_in,L_shr_outa,L_shr_outb,L_shr_in,L_sub_outa,L_sub_outb,L_sub_in,norm_L_out,norm_L_in,norm_L_start,
 								norm_L_done,L_shl_outa,L_shl_outb,L_shl_in,L_shl_start,L_shl_done,L_mult_outa,L_mult_outb,L_mult_in,
 								L_mult_overflow,L_mac_outa,L_mac_outb,L_mac_outc,L_mac_in,L_mac_overflow,mult_outa,mult_outb,mult_in,
@@ -30,7 +32,8 @@ module get_lsp_pol(clock,reset,start,F_OPT,done,abs_in,abs_out,negate_out,
    input clock;
    input reset;
    input start;
-	input F_OPT;
+	input [11:0] get_lsp_pol_addr1;
+	input F_OPT,LSP_OPT;
 	input norm_L_done,L_shl_done;
 	input L_mult_overflow,mult_overflow,L_mac_overflow,L_add_overflow,sub_overflow,add_overflow,L_msu_overflow;
 	input [15:0] mult_in,sub_in,add_in,norm_L_in;
@@ -50,22 +53,19 @@ module get_lsp_pol(clock,reset,start,F_OPT,done,abs_in,abs_out,negate_out,
 	
 								
 								
-	reg mpy_32_16_L_mult_overflow, mpy_32_16_L_mac_overflow, mpy_32_16_mult_overflow;
 	reg [31:0] mpy_32_16_ina;
 	reg [15:0] mpy_32_16_inb;
 	wire [15:0] mpy_32_16_L_mult_outa, mpy_32_16_L_mult_outb, mpy_32_16_L_mac_outa, mpy_32_16_L_mac_outb;
 	wire [15:0] mpy_32_16_mult_outa, mpy_32_16_mult_outb;
 	wire [31:0] mpy_32_16_L_mac_outc, mpy_32_16_out;
-	reg [31:0] mpy_32_16_L_mult_in, mpy_32_16_L_mac_in;
-	reg [15:0] mpy_32_16_mult_in;
 	 
 	
 	mpy_32_16 i_mpy_32_16(.var1(mpy_32_16_ina),.var2(mpy_32_16_inb),.out(mpy_32_16_out),.L_mult_outa(mpy_32_16_L_mult_outa),
-									.L_mult_outb(mpy_32_16_L_mult_outb),.L_mult_overflow(mpy_32_16_L_mult_overflow),
-									.L_mult_in(mpy_32_16_L_mult_in),.L_mac_outa(mpy_32_16_L_mac_outa),.L_mac_outb(mpy_32_16_L_mac_outb),
-									.L_mac_outc(mpy_32_16_L_mac_outc),.L_mac_overflow(mpy_32_16_L_mac_overflow),
-									.L_mac_in(mpy_32_16_L_mac_in),.mult_outa(mpy_32_16_mult_outa),.mult_outb(mpy_32_16_mult_outb),
-									.mult_in(mpy_32_16_mult_in),.mult_overflow(mult_32_16_mult_overflow));
+									.L_mult_outb(mpy_32_16_L_mult_outb),.L_mult_overflow(L_mult_overflow),
+									.L_mult_in(L_mult_in),.L_mac_outa(mpy_32_16_L_mac_outa),.L_mac_outb(mpy_32_16_L_mac_outb),
+									.L_mac_outc(mpy_32_16_L_mac_outc),.L_mac_overflow(L_mac_overflow),
+									.L_mac_in(L_mac_in),.mult_outa(mpy_32_16_mult_outa),.mult_outb(mpy_32_16_mult_outb),
+									.mult_in(mult_in),.mult_overflow(mult_overflow));
 	
 	reg [31:0] temp1,next_temp1,temp2,next_temp2;
 	reg [15:0] hi,next_hi,lo,next_lo;
@@ -163,6 +163,8 @@ module get_lsp_pol(clock,reset,start,F_OPT,done,abs_in,abs_out,negate_out,
 		next_lsp_iterator = lsp_iterator;
 		next_temp1 = temp1;
 		next_temp2 = temp2;
+		next_hi = hi;
+		next_lo = lo;
 		
 		done = 1'd0;
 		
@@ -175,9 +177,6 @@ module get_lsp_pol(clock,reset,start,F_OPT,done,abs_in,abs_out,negate_out,
 		
 		mpy_32_16_ina = 32'd0;
 		mpy_32_16_inb = 32'd0;
-		mpy_32_16_L_mult_in = 32'd0;
-		mpy_32_16_mult_in = 32'd0;
-		mpy_32_16_L_mac_in = 32'd0;
 		
 		L_sub_outa = 32'd0;
 		L_sub_outb = 32'd0;
@@ -221,6 +220,11 @@ module get_lsp_pol(clock,reset,start,F_OPT,done,abs_in,abs_out,negate_out,
 				
 			init: begin
 				if(start == 1) begin
+					if(LSP_OPT == 1) begin
+						add_outa = lsp_iterator;
+						add_outb = 'd1;
+						next_lsp_iterator = add_in;
+					end
 					nextstate = init2;
 				end
 				else
@@ -228,13 +232,13 @@ module get_lsp_pol(clock,reset,start,F_OPT,done,abs_in,abs_out,negate_out,
 			end
 			
 			init2: begin
-				scratch_mem_write_addr = {INT_LPC_F1[10:5],F_OPT,f_iterator[3:0]};
+				scratch_mem_write_addr = {INT_LPC_F1[11:4],F_OPT,f_iterator[2:0]};
 				scratch_mem_out = 32'h0100_0000;
 				scratch_mem_write_en = 1'd1;
 				add_outa = f_iterator;
 				add_outb = 1;
 				next_f_iterator = add_in;
-				scratch_mem_read_addr = {INT_LPC_LSP_TEMP[10:4],lsp_iterator[3:0]};
+				scratch_mem_read_addr = {get_lsp_pol_addr1[11:4],lsp_iterator[3:0]};
 				nextstate = state1;
 			end
 			
@@ -242,7 +246,7 @@ module get_lsp_pol(clock,reset,start,F_OPT,done,abs_in,abs_out,negate_out,
 				L_msu_outa = scratch_mem_in;
 				L_msu_outb = 16'd512;
 				L_msu_outc = 32'd0;
-				scratch_mem_write_addr = {INT_LPC_F1[10:5],F_OPT,f_iterator[3:0]};
+				scratch_mem_write_addr = {INT_LPC_F1[11:4],F_OPT,f_iterator[2:0]};
 				scratch_mem_out = L_msu_in;
 				scratch_mem_write_en = 1'd1;
 				add_outa = f_iterator;
@@ -269,13 +273,13 @@ module get_lsp_pol(clock,reset,start,F_OPT,done,abs_in,abs_out,negate_out,
 				else begin
 					sub_outa = f_iterator;
 					sub_outb = 'd2;
-					scratch_mem_read_addr = {INT_LPC_F1[10:5],F_OPT,sub_in[3:0]};
+					scratch_mem_read_addr = {INT_LPC_F1[11:4],F_OPT,sub_in[2:0]};
 					nextstate = state4;
 				end
 			end
 			
 			state4: begin
-				scratch_mem_write_addr = {INT_LPC_F1[10:5],F_OPT,f_iterator[3:0]};
+				scratch_mem_write_addr = {INT_LPC_F1[11:4],F_OPT,f_iterator[2:0]};
 				scratch_mem_out = scratch_mem_in;
 				scratch_mem_write_en = 1'd1;
 				nextstate = state5;
@@ -284,13 +288,13 @@ module get_lsp_pol(clock,reset,start,F_OPT,done,abs_in,abs_out,negate_out,
 			state5: begin
 				if(iterator2 == iterator1 || iterator2 > iterator1) begin
 					next_iterator2 = 'd1;
-					scratch_mem_read_addr = {INT_LPC_F1[10:5],F_OPT,f_iterator[3:0]};
+					scratch_mem_read_addr = {INT_LPC_F1[11:4],F_OPT,f_iterator[2:0]};
 					nextstate = prestate9;
 				end
 				else begin
 					sub_outa = f_iterator;
 					sub_outb = 'd1;
-					scratch_mem_read_addr = {INT_LPC_F1[10:5],F_OPT,sub_in[3:0]};
+					scratch_mem_read_addr = {INT_LPC_F1[11:4],F_OPT,sub_in[2:0]};
 					nextstate = state6;
 				end
 			end
@@ -306,7 +310,7 @@ module get_lsp_pol(clock,reset,start,F_OPT,done,abs_in,abs_out,negate_out,
 				L_msu_outb = 'd16384;
 				L_msu_outc = L_shr_in;
 				next_lo = L_msu_in[15:0];
-				scratch_mem_read_addr = {INT_LPC_LSP_TEMP[10:4],lsp_iterator[3:0]};
+				scratch_mem_read_addr = {get_lsp_pol_addr1[11:4],lsp_iterator[3:0]};
 				nextstate = state7;
 			end
 			
@@ -317,9 +321,6 @@ module get_lsp_pol(clock,reset,start,F_OPT,done,abs_in,abs_out,negate_out,
 				next_temp2 = scratch_mem_in;
 				mpy_32_16_ina = {hi,lo};					
 				mpy_32_16_inb = scratch_mem_in;
-				mpy_32_16_L_mult_in = L_mult_in;
-				mpy_32_16_mult_in = mult_in;
-				mpy_32_16_L_mac_in = L_mac_in;
 				L_mult_outa = mpy_32_16_L_mult_outa;
 				L_mult_outb = mpy_32_16_L_mult_outb;
 				L_mac_outa = mpy_32_16_L_mac_outa;
@@ -331,7 +332,7 @@ module get_lsp_pol(clock,reset,start,F_OPT,done,abs_in,abs_out,negate_out,
 				next_temp1 = mpy_32_16_out;
 				L_shl_outb = 'd1;
 				L_shl_start = 1'd1;
-				scratch_mem_read_addr = {INT_LPC_F1[10:5],F_OPT,f_iterator[3:0]};
+				scratch_mem_read_addr = {INT_LPC_F1[11:4],F_OPT,f_iterator[2:0]};
 				nextstate = state_L_shl_wait;
 			end
 			
@@ -341,13 +342,13 @@ module get_lsp_pol(clock,reset,start,F_OPT,done,abs_in,abs_out,negate_out,
 					next_temp1 = L_shl_in;
 					sub_outa = f_iterator;
 					sub_outb = 'd2;
-					scratch_mem_read_addr = {INT_LPC_F1[10:5],F_OPT,sub_in[3:0]};
+					scratch_mem_read_addr = {INT_LPC_F1[11:4],F_OPT,sub_in[2:0]};
 					nextstate = state8;
 				end
 				else begin
 					L_shl_outa = temp1;
 					L_shl_outb = 'd1;
-					scratch_mem_read_addr = {INT_LPC_F1[10:5],F_OPT,f_iterator[3:0]};
+					scratch_mem_read_addr = {INT_LPC_F1[11:4],F_OPT,f_iterator[2:0]};
 					nextstate = state_L_shl_wait;
 				end
 			end
@@ -361,7 +362,7 @@ module get_lsp_pol(clock,reset,start,F_OPT,done,abs_in,abs_out,negate_out,
 				L_add_outb = scratch_mem_in;
 				L_sub_outa = L_add_in;
 				L_sub_outb = temp1;
-				scratch_mem_write_addr = {INT_LPC_F1[10:5],F_OPT,f_iterator[3:0]};
+				scratch_mem_write_addr = {INT_LPC_F1[11:4],F_OPT,f_iterator[2:0]};
 				scratch_mem_out = L_sub_in;
 				scratch_mem_write_en = 'd1;
 				next_temp2 = L_sub_in;
@@ -376,7 +377,7 @@ module get_lsp_pol(clock,reset,start,F_OPT,done,abs_in,abs_out,negate_out,
 			
 			prestate9: begin
 				next_temp2 = scratch_mem_in;
-				scratch_mem_read_addr = {INT_LPC_LSP_TEMP[10:4],lsp_iterator[3:0]};
+				scratch_mem_read_addr = {get_lsp_pol_addr1[10:4],lsp_iterator[3:0]};
 				nextstate = state9;
 			end
 			
@@ -386,7 +387,7 @@ module get_lsp_pol(clock,reset,start,F_OPT,done,abs_in,abs_out,negate_out,
 				L_msu_outa = scratch_mem_in;
 				L_msu_outb = 16'd512;
 				L_msu_outc = temp2;
-				scratch_mem_write_addr = {INT_LPC_F1[10:5],F_OPT,f_iterator[3:0]};
+				scratch_mem_write_addr = {INT_LPC_F1[11:4],F_OPT,f_iterator[2:0]};
 				scratch_mem_out = L_msu_in;
 				scratch_mem_write_en = 'd1;
 				add_outa = f_iterator;

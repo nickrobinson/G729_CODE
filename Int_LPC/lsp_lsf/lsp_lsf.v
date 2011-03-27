@@ -1,26 +1,28 @@
 `timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
-// Company: 
+// Mississippi State University
+// ECE 4532-4542 Senior Design
 // Engineer: Sean Owens
 // 
 // Create Date:    09:28:11 02/14/2011 
-// Design Name: 
 // Module Name:    lsp_lsf 
-// Project Name: 
-// Target Devices: 
-// Tool versions: 
-// Description: 
+// Project Name:   ITU G.729 Hardware Implementation
+// Target Devices: Virtex 5 - XC5VLX110T - 1FF1136
+// Tool versions:  Xilinx ISE 12.4
+// Description:    This module performs the operations done by the lsp_lsf function
 //
 // Dependencies: 
 //
 // Revision: 
 // Revision 0.01 - File Created
+// Revision 0.02 - Updated to support address input wires
+// Revision 0.03 - Updated to support 12 bit memory address wires
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
 module lsp_lsf(clock,reset,start,done,scratch_mem_read_addr,scratch_mem_write_addr,
 					scratch_mem_out,scratch_mem_write_en,scratch_mem_in,constant_mem_read_addr,
-					constant_mem_in,lsf_addr,add_outa,add_outb,add_in,sub_outa,sub_outb,sub_in,
+					constant_mem_in,lsf_addr1,lsf_addr2,add_outa,add_outb,add_in,sub_outa,sub_outb,sub_in,
 					shl_outa,shl_outb,shl_in,L_add_outa,L_add_outb,L_add_in,L_mult_outa,L_mult_outb,
 					L_mult_in,L_shl_start,L_shl_outa,L_shl_outb,L_shl_in,L_shl_done
     );
@@ -30,7 +32,7 @@ module lsp_lsf(clock,reset,start,done,scratch_mem_read_addr,scratch_mem_write_ad
 	
 	input clock,reset,start;
 	
-	input [11:0] lsf_addr;
+	input [11:0] lsf_addr1,lsf_addr2;
 	
 	input [31:0] scratch_mem_in;
 	input [31:0] constant_mem_in;
@@ -111,8 +113,8 @@ module lsp_lsf(clock,reset,start,done,scratch_mem_read_addr,scratch_mem_write_ad
 		
 		next_iterator1 = iterator1;
 		
-		scratch_mem_read_addr = 11'd0;
-		scratch_mem_write_addr = 11'd0;
+		scratch_mem_read_addr = 12'd0;
+		scratch_mem_write_addr = 12'd0;
 		scratch_mem_out = 32'd0;
 		scratch_mem_write_en = 1'd0;
 		
@@ -143,36 +145,42 @@ module lsp_lsf(clock,reset,start,done,scratch_mem_read_addr,scratch_mem_write_ad
 					nextstate = init;
 			end
 			
+			//for(i=m-1;i>=0;i--)
 			state1: begin
+			   //reset iterators
 				if(iterator1 < 0) begin
 					next_iterator1 = 'd9;
 					next_ind = 'd63;
 					done = 'd1;
 					nextstate = init;
 				end
+				//table[ind]
 				else begin
 					constant_mem_read_addr = {TABLE1[11:6],ind[5:0]};
 					nextstate = state2;
 				end
 			end
 			
+			//lsp[i]
 			state2: begin
 				next_temp1 = constant_mem_in;
-				scratch_mem_read_addr = {INT_LPC_LSP_TEMP[10:4],iterator1[3:0]};
+				scratch_mem_read_addr = {lsf_addr1[11:4],iterator1[3:0]};
 				nextstate = state3;
 			end
 			
+			//while(sub(table[ind], lsp[i])<0)
 			state3: begin
 				sub_outa = temp1;
 				sub_outb = scratch_mem_in[15:0];
 				if(sub_in[15] != 1) begin
-					scratch_mem_read_addr = {INT_LPC_LSP_TEMP[10:4],iterator1[3:0]};
+					scratch_mem_read_addr = {lsf_addr1[11:4],iterator1[3:0]};
 					nextstate = state5;
 				end
 				else
 					nextstate = state4;
 			end
 			
+			//ind = sub(ind,1);
 			state4: begin
 				sub_outa = ind;
 				sub_outb = 'd1;
@@ -180,17 +188,21 @@ module lsp_lsf(clock,reset,start,done,scratch_mem_read_addr,scratch_mem_write_ad
 				nextstate = state1;
 			end
 			
+			//lsp[i]
 			state5: begin
-				scratch_mem_read_addr = {INT_LPC_LSP_TEMP[10:4],iterator1[3:0]};
+				scratch_mem_read_addr = {lsf_addr1[11:4],iterator1[3:0]};
 				nextstate = state6;
 			end
 			
+			//table[ind]
 			state6: begin
 				next_temp1 = scratch_mem_in;
 				constant_mem_read_addr = {TABLE1[11:6],ind[5:0]};
 				nextstate = state7;
 			end
 			
+			//sub(lsp[i], table[ind])
+			//slope[ind]
 			state7: begin
 				sub_outa = temp1[15:0];
 				sub_outb = constant_mem_in[15:0];
@@ -199,6 +211,7 @@ module lsp_lsf(clock,reset,start,done,scratch_mem_read_addr,scratch_mem_write_ad
 				nextstate = state8;
 			end
 			
+			//L_tmp = L_mult( sub(lsp[i], table[ind]), slope[ind]);
 			state8: begin
 				L_mult_outa = temp1[15:0];
 				L_mult_outb = {constant_mem_in[15:0]};
@@ -209,6 +222,8 @@ module lsp_lsf(clock,reset,start,done,scratch_mem_read_addr,scratch_mem_write_ad
 				nextstate = state9;
 			end
 			
+			//tmp = round(L_shl(L_tmp, 3));
+			//lsf[i] = add(tmp, shl(ind, 8));
 			state9: begin
 				if(L_shl_done == 1) begin
 					L_add_outa = L_shl_in;
@@ -217,7 +232,7 @@ module lsp_lsf(clock,reset,start,done,scratch_mem_read_addr,scratch_mem_write_ad
 					shl_outa = ind;
 					shl_outb = 'd8;
 					add_outb = shl_in;
-					scratch_mem_write_addr = {lsf_addr[10:4],iterator1[3:0]};
+					scratch_mem_write_addr = {lsf_addr2[11:4],iterator1[3:0]};
 					scratch_mem_out = {16'd0,add_in};
 					scratch_mem_write_en = 'd1;
 					nextstate = state10;
@@ -229,6 +244,7 @@ module lsp_lsf(clock,reset,start,done,scratch_mem_read_addr,scratch_mem_write_ad
 				end
 			end
 			
+			//i--
 			state10: begin
 				sub_outa = iterator1;
 				sub_outb = 'd1;

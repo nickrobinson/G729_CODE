@@ -1,34 +1,37 @@
 `timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
+// Mississippi State University 
+// ECE 4532-4542 Senior Design
+// Engineer: Sean Owens
 // 
-// Create Date:    17:40:12 02/14/2011 
-// Design Name: 
+// Create Date:    17:40:12 02/14/2011
 // Module Name:    lsp_to_az_tb 
-// Project Name: 
-// Target Devices: 
-// Tool versions: 
-// Description: 
+// Project Name: 	 ITU G.729 Hardware Implementation
+// Target Devices: Virtex 5 - XC5VLX110T - 1FF1136
+// Tool versions:  Xilinx ISE 12.4
+// Description: 	 This module tests the lsp_to_az module.
 //
 // Dependencies: 
 //
 // Revision: 
 // Revision 0.01 - File Created
+// Revision 0.02 - Updated to support 12 bit memory addresses
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
 module lsp_to_az_tb;
 
 	`include "paramList.v"
-
+	
 	reg clock,start,reset;
 	
 	wire done;
 	
 	wire [31:0] scratch_mem_in;
 	
-	reg [10:0] test_write_addr,test_read_addr;
+	reg [11:0] test_write_addr,test_read_addr;
+	
+	reg [11:0] lsp_az_addr1,lsp_az_addr2;
 	
 	reg [31:0] test_write;
 	
@@ -52,7 +55,9 @@ module lsp_to_az_tb;
 					.mem_Mux1Sel(mem_Mux1Sel),
 					.mem_Mux2Sel(mem_Mux2Sel),
 					.mem_Mux3Sel(mem_Mux3Sel),
-					.mem_Mux4Sel(mem_Mux4Sel)
+					.mem_Mux4Sel(mem_Mux4Sel),
+					.lsp_az_addr1(lsp_az_addr1),
+					.lsp_az_addr2(lsp_az_addr2)
 			);
 			
 	//file read in for inputs and output tests
@@ -108,7 +113,7 @@ module lsp_to_az_tb;
 				@(posedge clock);
 				@(posedge clock);
 				@(posedge clock) #5;
-				test_write_addr = {INT_LPC_LSP_TEMP[10:4],i[3:0]};
+				test_write_addr = {INT_LPC_LSP_TEMP[11:4],i[3:0]};
 				test_write = lsp_in[10*j+i];
 				test_write_en = 1;	
 				@(posedge clock);
@@ -123,7 +128,9 @@ module lsp_to_az_tb;
 			mem_Mux2Sel = 0;
 			mem_Mux3Sel = 0;
 			mem_Mux4Sel = 0;
-	
+			lsp_az_addr1 = INT_LPC_LSP_TEMP;
+			lsp_az_addr2 = A_T_LOW;
+			
 			@(posedge clock);
 			@(posedge clock);
 			@(posedge clock) #5;		
@@ -139,7 +146,6 @@ module lsp_to_az_tb;
 			@(posedge clock);
 			@(posedge clock) #5;
 			mem_Mux4Sel = 1;
-			//gamma1 read
 			
 			@(posedge clock);
 			@(posedge clock);
@@ -150,7 +156,7 @@ module lsp_to_az_tb;
 					@(posedge clock);
 					@(posedge clock);
 					@(posedge clock) #5;
-					test_read_addr = {A_T[10:4],i[3:0]};
+					test_read_addr = {A_T_LOW[11:4],i[3:0]};
 					@(posedge clock);
 					@(posedge clock) #5;
 					if (scratch_mem_in != az_out[j*10+i])

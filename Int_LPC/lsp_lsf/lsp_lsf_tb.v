@@ -1,23 +1,22 @@
 `timescale 1ns / 1ps
 
 ////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer:
+// Mississippi State University
+// ECE 4532-4542 Senior Design
+// Engineer: Sean Owens
 //
 // Create Date:   12:45:12 02/28/2011
-// Design Name:   lsp_lsf_pipe
-// Module Name:   C:/Users/Sean/Documents/MSU Files/Senior Design/INT_LPC/lsp_lsf_tb.v
-// Project Name:  INT_LPC
-// Target Device:  
-// Tool versions:  
-// Description: 
+// Module Name:   lsp_lsf_pipe
+// Project Name:  ITU G.729 Hardware Implementation
+// Target Device: Virtex 5 - XC5VLX100T - 1FF1136
+// Tool versions: Xilinx ISE 12.4
+// Description:   This module tests the lsp_lsf module
 //
-// Verilog Test Fixture created by ISE for module: lsp_lsf_pipe
-//
-// Dependencies:
+// Dependencies:  lsp_lsf_pipe.v
 // 
 // Revision:
 // Revision 0.01 - File Created
+// Revision 0.02 - Updated to support 12 bit scratch memory address wires
 // Additional Comments:
 // 
 ////////////////////////////////////////////////////////////////////////////////
@@ -35,7 +34,7 @@ module lsp_lsf_tb;
 	reg mem_Mux2Sel;
 	reg mem_Mux3Sel;
 	reg mem_Mux4Sel;
-	reg [11:0] lsf_addr;
+	reg [11:0] lsf_addr1,lsf_addr2;
 	reg [11:0] test_write_addr;
 	reg [11:0] test_read_addr;
 	reg [31:0] test_write;
@@ -54,7 +53,8 @@ module lsp_lsf_tb;
 		.mem_Mux2Sel(mem_Mux2Sel), 
 		.mem_Mux3Sel(mem_Mux3Sel), 
 		.mem_Mux4Sel(mem_Mux4Sel), 
-		.lsf_addr(lsf_addr), 
+		.lsf_addr1(lsf_addr1),
+		.lsf_addr2(lsf_addr2),
 		.test_write_addr(test_write_addr), 
 		.test_read_addr(test_read_addr), 
 		.test_write(test_write), 
@@ -136,7 +136,8 @@ module lsp_lsf_tb;
 			mem_Mux2Sel = 0;
 			mem_Mux3Sel = 0;
 			mem_Mux4Sel = 0;
-			lsf_addr = INTERPOLATION_LSF_INT;
+			lsf_addr1 = INT_LPC_LSP_TEMP;
+			lsf_addr2 = INTERPOLATION_LSF_INT;
 			@(posedge clock);
 			@(posedge clock);
 			@(posedge clock) #5;		
@@ -152,7 +153,6 @@ module lsp_lsf_tb;
 			@(posedge clock);
 			@(posedge clock) #5;
 			mem_Mux4Sel = 1;
-			//gamma1 read
 			
 			@(posedge clock);
 			@(posedge clock);
