@@ -49,3 +49,5 @@ parameter Y2 = 12'd2240;								//Top Level Y2 uses 64 Blocks
 parameter xxxx = 12'd2304;								//OPEN 256 Blocks
 parameter xxxxx = 12'd2560;							//OPEN 512 Blocks
 parameter xxxxxx = 12'd3072;						//OPEN 1024 Blocks
+parameter excf = 12'd3136;						//NORM_CORR 64 Blocks
+parameter scaled_excf = 12'd3200;				//NORM_CORR 64 Blocks
