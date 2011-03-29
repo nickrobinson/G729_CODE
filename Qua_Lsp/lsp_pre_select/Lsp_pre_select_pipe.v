@@ -43,7 +43,7 @@ module Lsp_pre_select_pipe(clk, reset, start, done, Mux0Sel, Mux1Sel, Mux2Sel, M
 	output [11:0] writeAddr;
 	output [31:0] writeOut;
 	output writeEn;
-	output [6:0] cand;
+	output [11:0] cand;
 	
 	wire [31:0] L_mac_in, L_sub_in;
 	wire [15:0] add_in, sub_in;

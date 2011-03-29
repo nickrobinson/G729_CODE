@@ -34,7 +34,7 @@ module Lsp_pre_select_test;
 	wire [11:0] const_addr;
 	wire [11:0] writeAddr;
 	wire [31:0] writeOut;	
-	wire [6:0] cand;
+	wire [11:0] cand;
 	integer i, j;
 
 	reg Mux0Sel;
@@ -125,13 +125,13 @@ module Lsp_pre_select_test;
 			Mux0Sel = 0;		
 
 				
-					testReadRequested = 0;
+					testReadRequested = cand;
 					@(posedge clk);
 					@(posedge clk);
-					if (cand != candc[j])
-						$display($time, " ERROR: candc[%d] = %x, expected = %x", j, cand, candc[j]);
-					else if (cand == candc[j])
-						$display($time, " CORRECT:  candc[%d] = %x", j, cand);
+					if (readIn != candc[j])
+						$display($time, " ERROR: candc[%d] = %x, expected = %x", j, readIn, candc[j]);
+					else if (readIn == candc[j])
+						$display($time, " CORRECT:  candc[%d] = %x", j, readIn);
 					@(posedge clk);	
 				
 		end//j for loop

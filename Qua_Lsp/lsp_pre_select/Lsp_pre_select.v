@@ -35,7 +35,7 @@ module Lsp_pre_select(clk, start, reset, done, rbuf, sub_a, sub_b, sub_in, L_mac
 	output reg writeEn;
 	output reg [11:0] readAddr;
 	output reg [11:0] const_addr;
-	output reg [6:0] cand;
+	output reg [11:0] cand;
 	
 	input [31:0] L_mac_in, L_sub_in;
 	input [15:0] add_in, sub_in;
@@ -142,7 +142,9 @@ module Lsp_pre_select(clk, start, reset, done, rbuf, sub_a, sub_b, sub_in, L_mac
 						if(start)
 						begin
 							next_L_dmin = 'h7fffffff;								//L_dmin = MAX_32;
-							cand = 0;
+							writeAddr = cand;
+							writeOut = 0;
+							writeEn = 1;
 							nextstate = S1;
 						end
 					end
@@ -175,7 +177,9 @@ module Lsp_pre_select(clk, start, reset, done, rbuf, sub_a, sub_b, sub_in, L_mac
 								if(L_sub_in[31] == 1)								//if(L_temp < 0)
 									begin
 										next_L_dmin = L_tmp;						//L_dmin = L_tmp;
-										cand = {i[6:0]};
+										writeAddr = cand;
+										writeOut = i;
+										writeEn = 1;
 									end
 									
 								add_a = i;
