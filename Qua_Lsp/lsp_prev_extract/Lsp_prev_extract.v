@@ -177,7 +177,7 @@ module Lsp_prev_extract(start, clk, done, reset, lspele,freq_prev, lsp, readAddr
 						else
 							begin
 								next_temp_freq_prev = readIn[15:0];						
-								constantMemAddr = {fgAddr[11:6],k[1:0],j[3:0]};					//read in fg[j][k]
+								constantMemAddr = {fgAddr[11:6],j[1:0],k[3:0]};					//read in fg[j][k]
 								nextstate = S3;
 							end
 					end
