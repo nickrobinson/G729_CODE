@@ -160,7 +160,7 @@ module Lsp_prev_extract(start, clk, done, reset, lspele,freq_prev, lsp, readAddr
 						else
 							begin
 								next_L_temp = {readIn[15:0], 16'b0};					//L_temp = L_deposit_h(lsp[j]);
-								readAddr = {freq_prev[11:6],  j[3:0], k[1:0]};		//read in freq_prev[j][k]
+								readAddr = {freq_prev[11:6],k[1:0],j[3:0]};		//read in freq_prev[k][j]
 								nextstate = S2;
 							end
 					end
@@ -177,14 +177,14 @@ module Lsp_prev_extract(start, clk, done, reset, lspele,freq_prev, lsp, readAddr
 						else
 							begin
 								next_temp_freq_prev = readIn[15:0];						
-								constantMemAddr = {fgAddr[11:6],j[1:0],k[3:0]};					//read in fg[j][k]
+								constantMemAddr = {fgAddr[11:6],k[1:0],j[3:0]};					//read in fg[k][j]
 								nextstate = S3;
 							end
 					end
 				
 				S3:
 					begin
-						readAddr = {freq_prev[11:6], j[3:0], add_in[1:0]};
+						readAddr = {freq_prev[11:6], add_in[1:0], j[3:0]};
 						L_msu_a = temp_freq_prev;
 						L_msu_b = constantMemIn[15:0];
 						L_msu_c = L_temp;
