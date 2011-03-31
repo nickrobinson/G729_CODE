@@ -1,26 +1,22 @@
 `timescale 1ns / 1ps
-
-////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer:
-//
-// Create Date:   17:36:51 03/25/2011
-// Design Name:   D4i40_17_pipe
-// Module Name:   C:/Users/Muaddib/Documents/Zach Office/School MSU/Spring 2011/Senior Design II/G729 Verilog Code/ACELP_Codebook/D4i40_17_test.v
-// Project Name:  ACELP_Codebook
-// Target Device:  
-// Tool versions:  
-// Description: 
-//
-// Verilog Test Fixture created by ISE for module: D4i40_17_pipe
-//
-// Dependencies:
+//////////////////////////////////////////////////////////////////////////////////
+// Mississippi State University 
+// ECE 4532-4542 Senior Design
+// Engineer: Zach Thornton
 // 
-// Revision:
+// Create Date:    17:36:51 03/25/2011
+// Module Name:    D4i40_17_test
+// Project Name: 	 ITU G.729 Hardware Implementation
+// Target Devices: Virtex 5
+// Tool versions:  Xilinx 9.2i
+// Description: 	 Verilog Test Fixture created by ISE for module: D4i40_17_pipe
+// Dependencies: 	 D4i40_17_pipe.v
+//
+// Revision: 
 // Revision 0.01 - File Created
-// Additional Comments:
-// 
-////////////////////////////////////////////////////////////////////////////////
+// Additional Comments: 
+//
+//////////////////////////////////////////////////////////////////////////////////
 
 module D4i40_17_test;
 `include "paramList.v"
