@@ -52,6 +52,6 @@ parameter Y2 = 12'd2240;								//Top Level Y2 uses 64 Blocks
 parameter EXCF = 12'd2304;								//EXCF uses 64 Blocks
 parameter SCALED_EXCF = 12'd2368;					//SCALED_EXCF uses 64 Blocks
 parameter XN2 = 12'd2432;								//Top Level's xn2 uses 64 blocks
-parameter COR_H_X_Y32									//Cor_h_X's Y32 uses 64 blocks
+parameter COR_H_X_Y32 = 12'd2496;					//Cor_h_X's Y32 uses 64 blocks
 parameter xxxxx = 12'd2560;							//OPEN 512 Blocks
 parameter xxxxxx = 12'd3072;						//OPEN 1024 Blocks
