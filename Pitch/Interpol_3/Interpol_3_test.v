@@ -133,6 +133,9 @@ module Interpol_3_test;
 			
 			wait(done);
 			
+			@(posedge clk);
+			@(posedge clk) #5;
+			
 			if (returnS != Interpol_3_round[j])
 				$display($time, " ERROR: returnS = %x, expected = %x", returnS, Interpol_3_round[j]);
 			else
