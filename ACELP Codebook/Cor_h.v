@@ -21,8 +21,8 @@
 module Cor_h(clk,reset,start,L_macIn,L_subIn,subIn,shrIn,norm_lIn,norm_lDone,shlIn,addIn,L_addIn,L_add2In,
 				 L_add3In,L_add4In,memIn,L_macOutA,L_macOutB,L_macOutC,L_subOutA,L_subOutB,subOutA,subOutB,
 				 shrVar1Out,shrVar2Out,norm_lVar1Out,norm_lReady,shlVar1Out,shlVar2Out,addOutA,addOutB,L_addOutA,
-				 L_addOutB,L_add1OutA,L_add1OutB,L_add2OutA,L_add2OutB,L_add3OutA,L_add3OutB,L_add4OutA,
-				 L_add4OutB,memReadAddr,memWriteAddr,memOut,memWriteEn,done);
+				 L_addOutB,L_add2OutA,L_add2OutB,L_add3OutA,L_add3OutB,L_add4OutA,L_add4OutB,
+				 memReadAddr,memWriteAddr,memOut,memWriteEn,done);
 `include "paramList.v"	 
 //Inputs
 input clk,reset,start;
@@ -51,7 +51,6 @@ output reg norm_lReady;
 output reg [15:0] shlVar1Out,shlVar2Out;
 output reg [15:0] addOutA,addOutB;
 output reg [31:0] L_addOutA,L_addOutB;
-output reg [31:0] L_add1OutA,L_add1OutB;
 output reg [31:0] L_add2OutA,L_add2OutB;
 output reg [31:0] L_add3OutA,L_add3OutB;
 output reg [31:0] L_add4OutA,L_add4OutB;
@@ -230,7 +229,7 @@ parameter S100 = 7'd100;
 parameter S101 = 7'd101;
 parameter S102 = 7'd102;
 parameter S103 = 7'd103;
-
+parameter S104 = 7'd104;
 //internal Flip flops
 always @(posedge clk)
 begin
@@ -664,8 +663,6 @@ begin
 	subOutB = 0;
 	L_addOutA = 0;
 	L_addOutB = 0;
-	L_add1OutA = 0;
-	L_add1OutB = 0;
 	L_add2OutA = 0;
 	L_add2OutB = 0;
 	L_add3OutA = 0;
@@ -728,7 +725,7 @@ begin
 			nextstate = S3;
 		else if(i<40)
 		begin
-			memReadAddr = {ACELP_H[11:6],i[5:0]};
+			memReadAddr = {H1[11:6],i[5:0]};
 			nextstate = S2;
 		end		
 	end//S1
@@ -772,7 +769,7 @@ begin
 			nextstate = S9;
 		else if(i<40)
 		begin
-			memReadAddr = {ACELP_H[11:6],i[5:0]};
+			memReadAddr = {H1[11:6],i[5:0]};
 			nextstate = S5;
 		end
 	end//S4
@@ -798,9 +795,27 @@ begin
 	S6:
 	begin
 		norm_lVar1Out = cor;
-		norm_lReady = 1;
+		norm_lReady = 1;		
+		if(norm_lDone == 1)
+		begin			
+			shrVar1Out = norm_lIn;
+			shrVar2Out = 16'd1;
+			nextk = shrIn[3:0];
+			kLD = 1;
+			nextstate = S7;
+		end
+		else 
+			nextstate = S104;
+	end//S6
+	
+	//yeah, this state is out of order, but I had to add it last minute.
+	//and I wasn't about to change the names of the other hundred states, so 
+	//deal with it.
+	S104:
+	begin
+		norm_lVar1Out = cor;	
 		if(norm_lDone == 0)
-			nextstate = S6;
+			nextstate = S104;
 		else if(norm_lDone == 1)
 		begin
 			norm_lReady = 0;
@@ -809,8 +824,8 @@ begin
 			nextk = shrIn[3:0];
 			kLD = 1;
 			nextstate = S7;
-		end
-	end//S6
+		end		
+	end//S104
 	
 	//for(i=0; i<L_SUBFR; i++) 
 	S7:
@@ -819,7 +834,7 @@ begin
 			nextstate = S9;
 		else if(i<40)
 		begin
-			memReadAddr = {ACELP_H[11:6],i[5:0]};
+			memReadAddr = {H1[11:6],i[5:0]};
 			nextstate = S8;
 		end
 	end//S7

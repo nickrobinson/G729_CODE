@@ -56,7 +56,6 @@ wire norm_lReady;
 wire [15:0] shlVar1Out,shlVar2Out;
 wire [15:0] addOutA,addOutB;
 wire [31:0] L_addOutA,L_addOutB;
-wire [31:0] L_add1OutA,L_add1OutB;
 wire [31:0] L_add2OutA,L_add2OutB;
 wire [31:0] L_add3OutA,L_add3OutB;
 wire [31:0] L_add4OutA,L_add4OutB;
@@ -111,8 +110,6 @@ Cor_h fsm(
 			 .addOutB(addOutB),
 			 .L_addOutA(L_addOutA),
 			 .L_addOutB(L_addOutB),
-			 .L_add1OutA(L_add1OutA),
-			 .L_add1OutB(L_add1OutB),
 			 .L_add2OutA(L_add2OutA),
 			 .L_add2OutB(L_add2OutB),
 			 .L_add3OutA(L_add3OutA),
