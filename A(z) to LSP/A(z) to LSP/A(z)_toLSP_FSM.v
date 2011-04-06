@@ -155,8 +155,6 @@ reg sign,nextSign,signLd,signReset;
 reg [4:0] tempSub; 
 reg [15:0] div_sOutA, div_sOutB;
 reg div_sReady;
-reg [10:0] LEVINSON_DURBIN_A, nextLev;
-reg levReset,levLD;
 
 //cheb10 regs
 reg cheb10start;
@@ -344,16 +342,6 @@ begin
 		sign <= 0;
 	else if(signLd)
 		sign <=  nextSign;
-end
-
-always @(posedge clk)
-begin
-	if(reset)
-		LEVINSON_DURBIN_A <= 0;
-	else if(levReset)
-		LEVINSON_DURBIN_A <= 0;
-	else if(levLD)
-		LEVINSON_DURBIN_A <=  nextLev;
 end
 
 always @(posedge clk)
@@ -662,11 +650,8 @@ begin
 	signReset = 0;
 	nextcount = count;
 	nextjCount = jCount;
-	nextnfCount = nfCount;
-	nextLev = LEVINSON_DURBIN_A;
+	nextnfCount = nfCount;	
 	done = 0;
-	levLD = 0;
-	levReset = 0;
 	shrOutVar1 = 0;
 	shrOutVar1 = 0;
 	nexttempX = tempX;
@@ -705,7 +690,6 @@ begin
 			else if(start == 1)
 			begin
 				chebReset = 1;
-				levReset = 1;
 				countReset = 1;
 				jCountReset = 1;
 				nfCountReset = 1;
@@ -737,11 +721,6 @@ begin
 			fTwoOut = 16'd2048;
 			fTwold = 1;
 			nextstate = FOR_LOOP_CHECK1;
-			addOutA = {5'd0,A_T[10:0]};
-			addOutB = 16'd11;
-			nextLev = addIn;
-			levLD = 1;
-			
 		end//MATH_INIT
 		
 		FOR_LOOP_CHECK1:
@@ -752,7 +731,7 @@ begin
 			begin
 				addOutA = count;
 				addOutB = 16'd1;
-				lspReadRequested = {LEVINSON_DURBIN_A[10:5],addIn[4:0]};
+				lspReadRequested = {A_T_HIGH[11:3],addIn[2:0]};
 				nextstate = MEM_WAIT1;
 			end
 		end//FOR_LOOP_CHECK1
@@ -761,7 +740,7 @@ begin
 		begin
 			addOutA = count;
 			addOutB = 16'd1;
-			lspReadRequested = {LEVINSON_DURBIN_A[10:5],addIn[4:0]};
+			lspReadRequested = {A_T_HIGH[11:3],addIn[2:0]};
 			L_multOutA = lspIn[15:0];
 			L_multOutB = 16'd16384;
 			nexttZero = L_multIn;
@@ -773,7 +752,7 @@ begin
 		begin
 			L_subOutA = 32'd10;
 			L_subOutB = count;
-			lspReadRequested = {LEVINSON_DURBIN_A[10:5],L_subIn[4:0]};
+			lspReadRequested = {A_T_HIGH[11:4],L_subIn[3:0]};
 			nextstate = MEM_WAIT2;
 		end//MATH0
 		
@@ -781,7 +760,7 @@ begin
 		begin
 			L_subOutA = 32'd10;
 			L_subOutB = count;
-			lspReadRequested = {LEVINSON_DURBIN_A[10:5],L_subIn[4:0]};
+			lspReadRequested = {A_T_HIGH[11:4],L_subIn[3:0]};
 			L_macOutB = 16'd16384;
 			L_macOutC = tZero;
 			L_macOutA = lspIn[15:0];
@@ -837,7 +816,7 @@ begin
 		begin
 			addOutA = count;
 			addOutB = 16'd1;
-			lspReadRequested = {LEVINSON_DURBIN_A[10:5],addIn[4:0]};
+			lspReadRequested = {A_T_HIGH[11:3],addIn[2:0]};
 			nextstate = MEM_WAIT3;
 		end//MATH1
 		
@@ -845,7 +824,7 @@ begin
 		begin
 			addOutA = count;
 			addOutB = 16'd1;
-			lspReadRequested = {LEVINSON_DURBIN_A[10:5],addIn[4:0]};
+			lspReadRequested = {A_T_HIGH[11:3],addIn[2:0]};
 			L_multOutA = lspIn[15:0];
 			L_multOutB = 16'd16384;
 			nexttZero = L_multIn;
@@ -857,7 +836,7 @@ begin
 		begin
 			subOutA = 16'd10;
 			subOutB = count;
-			lspReadRequested = {LEVINSON_DURBIN_A[10:5],subIn[4:0]};
+			lspReadRequested = {A_T_HIGH[11:4],subIn[3:0]};
 			nextstate = MEM_WAIT4;			
 		end//MATH2
 		
@@ -865,7 +844,7 @@ begin
 		begin
 			subOutA = 16'd10;
 			subOutB = count;
-			lspReadRequested = {LEVINSON_DURBIN_A[10:5],subIn[4:0]};
+			lspReadRequested = {A_T_HIGH[11:4],subIn[3:0]};
 			L_msuOutA = lspIn[15:0];
 			L_msuOutB = 16'd16384;
 			L_msuOutC = tZero;			
@@ -960,7 +939,7 @@ begin
 			begin
 				addOutA = count;
 				addOutB = 16'd1;
-				lspReadRequested = {LEVINSON_DURBIN_A[10:5],addIn[4:0]};
+				lspReadRequested = {A_T_HIGH[11:3],addIn[2:0]};
 				nextstate = MEM_WAIT5;
 			end
 		end//FOR_LOOP_CHECK2
@@ -969,7 +948,7 @@ begin
 		begin
 			addOutA = count;
 			addOutB = 16'd1;
-			lspReadRequested = {LEVINSON_DURBIN_A[10:5],addIn[4:0]};
+			lspReadRequested = {A_T_HIGH[11:3],addIn[2:0]};
 			L_multOutA = lspIn;
 			L_multOutB = 16'd8192;
 			nexttZero = L_multIn;
@@ -981,7 +960,7 @@ begin
 		begin
 			L_subOutA = 32'd10;
 			L_subOutB = count;			
-			lspReadRequested = {LEVINSON_DURBIN_A[10:5],L_subIn[4:0]};
+			lspReadRequested = {A_T_HIGH[11:4],L_subIn[3:0]};
 			nextstate = MEM_WAIT6;
 		end	//MATH3
 		
@@ -989,7 +968,7 @@ begin
 		begin
 			L_subOutA = 32'd10;
 			L_subOutB = count;			
-			lspReadRequested = {LEVINSON_DURBIN_A[10:5],L_subIn[4:0]};
+			lspReadRequested = {A_T_HIGH[11:4],L_subIn[3:0]};
 			L_macOutA = lspIn[15:0];
 			L_macOutB = 16'd8192;
 			L_macOutC = tZero;
@@ -1044,7 +1023,7 @@ begin
 		begin
 			addOutA = count;
 			addOutB = 16'd1;
-			lspReadRequested = {LEVINSON_DURBIN_A[10:5],addIn[4:0]};
+			lspReadRequested = {A_T_HIGH[11:3],addIn[2:0]};
 			nextstate = MEM_WAIT7;
 		end//MATH4
 		
@@ -1052,7 +1031,7 @@ begin
 		begin
 			addOutA = count;
 			addOutB = 16'd1;
-			lspReadRequested = {LEVINSON_DURBIN_A[10:5],addIn[4:0]};
+			lspReadRequested = {A_T_HIGH[11:3],addIn[2:0]};
 			L_multOutA = lspIn[15:0];
 			L_multOutB = 8192;
 			nexttZero = L_multIn;
@@ -1064,7 +1043,7 @@ begin
 		begin
 			subOutA = 16'd10;
 			subOutB = count;
-			lspReadRequested = {LEVINSON_DURBIN_A[10:5],subIn[4:0]};
+			lspReadRequested = {A_T_HIGH[11:4],subIn[3:0]};
 			nextstate = MEM_WAIT8;
 		end//MATH5
 		
@@ -1072,7 +1051,7 @@ begin
 		begin
 			subOutA = 16'd10;
 			subOutB = count;
-			lspReadRequested = {LEVINSON_DURBIN_A[10:5],subIn[4:0]};
+			lspReadRequested = {A_T_HIGH[11:4],subIn[3:0]};
 			L_msuOutA = lspIn;
 			L_msuOutB = 16'd8192;
 			L_msuOutC = tZero;
@@ -1587,7 +1566,7 @@ begin
 	
 	INTERPOLATION6:
 	begin
-		lspWriteRequested = {LSP_NEW[10:5],nfCount};
+		lspWriteRequested = {LSP_NEW[11:4],nfCount[3:0]};
 		lspOut = {16'd0,xInt};
 		lspWrite = 1;
 		nextxLow = xInt;
@@ -1687,7 +1666,7 @@ begin
 			end
 			else if(count < 10)
 			begin
-				lspReadRequested = {LSP_OLD[10:5],count};	//reading from old LSP
+				lspReadRequested = {LSP_OLD[11:4],count[3:0]};	//reading from old LSP
 				nextstate = ROOTS_CHECK_WAIT1;
 			end		
 		end
@@ -1701,7 +1680,7 @@ begin
 			end
 			else if(count < 10)
 			begin
-				lspReadRequested = {LSP_NEW[10:5],count};
+				lspReadRequested = {LSP_NEW[11:4],count[3:0]};
 				nextstate = ROOTS_CHECK_WAIT2;				
 			end	
 		end
@@ -1709,9 +1688,9 @@ begin
 	
 	ROOTS_CHECK_WAIT1:
 	begin
-		lspReadRequested = {LSP_OLD[10:5],count};	//reading from old LSP
+		lspReadRequested = {LSP_OLD[11:4],count[3:0]};	//reading from old LSP
 		lspOut = {16'd0,lspIn};
-		lspWriteRequested = {LSP_NEW[10:5],count};
+		lspWriteRequested = {LSP_NEW[11:4],count[3:0]};
 		lspWrite = 1;
 		addOutA = count;
 		addOutB = 16'd1;
@@ -1722,9 +1701,9 @@ begin
 	
 	ROOTS_CHECK_WAIT2:
 	begin
-		lspReadRequested = {LSP_NEW[10:5],count};
+		lspReadRequested = {LSP_NEW[11:4],count[3:0]};
 		lspOut = {16'd0,lspIn};
-		lspWriteRequested = {LSP_OLD[10:5],count};
+		lspWriteRequested = {LSP_OLD[11:4],count[3:0]};
 		lspWrite = 1;
 		addOutA = count;
 		addOutB = 16'd1;

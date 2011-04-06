@@ -39,7 +39,6 @@ module Az_LSP_Test_v;
 	//working regs
 	reg [15:0] aSubI_in [0:9999];
 	reg [15:0] lspOutMem [0:9999];
-	reg [10:0] temp;
 	
 	integer i,j;
 	
@@ -105,8 +104,7 @@ module Az_LSP_Test_v;
 				@(posedge clk);
 				@(posedge clk);
 				@(posedge clk) #5;					//Added Delay BY PARKER
-				temp = A_T + 11'd11;
-				testWriteRequested = {temp[10:4],i[3:0]};
+				testWriteRequested = {A_T_HIGH[10:4],i[3:0]};
 				testLspOut = aSubI_in[j*11+i];
 				testLspWrite = 1;	
 				@(posedge clk);
