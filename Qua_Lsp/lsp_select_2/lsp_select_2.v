@@ -17,10 +17,10 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module lsp_select_2(clk, reset, start, memIn, memWriteEn, memWriteAddr, memOut, done, 
+module lsp_select_2(clk, reset, start, memIn, memWriteEn, memWriteAddr, memReadAddr, memOut, done, 
 						   L_subOutA, L_subOutB, L_subIn, L_addOutA, L_addOutB, L_addIn, subOutA,
 							subOutB, subIn, multOutA, multOutB, multIn, L_macOutA, L_macOutB, L_macOutC, L_macIn,
-							constMemIn, constMemAddr, lspcb1Addr);
+							constMemIn, constMemAddr, lspcb1Addr, lspcb2Addr, rbufAddr, wegtAddr, indexAddr);
 
 `include "paramList.v"
 `include "constants_param_list.v"
@@ -35,10 +35,15 @@ input [15:0] subIn;
 input [15:0] multIn;
 input [31:0] L_macIn;
 input [11:0] lspcb1Addr;
+input [11:0] lspcb2Addr;
+input [11:0] rbufAddr;
+input [11:0] wegtAddr;
+input [11:0] indexAddr;
 
 //outputs
 output reg memWriteEn;
 output reg [11:0] memWriteAddr;
+output reg [11:0] memReadAddr;
 output reg [11:0] constMemAddr;
 output reg [31:0] memOut;
 output reg done;
@@ -205,6 +210,7 @@ begin
 	nexttempL = tempL;
 	done = 0;
 	memWriteAddr = 0;
+	memReadAddr = 0;
 	memWriteEn = 0;
 	memOut = 0;
 	constMemAddr = 0;
@@ -261,7 +267,7 @@ begin
 			end
 			else if(count1 < M)
 			begin
-				memWriteAddr = {LSP_SELECT_1_RBUF[10:3], count1[2:0]};
+				memReadAddr = {rbufAddr[11:3], count1[2:0]};
 				nextstate = STATE_LOOP_1_2;
 			end	
 		end
@@ -279,7 +285,7 @@ begin
 			subOutA = tempR;
 			subOutB = constMemIn[15:0];
 			memOut[15:0] = subIn;
-			memWriteAddr = {LSP_SELECT_1_BUF[10:3], count1[2:0]};
+			memWriteAddr = {LSP_SELECT_1_BUF[11:3], count1[2:0]};
 			memWriteEn = 1;
 			L_addOutA = count1;
 			L_addOutB = 1;
@@ -290,7 +296,7 @@ begin
 		
 		STATE_PRE_LOOP_2_1:	//State 4
 		begin
-			memWriteAddr = LSP_SELECT_1_INDEX[10:0];
+			memWriteAddr = indexAddr[11:0];
 			memOut = 0;
 			memWriteEn = 1;
 			nexttempMin = MAX_32;
@@ -305,7 +311,6 @@ begin
 				count1Reset = 1;
 				nextstate = STATE_INIT;
 				done = 1;
-				$display("SUCCESS");
 			end
 			else if(count1 < NC1)
 			begin
@@ -326,7 +331,7 @@ begin
 			end
 			else if(count2 < M)
 			begin
-				memWriteAddr = {LSP_SELECT_1_BUF[10:3], count2[2:0]};
+				memReadAddr = {LSP_SELECT_1_BUF[11:3], count2[2:0]};
 				nextstate = STATE_LOOP_INNER_2;
 			end	
 		end
@@ -335,7 +340,7 @@ begin
 		begin
 			nexttempB = memIn[15:0];
 			tempBLd = 1;
-			constMemAddr = {LSPCB2[11:10], count1[5:0], count2[3:0]};
+			constMemAddr = {lspcb2Addr[11:10], count1[5:0], count2[3:0]};
 			nextstate = STATE_LOOP_INNER_3;
 		end
 		
@@ -345,7 +350,7 @@ begin
 			subOutB = constMemIn[15:0];
 			nexttemp1 = subIn;
 			temp1Ld = 1;
-			memWriteAddr = {LSP_SELECT_1_WEGT[10:3], count2[2:0]};
+			memReadAddr = {wegtAddr[11:3], count2[2:0]};
 			nextstate = STATE_LOOP_INNER_4;
 		end
 		
@@ -387,8 +392,8 @@ begin
 			begin
 				nexttempMin = tempDist;
 				tempMinLd = 1;
-				memWriteAddr = LSP_SELECT_1_INDEX[10:0];
-				memOut = {5'd0, count1[5:0]};
+				memWriteAddr = indexAddr[11:0];
+				memOut = {6'd0, count1[5:0]};
 				memWriteEn = 1;
 			end
 			L_addOutA = count1;

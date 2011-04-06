@@ -179,7 +179,7 @@ begin
 			begin
 				subOutA = j;
 				subOutB = 1;
-				memReadAddr = {RELSPWED_BUF[10:4],subIn[3:0]};
+				memReadAddr = {RELSPWED_BUF[11:4],subIn[3:0]};
 				nextstate = FOR_LOOP_BODY1;
 			end
 		end//FOR_LOOP1
@@ -189,7 +189,7 @@ begin
 		begin
 			nextbufj_1 = memIn;
 			bufj_1LD = 1;
-			memReadAddr = {RELSPWED_BUF[10:4],j[3:0]};
+			memReadAddr = {RELSPWED_BUF[11:4],j[3:0]};
 			nextstate = FOR_LOOP_BODY2;
 		end//FOR_LOOP1_BODY1
 		
@@ -222,7 +222,7 @@ begin
 				L_subOutA = {27'd0,j[3:0]};
 				L_subOutB = {30'd0,1'd1};
 				memOut = subIn;
-				memWriteAddr = {RELSPWED_BUF[10:4],L_subIn[3:0]};
+				memWriteAddr = {RELSPWED_BUF[11:4],L_subIn[3:0]};
 				memWriteEn = 1;
 				nextstate = FOR_LOOP_BODY4;
 			end
@@ -242,7 +242,7 @@ begin
 			addOutA = bufj;
 			addOutB = temp;
 			memOut = addIn;
-			memWriteAddr = {RELSPWED_BUF[10:4],j[3:0]};
+			memWriteAddr = {RELSPWED_BUF[11:4],j[3:0]};
 			memWriteEn = 1;
 			L_addOutA = {27'd0,j[3:0]};
 			L_addOutB = 32'd1;

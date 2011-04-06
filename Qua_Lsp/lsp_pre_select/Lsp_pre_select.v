@@ -27,6 +27,7 @@ module Lsp_pre_select(clk, start, reset, done, rbuf, sub_a, sub_b, sub_in, L_mac
 	input clk, start, reset;
 	input [11:0] rbuf;
 	input [31:0] readIn, const_in;
+	input [11:0] cand;
 
 
 	output reg done;
@@ -35,7 +36,6 @@ module Lsp_pre_select(clk, start, reset, done, rbuf, sub_a, sub_b, sub_in, L_mac
 	output reg writeEn;
 	output reg [11:0] readAddr;
 	output reg [11:0] const_addr;
-	output reg [11:0] cand;
 	
 	input [31:0] L_mac_in, L_sub_in;
 	input [15:0] add_in, sub_in;
