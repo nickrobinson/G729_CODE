@@ -50,7 +50,9 @@ module Levinson_Durbin_test_pipe(clock,reset,L_sub_outa,L_sub_outb,L_sub_overflo
 	output L_sub_overflow;
 	output sub_overflow;
 	output add_overflow;
-	
+	output [15:0] add_in;
+	output [15:0] sub_in;
+			
 	input [31:0] abs_out;
 	input [31:0] negate_out;
 	input [31:0] L_shr_outa;
@@ -73,10 +75,9 @@ module Levinson_Durbin_test_pipe(clock,reset,L_sub_outa,L_sub_outb,L_sub_overflo
 	input [31:0] L_add_outb;
 	input [15:0] sub_outa;
 	input [15:0] sub_outb;
-	input [15:0] sub_in;
 	input [15:0] add_outa;
 	input [15:0] add_outb;
-	input [15:0] add_in;
+
 	
 	input mux0sel;
 	input mux1sel;

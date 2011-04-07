@@ -124,7 +124,7 @@ module Levinson_Durbin_tb_1_v;
 			for(i=0;i<11;i=i+1)
 			begin
 				k = i + 11;
-				testReadAddr = {A_T[11:4],k[3:0]};
+				testReadAddr = {A_T_HIGH[11:4],k[3:0]};
 				@(posedge clock);
 				@(posedge clock);
 				if (scratch_mem_in != levinson_out_a[11*j+i])
