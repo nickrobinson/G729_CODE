@@ -76,13 +76,6 @@ module Relspwed_FSM(clk, reset, start, L_addIn, L_subIn, L_multIn, L_macIn, addI
 	output reg done;
 	output reg L_shlReady;
 	
-	//internal address regs
-	reg [11:0] select1Lspcb1;
-	reg [11:0] selectFg;
-	reg [11:0] selectFgSum;
-	reg [11:0] selectFgSumInv;
-	reg [11:0] selectLTdist;
-	
 	//constants
 	parameter MODE = 2;
 	parameter M = 10;
@@ -99,12 +92,14 @@ module Relspwed_FSM(clk, reset, start, L_addIn, L_subIn, L_multIn, L_macIn, addI
 	parameter PREV_EXTRACT = 5'd2;
 	parameter PRE_SELECT = 5'd3;
 	parameter COPY_CAND = 5'd4;
+	parameter SELECT = 5'd29;
 	parameter SELECT_1 = 5'd5;
 	parameter COPY_INDEX = 5'd6;
 	parameter FOR_LOOP2 = 5'd7;
 	parameter ADD_CB1_1 = 5'd8;
 	parameter ADD_CB1_2 = 5'd9;
 	parameter EXPAND_1 = 5'd10;
+	parameter SELECT_2_1 = 5'd30;
 	parameter SELECT_2 = 5'd11;
 	parameter COPY_INDEX2 = 5'd12;
 	parameter FOR_LOOP3 = 5'd13;
@@ -139,6 +134,18 @@ module Relspwed_FSM(clk, reset, start, L_addIn, L_subIn, L_multIn, L_macIn, addI
 	reg tempIndex2LD,tempIndex2Reset;
 	reg [15:0] tempCand, nexttempCand;
 	reg tempCandLD,tempCandReset;
+	
+	reg [11:0] select1Lspcb1, nextselect1Lspcb1;
+	reg select1Lspcb1LD,select1Lspcb1Reset;
+	reg [11:0] selectFg, nextselectFg;
+	reg selectFgLD,selectFgReset;
+	reg [11:0] selectFgSum, nextselectFgSum;
+	reg selectFgSumLD,selectFgSumReset;
+	reg [11:0] selectFgSumInv, nextselectFgSumInv;
+	reg selectFgSumInvLD,selectFgSumInvReset;
+	reg [11:0] selectLTdist, nextselectLTdist;
+	reg selectLTdistLD,selectLTdistReset;
+	
 	reg count2LD,count2Reset;
 	reg [5:0] count1,nextcount1;
 	reg [5:0] count2,nextcount2;
@@ -355,6 +362,61 @@ module Relspwed_FSM(clk, reset, start, L_addIn, L_subIn, L_multIn, L_macIn, addI
 			tempIndex <= 0;
 		else if(tempIndexLD)
 			tempIndex <= nexttempIndex;
+	end
+	
+	//temp flip flop
+	always@(posedge clk)
+	begin
+		if(reset)
+			select1Lspcb1 <= 0;
+		if(select1Lspcb1Reset)
+			select1Lspcb1 <= 0;
+		else if(select1Lspcb1LD)
+			select1Lspcb1 <= nextselect1Lspcb1;
+	end
+	
+	//temp flip flop
+	always@(posedge clk)
+	begin
+		if(reset)
+			selectFg <= 0;
+		if(selectFgReset)
+			selectFg <= 0;
+		else if(selectFgLD)
+			selectFg <= nextselectFg;
+	end
+	
+	//temp flip flop
+	always@(posedge clk)
+	begin
+		if(reset)
+			selectFgSum <= 0;
+		if(selectFgSumReset)
+			selectFgSum <= 0;
+		else if(selectFgSumLD)
+			selectFgSum <= nextselectFgSum;
+	end
+	
+	//temp flip flop
+	always@(posedge clk)
+	begin
+		if(reset)
+			selectFgSumInv <= 0;
+		if(selectFgSumInvReset)
+			selectFgSumInv <= 0;
+		else if(selectFgSumInvLD)
+			selectFgSumInv <= nextselectFgSumInv;
+	end
+	
+	//temp flip flop
+	always@(posedge clk)
+	begin
+		if(reset)
+			selectLTdist <= 0;
+		if(selectLTdist)
+			selectLTdist <= 0;
+		else if(selectLTdistLD)
+			selectLTdist <= nextselectLTdist;
 	end
 	
 	always @(posedge clk)
@@ -714,6 +776,11 @@ module Relspwed_FSM(clk, reset, start, L_addIn, L_subIn, L_multIn, L_macIn, addI
 		nexttempCand = tempCand;
 		nexttempIndex1 = tempIndex1;
 		nexttempIndex2 = tempIndex2;
+		nextselect1Lspcb1 = select1Lspcb1;
+		nextselectFg = selectFg;
+		nextselectFgSum = selectFgSum;
+		nextselectFgSumInv = selectFgSumInv;
+		nextselectLTdist = selectLTdist;
 		memOut = 0;
 		memReadAddr = 0;
 		memWriteAddr = 0;
@@ -753,7 +820,6 @@ module Relspwed_FSM(clk, reset, start, L_addIn, L_subIn, L_multIn, L_macIn, addI
 		shrVar2Out = 0;
 		shlOutVar1 = 0;
 		shlOutVar2 = 0;
-		selectFgSumInv = 0;
 		prev_extract_Start = 0;
 		pre_select_Start = 0;
 		select_1_Start = 0;
@@ -794,15 +860,16 @@ module Relspwed_FSM(clk, reset, start, L_addIn, L_subIn, L_multIn, L_macIn, addI
 				else if(count1 < MODE)
 				begin
 					nextstate = PREV_EXTRACT;
+					nextselectFg = {FG[11:7], count1[0], FG[5:0]};
+					nextselectFgSumInv = {FG_SUM_INV[11:5], count1[0], FG_SUM_INV[3:0]};
+					selectFgLD = 1;
+					selectFgSumInvLD = 1;
 				end	
 			end
 			
 			//Lsp_prev_extract(lsp, rbuf, fg[mode], freq_prev, fg_sum_inv[mode]);
 			PREV_EXTRACT:	//state 2
 			begin
-				selectFg = {FG[11:7], count1[0], FG[5:0]};
-				selectFgSumInv = {FG_SUM_INV[11:5], count1[0], FG_SUM_INV[3:0]};
-					
 				prev_extract_Start = 1;
 				L_msuOutA = prev_extract_L_msuOutA;
 				L_msuOutB = prev_extract_L_msuOutB;
@@ -866,13 +933,19 @@ module Relspwed_FSM(clk, reset, start, L_addIn, L_subIn, L_multIn, L_macIn, addI
 				memWriteAddr = {RELSPWED_CAND[11:1] , count1[0]};
 				memOut = memIn[15:0];
 				memWriteEn = 1;
+				nextstate = SELECT;
+			end
+			
+			SELECT:
+			begin 
+				nextselect1Lspcb1 = {LSPCB1[11], tempCandCur[6:0], 4'd0};
+				select1Lspcb1LD = 1;
 				nextstate = SELECT_1;
 			end
 			
 			//Lsp_select_1(rbuf, lspcb1[cand_cur], wegt, lspcb2, &index);
 			SELECT_1:	//state 5
 			begin
-				select1Lspcb1 = {LSPCB1[11], tempCandCur[6:0], 4'd0};
 				select_1_Start = 1;
 				L_subOutA = select_1_L_subOutA;
 				L_subOutB = select_1_L_subOutB;
@@ -973,15 +1046,21 @@ module Relspwed_FSM(clk, reset, start, L_addIn, L_subIn, L_multIn, L_macIn, addI
 					nextstate = EXPAND_1;
 				else if(expand_1_Done == 1)
 				begin
-					nextstate = SELECT_2;
+					nextstate = SELECT_2_1;
 					expand_1_Start = 0;
 				end
+			end
+			
+			SELECT_2_1:
+			begin
+				nextselect1Lspcb1 = {LSPCB1[11], tempCandCur[6:0], 4'd0};
+				select1Lspcb1LD = 1;
+				nextstate = SELECT_2;
 			end
 			
 			//Lsp_select_2(rbuf, lspcb1[cand_cur], wegt, lspcb2, &index);
 			SELECT_2:
 			begin
-				select1Lspcb1 = {LSPCB1[11], tempCandCur[6:0], 4'd0};
 				select_2_Start = 1;
 				L_subOutA = select_2_L_subOutA; 
 				L_subOutB = select_2_L_subOutB;
@@ -1112,6 +1191,10 @@ module Relspwed_FSM(clk, reset, start, L_addIn, L_subIn, L_multIn, L_macIn, addI
 					nextstate = EXPAND_1_2;
 				else if(expand_1_2_Done == 1)
 				begin
+					nextselectLTdist = {RELSPWED_L_TDIST[11:1], count1[0]};
+					nextselectFgSum = {FG_SUM[11:5], count1[0], FG_SUM[3:0]};
+					selectLTdistLD = 1;
+					selectFgSumLD = 1;
 					nextstate = GET_TDIST;
 					expand_1_2_Start = 0;
 				end
@@ -1119,8 +1202,6 @@ module Relspwed_FSM(clk, reset, start, L_addIn, L_subIn, L_multIn, L_macIn, addI
 			
 			GET_TDIST:
 			begin
-				selectLTdist = {RELSPWED_L_TDIST[11:1], count1[0]};
-				selectFgSum = {FG_SUM[11:5], count1[0], FG_SUM[3:0]};
 				get_tdist_Start = 1;
 				multOutA = get_tdist_multOutA;
 				multOutB = get_tdist_multOutB;
@@ -1241,13 +1322,15 @@ module Relspwed_FSM(clk, reset, start, L_addIn, L_subIn, L_multIn, L_macIn, addI
 			begin
 				nexttempIndex2 = memIn[15:0];
 				tempIndex2LD = 1;
+				nextselectFg = {FG[11:7], tempIndex[0], FG[5:0]};
+				nextselectFgSum = {FG_SUM[11:5], tempIndex[0], FG_SUM[3:0]};
+				selectFgLD = 1;
+				selectFgSumLD = 1;
 				nextstate = GET_QUANT_4;
 			end
 			
 			GET_QUANT_4:
 			begin
-				selectFg = {FG[11:7], tempIndex[0], FG[5:0]};
-				selectFgSum = {FG_SUM[11:5], tempIndex[0], FG_SUM[3:0]};
 				get_quant_Start = 1;
 				L_subOutA = get_quant_L_subOutA; 
 				L_subOutB = get_quant_L_subOutB;
