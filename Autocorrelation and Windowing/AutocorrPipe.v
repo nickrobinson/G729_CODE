@@ -12,26 +12,31 @@
 // Tool versions:  Xilinx 9.2i
 // Description: 	 A pipe to instantiate the Math and memory modules of Autocorrelation
 //
-// Dependencies: 	 L_mac.v, norm_l.v, mult.v, L_shl.v, shr.v, add.v, sub.v, Scratch_Mem_Controller.v
+// Dependencies: 	 L_mac.v, norm_l.v, mult.v, L_shl.v, shr.v, add.v, sub.v, 
+//						 Scratch_Mem_Controller.v, L_msu.v
 //
 // Revision: 
 // Revision 0.01 - File Created
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module AutocorrPipe(clk,reset,L_macOutA,L_macOutB,L_macOutC,norm_lVar1Out,multOutA,multOutB,multRselOut,
-						  L_shlReady,L_shlVar1Out,L_shlNumShiftOut,L_shrVar1Out,L_shrNumShiftOut,shrVar1Out, 
-						  shrVar2Out,addOutA,addOutB,subOutA,subOutB,norm_lReady,norm_lReset,writeEn,readRequested, 
-						  writeRequested,memOut,autocorrMuxSel,testReadRequested,testWriteRequested,testMemOut,
-						  testMemWrite,xRequested,xMemAddr,xMemOut,xMemEn,
-						  L_shlDone,norm_lDone,L_shlIn,L_shrIn,shrIn,addIn,subIn,norm_lIn,multIn,L_macIn,memIn, 
-						  xIn,overflow);
+module AutocorrPipe(clk,reset,L_macOutA,L_macOutB,L_macOutC,L_msuOutA,L_msuOutB,L_msuOutC,
+						  norm_lVar1Out,multOutA,multOutB,multRselOut,L_shlReady,L_shlVar1Out,
+						  L_shlNumShiftOut,L_shrVar1Out,L_shrNumShiftOut,shrVar1Out, shrVar2Out,addOutA,
+						  addOutB,subOutA,subOutB,norm_lReady,norm_lReset,writeEn,readRequested, 
+						  writeRequested,memOut,autocorrMuxSel,testReadRequested,testWriteRequested,
+						  testMemOut, testMemWrite,xRequested,xMemAddr,xMemOut,xMemEn,
+						  L_shlDone,norm_lDone,L_shlIn,L_shrIn,shrIn,addIn,subIn,norm_lIn,multIn,L_macIn,
+						  L_msuIn,memIn,xIn,overflow);
 	 
 //Inputs
 input clk,reset; 
 input [15:0] L_macOutA; 
 input [15:0] L_macOutB; 
 input [31:0] L_macOutC;
+input [15:0] L_msuOutA; 
+input [15:0] L_msuOutB; 
+input [31:0] L_msuOutC;
 input [15:0] multOutA; 
 input [15:0] multOutB; 
 input multRselOut; 
@@ -76,6 +81,7 @@ output [15:0] addIn;
 output [15:0] subIn; 
 output [15:0] multIn; 
 output [31:0] L_macIn; 
+output [31:0] L_msuIn; 
 output [31:0] memIn; 
 output [15:0] xIn;
 output overflow;
@@ -113,6 +119,14 @@ Scratch_Memory_Controller testMem2(
 								.c(L_macOutC),
 								.overflow(overflow),
 								.out(L_macIn)
+								);
+						
+	L_msu autocorr_L_msu(
+								.a(L_msuOutA),
+								.b(L_msuOutB),
+								.c(L_msuOutC),
+								.overflow(),
+								.out(L_msuIn)
 								);
 	norm_l auto_norm_l(
 								.var1(norm_lVar1Out),
