@@ -36,10 +36,10 @@ input [31:0] L_shrIn;
 output reg rPrimeWrite;
 output reg [11:0] rPrimeReadAddr; 
 output reg [11:0] rPrimeRequested;
-output reg [15:0] L_multOutA,L_multOutB;
-output reg [15:0] multOutA,multOutB;
-output reg [15:0] L_macOutA,L_macOutB;
-output reg [31:0] L_macOutC;
+output [15:0] L_multOutA,L_multOutB;
+output [15:0] multOutA,multOutB;
+output [15:0] L_macOutA,L_macOutB;
+output [31:0] L_macOutC;
 output reg [15:0] L_msuOutA,L_msuOutB;
 output reg [31:0] L_msuOutC;
 output reg [31:0] rPrimeOut;
@@ -48,39 +48,60 @@ output reg [31:0] L_shrOutVar1;
 output reg [15:0] L_shrOutNumShift;
 output reg done;
 
-//variable wires
-
-wire [15:0] rHigh;
-wire [15:0] rLow;
-
-reg [15:0] rPrimeHigh;
-reg [15:0] rPrimeLow;
-reg [15:0] lagHigh;
-reg [15:0] lagLow;
-
-reg countLd,countReset;
-reg [3:0] count,nextcount;
-reg [3:0] state,nextstate;
-reg productLd,productReset;
-reg [31:0] product,nextproduct;
+//internal regs
+reg [2:0] state,nextstate;
+reg [15:0] i,nexti;
+reg iLD,iReset;
+reg [31:0] xReg,nextx;
+reg xLD,xReset;
 reg [31:0] temp,nexttemp;
-reg templd,tempReset;
+reg tempLD,tempReset;
 
-assign rHigh = rPrimeIn [31:16];
-assign rLow = rPrimeIn [15:0];
+//Lag constant regs
+reg [31:0] lagConstant;
+reg [3:0] lagSel;
+
+//mpy32 wires and regs
+reg mpy32Start;
+reg [31:0] mpy32Var1,mpy32Var2;
+wire mpy32Done;
+wire [31:0] mpy32Out;
 
 //state parameters
-parameter STATE_INIT = 4'd0;
-parameter STATE_FIRST_R1 = 4'd1;
-parameter STATE_FIRST_R2 = 4'd2;
-parameter STATE_COUNT_LOOP = 4'd3;
-parameter STATE_L_MULT = 4'd4;
-parameter STATE_L_MAC1 = 4'd5;
-parameter STATE_L_MAC2 = 4'd6;
-parameter STATE_DONE = 4'd7;
-parameter M = 10;
+parameter INIT = 3'd0;
+parameter S1 = 3'd1;
+parameter S2 = 3'd2;
+parameter S3 = 3'd3;
+parameter S4 = 3'd4;
+parameter S5 = 3'd5;
+parameter S6 = 3'd6;
+parameter S7 = 3'd7;
 
-//state, count, and product flops
+//Instantiated Modules
+Mpy_32 mpy32(
+				 .clock(clk),
+				 .reset(reset),
+				 .start(mpy32Start), 
+				 .done(mpy32Done),
+				 .var1(mpy32Var1),
+				 .var2(mpy32Var2),
+				 .out(mpy32Out),
+				 .L_mult_outa(L_multOutA),
+				 .L_mult_outb(L_multOutB),
+				 .L_mult_overflow(),
+				 .L_mult_in(L_multIn),
+				 .L_mac_outa(L_macOutA),
+				 .L_mac_outb(L_macOutB),
+				 .L_mac_outc(L_macOutC),
+				 .L_mac_overflow(),
+				 .L_mac_in(L_macIn),
+				 .mult_outa(multOutA),
+				 .mult_outb(multOutB),
+				 .mult_in(multIn),
+				 .mult_overflow()
+				 ); 
+
+//state, i, and x flops
 always @(posedge clk)
 begin
 	if(reset)
@@ -92,21 +113,21 @@ end
 always @(posedge clk)
 begin
 	if(reset)
-		count <= 1;
-	else if(countReset)
-		count <= 1;
-	else if(countLd)
-		count <= nextcount;
+		i <= 0;
+	else if(iReset)
+		i <= 0;
+	else if(iLD)
+		i <= nexti;
 end
 
 always @(posedge clk)
 begin
 	if(reset)
-		product <= 0;
-	else if(productReset)
-		product <= 0;
-	else if(productLd)
-		product <= nextproduct;
+		xReg <= 0;
+	else if(xReset)
+		xReg <= 0;
+	else if(xLD)
+		xReg <= nextx;
 end
 
 always @(posedge clk)
@@ -115,211 +136,152 @@ begin
 		temp <= 0;
 	else if(tempReset)
 		temp <= 0;
-	else if(templd)
+	else if(tempLD)
 		temp <= nexttemp;
 end
-
-
 always @(*)
 begin
 
 	nextstate = state;
-	nextcount = count;
-	nextproduct = product;
+	nexti = i;
+	nextx = xReg;
 	nexttemp = temp;
-	countLd = 0;
-	productLd = 0;
-	done = 0;
+	iLD = 0;
+	xLD = 0;
+	tempLD = 0;
+	iReset = 0;
+	xReset = 0;	
+	tempReset = 0;	
+	lagSel = 0;
+	mpy32Start = 0;
+	mpy32Var1 = 0;
+	mpy32Var2 = 0;
 	rPrimeReadAddr = 0;
 	rPrimeRequested = 0;
 	rPrimeWrite = 0;
-	countReset = 0;
-	productReset = 0;
-	rPrimeHigh = 0;
-	rPrimeLow = 0;
-   L_multOutA = 0;
-	L_multOutB = 0;
-	multOutA = 0;
-	multOutB = 0;
-   L_macOutA = 0;
-	L_macOutB = 0;
-	L_macOutC = 0;
+	rPrimeOut = 0;   
    L_msuOutA = 0;
 	L_msuOutB = 0;
-   L_msuOutC = 0;
-	templd = 0;
-	tempReset = 0;
-   rPrimeOut = 0;
+   L_msuOutC = 0;	
    addOutA = 0; 
 	addOutB = 0;
    L_shrOutVar1 = 0;
 	L_shrOutNumShift = 0;
-
+   done = 0;
+	
 	case(state)
 	
-		STATE_INIT:
-		begin			
-			countReset = 1;
-			productReset = 1;
-			tempReset = 1;			
+		INIT:
+		begin
 			if(start == 0)
-				nextstate = STATE_INIT;
-			else 
+				nextstate = INIT;
+			else if(start == 1)
 			begin
-				nextstate = STATE_FIRST_R1;
-				rPrimeReadAddr = {AUTOCORR_R[10:4],4'd0};
+				iReset = 1;
+				xReset = 1;
+				tempReset = 1;
+				rPrimeReadAddr = AUTOCORR_R;
+				nextstate = S1;
 			end
-		end
+		end//INIT
 		
-		STATE_FIRST_R1:
+		//writes the first values of Autocorr_R straight to lag_window_r_prime
+		S1:
 		begin
-			rPrimeReadAddr = {AUTOCORR_R[10:4],4'd0};
-			nexttemp = rPrimeIn;
-			templd = 1;
-			nextstate = STATE_FIRST_R2;		
-		end//STATE_FIRST_R2:
-		
-		STATE_FIRST_R2:
-		begin
+			rPrimeRequested = LAG_WINDOW_R_PRIME;
 			rPrimeWrite = 1;
-			rPrimeRequested = {LAG_WINDOW_R_PRIME[10:4],4'd0};
-			rPrimeOut = temp;
-			nextstate = STATE_COUNT_LOOP;
-		end//STATE_FIRST_R2:
-			
-		STATE_COUNT_LOOP:
-		begin	
-			
-			if(count > M)
+			rPrimeOut = rPrimeIn;
+			nexti = 1;
+			iLD = 1;
+			nextstate = S2;
+		end//S1
+		
+		//for(i=1; i<=m; i++)
+		S2:
+		begin
+			if(i>10)
 			begin
-				nextstate = STATE_INIT;
+				nextstate = INIT;
 				done = 1;
 			end
-			else if(count <= M)
+			else if(i<=10)
 			begin
-				rPrimeReadAddr = {AUTOCORR_R[10:4],count};
-				nextstate = STATE_L_MULT;	
+				rPrimeReadAddr = {AUTOCORR_R[11:4],i[3:0]};
+				nextstate = S3;
 			end			
-
-		end //end STATE_COUNT_LOOP
+		end//S2
 		
-		STATE_L_MULT:
+		//x  = Mpy_32(r_h[i], r_l[i], lag_h[i-1], lag_l[i-1]);
+		S3:
 		begin
-			rPrimeReadAddr = {AUTOCORR_R[10:4],count};
-			L_multOutA = rHigh;
-			L_multOutB = lagHigh;
-			nextproduct = L_multIn;
-			productLd = 1;
-			nextstate = STATE_L_MAC1;
-		end// end STATE_L_MULT
+			rPrimeReadAddr = {AUTOCORR_R[11:4],i[3:0]};
+			lagSel = i[3:0];
+			mpy32Start = 1;
+			mpy32Var1 = rPrimeIn;
+			mpy32Var2 = lagConstant;
+			nextstate = S4;
+		end//S3
 		
-		STATE_L_MAC1:
+		////x  = Mpy_32(r_h[i], r_l[i], lag_h[i-1], lag_l[i-1]);
+		S4:
 		begin
-			rPrimeReadAddr = {AUTOCORR_R[10:4],count};
-			multOutA = rHigh;
-			multOutB = lagLow;
-			L_macOutA = multIn;
-			L_macOutB = 16'd1;
-			L_macOutC = product;
-			nextproduct = L_macIn;
-			productLd = 1;
-			nextstate = STATE_L_MAC2;
-		end//STATE_L_MAC1
+			rPrimeReadAddr = {AUTOCORR_R[11:4],i[3:0]};
+			lagSel = i[3:0];			
+			mpy32Var1 = rPrimeIn;
+			mpy32Var2 = lagConstant;
+			if(mpy32Done == 0)
+				nextstate = S4;
+			else if(mpy32Done == 1)
+			begin
+				nextx = mpy32Out;
+				xLD = 1;
+				nextstate = S5;
+			end
+		end//S4
 		
-		STATE_L_MAC2:
+		//L_Extract(x, &r_h[i], &r_l[i]);
+		S5:
 		begin
-			rPrimeReadAddr = {AUTOCORR_R[10:4],count};
-			multOutA = rLow;
-			multOutB = lagHigh;
-			L_macOutA = multIn;
-			L_macOutB = 16'd1;
-			L_macOutC = product;
-			nextproduct = L_macIn;
-			productLd = 1;
-			nextstate = STATE_DONE;
-		end//STATE_L_MAC1:
-		
-		STATE_DONE:
-		begin
-			rPrimeWrite = 1;
-			rPrimeRequested = {LAG_WINDOW_R_PRIME[10:4],count};
-			//emulating the L_extract function
-			rPrimeHigh = product[31:16];
-			L_shrOutVar1 = {16'd0,product[15:0]};
+			L_shrOutVar1 = xReg;
 			L_shrOutNumShift = 16'd1;
-			L_msuOutA = product[31:16];
-			L_msuOutB = 16'h8000;
-			L_msuOutC = {16'd0,L_shrIn[15:0]};
-			rPrimeLow = L_msuIn[15:0];	
-			rPrimeOut = {rPrimeHigh, rPrimeLow};
-			//end L_extract
-			addOutA = count;
+			nexttemp = L_shrIn;
+			tempLD = 1;
+			nextstate = S6;
+		end//S5
+		
+		//L_Extract(x, &r_h[i], &r_l[i]);
+		S6:
+		begin
+			L_msuOutA = xReg[31:16];
+			L_msuOutB = 16'd16384;
+			L_msuOutC = temp;
+			rPrimeRequested = {LAG_WINDOW_R_PRIME[11:4],i[3:0]};
+			rPrimeWrite = 1;
+			rPrimeOut = {xReg[31:16],L_msuIn[15:0]};
+			addOutA = i;
 			addOutB = 16'd1;
-			nextcount = addIn;
-			countLd = 1;
-			nextstate = STATE_COUNT_LOOP;
-		end //STATE_DONE
+			nexti = addIn;
+			iLD = 1;
+			nextstate = S2;
+		end//S6	
 	endcase
 end	//end always
 
 always @(*)	begin				 
 
-	case(count)
-	
-	4'd1:	begin
-	lagHigh = 15'd32728;
-	lagLow = 15'd11904; 
-	end	
-	
-	4'd2:	begin
-	lagHigh = 15'd32619;
-	lagLow = 15'd17280; 
-	end	
-	
-	4'd3:	begin
-	lagHigh = 15'd32438;
-	lagLow = 15'd30720; 
-	end	
-	
-	4'd4:	begin
-	lagHigh = 15'd32187;
-	lagLow = 15'd25856; 
-	end	
-	
-	4'd5:	begin
-	lagHigh = 15'd31867;
-	lagLow = 15'd24192; 
-	end	
-	
-	4'd6:	begin
-	lagHigh = 15'd31480;
-	lagLow = 15'd28992; 
-	end	
-	
-	4'd7:	begin
-	lagHigh = 15'd31029;
-	lagLow = 15'd24384; 
-	end	
-	
-	4'd8:	begin
-	lagHigh = 15'd30517;
-	lagLow = 15'd7360; 
-	end	
-	
-	4'd9:	begin
-	lagHigh = 15'd29946;
-	lagLow = 15'd19520; 
-	end	
-	
-	4'd10:	begin
-	lagHigh = 15'd29321;
-	lagLow = 15'd14784; 
-	end	
-	
-	default: begin
-	lagHigh = 15'd32728;
-	lagLow = 15'd11904; 
-	end	
+	case(lagSel)
+		
+		4'd1:	lagConstant = 32'h7fd82e80;
+		4'd2:	lagConstant = 32'h7f6b4380;
+		4'd3:	lagConstant = 32'h7eb67800;
+		4'd4:	lagConstant = 32'h7dbb6500;
+		4'd5:	lagConstant = 32'h7c7b5e80;
+		4'd6:	lagConstant = 32'h7af87140;
+		4'd7:	lagConstant = 32'h79355f40;
+		4'd8:	lagConstant = 32'h77351cc0;
+		4'd9:	lagConstant = 32'h74fa4c40;
+		4'd10: lagConstant = 32'h728939c0;
+		default: lagConstant = 32'h0;
 	endcase
 
 end//end always

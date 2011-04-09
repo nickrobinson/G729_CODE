@@ -46,9 +46,9 @@ module lag_window_test_v;
 	initial 
 	begin
 		// samples out are samples from ITU G.729 test vectors
-		$readmemh("1lag_window_in.out", rMem);
+		$readmemh("lag_window_in.out", rMem);
 		// filter results from ITU G.729 ANSI fixed point implementation
-		$readmemh("1lag_window_out.out", rPrimeMem);
+		$readmemh("lag_window_out.out", rPrimeMem);
    end
 	
 	//Instantiate Unit Under Test(UUT)
@@ -72,6 +72,10 @@ module lag_window_test_v;
 		reset = 0;
 		start = 0;		
 		lagMuxSel = 1;
+		testReadRequested = 0;
+		testWriteRequested = 0;
+		testWriteOut = 0;
+		testWriteEnable = 0;
 		
 		@(posedge clk) #5; 		
 		reset = 1;		
