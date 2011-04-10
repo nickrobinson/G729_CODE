@@ -48,7 +48,7 @@ output reg [15:0] L_msuOutA,L_msuOutB;
 output reg [31:0] L_msuOutC;
 output reg [31:0] norm_lVar1Out;
 output reg [15:0] multOutA,multOutB;
-output reg multRselOut;
+output multRselOut;
 output reg norm_lReady, norm_lReset;
 output reg L_shlReady;
 output reg[31:0] L_shlVar1Out; 
@@ -76,7 +76,7 @@ reg [31:0] sum,nextsum;
 reg sumLD,sumReset;
 reg [31:0] temp,nexttemp;
 reg tempLD,tempReset;
-reg overflowReg,nextoverflowReg;
+reg overflowReg;
 reg overflowLD,overflowReset;
 reg [7:0] hamIn;
 
@@ -114,6 +114,8 @@ parameter S26 = 5'd26;
 parameter S27 = 5'd27;
 parameter S28 = 5'd28;
 parameter S29 = 5'd29;
+
+assign multRselOut = 1;
 
 //Instantiated modules
 hammingWindowMemory hamMem(
@@ -181,7 +183,16 @@ always@(posedge clk) begin
 	else if(overflowReset)
 		 overflowReg <= 0;
 	else if(overflowLD)
-		 overflowReg <= nextoverflowReg;
+		 overflowReg <= 1;
+end
+
+always @(negedge clk)
+begin
+
+	if(overflow == 1)
+		overflowLD = 1;		
+	else if(overflow != 1)
+		overflowLD = 0;
 end
 
 //state machine always block
@@ -195,7 +206,6 @@ always @(*) begin
 	norm_lVar1Out = 0;
 	multOutA = 0;
 	multOutB = 0;
-	multRselOut = 0;
 	norm_lReady = 0;
 	norm_lReset = 0;
 	L_shlReady = 0;
@@ -221,13 +231,11 @@ always @(*) begin
 	nextnorm = norm;
 	nextsum = sum;
 	nexttemp = temp;
-	nextoverflowReg = overflowReg;
 	iLD = 0;
 	jLD = 0;
 	normLD = 0;
 	sumLD = 0;
 	tempLD = 0;
-	overflowLD = 0;
 	iReset = 0;
 	jReset = 0;
 	normReset = 0;
@@ -261,18 +269,22 @@ always @(*) begin
 		else if(i<240)
 		begin
 			xRequested = i[7:0];
-			nextstate = S2;
+			nextstate = S24;
 		end
 	end//S1
 	
+	S24:
+	begin
+		xRequested = i[7:0];
+		nextstate = S2;
+	end//S24
 	//y[i] = mult_r(x[i], hamwindow[i]);
 	S2:
 	begin
 		xRequested = i[7:0];
 		hamIn = i[7:0];
 		multOutA = xIn;
-		multOutB = hamOut;
-		multRselOut = 1;
+		multOutB = hamOut;		
 		writeRequested = {AUTOCORR_Y[11:8],i[7:0]}; 
 		writeEn = 1;
 		memOut = multIn;
@@ -320,11 +332,6 @@ always @(*) begin
 		nexti = addIn;
 		iLD = 1;
 		nextstate = S4;
-		if(overflow)
-		begin
-			nextoverflowReg = 1;
-			overflowLD = 1;
-		end
 	end//S5
 	
 	//if(Overflow != 0)
@@ -356,7 +363,7 @@ always @(*) begin
 	begin
 		shrVar1Out = memIn[15:0];
 		shrVar2Out = 16'd2;
-		memOut = shrIn;
+		memOut = shrIn[15:0];
 		writeEn = 1;
 		writeRequested = {AUTOCORR_Y[11:8],i[7:0]};
 		addOutA = i;
