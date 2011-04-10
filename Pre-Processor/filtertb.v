@@ -20,29 +20,28 @@
 module filtertb_v;
 
 	// Inputs
-	reg mclk;
+	reg clk;
         reg reset;
 	reg [15:0] xn;
 	reg ready;
 
 	// Outputs
-	wire [7:0] led;
 	wire [15:0] yn;
 	wire done;
 
         // samples memory
-        reg [15:0] samplesmem [0:999];
+        reg [15:0] samplesmem [0:9999];
 
         // filtered results memory
         // these filtered results come from the 
-        // ITU G.729 fixed point ANSI Cimplementation
-        reg [15:0] filteredmem [0:999];
+        // ITU G.729 fixed point ANSI C implementation
+        reg [15:0] filteredmem [0:9999];
 
         integer i;
 
 	// Instantiate the Unit Under Test (UUT)
 	g729_hpfilter uut (
-		.mclk(mclk), 
+		.clk(clk), 
 		.reset(reset), 
 		.xn(xn), 
 		.yn(yn), 
@@ -52,17 +51,17 @@ module filtertb_v;
 
         initial begin
                   // samples out are samples from ITU G.729 test vectors
-                  $readmemh("samples1000.out", samplesmem);
+                  $readmemh("samples.out", samplesmem);
                   // filter results from ITU G.729 ANSI fixed point implementation
-                  $readmemh("filtered1000.out", filteredmem);
+                  $readmemh("filtered.out", filteredmem);
         end
 
 	initial begin
 		// Initialize Inputs
-		mclk = 0;
+		clk = 0;
 		xn = 0;
 		ready = 0;
-                reset = 0;
+      reset = 0;
 
 		// Wait 100 ns for global reset to finish
 		#100;
@@ -73,22 +72,22 @@ module filtertb_v;
 		// Add stimulus here
                 for (i=0;i<1000;i=i+1)
                   begin
-                    @(posedge mclk);
+                    @(posedge clk);
                     ready = 1;
                     xn = samplesmem[i];
-                    @(posedge mclk);
+                    @(posedge clk);
                     ready = 0;
                     wait (done);
-                    @(posedge mclk);
+                    @(posedge clk);
                     if (yn != filteredmem[i])
-                       $display($time, " ERROR: x[%d] = %x, y[%d] = %x, expected = %x", i, xn, i, yn, filteredmem[i]);
+                       $display($time, " ERROR: y[%d] = %x, expected = %x", i, yn, filteredmem[i]);
                     else
-                       $display($time, " INFO:  x[%d] = %x, y[%d] = %x", i, xn, i, yn);
+                       $display($time, " CORRECT:y[%d] = %x", i, yn);
                   end
 
 	end
 
         // 50 MHz clock - 10nS Hi, 10 nS low, ...
-        initial forever #10 mclk = ~mclk;
+        initial forever #10 clk = ~clk;
       
 endmodule
