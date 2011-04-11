@@ -75,9 +75,9 @@ module Levinson_Durbin_tb_1_v;
 	//file read in for inputs and output tests
 	initial 
 	begin// samples out are samples from ITU G.729 test vectors
-		$readmemh("levinson_in.out", levinson_in);
-		$readmemh("levinson_out_a.out", levinson_out_a);
-		$readmemh("levinson_out_rc.out", levinson_out_rc);
+		$readmemh("tame_levinson_in.out", levinson_in);
+		$readmemh("tame_levinson_out_a.out", levinson_out_a);
+		$readmemh("tame_levinson_out_rc.out", levinson_out_rc);
 	end
 
 	
@@ -86,6 +86,7 @@ module Levinson_Durbin_tb_1_v;
 		// Initialize Inputs
 		clock = 0;
 		reset = 0;
+
 		start = 0;
 		
 		// Wait 100 ns for global reset to finish
@@ -121,15 +122,15 @@ module Levinson_Durbin_tb_1_v;
 			#50;
 			
 			mux0sel = 1;
-			for(i=0;i<11;i=i+1)
+			for(i=0;i<10;i=i+1)
 			begin				
 				testReadAddr = {A_T_HIGH[11:4],i[3:0]};
 				@(posedge clock);
 				@(posedge clock);
-				if (scratch_mem_in != levinson_out_a[11*j+i])
-					$display($time, " ERROR: A[%d] = %x, expected = %x", 11*j+i, scratch_mem_in, levinson_out_a[11*j+i]);
-				else if (scratch_mem_in == levinson_out_a[11*j+i])
-					$display($time, " CORRECT:  A[%d] = %x", 11*j+i, scratch_mem_in);
+				if (scratch_mem_in != levinson_out_a[10*j+i])
+					$display($time, " ERROR: A[%d] = %x, expected = %x", 10*j+i, scratch_mem_in, levinson_out_a[10*j+i]);
+				else if (scratch_mem_in == levinson_out_a[10*j+i])
+					$display($time, " CORRECT:  A[%d] = %x", 10*j+i, scratch_mem_in);
 				@(posedge clock);
 			end
 			#50;

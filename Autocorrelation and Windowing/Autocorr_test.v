@@ -50,8 +50,8 @@ module Autocorr_test;
 	//file read in for inputs and output tests
 	initial 
 	begin// samples out are samples from ITU G.729 test vectors
-		$readmemh("autocorr_in.out", autocorrInMem);
-		$readmemh("autocorr_out.out", autocorrOutMem);
+		$readmemh("tame_autocorr_in.out", autocorrInMem);
+		$readmemh("tame_autocorr_out.out", autocorrOutMem);
 	end					
 	
 	// Instantiate the Unit Under Test (UUT)
@@ -127,12 +127,15 @@ module Autocorr_test;
 			for (i = 0; i<11;i=i+1)
 			begin				
 					testReadRequested = {AUTOCORR_R[10:4],i[3:0]};
-					@(posedge clk);		
+					@(posedge clk);
+					@(posedge clk);
 					@(posedge clk) #5;
 					if (memIn != autocorrOutMem[11*j+i])
 						$display($time, " ERROR: r[%d] = %x, expected = %x", 11*j+i, memIn, autocorrOutMem[11*j+i]);
 					else if (memIn == autocorrOutMem[11*j+i])
 						$display($time, " CORRECT:  r[%d] = %x", 11*j+i, memIn);
+					@(posedge clk);
+					@(posedge clk);
 					@(posedge clk) #5;	
 				end				
 		end// for loop j		
