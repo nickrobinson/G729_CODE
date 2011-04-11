@@ -18,11 +18,13 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module lsp_get_quantFSM(clk,reset,start,L_addIn,L_subIn,L_multIn,L_macIn,addIn,subIn,shrIn,memIn,code0,
-								code1,code2,fgAddr,freq_prevAddr,fg_sumAddr,lspqAddr,constantMemIn,
-								L_addOutA,L_addOutB,L_subOutA,L_subOutB,L_multOutA,L_multOutB,L_macOutA,L_macOutB,
-								L_macOutC,addOutA,addOutB,subOutA,subOutB,shrVar1Out,shrVar2Out,memOut,
-								memReadAddr,memWriteAddr,memWriteEn,constantMemAddr,done);
+module lsp_get_quantFSM(clk, reset, start, L_addIn, L_subIn, L_multIn, L_macIn, addIn, subIn, shrIn, 
+								memIn, code0, code1, code2, fgAddr, freq_prevAddr, fg_sumAddr, lspqAddr, 
+								constantMemIn, L_addOutA, L_addOutB, L_subOutA, L_subOutB, L_multOutA, L_multOutB, 
+								L_macOutA, L_macOutB, L_macOutC, addOutA, addOutB, subOutA, subOutB, shrVar1Out, 
+								shrVar2Out, L_msuOutA, L_msuOutB, L_msuOutC, L_msuIn, L_shlIn, L_shlOutVar1,
+								L_shlReady, L_shlDone, L_shlNumShiftOut, memOut, memReadAddr, memWriteAddr, 
+								memWriteEn, constantMemAddr, done);
 	`include "paramList.v"
 	`include "constants_param_list.v"
 	//Inputs 
@@ -31,9 +33,11 @@ module lsp_get_quantFSM(clk,reset,start,L_addIn,L_subIn,L_multIn,L_macIn,addIn,s
 	input [31:0] L_subIn;
 	input [31:0] L_multIn;
 	input [31:0] L_macIn;
+	input [31:0] L_msuIn;
 	input [15:0] addIn;
 	input [15:0] subIn;
 	input [15:0] shrIn;
+	input [31:0] L_shlIn;
 	input [31:0] memIn;
 	input [15:0] code0,code1,code2;
 	input [11:0] fgAddr;
@@ -41,17 +45,23 @@ module lsp_get_quantFSM(clk,reset,start,L_addIn,L_subIn,L_multIn,L_macIn,addIn,s
 	input [11:0] fg_sumAddr;
 	input [11:0] lspqAddr;
 	input [31:0] constantMemIn;
+	input L_shlDone;
 	
 	//Outputs
-	output reg [31:0] L_addOutA,L_addOutB;
-	output reg [31:0] L_subOutA,L_subOutB;
-	output reg [15:0] L_multOutA,L_multOutB;
-	output reg [15:0] L_macOutA,L_macOutB;
+	output reg [31:0] L_addOutA, L_addOutB;
+	output reg [31:0] L_subOutA, L_subOutB;
+	output reg [15:0] L_multOutA, L_multOutB;
+	output reg [15:0] L_macOutA, L_macOutB;
 	output reg [31:0] L_macOutC;
-	output reg [15:0] addOutA,addOutB;
-	output reg [15:0] subOutA,subOutB;
+	output reg [15:0] L_msuOutA, L_msuOutB;
+	output reg [31:0] L_msuOutC;
+	output reg [15:0] addOutA, addOutB;
+	output reg [15:0] subOutA, subOutB;
 	output reg [15:0] shrVar1Out;
-	output reg [15:0] shrVar2Out;		
+	output reg [15:0] shrVar2Out;	
+	output reg [31:0] L_shlOutVar1;
+   output reg [15:0] L_shlNumShiftOut;
+   output reg L_shlReady;
 	output reg [31:0] memOut;
 	output reg [11:0] memReadAddr;
 	output reg [11:0] memWriteAddr;
@@ -88,7 +98,7 @@ module lsp_get_quantFSM(clk,reset,start,L_addIn,L_subIn,L_multIn,L_macIn,addIn,s
 	wire [15:0] expandAddOutA,expandAddOutB;
 	wire [31:0] expandL_addOutA,expandL_addOutB;
 	wire [31:0] expandMemOut;
-	wire [10:0] expandMemReadAddr,expandMemWriteAddr;
+	wire [11:0] expandMemReadAddr,expandMemWriteAddr;
 	wire expandMemWriteEn;
 	wire expandDone;
 	reg gapSel;
@@ -105,8 +115,8 @@ module lsp_get_quantFSM(clk,reset,start,L_addIn,L_subIn,L_multIn,L_macIn,addIn,s
 	
 	//lsp_prev_compose wires and regs
 	reg composeStart;
-	wire [10:0] composeMemReadAddr;									 
-   wire [10:0] composeMemWriteAddr;
+	wire [11:0] composeMemReadAddr;									 
+   wire [11:0] composeMemWriteAddr;
    wire [31:0] composeMemOut;
    wire composeWriteEn;
 	wire [11:0] composeConstantMemAddr;
@@ -121,7 +131,7 @@ module lsp_get_quantFSM(clk,reset,start,L_addIn,L_subIn,L_multIn,L_macIn,addIn,s
 	wire [15:0] updateAddOutA,updateAddOutB;
 	wire [15:0] updateSubOutA,updateSubOutB;
 	wire [31:0] updateL_addOutA,updateL_addOutB;
-	wire [10:0] updateMemReadAddr,updateMemWriteAddr;
+	wire [11:0] updateMemReadAddr,updateMemWriteAddr;
 	wire [31:0] updateMemOut;
    wire updateMemWriteEn;
    wire updateDone;
@@ -132,7 +142,7 @@ module lsp_get_quantFSM(clk,reset,start,L_addIn,L_subIn,L_multIn,L_macIn,addIn,s
 	wire [15:0] stabilitySubOutA,stabilitySubOutB;
 	wire [31:0] stabilityL_addOutA,stabilityL_addOutB;
 	wire [31:0] stabilityL_subOutA,stabilityL_subOutB;
-	wire [10:0] stabilityMemReadAddr,stabilityMemWriteAddr;
+	wire [11:0] stabilityMemReadAddr,stabilityMemWriteAddr;
 	wire [31:0] stabilityMemOut;
 	wire stabilityMemWriteEn;
 	wire stabilityDone;	
