@@ -66,6 +66,6 @@ parameter RELSPWED_RBUF = 12'd2592;					//Relspwed rbuf uses 16 blocks
 parameter RELSPWED_L_TDIST = 12'd2608;				//Relspwed L_tdist uses 16blocks
 parameter Y1 = 12'd2624;								//Top Level's Y1 uses 64 Blocks
 parameter CORR_XY2_SCALED_Y2 = 12'd2688;			//Corr_xy2's scaled_Y2 uses 64 Blocks
-parameter xxxxx = 12'd2752;							//OPEN 64 BLOCKS
+parameter XN = 12'd2752;								//Top Level's xn uses 64 blocks
 parameter x = 12'd2816;									//OPEN 256 Blocks
 parameter xxxxxx = 12'd3072;							//OPEN 1024 Blocks
