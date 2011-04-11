@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="C:/ECE4532/Az_to_LSP/Az_LSP_Test_v_isim_par.wdb" id="1" type="auto">
+         <top_modules>
+            <top_module name="Az_LSP_Test_v" />
+            <top_module name="glbl" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <WVObjectSize size="81" />
+   <wvobject fp_name="/Az_LSP_Test_v/lspIn" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">lspIn[31:0]</obj_property>
+      <obj_property name="ObjectShortName">lspIn[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Az_LSP_Test_v/done" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">done</obj_property>
+      <obj_property name="ObjectShortName">done</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Az_LSP_Test_v/clk" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Az_LSP_Test_v/reset" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">reset</obj_property>
+      <obj_property name="ObjectShortName">reset</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Az_LSP_Test_v/start" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">start</obj_property>
+      <obj_property name="ObjectShortName">start</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Az_LSP_Test_v/lspMuxSel" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">lspMuxSel</obj_property>
+      <obj_property name="ObjectShortName">lspMuxSel</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Az_LSP_Test_v/testReadRequested" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">testReadRequested[11:0]</obj_property>
+      <obj_property name="ObjectShortName">testReadRequested[11:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Az_LSP_Test_v/testWriteRequested" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">testWriteRequested[11:0]</obj_property>
+      <obj_property name="ObjectShortName">testWriteRequested[11:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Az_LSP_Test_v/testLspOut" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">testLspOut[31:0]</obj_property>
+      <obj_property name="ObjectShortName">testLspOut[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Az_LSP_Test_v/testLspWrite" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">testLspWrite</obj_property>
+      <obj_property name="ObjectShortName">testLspWrite</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Az_LSP_Test_v/i" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">i[31:0]</obj_property>
+      <obj_property name="ObjectShortName">i[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Az_LSP_Test_v/j" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">j[31:0]</obj_property>
+      <obj_property name="ObjectShortName">j[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Az_LSP_Test_v/AUTOCORR_Y" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">AUTOCORR_Y[11:0]</obj_property>
+      <obj_property name="ObjectShortName">AUTOCORR_Y[11:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Az_LSP_Test_v/AUTOCORR_R" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">AUTOCORR_R[11:0]</obj_property>
+      <obj_property name="ObjectShortName">AUTOCORR_R[11:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Az_LSP_Test_v/LAG_WINDOW_R_PRIME" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">LAG_WINDOW_R_PRIME[11:0]</obj_property>
+      <obj_property name="ObjectShortName">LAG_WINDOW_R_PRIME[11:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Az_LSP_Test_v/LSPGETQ_BUF" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">LSPGETQ_BUF[11:0]</obj_property>
+      <obj_property name="ObjectShortName">LSPGETQ_BUF[11:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Az_LSP_Test_v/LEVINSON_DURBIN_ANEXT" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">LEVINSON_DURBIN_ANEXT[11:0]</obj_property>
+      <obj_property name="ObjectShortName">LEVINSON_DURBIN_ANEXT[11:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Az_LSP_Test_v/LEVINSON_DURBIN_AOLD" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">LEVINSON_DURBIN_AOLD[11:0]</obj_property>
+      <obj_property name="ObjectShortName">LEVINSON_DURBIN_AOLD[11:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Az_LSP_Test_v/LEVINSON_DURBIN_ATEMP" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">LEVINSON_DURBIN_ATEMP[11:0]</obj_property>
+      <obj_property name="ObjectShortName">LEVINSON_DURBIN_ATEMP[11:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Az_LSP_Test_v/LEVINSON_DURBIN_RC" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">LEVINSON_DURBIN_RC[11:0]</obj_property>
+      <obj_property name="ObjectShortName">LEVINSON_DURBIN_RC[11:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Az_LSP_Test_v/LEVINSON_DURBIN_RCOLD" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">LEVINSON_DURBIN_RCOLD[11:0]</obj_property>
+      <obj_property name="ObjectShortName">LEVINSON_DURBIN_RCOLD[11:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Az_LSP_Test_v/LSP_NEW" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">LSP_NEW[11:0]</obj_property>
+      <obj_property name="ObjectShortName">LSP_NEW[11:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Az_LSP_Test_v/LSP_OLD" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">LSP_OLD[11:0]</obj_property>
+      <obj_property name="ObjectShortName">LSP_OLD[11:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Az_LSP_Test_v/INTERPOLATION_LSF_INT" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">INTERPOLATION_LSF_INT[11:0]</obj_property>
+      <obj_property name="ObjectShortName">INTERPOLATION_LSF_INT[11:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Az_LSP_Test_v/INTERPOLATION_LSF_NEW" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">INTERPOLATION_LSF_NEW[11:0]</obj_property>
+      <obj_property name="ObjectShortName">INTERPOLATION_LSF_NEW[11:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Az_LSP_Test_v/PERC_VAR_GAMMA1" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">PERC_VAR_GAMMA1[11:0]</obj_property>
+      <obj_property name="ObjectShortName">PERC_VAR_GAMMA1[11:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Az_LSP_Test_v/PERC_VAR_GAMMA2" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">PERC_VAR_GAMMA2[11:0]</obj_property>
+      <obj_property name="ObjectShortName">PERC_VAR_GAMMA2[11:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Az_LSP_Test_v/PERC_VAR_LAR_OLD" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">PERC_VAR_LAR_OLD[11:0]</obj_property>
+      <obj_property name="ObjectShortName">PERC_VAR_LAR_OLD[11:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Az_LSP_Test_v/QUA_LSP_MODE_INDEX" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">QUA_LSP_MODE_INDEX[11:0]</obj_property>
+      <obj_property name="ObjectShortName">QUA_LSP_MODE_INDEX[11:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Az_LSP_Test_v/RELSPWED_CAND_CUR" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">RELSPWED_CAND_CUR[11:0]</obj_property>
+      <obj_property name="ObjectShortName">RELSPWED_CAND_CUR[11:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Az_LSP_Test_v/PERC_VAR_LAR" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">PERC_VAR_LAR[11:0]</obj_property>
+      <obj_property name="ObjectShortName">PERC_VAR_LAR[11:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Az_LSP_Test_v/PERC_VAR_LAR_NEW" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">PERC_VAR_LAR_NEW[11:0]</obj_property>
+      <obj_property name="ObjectShortName">PERC_VAR_LAR_NEW[11:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Az_LSP_Test_v/INT_LPC_LSP" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">INT_LPC_LSP[11:0]</obj_property>
+      <obj_property name="ObjectShortName">INT_LPC_LSP[11:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Az_LSP_Test_v/INT_LPC_F1" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">INT_LPC_F1[11:0]</obj_property>
+      <obj_property name="ObjectShortName">INT_LPC_F1[11:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Az_LSP_Test_v/INT_LPC_F2" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">INT_LPC_F2[11:0]</obj_property>
+      <obj_property name="ObjectShortName">INT_LPC_F2[11:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Az_LSP_Test_v/INT_LPC_LSP_TEMP" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">INT_LPC_LSP_TEMP[11:0]</obj_property>
+      <obj_property name="ObjectShortName">INT_LPC_LSP_TEMP[11:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Az_LSP_Test_v/TOP_LEVEL_I" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">TOP_LEVEL_I[11:0]</obj_property>
+      <obj_property name="ObjectShortName">TOP_LEVEL_I[11:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Az_LSP_Test_v/BEST_GAIN" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">BEST_GAIN[11:0]</obj_property>
+      <obj_property name="ObjectShortName">BEST_GAIN[11:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Az_LSP_Test_v/XX" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">XX[11:0]</obj_property>
+      <obj_property name="ObjectShortName">XX[11:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Az_LSP_Test_v/G_COEFF" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">G_COEFF[11:0]</obj_property>
+      <obj_property name="ObjectShortName">G_COEFF[11:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Az_LSP_Test_v/WEIGHT_AZ_AP_OUT" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">WEIGHT_AZ_AP_OUT[11:0]</obj_property>
+      <obj_property name="ObjectShortName">WEIGHT_AZ_AP_OUT[11:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Az_LSP_Test_v/RELSPWED_BUF" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">RELSPWED_BUF[11:0]</obj_property>
+      <obj_property name="ObjectShortName">RELSPWED_BUF[11:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Az_LSP_Test_v/FREQ_PREV" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">FREQ_PREV[11:0]</obj_property>
+      <obj_property name="ObjectShortName">FREQ_PREV[11:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Az_LSP_Test_v/LSP_SELECT_1_WEGT" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">LSP_SELECT_1_WEGT[11:0]</obj_property>
+      <obj_property name="ObjectShortName">LSP_SELECT_1_WEGT[11:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Az_LSP_Test_v/ACELP_EXTRA" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">ACELP_EXTRA[11:0]</obj_property>
+      <obj_property name="ObjectShortName">ACELP_EXTRA[11:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Az_LSP_Test_v/PAST_QUA_EN" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">PAST_QUA_EN[11:0]</obj_property>
+      <obj_property name="ObjectShortName">PAST_QUA_EN[11:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Az_LSP_Test_v/GET_WEGT_BUF" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">GET_WEGT_BUF[11:0]</obj_property>
+      <obj_property name="ObjectShortName">GET_WEGT_BUF[11:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Az_LSP_Test_v/LSP_NEW_Q" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">LSP_NEW_Q[11:0]</obj_property>
+      <obj_property name="ObjectShortName">LSP_NEW_Q[11:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Az_LSP_Test_v/LSP_OLD_Q" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">LSP_OLD_Q[11:0]</obj_property>
+      <obj_property name="ObjectShortName">LSP_OLD_Q[11:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Az_LSP_Test_v/LSP_SELECT_1_RBUF" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">LSP_SELECT_1_RBUF[11:0]</obj_property>
+      <obj_property name="ObjectShortName">LSP_SELECT_1_RBUF[11:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Az_LSP_Test_v/LSP_SELECT_1_BUF" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">LSP_SELECT_1_BUF[11:0]</obj_property>
+      <obj_property name="ObjectShortName">LSP_SELECT_1_BUF[11:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Az_LSP_Test_v/A_T_LOW" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">A_T_LOW[11:0]</obj_property>
+      <obj_property name="ObjectShortName">A_T_LOW[11:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Az_LSP_Test_v/A_T_HIGH" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">A_T_HIGH[11:0]</obj_property>
+      <obj_property name="ObjectShortName">A_T_HIGH[11:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Az_LSP_Test_v/AQ_T_LOW" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">AQ_T_LOW[11:0]</obj_property>
+      <obj_property name="ObjectShortName">AQ_T_LOW[11:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Az_LSP_Test_v/AQ_T_HIGH" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">AQ_T_HIGH[11:0]</obj_property>
+      <obj_property name="ObjectShortName">AQ_T_HIGH[11:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Az_LSP_Test_v/SYN_FILT_TEMP" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">SYN_FILT_TEMP[11:0]</obj_property>
+      <obj_property name="ObjectShortName">SYN_FILT_TEMP[11:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Az_LSP_Test_v/COR_H" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">COR_H[11:0]</obj_property>
+      <obj_property name="ObjectShortName">COR_H[11:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Az_LSP_Test_v/ACELP_RR" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">ACELP_RR[11:0]</obj_property>
+      <obj_property name="ObjectShortName">ACELP_RR[11:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Az_LSP_Test_v/H1" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">H1[11:0]</obj_property>
+      <obj_property name="ObjectShortName">H1[11:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Az_LSP_Test_v/D17_P_SIGN" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">D17_P_SIGN[11:0]</obj_property>
+      <obj_property name="ObjectShortName">D17_P_SIGN[11:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Az_LSP_Test_v/ACELP_DN" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">ACELP_DN[11:0]</obj_property>
+      <obj_property name="ObjectShortName">ACELP_DN[11:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Az_LSP_Test_v/CODE" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">CODE[11:0]</obj_property>
+      <obj_property name="ObjectShortName">CODE[11:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Az_LSP_Test_v/Y2" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">Y2[11:0]</obj_property>
+      <obj_property name="ObjectShortName">Y2[11:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Az_LSP_Test_v/EXCF" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">EXCF[11:0]</obj_property>
+      <obj_property name="ObjectShortName">EXCF[11:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Az_LSP_Test_v/SCALED_EXCF" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">SCALED_EXCF[11:0]</obj_property>
+      <obj_property name="ObjectShortName">SCALED_EXCF[11:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Az_LSP_Test_v/XN2" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">XN2[11:0]</obj_property>
+      <obj_property name="ObjectShortName">XN2[11:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Az_LSP_Test_v/COR_H_X_Y32" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">COR_H_X_Y32[11:0]</obj_property>
+      <obj_property name="ObjectShortName">COR_H_X_Y32[11:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Az_LSP_Test_v/G_COEFF_CS" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">G_COEFF_CS[11:0]</obj_property>
+      <obj_property name="ObjectShortName">G_COEFF_CS[11:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Az_LSP_Test_v/EXP_G_COEFF_CS" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">EXP_G_COEFF_CS[11:0]</obj_property>
+      <obj_property name="ObjectShortName">EXP_G_COEFF_CS[11:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Az_LSP_Test_v/RELSPWED_CAND" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">RELSPWED_CAND[11:0]</obj_property>
+      <obj_property name="ObjectShortName">RELSPWED_CAND[11:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Az_LSP_Test_v/RELSPWED_INDEX" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">RELSPWED_INDEX[11:0]</obj_property>
+      <obj_property name="ObjectShortName">RELSPWED_INDEX[11:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Az_LSP_Test_v/XXXXXXX" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">XXXXXXX[11:0]</obj_property>
+      <obj_property name="ObjectShortName">XXXXXXX[11:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Az_LSP_Test_v/RELSPWED_TINDEX1" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">RELSPWED_TINDEX1[11:0]</obj_property>
+      <obj_property name="ObjectShortName">RELSPWED_TINDEX1[11:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Az_LSP_Test_v/RELSPWED_TINDEX2" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">RELSPWED_TINDEX2[11:0]</obj_property>
+      <obj_property name="ObjectShortName">RELSPWED_TINDEX2[11:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Az_LSP_Test_v/XXXX" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">XXXX[11:0]</obj_property>
+      <obj_property name="ObjectShortName">XXXX[11:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Az_LSP_Test_v/RELSPWED_RBUF" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">RELSPWED_RBUF[11:0]</obj_property>
+      <obj_property name="ObjectShortName">RELSPWED_RBUF[11:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Az_LSP_Test_v/RELSPWED_L_TDIST" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">RELSPWED_L_TDIST[11:0]</obj_property>
+      <obj_property name="ObjectShortName">RELSPWED_L_TDIST[11:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Az_LSP_Test_v/xxxx" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">xxxx[11:0]</obj_property>
+      <obj_property name="ObjectShortName">xxxx[11:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Az_LSP_Test_v/xxx" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">xxx[11:0]</obj_property>
+      <obj_property name="ObjectShortName">xxx[11:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Az_LSP_Test_v/x" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">x[11:0]</obj_property>
+      <obj_property name="ObjectShortName">x[11:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Az_LSP_Test_v/xxxxxx" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">xxxxxx[11:0]</obj_property>
+      <obj_property name="ObjectShortName">xxxxxx[11:0]</obj_property>
+   </wvobject>
+</wave_config>
