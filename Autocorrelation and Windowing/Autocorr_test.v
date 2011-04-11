@@ -50,8 +50,8 @@ module Autocorr_test;
 	//file read in for inputs and output tests
 	initial 
 	begin// samples out are samples from ITU G.729 test vectors
-		$readmemh("autocorr_in.out", autocorrInMem);
-		$readmemh("autocorr_out.out", autocorrOutMem);
+		$readmemh("tame_autocorr_in.out", autocorrInMem);
+		$readmemh("tame_autocorr_out.out", autocorrOutMem);
 	end					
 	
 	// Instantiate the Unit Under Test (UUT)
