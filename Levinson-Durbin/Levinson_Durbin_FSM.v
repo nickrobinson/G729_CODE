@@ -89,7 +89,7 @@ module Levinson_Durbin_FSM(clock,reset,start,done,abs_in,abs_out,negate_out,nega
 	mpy_32_mux i_r_mux(.in1(r1),.in2(r2),.in3(r3),.in4(r4),.in5(r5),.in6(r6),.in7(r7),.in8(r8),.in9(r9),.in10(r10),.sel(r_mux_sel),.out(r_mux_out));
 
 	reg [31:0] temp1,next_temp1,temp2,next_temp2,alp,next_alp,temp3,next_temp3,k,next_k;
-	reg [15:0] alp_exp,next_alp_exp,next_rc0;
+	reg [15:0] alp_exp,next_alp_exp;
 	
 	reg [31:0] mpyReg,nextmpyReg;
 	reg mpyRegReset,mpyRegLd;
@@ -371,6 +371,7 @@ module Levinson_Durbin_FSM(clock,reset,start,done,abs_in,abs_out,negate_out,nega
 		div_32_L_mac_in = 32'd0;
 		div_32_L_shl_in = 32'd0;
 		div_32_L_shl_done = L_shl_done;
+		div_32_add_in = 0;
 		
 		negate_out = 32'd0;
 		
@@ -383,6 +384,9 @@ module Levinson_Durbin_FSM(clock,reset,start,done,abs_in,abs_out,negate_out,nega
 		mpy_32_L_mult_in = 32'd0;
 		mpy_32_mult_in = 32'd0;
 		mpy_32_L_mac_in = 32'd0;
+		mpy_32_L_mac_overflow = 0;
+		mpy_32_L_mult_overflow = 0;
+		mpy_32_mult_overflow = 0;
 		
 		L_sub_outa = 32'd0;
 		L_sub_outb = 32'd0;
@@ -436,11 +440,6 @@ module Levinson_Durbin_FSM(clock,reset,start,done,abs_in,abs_out,negate_out,nega
 		nextr8 = r8;
 		nextr9 = r9;
 		nextr10 = r10;
-		
-		mpy_32_L_mac_overflow = 0;
-		mpy_32_L_mult_overflow = 0;
-		mpy_32_mult_overflow = 0;
-		div_32_add_in = 0;
 		
 		case(currentstate)
 				
@@ -688,7 +687,7 @@ module Levinson_Durbin_FSM(clock,reset,start,done,abs_in,abs_out,negate_out,nega
 				if(iterator1 >= 'd11) begin
 					next_iterator1 = 2;
 					scratch_mem_out = 'd4096;
-					scratch_mem_write_addr = {A_T_HIGH[11:4],4'd11};
+					scratch_mem_write_addr = {A_T_HIGH[11:4],4'd0};
 					scratch_mem_write_en = 1'd1;
 					nextstate = 29;
 				end
@@ -883,10 +882,8 @@ module Levinson_Durbin_FSM(clock,reset,start,done,abs_in,abs_out,negate_out,nega
 			begin
 				scratch_mem_read_addr = {LEVINSON_DURBIN_AOLD[11:4], iterator4[3:0]};
 				scratch_mem_out = scratch_mem_in;
-				scratch_mem_write_addr = {A_T_HIGH[11:4], add_in[3:0]};
-				scratch_mem_write_en = 1'd1;
-				add_outa = iterator4;
-				add_outb = 'd11;
+				scratch_mem_write_addr = {A_T_HIGH[11:4], iterator4[3:0]};
+				scratch_mem_write_en = 1'd1;				
 				sub_outa = add_in;
 				sub_outb = 'd10;
 				next_iterator4 = sub_in;
@@ -1146,10 +1143,8 @@ module Levinson_Durbin_FSM(clock,reset,start,done,abs_in,abs_out,negate_out,nega
 					L_add_outa = L_shl_in;
 					L_add_outb = 32'h0000_8000;
 					next_temp2 = L_add_in;
-					scratch_mem_out = L_add_in[31:16];
-					add_outa = iterator6;
-					add_outb = 'd11;
-					scratch_mem_write_addr = {A_T_HIGH[11:4],add_in[3:0]};
+					scratch_mem_out = L_add_in[31:16];					
+					scratch_mem_write_addr = {A_T_HIGH[11:4],iterator6[3:0]};
 					scratch_mem_write_en = 1'd1;
 					nextstate = state31;
 				end

@@ -50,8 +50,8 @@ module Autocorr_test;
 	//file read in for inputs and output tests
 	initial 
 	begin// samples out are samples from ITU G.729 test vectors
-		$readmemh("lsp_autocorr_in.out", autocorrInMem);
-		$readmemh("lsp_autocorr_out.out", autocorrOutMem);
+		$readmemh("autocorr_in.out", autocorrInMem);
+		$readmemh("autocorr_out.out", autocorrOutMem);
 	end					
 	
 	// Instantiate the Unit Under Test (UUT)
@@ -93,7 +93,7 @@ module Autocorr_test;
 		@(posedge clk);
 		@(posedge clk) #5;
 		
-		for(j=0;j<120;j=j+1)
+		for(j=0;j<5;j=j+1)
 		begin
 		@(posedge clk);		
 		@(posedge clk) #5;

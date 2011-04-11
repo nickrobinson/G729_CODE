@@ -17,22 +17,22 @@
 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module g729_hpfilter(mclk, reset,xn, ready, yn, done);
+module g729_hpfilter(clk, reset,xn, ready, yn, done);
 
-input mclk,reset,ready;
+input clk,reset,ready;
 input [15:0] xn;
-wire ld1,ld2,ld3,ld4,ld5,ld6,ld7;
-wire mux0_sel,mux3_sel,mux4_sel;
-wire [2:0] mux1_sel, mux2_sel;
+
 output [15:0] yn;
 output done;
 
-preProcPipe preprocpipe(.mclk(mclk), .reset(reset), .xn(xn), .yn(yn), .ld1(ld1), .ld2(ld2), .ld3(ld3), .ld4(ld4),
-.ld5(ld5), .ld6(ld6), .ld7(ld7), .mux0_sel(mux0_sel), .mux1_sel(mux1_sel), .mux2_sel(mux2_sel), 
-.mux3_sel(mux3_sel), .mux4_sel(mux4_sel));
 
-preProcFSM preprocfsm(.mclk(mclk), .reset(reset), .ready(ready), .done(done), .ld1(ld1), .ld2(ld2), .ld3(ld3),
-.ld4(ld4), .ld5(ld5), .ld6(ld6), .ld7(ld7), .mux0_sel(mux0_sel), .mux1_sel(mux1_sel), .mux2_sel(mux2_sel),
-.mux3_sel(mux3_sel), .mux4_sel(mux4_sel));
+preProcFSM preprocfsm(
+							 .clk(clk),
+							 .reset(reset),
+							 .ready(ready),
+							 .xn(xn),
+							 .yn(yn),
+							 .done(done)
+							 );
 
 endmodule

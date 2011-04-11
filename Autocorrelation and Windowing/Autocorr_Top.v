@@ -39,7 +39,10 @@ output [31:0] memIn;
 //Temp wires
 wire [15:0] L_macOutA; 
 wire [15:0] L_macOutB; 
-wire [31:0] L_macOutC;  
+wire [31:0] L_macOutC; 
+wire [15:0] L_msuOutA; 
+wire [15:0] L_msuOutB; 
+wire [31:0] L_msuOutC;  
 wire [15:0] multOutA; 
 wire [15:0] multOutB; 
 wire multRselOut;  
@@ -62,6 +65,7 @@ wire [15:0] addIn;
 wire [15:0] subIn;
 wire [15:0] multIn; 
 wire [31:0] L_macIn;
+wire [31:0] L_msuIn;
 wire [15:0] xIn;
 wire overflow;
 
@@ -96,7 +100,11 @@ wire norm_lDone;
 							.L_macIn(L_macIn), 
 							.L_macOutA(L_macOutA), 
 							.L_macOutB(L_macOutB), 
-							.L_macOutC(L_macOutC), 
+							.L_macOutC(L_macOutC),
+							.L_msuIn(L_msuIn),
+							.L_msuOutA(L_msuOutA), 
+							.L_msuOutB(L_msuOutB), 
+							.L_msuOutC(L_msuOutC), 
 							.norm_lVar1Out(norm_lVar1Out), 
 							.multOutA(multOutA), 
 							.multOutB(multOutB), 
@@ -128,6 +136,9 @@ wire norm_lDone;
 								 .L_macOutA(L_macOutA),
 								 .L_macOutB(L_macOutB),
 								 .L_macOutC(L_macOutC),
+								 .L_msuOutA(L_msuOutA),
+								 .L_msuOutB(L_msuOutB),
+								 .L_msuOutC(L_msuOutC),
 								 .norm_lVar1Out(norm_lVar1Out),
 								 .multOutA(multOutA),
 								 .multOutB(multOutB),
@@ -168,6 +179,7 @@ wire norm_lDone;
 								 .norm_lIn(norm_lIn),
 								 .multIn(multIn),
 								 .L_macIn(L_macIn),
+								 .L_msuIn(L_msuIn),
 								 .memIn(memIn), 
 								 .xIn(xIn),
 								 .overflow(overflow)
