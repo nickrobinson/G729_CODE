@@ -30,8 +30,9 @@ module G729_Top_Test_v;
 	reg reset;
 	reg start;
 	reg [15:0] in;
-
-	// Outputs
+	reg [11:0] outBufAddr;
+	
+	// Outputs	
 	wire [31:0] out;
 	wire done;
 	
@@ -39,11 +40,9 @@ module G729_Top_Test_v;
 	//Working regs
 	reg [15:0] samplesmem [0:9999];
 	reg [31:0] outputmem[0:9999];
-	reg [31:0] testmem[0:10];
 	
 	//working integers
 	integer i;
-	integer j;
 	integer k;
 	
 	initial
@@ -51,7 +50,6 @@ module G729_Top_Test_v;
 		// samples out are samples from ITU G.729 test vectors
 		$readmemh("samples.out", samplesmem);
 		$readmemh("az_lsp_out.out", outputmem);
-		j = 0;
 	end	
 		
 	// Instantiate the Unit Under Test (UUT)
@@ -59,7 +57,8 @@ module G729_Top_Test_v;
 		.clock(clock), 
 		.reset(reset), 
 		.start(start), 
-		.in(in), 
+		.in(in),
+		.outBufAddr(outBufAddr),
 		.out(out), 
 		.done(done)
 	);
@@ -70,15 +69,17 @@ module G729_Top_Test_v;
 		reset = 0;
 		start = 0;
 		in = 0;
-
+		outBufAddr = 0;
 		
 		#50;
       reset = 1;
 		#50;		
 		reset = 0;
 		#100;			// Wait 100 ns for global reset to finish
-		for(k=0;k<60;k=k+1)
+		for(k=0;k<120;k=k+1)
 		begin		
+			@(posedge clock);
+			@(posedge clock) #5;
 			for (i=0;i<80;i=i+1)
 				begin
 				  @(posedge clock);
@@ -86,33 +87,27 @@ module G729_Top_Test_v;
 				  in = samplesmem[i+80*k];
 				  @(posedge clock);
 				  start = 0;			  
-				  #200;
+				  #600;
 				end			
 			// Add stimulus here
 			wait(done);
+			
 			for (i = 0; i<10;i=i+1)
-			begin					
-					if (testmem[i] != outputmem[i+10*k])
-						$display($time, " ERROR: output[%d] = %x, expected = %x", i, testmem[i], outputmem[i+10*k]);
-					else if (testmem[i] == outputmem[i+10*k])
-						$display($time, " CORRECT:  output[%d] = %x", i, testmem[i]);	
+			begin		
+					outBufAddr = 12'd384 + i;
+					@(posedge clock);
+					@(posedge clock) #5;
+					if (out != outputmem[i+10*k])
+						$display($time, " ERROR: output[%d] = %x, expected = %x", i+10*k, out, outputmem[i+10*k]);
+					else if (out == outputmem[i+10*k])
+						$display($time, " CORRECT:  output[%d] = %x", i+10*k, out);	
 					else
-						$display($time, " ERROR: output[%d] = %x, expected = %x", i, testmem[i], outputmem[i+10*k]);
+						$display($time, " ERROR: output[%d] = %x, expected = %x", i+11*k, out, outputmem[i+10*k]);
+					@(posedge clock);
+					@(posedge clock) #5;
 			end	
 		end//k for loop
 	end//initial 
-		
-		always @(posedge clock)
-		begin
-			if(j%10 == 0)
-				j = 0;
-			if(out == outputmem[j+10*k])
-			begin
-				testmem[j] = out;
-				j = j+1;
-			end
-
-	end//end always
 	
 	initial forever #10 clock = ~clock;
       

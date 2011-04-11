@@ -18,12 +18,13 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module G729_Top(clock, reset, start,in, out,done);
+module G729_Top(clock, reset, start,in, outBufAddr, out,done);
    
 	//inputs
 	input clock;
    input reset;
 	input start;
+	input [11:0] outBufAddr;
    input [15:0] in;
 	
 	//outputs
@@ -36,8 +37,13 @@ module G729_Top(clock, reset, start,in, out,done);
 	wire [5:0] mathMuxSel;
 	wire autocorrReady;
 	wire lagReady;
+	wire levinsonReady;
+	wire AzReady;
 	wire autocorrDone;
 	wire lagDone;
+	wire levinsonDone;
+	wire AzDone;
+	wire divErr;
 	assign done = FSMdone;
 	
 	G729_Pipe i_G729_Pipe(
@@ -47,10 +53,16 @@ module G729_Top(clock, reset, start,in, out,done);
 								 .preProcReady(start),
 								 .autocorrReady(autocorrReady),
 								 .lagReady(lagReady),
+								 .levinsonReady(levinsonReady),
+								 .AzReady(AzReady),
 								 .mathMuxSel(mathMuxSel),
 								 .frame_done(frame_done),
 								 .autocorrDone(autocorrDone),
 								 .lagDone(lagDone),
+								 .levinsonDone(levinsonDone),
+								 .AzDone(AzDone),
+								 .divErr(divErr),
+								 .outBufAddr(outBufAddr),
 								 .out(out)
 								 );
 	
@@ -59,12 +71,17 @@ module G729_Top(clock, reset, start,in, out,done);
 								.clock(clock),
 								.reset(reset),
 								.start(start),
+								.divErr(divErr),
 								.frame_done(frame_done),
 								.autocorrDone(autocorrDone),
 								.lagDone(lagDone),
+								.levinsonDone(levinsonDone),
+								.AzDone(AzDone),
 								.mathMuxSel(mathMuxSel),
 								.autocorrReady(autocorrReady),
 								.lagReady(lagReady),
+								.levinsonReady(levinsonReady),
+								.AzReady(AzReady),																
 								.done(FSMdone)
 							 );
 

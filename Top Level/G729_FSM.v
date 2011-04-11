@@ -127,10 +127,11 @@ module G729_FSM(clock, reset,start,divErr,frame_done,autocorrDone,lagDone,levins
 			if(autocorrDone == 0)
 				nextsubModuleState = SUB_MODULE_AUTOCORR_DONE;
 			else if(autocorrDone == 1)
-			begin
+			begin	
+				
 				mathMuxSel = 6'd1;
 				lagReady = 1;
-				nextsubModuleState = SUB_MODULE_LAG_DONE;
+				nextsubModuleState = SUB_MODULE_LAG_DONE; 
 			end				
 		end//SUB_MODULE_AUTOCORR_DONE
 		
@@ -140,7 +141,7 @@ module G729_FSM(clock, reset,start,divErr,frame_done,autocorrDone,lagDone,levins
 			if(lagDone == 0)
 				nextsubModuleState = SUB_MODULE_LAG_DONE;
 			else if(lagDone == 1)
-			begin
+			begin				
 				mathMuxSel = 6'd2;
 				nextsubModuleState = SUB_MODULE_LEVINSON_DONE;
 				levinsonReady = 1;
@@ -153,10 +154,10 @@ module G729_FSM(clock, reset,start,divErr,frame_done,autocorrDone,lagDone,levins
 			if(levinsonDone == 0)
 				nextsubModuleState = SUB_MODULE_LEVINSON_DONE;
 			else if(levinsonDone == 1)
-			begin
+			begin					
 				mathMuxSel = 6'd3;
 				nextsubModuleState = SUB_MODULE_AZ_DONE;
-				AzReady = 1;				
+				AzReady = 1;		
 			end				
 		end//SUB_MODULE_LEVINSON_DONE
 		
