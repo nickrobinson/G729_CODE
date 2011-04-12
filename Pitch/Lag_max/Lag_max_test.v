@@ -86,20 +86,23 @@ module Lag_max_test;
 	
 		initial begin
 		// Initialize Inputs
+		#100;
 		start = 0;
 		clk = 0;
 		reset = 0;
 		scaled_signal = 'd0;
 		signal = 'd143;
 		
-		#50
+		@(posedge clk);
 		reset = 1;
 		// Wait 50 ns for global reset to finish
-		#50;
+		@(posedge clk);
 		reset = 0;
-		
+		@(posedge clk);
 		for(j=0;j<60;j=j+1)
 		begin
+			@(posedge clk);
+			@(posedge clk) #5;
 			//TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 
 			Mux0Sel = 1;
 			Mux1Sel = 0;
@@ -110,53 +113,43 @@ module Lag_max_test;
 			for(i=0; i<223; i=i+1)
 				begin
 					@(posedge clk);
-					@(posedge clk);
-					@(posedge clk);	
+					@(posedge clk)#5;	
 					testWriteRequested = i;
 					testWriteOut = scaled_signalc[i+(j/3)*223];
 					testWrite = 1;	
 					@(posedge clk);
-					@(posedge clk);
-					@(posedge clk);		
+					@(posedge clk)#5;		
 				end
 				
 
 			@(posedge clk);
-			@(posedge clk);
-			@(posedge clk);		
+			@(posedge clk)#5;		
 			L_frame = L_framec[j];
 			@(posedge clk);
-			@(posedge clk);
-			@(posedge clk);	
-		
-			@(posedge clk);
-			@(posedge clk);
-			@(posedge clk);	
-			lag_max = lag_maxc[j];
-			@(posedge clk);
-			@(posedge clk);
-			@(posedge clk);	
+			@(posedge clk)#5;
 			
+			lag_max = lag_maxc[j];
+
+
 			@(posedge clk);
-			@(posedge clk);
-			@(posedge clk);	
+			@(posedge clk)#5;	
+				
 			lag_min = lag_minc[j];	
 			@(posedge clk);
-			@(posedge clk);
-			@(posedge clk);	
+			@(posedge clk)#5;	
 			
 			Mux1Sel = 1;
 			Mux2Sel = 1;
 			Mux3Sel = 1;	
 			
 			@(posedge clk);
-			@(posedge clk);		
+			@(posedge clk)#5;		
 			start = 1;
 			@(posedge clk);
-			@(posedge clk);	
+			@(posedge clk)#5;	
 			start = 0;
 			@(posedge clk);
-			@(posedge clk);	
+			@(posedge clk)#5;	
 			// Add stimulus here	
 			wait(done);
 			Mux0Sel = 0;
@@ -165,7 +158,7 @@ module Lag_max_test;
 		//begin test
 			//testReadRequested = cor_max;
 			@(posedge clk);
-			@(posedge clk);
+			@(posedge clk)#5;
 			if (cor_max != cor_maxc[j])
 				$display($time, " ERROR: cor_maxc[%d] = %x, expected = %x", j, cor_max, cor_maxc[j]);
 			else if (cor_max == cor_maxc[j])
