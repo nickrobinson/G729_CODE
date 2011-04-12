@@ -94,6 +94,7 @@ module Weight_Az_test_v;
 
 	initial begin
 		// Initialize Inputs
+                #100;
 		start = 0;
 		clk = 0;
 		reset = 0;
