@@ -64,7 +64,7 @@ module Az_LSP_Test_v;
 						);
 	initial begin
 		// Initialize Input
-		
+		#100;
 		clk = 0;
 		reset = 0;
 		start = 0;
