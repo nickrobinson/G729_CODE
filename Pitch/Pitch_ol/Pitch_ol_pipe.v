@@ -165,7 +165,7 @@ module Pitch_ol_pipe(clk, start, reset, done, Mux0Sel, Mux1Sel, Mux2Sel, Mux3Sel
 	.norm(norm_l_in),
 	.clk(clk),
 	.ready(norm_l_ready),
-	.reset(norm_l_reset),
+	.reset(reset),
 	.done(norm_l_done));
 	
 	L_shl Pitch_ol_L_shl(
