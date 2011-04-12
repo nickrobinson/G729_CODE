@@ -83,14 +83,14 @@ begin
 			done = 0;
 			next_var1reg = var1;
 			normreset = 1;
-			if(next_var1reg == 0) 
+			if(var1 == 0) 
 			begin
 				normreset = 1;
 				nextstate = INIT;
 				done = 1;
 			end
 		
-			else if(next_var1reg == 32'hffff_ffff) 
+			else if(var1 == 32'hffff_ffff) 
 			begin
 				normreset = 1;
 				nextstate = INIT;
@@ -99,8 +99,8 @@ begin
 		
 			else 
 			begin
-				if(next_var1reg[31] == 1)
-					next_var1reg = ~var1reg + 32'd1;
+				if(var1[31] == 1)
+					next_var1reg = ~var1 + 32'd1;
 				nextstate = S1;
 			end
 		end //end else1
