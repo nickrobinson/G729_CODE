@@ -773,6 +773,8 @@ module Relspwed_FSM(clk, reset, start, L_addIn, L_subIn, L_multIn, L_macIn, addI
 		nextselect1Lspcb1 = select1Lspcb1;
 		nextselectFg = selectFg;
 		nextselectFgSum = selectFgSum;
+		nextselectFgSumInv = selectFgSumInv;
+		nextselectLTdist = selectLTdist;
 		memOut = 0;
 		memReadAddr = 0;
 		memWriteAddr = 0;
