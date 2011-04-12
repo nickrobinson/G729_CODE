@@ -90,6 +90,7 @@ module ACELP_Codebook_test;
 
 	initial begin
 		// Initialize Inputs
+                #100;
 		clk = 0;
 		reset = 0;
 		start = 0;
