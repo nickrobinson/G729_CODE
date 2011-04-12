@@ -45,19 +45,21 @@ module Enc_lag3_test;
 	reg [15:0] T0MinInMem [0:9999];
 	reg [15:0] T0MaxOutMem [0:9999];
 	reg [15:0] T0MinOutMem [0:9999];
+	reg [15:0] indexMem[0:9999];
 	
    //loop integers
 	integer j;
 	
 	initial 
 		begin// samples out are samples from ITU G.729 test vectors
-			$readmemh("speech_encLag3_pitFlag_in.out", pitFlagMem);			
-			$readmemh("speech_encLag3_T0_in.out", T0Mem);
-			$readmemh("speech_encLag3_T0frac_in.out", T0FracMem);
-			$readmemh("speech_encLag3_T0max_in.out", T0MaxInMem);
-			$readmemh("speech_encLag3_T0min_in.out", T0MinInMem);
-			$readmemh("speech_encLag3_T0max_out.out", T0MaxOutMem);
-			$readmemh("speech_encLag3_T0min_out.out", T0MinOutMem);
+			$readmemh("tame_encLag3_pitFlag_in.out", pitFlagMem);			
+			$readmemh("tame_encLag3_T0_in.out", T0Mem);
+			$readmemh("tame_encLag3_T0frac_in.out", T0FracMem);
+			$readmemh("tame_encLag3_T0max_in.out", T0MaxInMem);
+			$readmemh("tame_encLag3_T0min_in.out", T0MinInMem);
+			$readmemh("tame_encLag3_T0max_out.out", T0MaxOutMem);
+			$readmemh("tame_encLag3_T0min_out.out", T0MinOutMem);
+			$readmemh("tame_encLag3_index.out", indexMem);
 		end
 
 	
@@ -165,6 +167,11 @@ module Enc_lag3_test;
 			@(posedge clk);
 			@(posedge clk);
 			@(posedge clk) #5;	
+			
+			if(index != indexMem[j])
+				$display($time, " ERROR: index[%d] = %x, expected = %x", j, index, indexMem[j]);
+			if(index == indexMem[j])
+				$display($time, " CORRECT:  index[%d] = %x", j, index);	
 		end//j loop
 	end//initial
 
