@@ -21,21 +21,20 @@
 module norm_l(var1,norm,clk,ready,reset,done);
 
 input [31:0] var1;
-output [15:0] norm;
+output reg [15:0] norm;
 input clk ,ready, reset;
-output done;
+output reg done;
 
-wire signed [31:0] var1;
+wire [31:0] var1;
 
 reg signed [31:0] var1reg, next_var1reg;
-reg [15:0] norm;
-reg normld,normreset;
-reg state,nextstate;
-reg done;
+reg [15:0] next_norm;
+reg [1:0] state,nextstate;
+reg next_done;
 
-parameter NORM_FACTOR = 32'h4000_0000;
-parameter INIT = 1'd0;
-parameter S1 = 1'd1;
+parameter INIT = 2'd0;
+parameter state1 = 2'd1;
+parameter done_state = 2'd2;
 
 always @ (posedge clk) 
 begin
@@ -49,10 +48,16 @@ always @ (posedge clk)
 begin
 	if(reset)
 		norm <= 0;
-	else if(normreset)
-		norm <= 0;
-	else if(normld)
-		norm <= norm + 1;
+	else
+		norm <= next_norm;
+end
+
+always @ (posedge clk) 
+begin
+	if(reset)
+		done <= 0;
+	else
+		done <= next_done;
 end
 
 always @ (posedge clk) 
@@ -67,71 +72,57 @@ always @(*)
 begin
 	
 	nextstate = state;	
-	normreset = 0;
-	normld = 0;	
+	next_norm = norm;
 	next_var1reg = var1reg;
-	done = 0;
+	next_done = done;
 	
 	case(state)
-	INIT: begin
 		
-		if(ready == 0)
-			nextstate = INIT;
-			
-		else if(ready == 1)
-		begin //else1	
-			done = 0;
-			next_var1reg = var1;
-			normreset = 1;
-			if(var1 == 0) 
-			begin
-				normreset = 1;
+		INIT: begin
+			if(ready=='d1) begin
+				next_norm = 'd0;
+				if(var1 == 'd0) begin
+					next_norm = 'd0;
+					next_done = 'd1;
+					nextstate = done_state;
+				end
+				else begin
+					if(var1 == 32'hffff_ffff) begin
+						next_norm = 'd31;
+						next_done = 'd1;
+						nextstate = done_state;
+					end
+					else begin
+						if(var1[31] == 'd1) begin
+							next_var1reg = ~var1;
+						end
+						else
+							next_var1reg = var1;
+						nextstate = state1;
+					end
+				end
+			end
+			else
 				nextstate = INIT;
-				done = 1;
-			end
-		
-			else if(var1 == 32'hffff_ffff) 
-			begin
-				normreset = 1;
-				nextstate = INIT;
-				done = 1;
-			end
-		
-			else 
-			begin
-				if(var1[31] == 1)
-					next_var1reg = ~var1 + 32'd1;
-				nextstate = S1;
-			end
-		end //end else1
-	end //end INIT
-
-	
-
-	S1: begin	 
-		 
-		if(var1reg >= NORM_FACTOR) 
-		 begin
-			nextstate = INIT;
-			done = 1;			
-		 end	
-		
-		else if(var1reg < NORM_FACTOR) 
-		begin
-			next_var1reg = var1reg <<< 1;
-			normld = 1;			
-			nextstate = S1;
 		end
-		 
-		 
 		
+		state1: begin
+			if(var1reg[30] == 'd1) begin
+				next_done = 'd1;
+				nextstate = done_state;
+			end
+			else begin
+				next_var1reg = var1reg << 1;
+				next_norm = norm + 1;
+				nextstate = state1;
+			end
+		end
 		
-	end // end S1
-		
-	default:	begin
-	nextstate = INIT;
-	end
-		
+		done_state: begin
+			next_done = 'd0;
+			next_var1reg = 'd0;
+			nextstate = INIT;
+		end
 		
 			
 endcase
