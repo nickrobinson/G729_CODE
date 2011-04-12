@@ -66,6 +66,7 @@ module cor_h_X_Test;
 
 	initial begin
 		// Initialize Inputs
+                #100;
 		clk = 0;
 		reset = 0;
 		start = 0;
