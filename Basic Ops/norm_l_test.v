@@ -57,28 +57,31 @@ module norm_l_test;
       
 		#50;		
 		ready = 1;
-		var1 = 32'hd16a497b7;			
+		var1 = 32'hf000_0000;			
+		#50;
+		ready = 0;
+		wait(done);
+		#50;
+		#50;		
+		ready = 1;
+		var1 = 32'h0000_0100;			
+		#50;
+		ready = 0;
+		wait(done);
+		#50
+		#50;		
+		ready = 1;
+		var1 = 32'h082b_2e42;			
+		#50;
+		ready = 0;
+		wait(done);
+		#50
+		#50;		
+		ready = 1;
+		var1 = 32'h05e2ec30;			
 		#50;
 		ready = 0;
 		/*
-		#50;		
-		ready = 1;
-		var1 = 32'h16a497b7;			
-		#50;
-		ready = 0;
-		
-		#50;		
-		ready = 1;
-		var1 = 32'h1785368b;			
-		#50;
-		ready = 0;
-		
-		#50;		
-		ready = 1;
-		var1 = 32'h17850dd3;			
-		#50;
-		ready = 0;
-		
 		#50;		
 		ready = 1;
 		var1 = 32'h1784df6b;			
