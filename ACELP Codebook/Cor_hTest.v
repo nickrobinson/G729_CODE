@@ -62,6 +62,7 @@ module Cor_hTest;
 
 	initial begin
 		// Initialize Inputs
+                #100;
 		clk = 0;
 		reset = 0;
 		start = 0;

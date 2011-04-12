@@ -135,6 +135,7 @@ module Test_Chebps_10_v;
 
 	initial begin
 		// Initialize Inputs
+                #100;
 		clk = 0;
 		reset = 0;
 		start = 0;
