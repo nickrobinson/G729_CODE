@@ -82,6 +82,8 @@ parameter S6 = 4'd6;
 parameter S7 = 4'd7;
 parameter S8 = 4'd8;
 parameter S9 = 4'd9;
+parameter S1_5 = 4'd10;
+parameter S2_5 = 4'd11;
 
 //Flip flops
 //state FF
@@ -238,49 +240,70 @@ begin
 			begin
 				norm_lVar1Out = L_x;
 				norm_lReady = 1;
-				nextstate = S2;
+				if(norm_lDone == 1)
+				begin
+					nextexp = norm_lIn;
+					expLD = 1;
+					nextstate = S2;
+				end
+				else
+					nextstate = S1_5;
 			end
 		end//S1
 		
-		//exp = norm_l(L_x);
-		S2:
+		////exp = norm_l(L_x);
+		S1_5:
 		begin
-			norm_lReady = 1;
 			norm_lVar1Out = L_x;
 			if(norm_lDone == 0)
-				nextstate = S2;
+				nextstate = S1_5;
 			else if(norm_lDone == 1)
 			begin
-				norm_lReady = 0;
 				nextexp = norm_lIn;
 				expLD = 1;
-				L_shlVar1Out = L_x;
-				L_shlNumShiftOut = norm_lIn;
-				L_shlReady = 1;
-				nextstate = S3;
+				nextstate = S2;
 			end
-		end//S2
+		end//S1_5
 		
-		/*L_x = L_shl(L_x, exp );
-		  exp = sub(30, exp);*/
-		S3:
-		begin
+		//L_x = L_shl(L_x, exp );
+		S2:
+		begin			
 			L_shlVar1Out = L_x;
 			L_shlNumShiftOut = exp;
 			L_shlReady = 1;
-			if(L_shlDone == 0)
-				nextstate = S3;
-			else if(L_shlDone == 1)
+			if(L_shlDone == 1)
 			begin
-				L_shlReady = 0;
 				nextL_x = L_shlIn;
 				L_xLD = 1;
-				subOutA = 16'd30;
-				subOutB = exp;
-				nextexp = subIn;
-				expLD = 1;
-				nextstate = S4;
+				nextstate = S3;
 			end
+			else
+				nextstate = S2_5;
+		end//S2
+		
+		//L_x = L_shl(L_x, exp );
+		S2_5:
+		begin
+			L_shlVar1Out = L_x;
+			L_shlNumShiftOut = exp;
+			if(L_shlDone == 0)
+				nextstate = S2_5;
+			else if(L_shlDone == 1)
+			begin
+				nextL_x = L_shlIn;
+				L_xLD = 1;
+				nextstate = S3;
+			end			
+		end//S2_5
+		
+		/* exp = sub(30, exp);*/
+		S3:
+		begin			
+			subOutA = 16'd30;
+			subOutB = exp;
+			nextexp = subIn;
+			expLD = 1;
+			nextstate = S4;
 		end//S3
 		
 		/*if( (exp & 1) == 0 )

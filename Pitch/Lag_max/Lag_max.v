@@ -328,6 +328,8 @@ module Lag_max(clk, start, reset, done, signal, L_frame, lag_max, lag_min, cor_m
 			add_b = 0;
 			L_add_a = 0;
 			L_add_b = 0;
+			L_shr_a = 0;
+			L_shr_b = 0;
 			Mpy_32_var1 = 0;
 			Mpy_32_var2 = 0;
 			Mpy_32_start = 0;

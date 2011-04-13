@@ -3,9 +3,9 @@
 // Company: 
 // Engineer: 
 // 
-// Create Date:    17:25:35 03/24/2011 
+// Create Date:    14:32:38 04/12/2011 
 // Design Name: 
-// Module Name:    Lag_max_test 
+// Module Name:    Parity_pitch_test 
 // Project Name: 
 // Target Devices: 
 // Tool versions: 
@@ -18,21 +18,17 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module Lag_max_test;
-
-`include "paramList.v"
-`include "constants_param_list.v"
+module Parity_pitch_test;
 
 	reg start;
 	reg clk;
 	reg reset;
-	reg [11:0] signal, scaled_signal;
-	reg [15:0] L_frame, lag_max, lag_min;
+	reg [15:0] pitch_index;
 	
 	//Outputs
 	wire done;
-	wire [31:0] readIn;	
-	wire [15:0] cor_max;
+	wire [31:0] readIn;
+	wire [15:0] sum;
 	integer i, j, k;
 
 	reg Mux0Sel;
@@ -46,24 +42,18 @@ module Lag_max_test;
 	
 
 	//I/O regs
-	reg [15:0] signalc [0:60000];
-	reg [15:0] scaled_signalc [0:40000];
-	reg [15:0] L_framec [0:40000];
-	reg [15:0] lag_maxc [0:4000];
-	reg [15:0] lag_minc [0:40000];
-	reg [15:0] cor_maxc [0:4000];
+	reg [15:0] pitch_indexc [0:40000];
+	reg [15:0] sumc [0:40000];
+
 
 	//file read in for inputs and output tests
 	initial 
 		begin// samples out are samples from ITU G.729 test vectors
-			$readmemh("LAG_MAX_SCALED_SIGNAL.out", scaled_signalc);
-			$readmemh("LAG_MAX_L_FRAME_IN.out", L_framec);
-			$readmemh("LAG_MAX_LAG_MAX_IN.out", lag_maxc);
-			$readmemh("LAG_MAX_LAG_MIN_IN.out", lag_minc);
-			$readmemh("LAG_MAX_COR_MAX_OUT.out", cor_maxc);
+			$readmemh("SPEECH_PARITY_PITCH_IN.out", pitch_indexc);
+			$readmemh("SPEECH_PARITY_PITCH_OUT.out", sumc);
 		end
 	
-	Lag_max_pipe i_pipe(
+	Parity_pitch_pipe i_pipe(
 		.start(start),
 		.clk(clk), 
 		.reset(reset), 
@@ -77,79 +67,52 @@ module Lag_max_test;
 		.testWriteOut(testWriteOut), 
 		.testWrite(testWrite), 
 		.readIn(readIn),
-		.signal(signal), 
-		.L_frame(L_frame), 
-		.lag_max(lag_max), 
-		.lag_min(lag_min), 
-		.cor_max(cor_max));
+		.pitch_index(pitch_index), 
+		.sum(sum));
 	
 	
 		initial begin
 		// Initialize Inputs
-		#100;
 		start = 0;
 		clk = 0;
 		reset = 0;
-		scaled_signal = 'd0;
-		signal = 'd143;
 		
-		@(posedge clk);
+		#50
 		reset = 1;
 		// Wait 50 ns for global reset to finish
-		@(posedge clk);
+		#50;
 		reset = 0;
-		@(posedge clk);
-		for(j=0;j<60;j=j+1)
+		
+		for(j=0;j<128;j=j+1)
 		begin
-			@(posedge clk);
-			@(posedge clk) #5;
 			//TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 TEST1 
 			Mux0Sel = 1;
 			Mux1Sel = 0;
 			Mux2Sel = 0;
 			Mux3Sel = 0;
 			testWrite = 0;
-
-			for(i=0; i<223; i=i+1)
-				begin
-					@(posedge clk);
-					@(posedge clk)#5;	
-					testWriteRequested = i;
-					testWriteOut = scaled_signalc[i+(j/3)*223];
-					testWrite = 1;	
-					@(posedge clk);
-					@(posedge clk)#5;		
-				end
 				
 
 			@(posedge clk);
-			@(posedge clk)#5;		
-			L_frame = L_framec[j];
 			@(posedge clk);
-			@(posedge clk)#5;
-			
-			lag_max = lag_maxc[j];
-
-
+			@(posedge clk);		
+			pitch_index = pitch_indexc[j];
 			@(posedge clk);
-			@(posedge clk)#5;	
-				
-			lag_min = lag_minc[j];	
 			@(posedge clk);
-			@(posedge clk)#5;	
+			@(posedge clk);	
 			
 			Mux1Sel = 1;
 			Mux2Sel = 1;
 			Mux3Sel = 1;	
 			
 			@(posedge clk);
-			@(posedge clk)#5;		
+			@(posedge clk);		
 			start = 1;
 			@(posedge clk);
-			@(posedge clk)#5;	
+			@(posedge clk);	
 			start = 0;
 			@(posedge clk);
-			@(posedge clk)#5;	
+			@(posedge clk);	
 			// Add stimulus here	
 			wait(done);
 			Mux0Sel = 0;
@@ -158,16 +121,17 @@ module Lag_max_test;
 		//begin test
 			//testReadRequested = cor_max;
 			@(posedge clk);
-			@(posedge clk)#5;
-			if (cor_max != cor_maxc[j])
-				$display($time, " ERROR: cor_maxc[%d] = %x, expected = %x", j, cor_max, cor_maxc[j]);
-			else if (cor_max == cor_maxc[j])
-				$display($time, " CORRECT:  cor_maxc[%d] = %x", j, cor_max);
+			@(posedge clk);
+			if (sum != sumc[j])
+				$display($time, " ERROR: sumc[%d] = %x, expected = %x", j, sum, sumc[j]);
+			else if (sum == sumc[j])
+				$display($time, " CORRECT:  sumc[%d] = %x", j, sum);
 			@(posedge clk);
 
 		end//j for loop
 			
 	end
       initial forever #10 clk = ~clk;	   
+
 
 endmodule
