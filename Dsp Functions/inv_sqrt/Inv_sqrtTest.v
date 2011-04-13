@@ -58,7 +58,9 @@ module Inv_sqrtTest;
 
 	initial begin
 		// Initialize Inputs
+                #100;
 		clk = 0;
+                @(posedge clk) #5;
 		start = 0;
 		reset = 0;		
 
