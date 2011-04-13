@@ -89,7 +89,9 @@ for line in Input_File:
             Number_Of_Warnings = Number_Of_Warnings + 1             
     lines.append(line)
 
-if Synthesizing_Unit_Flag == 1 and Warning_Flag == 0:
+if Synthesizing_Unit_Flag == 1 and Warning_Flag == 1:
+    Synthesizing_Unit_List.append(Warning_Messages)    
+elif Synthesizing_Unit_Flag == 1 and Warning_Flag == 0:
     if len(Empty_List) > 0:
         Empty_List.pop()
 
