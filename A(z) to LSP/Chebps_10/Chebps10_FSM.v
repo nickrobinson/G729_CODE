@@ -96,6 +96,8 @@ parameter MATH1 = 4'd5;
 parameter MATH2 = 4'd6;
 parameter MATH3 = 4'd7;
 parameter MATH4 = 4'd8;
+parameter SHL_WAIT_1 = 4'd9;
+parameter SHL_WAIT_2 = 4'd10;
 
 //instantiated modules
 sixway_16bitmux mux1(
@@ -351,7 +353,7 @@ begin
 			L_shlNumShiftOut = 16'd1;
 			L_shlReady = 1;
 			if(L_shlDoneReg == 0)
-				nextstate = FOR_LOOP2;
+				nextstate = SHL_WAIT_1;
 			else if(L_shlDoneReg == 1)
 			begin
 				L_shlReady = 0;
@@ -366,6 +368,27 @@ begin
 				nextstate = FOR_LOOP3;
 			end
 		end//state FOR_LOOP2
+		
+		SHL_WAIT_1:
+		begin
+			L_shlVar1Out = tZero;
+			L_shlNumShiftOut = 16'd1;			
+			if(L_shlDoneReg == 0)
+				nextstate = FOR_LOOP2;
+			else if(L_shlDoneReg == 1)
+			begin
+				L_shlReady = 0;
+				L_macOutA = temp2high;
+				L_macOutB = 16'h8000;
+				L_macOutC = L_shlIn;
+				L_msuOutA = temp2low;
+				L_msuOutB = 16'd1;
+				L_msuOutC = L_macIn;
+				nextTZero = L_msuIn;
+				tZerold = 1;
+				nextstate = FOR_LOOP3;
+			end
+		end//SHL_WAIT_1
 		
 		FOR_LOOP3:
 		begin
@@ -439,7 +462,7 @@ begin
 			L_shlNumShiftOut = 16'd7;
 			L_shlReady = 1;
 			if(L_shlDoneReg == 0)
-				nextstate = MATH4;
+				nextstate = SHL_WAIT_2;
 			else if(L_shlDoneReg == 1)
 			begin
 				L_shlReady = 0;
@@ -447,7 +470,22 @@ begin
 				done = 1;			
 				nextstate = INIT;
 			end
-		end
+		end//MATH4
+		
+		SHL_WAIT_2:
+		begin
+			L_shlVar1Out = tZero;
+			L_shlNumShiftOut = 16'd7;			
+			if(L_shlDoneReg == 0)
+				nextstate = SHL_WAIT_2;
+			else if(L_shlDoneReg == 1)
+			begin
+				L_shlReady = 0;
+				cheb = L_shlIn[31:16];
+				done = 1;			
+				nextstate = INIT;
+			end
+		end//SHL_WAIT_2
 		
 endcase
 

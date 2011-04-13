@@ -395,6 +395,7 @@ parameter MEM_WAIT6 = 6'd37;
 parameter MEM_WAIT7 = 6'd38;
 parameter MEM_WAIT8 = 6'd39;
 parameter CHEB3_5 = 6'd40;
+parameter WAITING_FOR_L_SHL = 6'd41;
 parameter CHEBPS_10 = 1'd0;
 parameter CHEBPS_11 = 1'd1;
 
@@ -1494,15 +1495,29 @@ begin
 		L_shlNumShiftOut = exp;
 		L_shlReady = 1;
 		if(leftShiftDone == 0)
-			nextstate = INTERPOLATION3_25;
+			nextstate = 	WAITING_FOR_L_SHL;
 		else if(leftShiftDone == 1)
-		begin		
-			L_shlReady = 0;
+		begin					
 			nexttempY = L_shlIn;
 			tempYld = 1;			
 			nextstate = INTERPOLATION3_5;
 		end
 	end//INTERPOLATION3_25
+	
+	//This state makes me sad.
+	WAITING_FOR_L_SHL:
+	begin
+		L_shlVar1Out = tempY;
+		L_shlNumShiftOut = exp;		
+		if(leftShiftDone == 0)
+			nextstate = WAITING_FOR_L_SHL;
+		else if(leftShiftDone == 1)
+		begin		
+			nexttempY = L_shlIn;
+			tempYld = 1;			
+			nextstate = INTERPOLATION3_5;
+		end
+	end//WAITING_FOR_L_SHL:
 	
 	INTERPOLATION3_5:
 	begin
