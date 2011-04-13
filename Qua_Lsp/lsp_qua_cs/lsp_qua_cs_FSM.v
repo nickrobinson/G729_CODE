@@ -25,7 +25,7 @@ module lsp_qua_cs_FSM(clk, reset, start, L_addIn, L_subIn, L_multIn, L_macIn, ad
 							L_shlOutVar1, L_shlReady, L_shlDone, L_shlNumShiftOut, multOutA, multOutB, memOut, 
 							multIn, memReadAddr, memWriteAddr, memWriteEn, constantMemAddr, done, flspAddr,
 							lspqAddr, shlOutVar1, shlOutVar2, shlIn, norm_sIn, norm_sDone,
-							norm_sOut, norm_sReady, wegtAddr, freq_prevAddr, code_anaAddr
+							norm_sOut, norm_sReady, freq_prevAddr, code_anaAddr
 						);
    `include "paramList.v"
 	`include "constants_param_list.v"
@@ -49,7 +49,6 @@ module lsp_qua_cs_FSM(clk, reset, start, L_addIn, L_subIn, L_multIn, L_macIn, ad
 	input [31:0] constantMemIn;
 	input [11:0] flspAddr;
 	input [11:0] lspqAddr;
-	input [11:0] wegtAddr;
 	input [11:0] freq_prevAddr;
 	input [11:0] code_anaAddr;
 	input norm_sDone;
@@ -188,7 +187,7 @@ module lsp_qua_cs_FSM(clk, reset, start, L_addIn, L_subIn, L_multIn, L_macIn, ad
 						.done(Relspwed_Done), 
 						.freq_prevAddr(freq_prevAddr), 
 						.lspqAddr(lspqAddr), 
-						.wegtAddr(wegtAddr), 
+						.wegtAddr(LSP_QUA_WEGT), 
 						.lspAddr(flspAddr), 
 						.code_anaAddr(code_anaAddr), 
 						.shlOutVar1(Relspwed_shlOutVar1), 
@@ -215,7 +214,7 @@ module lsp_qua_cs_FSM(clk, reset, start, L_addIn, L_subIn, L_multIn, L_macIn, ad
 					.L_subOutA(Get_wegt_L_subOutA), 
 					.L_subOutB(Get_wegt_L_subOutB), 
 					.L_subIn(L_subIn), 
-					.wegtAddr(wegtAddr), 
+					.wegtAddr(LSP_QUA_WEGT), 
 					.flspAddr(flspAddr), 
 					.L_multOutA(Get_wegt_L_multOutA),
 					.L_multOutB(Get_wegt_L_multOutB), 
