@@ -31,7 +31,6 @@ module lsp_qua_cs_test;
 	reg [11:0] freq_prevAddr;
 	reg [11:0] lspAddr;
 	reg [11:0] code_anaAddr;
-	reg [11:0] wegtAddr;
 	reg [11:0] lspqAddr;
 	reg [11:0] flspAddr;
 	reg [11:0] testReadAddr;
@@ -72,7 +71,6 @@ module lsp_qua_cs_test;
 							 .flspAddr(flspAddr),
 							 .freq_prevAddr(freq_prevAddr), 
 							 .lspqAddr(lspqAddr), 
-							 .wegtAddr(wegtAddr), 
 							 .code_anaAddr(code_anaAddr),
 							 .testReadAddr(testReadAddr), 
 							 .testWriteAddr(testWriteAddr), 
@@ -95,7 +93,6 @@ module lsp_qua_cs_test;
 		testMemWriteEn = 0;
 		lspAddr = 12'd256;
 		freq_prevAddr = 12'd1024;
-		wegtAddr = 12'd768;
 		code_anaAddr = 12'd2048;
 		lspqAddr = 12'd3072;
 		flspAddr = 12'd3584;

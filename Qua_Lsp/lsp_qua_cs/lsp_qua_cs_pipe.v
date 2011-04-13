@@ -18,7 +18,7 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module lsp_qua_cs_pipe(clk, reset, start, flspAddr, lspqAddr, wegtAddr, freq_prevAddr,
+module lsp_qua_cs_pipe(clk, reset, start, flspAddr, lspqAddr, freq_prevAddr,
 							testReadAddr, testWriteAddr, testMemOut, testMemWriteEn, done, memIn, code_anaAddr,
 							relspwedMuxSel
 							);
@@ -27,7 +27,6 @@ module lsp_qua_cs_pipe(clk, reset, start, flspAddr, lspqAddr, wegtAddr, freq_pre
 		input clk,reset,start;	
 		input [11:0] lspqAddr;
 		input [11:0] flspAddr;
-		input [11:0] wegtAddr;
 		input [11:0] freq_prevAddr;
 		input [11:0] code_anaAddr;
 		input relspwedMuxSel; 
@@ -191,7 +190,6 @@ module lsp_qua_cs_pipe(clk, reset, start, flspAddr, lspqAddr, wegtAddr, freq_pre
 						.done(done), 
 						.flspAddr(flspAddr),
 						.lspqAddr(lspqAddr), 
-						.wegtAddr(wegtAddr),
 						.code_anaAddr(code_anaAddr),
 						.freq_prevAddr(freq_prevAddr),
 						.shlOutVar1(shlOutVar1), 
