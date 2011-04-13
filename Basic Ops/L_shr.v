@@ -23,22 +23,39 @@
 //////////////////////////////////////////////////////////////////////////////////
 module L_shr(var1,numShift,overflow,out);
 
+//Inputs
 input signed [15:0] numShift;
 input signed [31:0] var1;
 
+//Outputs
 output reg signed [31:0] out;
 output reg overflow;
 
+//Internal wires
+wire [15:0] negNumShift;
+wire [31:0] L_shlOut;
+
+//Max and min parameters
+parameter OUTPUT_MAX = 32'h7fff_ffff;
+parameter OUTPUT_MIN = 32'h8000_0000;
+parameter INPUT_MAX = 32'h3fff_ffff;
+parameter INPUT_MIN = 32'hc000_0000;
+
+assign negNumShift = (~numShift) + 16'd1;
+assign L_shlOut = var1 << negNumShift;
 
 always @(*) 
 begin
-
 	overflow = 0;
 	
 	if(numShift[15] == 1) 
 	begin //if1
-		out = -1;
-		overflow = 1;
+		if((var1[31] == 0) && (var1 > INPUT_MAX || L_shlOut == 0) && (numShift>0)&& (var1>0))
+			out = OUTPUT_MAX;
+		else if((var1[31] == 1) && (var1 < INPUT_MIN || L_shlOut == 0)&&(numShift>0)&& (var1>0)) 
+			out = OUTPUT_MIN;
+		else
+			out = L_shlOut;
 	end//if1	
 	
 	else //else1

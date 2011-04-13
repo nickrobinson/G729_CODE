@@ -29,14 +29,28 @@ output reg signed [15:0] result;
 output reg overflow;
 
 wire var1gt0 = ~(var1[15]);
-
-//shl i_shl(.var1(var1), .var2(negvar2), .result(shlresult)); 
+wire [15:0] negvar2 = ~(var2) + 16'd1; 
 
 always @(*)
   begin
     overflow = 0;
+	 
+	 /* If var2 is negative, do an shl */
     if (var2[15] == 1) // (var2 < 0)
-      result = -1;
+	 begin
+      if((negvar2 > 16'd15) && (var1 != 0))
+		begin
+			overflow = 1;
+			if(var1[15] == 0)
+				result = 16'h7fff;
+			else
+				result = 16'h8000;
+		end
+		
+		else
+			result = var1 << negvar2;
+	 end
+	 
     else 
 	 begin//else1
 		 
