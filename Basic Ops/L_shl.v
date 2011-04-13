@@ -22,34 +22,39 @@
 //////////////////////////////////////////////////////////////////////////////////
 module L_shl(clk,reset,ready,overflow,var1,numShift,done,out);
 
+//Inputs
 input clk, reset,ready;
-output overflow;
 input [31:0] var1; 
 input [15:0] numShift;
 
-output done; 
+//Outputs
+output reg done; 
 output [31:0] out;
+output reg overflow;
 
-wire signed [31:0] var1;
-wire signed [15:0] numShift;
-
+//Internal regs & wires
+reg [1:0] state,nextstate;
 reg signed [15:0] numShiftReg,next_numShiftReg;
 reg signed [31:0] var1reg,next_var1reg;
-
-reg overflow;
-reg state,nextstate;
-reg done;
 reg signed [31:0] out,nextout;
 reg outld;
+wire [15:0] negNumShift;
 
+//State parameters
+parameter INIT = 2'd0;
+parameter S1 = 2'd1;
+parameter S2 = 2'd2;
+parameter S3 = 2'd3;
 
-parameter INIT = 1'd0;
-parameter S1 = 1'd1;
+//Max and min parameters
 parameter OUTPUT_MAX = 32'h7fff_ffff;
 parameter OUTPUT_MIN = 32'h8000_0000;
 parameter INPUT_MAX = 32'h3fff_ffff;
 parameter INPUT_MIN = 32'hc000_0000;
 
+assign negNumShift = (~numShift) + 16'd1; 
+
+//Flip flops
 always @(posedge clk) 
 begin
 	if(reset) 
@@ -83,80 +88,111 @@ begin
 end
 
 
-always @(*)
-	begin
-		overflow = 0;
-		done = 0;
-		outld = 0;
-		next_var1reg = var1reg;
-		nextout = out;
-		next_numShiftReg = numShiftReg;
-		nextstate = state;
-
+always @(*) begin
+	
+	next_numShiftReg = numShiftReg;
+	next_var1reg = var1reg;
+	nextout = out;
+	outld = 0;
+	nextstate = state;
+	overflow = 0;
+	done = 0;
+	
+	case(state)
+	INIT: begin
 		
-		case(state)
-		INIT: begin
-			
-			if(ready == 0)
-					nextstate = INIT;
-			
-			else if(ready == 1)begin//else 1
-		
-				if(numShift[15] == 1) begin
-					done = 1;
-					nextout = 32'hffff_ffff;
-					outld = 1;
-					nextstate = INIT;
-				end
-				
-				else 	
-				begin
-					next_numShiftReg = numShift;
-					next_var1reg = var1;
-					outld = 1;
-					nextout = var1;
-					nextstate = S1;
-				end
-			end //end else1
-		end //end INIT
-			
-		S1:	begin
-			nextstate = S1;
-			
-			if(numShiftReg <= 0) begin			
-				done = 1;
+		if(ready == 0)
 				nextstate = INIT;
+		
+		else if(ready == 1)begin//else 1
+	
+			if(numShift[15] == 1) begin
+				next_numShiftReg = negNumShift;
+				next_var1reg = var1;
+				nextstate = S2;
 			end
 			
-			else begin //else 1			
-				
-				if((var1reg[31] == 0) && (var1reg > INPUT_MAX)) begin
-					done = 1;
-					overflow = 1;
-					nextout = OUTPUT_MAX;
-					outld = 1;
-					nextstate = INIT;
-				end //end if
-				
-				else if((var1reg[31] == 1) && (var1reg < INPUT_MIN)) begin //else 2
-					done = 1; 
-					overflow = 1;
-					nextout = OUTPUT_MIN;
-					outld = 1;
-					nextstate = INIT;
-				end //end else 2
-				 
-				else begin//else 3 
-					next_numShiftReg = numShiftReg - 1;
-					next_var1reg = var1reg * 2;
-					nextout = next_var1reg;
-					outld = 1;
-					nextstate = S1;
-				end//else 3
-				
-				end //end else 1
-			end	//end S1
-		endcase
+			else 	
+			begin
+				next_numShiftReg = numShift;
+				next_var1reg = var1;
+				outld = 1;
+				nextout = var1;
+				nextstate = S1;
+			end
+		end //end else1
+	end //end INIT
+		
+	S1:	begin
+		nextstate = S1;
+		
+		if(numShiftReg <= 0) begin			
+			done = 1;
+			nextstate = INIT;
+		end
+		
+		else begin //else 1			
+			
+			if((var1reg[31] == 0) && (var1reg > INPUT_MAX)) begin
+				done = 1;
+				overflow = 1;
+				nextout = OUTPUT_MAX;
+				outld = 1;
+				nextstate = INIT;
+			end //end if
+			
+			else if((var1reg[31] == 1) && (var1reg < INPUT_MIN)) begin //else 2
+				done = 1; 
+				overflow = 1;
+				nextout = OUTPUT_MIN;
+				outld = 1;
+				nextstate = INIT;
+			end //end else 2
+			 
+			else begin//else 3 
+				next_numShiftReg = numShiftReg - 1;
+				next_var1reg = var1reg * 2;
+				nextout = next_var1reg;
+				outld = 1;
+				nextstate = S1;
+			end//else 3
+			
+		end //end else 1
+	end	//end S1
+	
+	S2:
+	begin
+		if(numShiftReg >= 31) 
+		begin//if2
+			if(var1reg[31] == 1)
+			begin
+				nextout = -1;
+				outld = 1;
+				nextstate = S3;
+			end
+			else if(var1reg[31] == 0)
+			begin
+				nextout = 0;
+				outld = 1;
+				nextstate = S3;
+			end
+		end//if2			
+		else
+		begin
+			nextout = var1reg >>> numShiftReg;
+			outld = 1;
+			nextstate = S3;
+		end
+	end//S2
+	
+	S3:
+	begin
+		done = 1;
+		nextstate = INIT;
+	end//S3
+	
+endcase
+
 end//always block
 
 endmodule

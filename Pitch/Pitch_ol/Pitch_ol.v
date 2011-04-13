@@ -354,6 +354,7 @@ module Pitch_ol(clk, start, reset, done, signal, pit_min, pit_max, L_frame, p_ma
 					begin
 						if(start)
 							begin
+                                                                next_done = 0;
 								add_a = scaled_signal;
 								add_b = pit_max;
 								next_scal_sig = add_in;						//scal_sig = &scaled_signal[pit_max];
