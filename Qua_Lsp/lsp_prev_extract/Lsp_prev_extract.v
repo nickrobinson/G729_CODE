@@ -125,6 +125,7 @@ module Lsp_prev_extract(start, clk, done, reset, lspele,freq_prev, lsp, readAddr
 			writeOut = 0;
 			writeEn = 0;
 			readAddr = 0;
+			constantMemAddr = 0;
 			done = 0;
 			nextj = j;
 			nextk = k;
