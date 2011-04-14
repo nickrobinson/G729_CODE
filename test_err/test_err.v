@@ -1,14 +1,14 @@
 `timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
+// Mississippi State University
+// ECE 4532-4542 Senior Design
+// Engineer: Sean Owens
 // 
 // Create Date:    23:10:29 04/13/2011 
-// Design Name: 
 // Module Name:    test_err 
-// Project Name: 
-// Target Devices: 
-// Tool versions: 
+// Project Name:   ITU G.729 Hardware Implementation
+// Target Devices: Virtex 5 - XC5VLX110T
+// Tool versions:  Xilinx ISE 12.4
 // Description: 
 //
 // Dependencies: 

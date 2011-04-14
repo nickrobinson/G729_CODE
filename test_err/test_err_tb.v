@@ -1,20 +1,18 @@
 `timescale 1ns / 1ps
 
 ////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer:
+// Mississippi State University
+// ECE 4532-4542 Senior Design
+// Engineer: Sean Owens
 //
 // Create Date:   23:50:58 04/13/2011
-// Design Name:   test_err_pipe
-// Module Name:   C:/Users/Sean/Documents/MSU Files/Senior Design/test_err/test_err_tb.v
-// Project Name:  test_err
-// Target Device:  
-// Tool versions:  
+// Module Name:   test_err_tb
+// Project Name:  ITU G.729 Hardware Implementation
+// Target Device: Virtex 5 - XC5VLX110T
+// Tool versions: Xilinx ISE 12.4
 // Description: 
 //
-// Verilog Test Fixture created by ISE for module: test_err_pipe
-//
-// Dependencies:
+// Dependencies:  test_err_pipe.v
 // 
 // Revision:
 // Revision 0.01 - File Created

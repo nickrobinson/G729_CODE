@@ -1,17 +1,22 @@
 `timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
+// Mississippi State University
+// ECE 4532-4542 Senior Design
+// Engineer: Sean Owens
 // 
 // Create Date:    23:46:34 04/13/2011 
-// Design Name: 
 // Module Name:    test_err_pipe 
-// Project Name: 
-// Target Devices: 
-// Tool versions: 
+// Project Name:   ITU G.729 Hardware Implementation
+// Target Devices: Virtex 5 - XC5VLX110T
+// Tool versions:  Xilinx ISE 12.4
 // Description: 
 //
-// Dependencies: 
+// Dependencies:   test_err.v
+//				   sub.v
+//				   add.v
+//				   L_sub.v
+//				   Scratch_Memory_Controller.v
+//				   Constant_Memory_Controller.v
 //
 // Revision: 
 // Revision 0.01 - File Created
