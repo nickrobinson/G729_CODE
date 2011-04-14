@@ -749,7 +749,7 @@ module Relspwed_FSM(clk, reset, start, L_addIn, L_subIn, L_multIn, L_macIn, addI
 						  .L_shlIn(L_shlIn), 
 						  .L_shlOutVar1(get_quant_L_shlOutVar1),
 						  .L_shlReady(get_quant_L_shlReady), 
-						  .L_shlDone(get_quant_L_shlDone), 
+						  .L_shlDone(L_shlDone), 
 						  .L_shlNumShiftOut(get_quant_L_shlNumShiftOut), 
 						  .memOut(get_quant_MemOut), 
 						  .memReadAddr(get_quant_MemReadAddr), 
@@ -792,6 +792,9 @@ module Relspwed_FSM(clk, reset, start, L_addIn, L_subIn, L_multIn, L_macIn, addI
 		select1Lspcb1Reset = 0;
 		selectFgReset = 0;
 		selectFgSumReset = 0;
+		selectLTdistReset = 0;
+		selectFgSumInvReset = 0;
+		tempReset = 0;
 		L_addOutA = 0;
 		L_addOutB = 0;
 		L_subOutA = 0;
@@ -1261,7 +1264,7 @@ module Relspwed_FSM(clk, reset, start, L_addIn, L_subIn, L_multIn, L_macIn, addI
 			
 			SHL_2:	//state 21
 			begin
-				memWriteAddr = code_anaAddr;
+				memWriteAddr = code_anaAddr[11:0];
 				memOut = temp[15:0] | memIn[15:0];
 				memWriteEn = 1;
 				memReadAddr = QUA_LSP_MODE_INDEX;
