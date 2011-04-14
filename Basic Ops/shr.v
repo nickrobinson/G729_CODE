@@ -31,6 +31,8 @@ output reg overflow;
 wire var1gt0 = ~(var1[15]);
 wire [15:0] negvar2 = ~(var2) + 16'd1; 
 
+reg [31:0] resultat;
+
 always @(*)
   begin
     overflow = 0;
@@ -38,7 +40,13 @@ always @(*)
 	 /* If var2 is negative, do an shl */
     if (var2[15] == 1) // (var2 < 0)
 	 begin
-      if((negvar2 > 16'd15) && (var1 != 0))
+		if(var1[15] == 1) begin
+			resultat = {16'd1,var1} << (negvar2 + 'd1);
+		end
+		else begin
+			resultat = {16'd0,var1} << (negvar2 + 'd1);
+		end
+      if((negvar2 > 16'd15) && (var1 != 0) || resultat[31:16] != 16'hffff || resultat[31:16] != 16'd0)
 		begin
 			overflow = 1;
 			if(var1[15] == 0)
