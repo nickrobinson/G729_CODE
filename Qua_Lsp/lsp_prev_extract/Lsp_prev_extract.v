@@ -139,6 +139,8 @@ module Lsp_prev_extract(start, clk, done, reset, lspele,freq_prev, lsp, readAddr
 			L_msu_c = 0;
 			L_shl_a = 0;
 			L_shl_b = 0;
+			add_a = 0;
+			add_b = 0;
 			
 			case(state)
 				INIT:

@@ -130,6 +130,7 @@ parameter S6_LMAC = 4'd6;
 parameter S7_LSHL = 4'd7;
 parameter S8_ROUND = 4'd8;
 parameter S9_DONE = 4'd9;
+parameter S10_DONE = 4'd10;
 parameter M = 4'd10;
 
 //FSM
@@ -207,11 +208,13 @@ begin
 		begin
 			if (I < LG)
 			begin
-				FSMreadAddr2 = {X[11:6], I[5:0]};
+				addOutA = X;
+				addOutB = I;
+				FSMreadAddr2 = addIn[11:0];
 				nextstate = S2_MEM1;
 			end
 			else 
-				nextstate = S9_DONE;
+				nextstate = S10_DONE;
 		end
 		
 		S2_MEM1:
@@ -235,7 +238,9 @@ begin
 		begin
 			if (J <= M)
 			begin
-				FSMreadAddr1 = {A[11:4], J[3:0]};
+				addOutA = A;
+				addOutB = J;
+				FSMreadAddr1 = addIn;
 				nextstate = S5_MEM2;
 			end
 			else
@@ -294,8 +299,15 @@ begin
 				FSMdataOut = {16'hffff,L_addIn[31:16]};
 			else if(L_addIn[31] == 0)
 				FSMdataOut = {16'd0,L_addIn[31:16]};
-			FSMwriteAddr = {Y[10:6], I[5:0]};
+			addOutA = Y;
+			addOutB = I;
+			FSMwriteAddr = addIn;
 			FSMwriteEn = 1;
+			nextstate = S9_DONE;
+		end
+		
+		S9_DONE:
+		begin
 			addOutA = I;
 			addOutB = 'd1;
 			nextI = addIn;
@@ -304,7 +316,7 @@ begin
 			nextstate = S1_FOR1;
 		end
 		
-		S9_DONE:
+		S10_DONE:
 		begin
 			done = 1;
 			nextstate = S0_INIT;

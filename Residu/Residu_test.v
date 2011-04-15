@@ -91,7 +91,7 @@ module Residu_test;
 		start = 0;
 		A = 'd256;
 		X = 'd64;
-		Y = 'd16;
+		Y = 'd512;
 		MuxSel = 0;
 		
 		@(posedge clk) #5;

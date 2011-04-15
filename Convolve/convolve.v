@@ -20,7 +20,7 @@
 module convolve(clk, reset, start, memIn, memWriteEn, memWriteAddr, memOut, done,
 					    L_macIn, L_macOutA, L_macOutB, L_macOutC, L_shlIn, L_shlOutVar1,
 						 L_shlReady, L_shlDone, L_shlNumShiftOut, xAddr, hAddr, yAddr, L_subOutA,
-						 L_subOutB, L_subIn, L_addOutA, L_addOutB, L_addIn);
+						 L_subOutB, L_subIn, L_addOutA, L_addOutB, L_addIn,addOutA,addOutB,addIn);
 
 `include "paramList.v"
 
@@ -35,6 +35,7 @@ input L_shlDone;
 input [11:0] xAddr;
 input [11:0] hAddr;
 input [11:0] yAddr;
+input [15:0] addIn;
 
 //outputs
 output reg memWriteEn;
@@ -47,32 +48,28 @@ output reg [31:0] L_subOutA,L_subOutB;
 output reg [31:0] L_macOutC;
 output reg [31:0] L_shlOutVar1;
 output reg [15:0] L_shlNumShiftOut;
-
-reg count1Ld,count1Reset;
-reg count2Ld,count2Reset;
-reg [5:0] count1,nextcount1;
-reg [5:0] count2,nextcount2;
-reg [2:0] state,nextstate;
-reg [31:0] tempS,nexttempS;
-reg tempSLd,tempSReset;
-reg [15:0] tempX,nexttempX;
-reg tempXLd,tempXReset;
-reg L_shlDoneReg;
-reg L_shlDoneReset;
-
-wire [11:0] xAddr;
-wire [11:0] hAddr;
-wire [11:0] yAddr;
+output reg [15:0] addOutA,addOutB;
 
 //state parameters
-parameter STATE_INIT = 3'd0;
-parameter STATE_COUNT_LOOP1 = 3'd1;
-parameter STATE_COUNT_LOOP2 = 3'd2;
-parameter STATE_L_MAC1 = 3'd3;
-parameter STATE_L_MAC2 = 3'd4;
-parameter STATE_L_SHL1 = 3'd5;
-parameter STATE_L_SHL2 = 3'd6;
-parameter L = 40;		// vector size
+parameter INIT = 3'd0;
+parameter S1 = 3'd1;
+parameter S2 = 3'd2;
+parameter S3 = 3'd3;
+parameter S4 = 3'd4;
+parameter S5 = 3'd5;
+parameter S6 = 3'd6;
+parameter S7 = 3'd7;
+
+//Internal regs
+reg [2:0] state,nextstate;
+reg [15:0] i,nexti;
+reg iLD,iReset;
+reg [15:0] n,nextn;
+reg nLD,nReset;
+reg [31:0] s,nexts;
+reg sLD,sReset;
+reg [31:0] temp,nexttemp;
+reg tempLD,tempReset;
 
 //state, count, and product flops
 always @(posedge clk)
@@ -86,190 +83,192 @@ end
 always @(posedge clk)
 begin
 	if(reset)
-		count1 <= 0;
-	else if(count1Reset)
-		count1 <= 0;
-	else if(count1Ld)
-		count1 <= nextcount1;
+		temp <= 0;
+	else if(tempReset)
+		temp <= 0;
+	else if(tempLD)
+		temp <= nexttemp;
 end
 
 always @(posedge clk)
 begin
 	if(reset)
-		count2 <= 0;
-	else if(count2Reset)
-		count2 <= 0;
-	else if(count2Ld)
-		count2 <= nextcount2;
+		i <= 0;
+	else if(iReset)
+		i <= 0;
+	else if(iLD)
+		i <= nexti;
 end
 
-// Adding temp flip flop to store s value in inner loop
 always @(posedge clk)
 begin
 	if(reset)
-		tempS <= 0;
-	else if(tempSReset)
-		tempS <= 0;
-	else if(tempSLd)
-		tempS <= nexttempS;
+		n <= 0;
+	else if(nReset)
+		n <= 0;
+	else if(nLD)
+		n <= nextn;
 end
 
-// Adding temp flip flop to store X value in inner loop
 always @(posedge clk)
 begin
 	if(reset)
-		tempX <= 0;
-	else if(tempXReset)
-		tempX <= 0;
-	else if(tempXLd)
-		tempX <= nexttempX;
+		s <= 0;
+	else if(sReset)
+		s <= 0;
+	else if(sLD)
+		s <= nexts;
 end
-
-//left shifter done flop
-always@(posedge clk) begin
-	if(reset)	 
-		 L_shlDoneReg <= 0;
-	else if (L_shlDoneReset)
-		L_shlDoneReg <= 0;
-	else if (L_shlReady)
-	    L_shlDoneReg <= L_shlDone;
-end
-
 always @(*)
 begin
 	nextstate = state;
-	nextcount1 = count1;
-	nextcount2 = count2;
-	nexttempS = tempS;
-	nexttempX = tempX;
+	nexti = i;
+	nextn = n;
+	nexts = s;
+	nexttemp = temp;
 	done = 0;
 	memWriteAddr = 0;
 	memWriteEn = 0;
-	memOut = 0;
-	count1Reset = 0;
-	count1Ld = 0;
-	count2Reset = 0;
-	count2Ld = 0;
+	memOut = 0;	
 	L_macOutA = 0;
 	L_macOutB = 0;
 	L_macOutC = 0;
 	L_subOutA = 0;
 	L_subOutB = 0;
 	L_addOutA = 0;
-	L_addOutB = 0;
-	tempSLd = 0;
-	tempSReset = 0;
-	tempXLd = 0;
-	tempXReset = 0;
+	L_addOutB = 0;	
+	addOutA = 0;
+	addOutB = 0;
+	iLD = 0;
+	nLD = 0;
+	sLD = 0;
+	tempLD = 0;
+	iReset = 0;
+	nReset = 0;
+	sReset = 0;
+	tempReset = 0;
 	L_shlOutVar1 = 0;
 	L_shlNumShiftOut = 0;
 	L_shlReady = 0;
-	L_shlDoneReset = 0;
 	
 	case(state)
 		
-		STATE_INIT:
+		INIT:
 		begin
-			count1Reset = 1;
-			count2Reset = 1;
-			L_shlDoneReset = 1;
 			if(start == 0)
-				nextstate = STATE_INIT;
-			else 
+				nextstate = INIT;
+			else if(start == 1)
 			begin
-				nextstate = STATE_COUNT_LOOP1;
-				//rPrimeRequested = {AUTOCORR_R[10:4],4'd0};
+				iReset = 1;
+				nReset = 1;
+				sReset = 1;
+				tempReset = 1;
+				nextstate = S1;
 			end
-		end
+		end//INIT
 		
-		STATE_COUNT_LOOP1:
+		//for (n = 0; n < L; n++)
+		S1:
 		begin
-			if(count1 >= L)
+			if(n>=40)
 			begin
-				nextstate = STATE_INIT;
+				nextstate = INIT;
 				done = 1;
+			end			
+			else if(n<40)
+			begin
+				sReset = 1;
+				iReset = 1;
+				nextstate = S2;
+			end			
+		end//S1
+		
+		//for (i = 0; i <= n; i++)
+		S2:
+		begin
+			if(i>n)			
+				nextstate = S5;
+			else if(i<=n)
+			begin
+				addOutA = xAddr;
+				addOutB = i;
+				memWriteAddr = addIn;
+				nextstate = S3;
 			end
-			else if(count1 < L)
-			begin
-				nextstate = STATE_COUNT_LOOP2;
-				nexttempS = 0;    //This temp variable will represent s from the C code
-				tempSLd = 1;
-			end		
-		end
+		end//S2
 		
-		STATE_COUNT_LOOP2:
+		S3:
 		begin
-			if(count2 > count1)
-			begin
-				count2Reset = 1;
-				nextstate = STATE_L_SHL1;
-			end
-			else if(count2 <= count1)
-			begin
-				memWriteAddr = {xAddr[10:6], count2[5:0]};
-				nextstate = STATE_L_MAC1;
-			end	
-		end
+			nexttemp = memIn;
+			tempLD = 1;
+			L_subOutA = n;
+			L_subOutB = i;
+			addOutA = L_subIn;
+			addOutB = hAddr;
+			memWriteAddr = addIn;
+			nextstate = S4;
+		end//S3
 		
-		STATE_L_MAC1:
+		//s = L_mac(s, x[i], h[n-i]);
+		S4:
 		begin
-			nexttempX = memIn[15:0];
-			tempXLd = 1;
-			L_subOutA = count1;
-			L_subOutB = count2;	// L_subIn = count1 - count2
-			memWriteAddr = {hAddr[10:6], L_subIn[5:0]};
-			nextstate = STATE_L_MAC2;
-		end
+			L_macOutA = temp[15:0];
+			L_macOutB = memIn[15:0];
+			L_macOutC = s;
+			nexts = L_macIn;
+			sLD = 1;
+			L_addOutA = i;
+			L_addOutB = 32'd1;
+			nexti = L_addIn;
+			iLD = 1;
+			nextstate = S2;
+		end//S4
 		
-		STATE_L_MAC2:
+		//s = L_shl(s, 3); 
+		S5:
 		begin
-			L_macOutC = tempS;
-			L_macOutB = tempX;
-			L_macOutA = memIn[15:0];
-			nexttempS = L_macIn;
-			tempSLd = 1;
-			L_addOutA = count2;
-			L_addOutB = 1;
-			nextcount2 = L_addIn;
-			count2Ld = 1;
-			nextstate = STATE_COUNT_LOOP2;
-		end
-		
-		STATE_L_SHL1:
-		begin 
-			L_shlOutVar1 = tempS;
+			L_shlOutVar1 = s;
 			L_shlNumShiftOut = 16'd3;
 			L_shlReady = 1;
-			nextstate = STATE_L_SHL2;
-		end
-		
-		STATE_L_SHL2:
-		begin
-			if(L_shlDone == 1'b0)
-				begin
-					nextstate = STATE_L_SHL2;
-				end
+			if(L_shlDone == 1)
+			begin
+				nexts = L_shlIn;
+				sLD = 1;
+				nextstate = S7;
+			end
 			else
-				begin
-					nexttempS = L_shlIn;
-					tempSLd = 1;
-					memWriteAddr = {yAddr[10:6], count1[5:0]};
-					memOut = {16'd0, L_shlIn[31:16]};
-					memWriteEn = 1;
-					//Increment count 1 since we are done with the outside loop
-					L_addOutA = count1;
-					L_addOutB = 1;
-					nextcount1 = L_addIn;
-					count1Ld = 1;
-					nextstate = STATE_COUNT_LOOP1;
-				end
-		end
+				nextstate = S6;
+		end//S5
 		
-		default:
+		//s = L_shl(s, 3); 
+		S6:
 		begin
-			nextstate = STATE_INIT;
-		end
+			L_shlOutVar1 = s;
+			L_shlNumShiftOut = 16'd3;
+			if(L_shlDone == 0)
+				nextstate = S6;
+			else if(L_shlDone == 1)
+			begin
+				nexts = L_shlIn;
+				sLD = 1;
+				nextstate = S7;
+			end
+		end//S6
 		
+		//y[n] = extract_h(s);
+		S7:
+		begin
+			memOut = s[31:16];
+			memWriteEn = 1;
+			addOutA = yAddr;
+			addOutB = n;
+			memWriteAddr = addIn;
+			L_addOutA = n;
+			L_addOutB = 32'd1;
+			nextn = L_addIn;
+			nLD = 1;
+			nextstate = S1;
+		end//S7
 	endcase
 end
 
