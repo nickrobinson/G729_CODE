@@ -59,7 +59,8 @@ module Convolve_Top_Level(clk,reset,start,done,memIn,lagMuxSel,lagMux1Sel,
 	wire [31:0] L_subOutA;
 	wire [31:0] L_subOutB;
 	wire unusedOverflow;
-
+	wire [15:0] addOutA,addOutB,addIn;
+	
 	convolve uut (
 		.clk(clk), 
 		.reset(reset), 
@@ -86,7 +87,10 @@ module Convolve_Top_Level(clk,reset,start,done,memIn,lagMuxSel,lagMux1Sel,
 		.L_subIn(L_subIn), 
 		.L_addOutA(L_addOutA), 
 		.L_addOutB(L_addOutB), 
-		.L_addIn(L_addIn)
+		.L_addIn(L_addIn),
+		.addOutA(addOutA),
+		.addOutB(addOutB),
+		.addIn(addIn)
 	);
 
 	Convolve_Pipe iPipe (
@@ -116,7 +120,10 @@ module Convolve_Top_Level(clk,reset,start,done,memIn,lagMuxSel,lagMux1Sel,
 	.L_subIn(L_subIn),
 	.L_addIn(L_addIn),
 	.L_shlIn(L_shlIn),
-	.L_shlDone(L_shlDone)
+	.L_shlDone(L_shlDone),
+	.addOutA(addOutA),
+	.addOutB(addOutB),
+	.addIn(addIn)
 	);
 	
 endmodule

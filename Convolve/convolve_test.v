@@ -86,9 +86,9 @@ module convolve_test_v;
 		testWriteRequested = 0;
 		testWriteOut = 0;
 		testWriteEnable = 0;		
-		xAddr = 12'd560;
-		hAddr = 12'd624;
-		yAddr = 12'd688;
+		xAddr = 12'd512;
+		hAddr = 12'd1024;
+		yAddr = 12'd2048;
 		
 		
 		@(posedge clk) #5;

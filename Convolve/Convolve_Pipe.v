@@ -22,7 +22,7 @@ module Convolve_Pipe(clk,reset,lagMuxSel,lagMux1Sel,testReadRequested,testWriteR
 					 testWriteOut,testWriteEnable,memWriteEn,memWriteAddr,memOut,
 					 L_addOutA,L_addOutB,L_subOutA,L_subOutB,L_macOutA,L_macOutB,
 					 L_macOutC,L_shlOutVar1,L_shlNumShiftOut,L_shlReady,memIn,L_macIn,
-					 L_subIn,L_addIn,L_shlIn,L_shlDone);
+					 L_subIn,L_addIn,L_shlIn,L_shlDone,addOutA,addOutB,addIn);
 
 	input clk;
 	input reset;
@@ -45,6 +45,7 @@ module Convolve_Pipe(clk,reset,lagMuxSel,lagMux1Sel,testReadRequested,testWriteR
 	input [11:0] testReadRequested;
 	input [11:0] testWriteRequested;
 	input [31:0] testWriteOut;
+	input [15:0] addOutA,addOutB;
 	
 	//output
 	output [31:0] L_macIn;
@@ -53,6 +54,7 @@ module Convolve_Pipe(clk,reset,lagMuxSel,lagMux1Sel,testReadRequested,testWriteR
 	output [31:0] L_shlIn;
 	output L_shlDone;
 	output [31:0] memIn;
+	output [15:0] addIn;
 	
 	wire unusedOverflow;	
 	
@@ -83,6 +85,13 @@ L_add conv_L_add(
 .b(L_addOutB),
 .overflow(),
 .sum(L_addIn));
+	
+add conv_add(
+				.a(addOutA),
+				.b(addOutB),
+				.overflow(),
+				.sum(addIn)
+				);	
 	
 L_sub conv_L_sub(
 .a(L_subOutA),
