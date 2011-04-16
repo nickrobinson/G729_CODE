@@ -154,6 +154,10 @@ module prm2bits_ld8k(clock,reset,start,done,add_outa,add_outb,add_in,constant_me
 					scratch_mem_out = {16'd0,16'h6b21};
 					scratch_mem_write_en = 'd1;
 					next_bits = 'd2;
+					next_done = 'd0;
+					next_i = 'd0;
+					next_temp_prm = 'd0;
+					next_temp_bitsno = 'd0;	
 					nextstate = state1;
 				end
 				else
