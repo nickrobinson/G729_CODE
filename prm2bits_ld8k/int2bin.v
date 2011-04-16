@@ -121,6 +121,10 @@ module int2bin(clock,reset,start,done,value,bitsno,bitstream,add_outa,add_outb,a
 			INIT: begin
 				if(start) begin
 					next_valuereg = value;
+					next_done = 'd0;
+					next_i = 'd0;
+					next_pt_bitstream = 'd0;
+					next_bitreg = 'd0;
 					nextstate = state1;
 				end
 				else
