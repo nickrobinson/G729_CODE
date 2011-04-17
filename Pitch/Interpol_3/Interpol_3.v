@@ -251,7 +251,7 @@ module Interpol_3(
 		L_macOutA = 0;
 		L_macOutB = 0;
 		L_macOutC = 0;
-		FSMreadAddrScratch = 12'bzzzzzzzzzzz;
+		FSMreadAddrScratch = 12'bz;
 		FSMreadAddrConstant = 0;
 		done = 0;
 		case (state)

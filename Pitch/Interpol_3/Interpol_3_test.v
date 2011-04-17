@@ -58,7 +58,7 @@ module Interpol_3_test;
 	);
 
 	//Memory Regs
-	reg [31:0] Interpol_3_x [0:9999];
+	reg [31:0] Interpol_3_x [0:50000];
 	reg [31:0] Interpol_3_frac [0:9999];
 	reg [31:0] Interpol_3_frac2 [0:9999];
 	reg [31:0] Interpol_3_round [0:9999];
@@ -92,56 +92,44 @@ module Interpol_3_test;
 
 		// Wait 100 ns for global reset to finish
 		@(posedge clk);
-		@(posedge clk) #5;
 		reset = 1;
 		@(posedge clk);
-		@(posedge clk) #5;
 		reset = 0;
         
 		// Add stimulus here
-		for(j=0;j<256;j=j+1)
+		for(j=0;j<1280;j=j+1)
 		begin
 			@(posedge clk);
-			@(posedge clk) #5;
 			for(i = -16; i < 16; i = i + 1)
 			begin
 				@(posedge clk);
-				@(posedge clk) #5;
 				TBwriteAddrScratch = x + i;
 				TBwriteDataScratch = Interpol_3_x[j*32+(i+16)];
 				TBwriteEnScratch = 1;
 				@(posedge clk);
-				@(posedge clk) #5;
 			end
 			
 			frac = Interpol_3_frac[j];
 			
 			@(posedge clk);
-			@(posedge clk) #5;
 			
 			TBwriteEnScratch = 0;
 			
 			@(posedge clk);
-			@(posedge clk) #5;
 
 			start = 1;
 			
 			@(posedge clk);
-			@(posedge clk) #5;
 			
 			start = 0;
 			
 			wait(done);
-			
-			@(posedge clk);
-			@(posedge clk) #5;
-			
+
 			if (returnS != Interpol_3_round[j])
 				$display($time, " ERROR: returnS = %x, expected = %x", returnS, Interpol_3_round[j]);
 			else
 				$display($time, " CORRECT:  returnS = %x", returnS);
 			@(posedge clk);
-			@(posedge clk) #5;
 		end//j loop
 	end
       
