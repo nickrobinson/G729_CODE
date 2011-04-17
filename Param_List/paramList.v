@@ -80,5 +80,5 @@ parameter OLD_EXC = 12'd3072;							//Top Level's old_exc uses 256 blocks
 parameter EXC = 12'd3226;								//Top Level's exc is a sub-array of OLD_EXC
 parameter G_PITCH_SCALED_Y1 = 12'd3328;					//G_PITCH_SCALED_Y1 uses 64 BLOCKS
 parameter xxXXxx = 12'd3392;							//OPEN 64 BLOCKS
-parameter xxXXxxXX = 12'3456;							//OPEN 128 BLOCKS 
+parameter xxXXxxXX = 12'd3456;							//OPEN 128 BLOCKS 
 parameter XXxxXX = 12'd3584;						   //OPEN 512 BLOCKS
