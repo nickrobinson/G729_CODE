@@ -340,6 +340,17 @@ module Lag_max(clk, start, reset, done, signal, L_frame, lag_max, lag_min, cor_m
 					begin
 						if(start)
 							begin
+								next_p1 = 'd0;		
+								nextj = 'd0;
+								next_t0 = 'd0;
+								next_L_temp = 'd0;					
+								next_max_h = 'd0;
+								next_max_l = 'd0;
+								next_ener_h = 'd0;
+								next_ener_l = 'd0;							
+								next_p = 'd0;
+								next_p_temp = 'd0;
+								next_cor_max = 'd0;
                                                                 next_done = 'd0;
 								next_max = 'd0;							//max = MIN_32;
 								next_p_max = lag_max;					//p_max = lag_max;
