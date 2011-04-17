@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <symbol version="7" name="scratch_memory_V1">
     <symboltype>BLOCK</symboltype>
-    <timestamp>2011-3-22T20:12:12</timestamp>
+    <timestamp>2011-4-17T22:12:57</timestamp>
     <pin polarity="Input" x="0" y="80" name="addra[11:0]" />
     <pin polarity="Input" x="0" y="112" name="dina[31:0]" />
     <pin polarity="Input" x="0" y="208" name="wea[0:0]" />

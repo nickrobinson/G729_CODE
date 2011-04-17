@@ -1,7 +1,7 @@
 ##############################################################
 #
 # Xilinx Core Generator version 12.4
-# Date: Tue Mar 22 20:13:53 2011
+# Date: Sun Apr 17 22:14:07 2011
 #
 ##############################################################
 #
@@ -39,7 +39,7 @@ CSET additional_inputs_for_power_estimation=false
 CSET algorithm=Minimum_Area
 CSET assume_synchronous_clk=false
 CSET byte_size=9
-CSET coe_file=no_coe_file_loaded
+CSET coe_file="C:\Users\Muaddib\Documents\Zach Office\School MSU\Spring 2011\Senior Design II\G729 Verilog Code\Top Level Scratch Memory\constants.coe"
 CSET collision_warnings=ALL
 CSET component_name=scratch_memory_V1
 CSET disable_collision_warnings=false
@@ -50,10 +50,10 @@ CSET enable_a=Always_Enabled
 CSET enable_b=Always_Enabled
 CSET error_injection_type=Single_Bit_Error_Injection
 CSET fill_remaining_memory_locations=false
-CSET load_init_file=false
+CSET load_init_file=true
 CSET memory_type=Simple_Dual_Port_RAM
 CSET operating_mode_a=WRITE_FIRST
-CSET operating_mode_b=READ_FIRST
+CSET operating_mode_b=WRITE_FIRST
 CSET output_reset_value_a=0
 CSET output_reset_value_b=0
 CSET pipeline_stages=0
@@ -90,4 +90,4 @@ CSET write_width_a=32
 CSET write_width_b=32
 # END Parameters
 GENERATE
-# CRC: df47e565
+# CRC: 47400bfe

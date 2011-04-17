@@ -4,6 +4,7 @@ blk_mem_gen_ds512.pdf
 blk_mem_gen_readme.txt
 scratch_memory_V1.asy
 scratch_memory_V1.gise
+scratch_memory_V1.mif
 scratch_memory_V1.ngc
 scratch_memory_V1.sym
 scratch_memory_V1.v
