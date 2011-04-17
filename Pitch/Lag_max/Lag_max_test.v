@@ -87,17 +87,19 @@ module Lag_max_test;
 		initial begin
 		// Initialize Inputs
 		#100;
-		start = 0;
 		clk = 0;
+		@(negedge clk) #5;
+		start = 0;
 		reset = 0;
 		scaled_signal = 'd0;
-		signal = 'd143;
-		
-		@(posedge clk);
+		signal = 'd143;			
+		@(posedge clk)#5;
 		reset = 1;
 		// Wait 50 ns for global reset to finish
 		@(posedge clk);
 		reset = 0;
+		#50;
+		@(posedge clk) #5;
 		@(posedge clk);
 		for(j=0;j<60;j=j+1)
 		begin
