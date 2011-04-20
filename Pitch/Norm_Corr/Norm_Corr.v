@@ -445,6 +445,8 @@ begin
 	L_shlReady = 0;
    L_subOutA = 0;
 	L_subOutB = 0;
+	L_multOutA = 0;
+	L_multOutB = 0;
    multOutA = 0;
 	multOutB = 0;
    norm_lVar1Out = 0;
