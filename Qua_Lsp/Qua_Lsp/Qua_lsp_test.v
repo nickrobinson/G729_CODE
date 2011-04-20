@@ -31,7 +31,6 @@ module Qua_lsp_test;
 	reg [11:0] lsp_qAddr;
 	reg [11:0] lspAddr;
 	reg [11:0] anaAddr;
-	reg [11:0] freq_prevAddr;
 	reg [11:0] testReadAddr;
 	reg [11:0] testWriteAddr;
 	reg [31:0] testMemOut;
@@ -70,7 +69,6 @@ module Qua_lsp_test;
 						.lsp_qAddr(lsp_qAddr), 
 						.lspAddr(lspAddr), 
 						.anaAddr(anaAddr),
-						.freq_prevAddr(freq_prevAddr),
 						.testReadAddr(testReadAddr), 
 						.testWriteAddr(testWriteAddr), 
 						.testMemOut(testMemOut), 
@@ -93,7 +91,6 @@ module Qua_lsp_test;
 		lspAddr = 12'd256;
 		lsp_qAddr = 12'd1024;
 		anaAddr = 12'd2048;
-		freq_prevAddr = 12'd3072;
 
 		@(posedge clk);
 		@(posedge clk) #5;
@@ -125,7 +122,7 @@ module Qua_lsp_test;
 				@(posedge clk);
 				@(posedge clk) #5;				
 				testMemOut = freq_prev[64*j+i];				
-				testWriteAddr = {freq_prevAddr[11:6], i[5:0]};				
+				testWriteAddr = {FREQ_PREV[11:6], i[5:0]};				
 				testMemWriteEn = 1;	
 				@(posedge clk);
 				@(posedge clk);
