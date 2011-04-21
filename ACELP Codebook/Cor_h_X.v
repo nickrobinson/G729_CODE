@@ -167,7 +167,7 @@ begin
 	L_macOutC = 0;
 	L_absOut = 0;
 	L_subOutA = 0;
-	L_subOutB = 0;;
+	L_subOutB = 0;
 	addOutA = 0;
 	addOutB = 0;
 	norm_lVar1Out = 0;
