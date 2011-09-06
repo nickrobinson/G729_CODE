@@ -154,8 +154,8 @@ begin
 	begin
 			subOutA = k;
 			subOutB = 1;
-			xAddr = {freq_prevAddr[10:6],subIn[1:0],4'd0};
-			yAddr = {freq_prevAddr[10:6],k[1:0],4'd0};		
+			xAddr = {freq_prevAddr[11:6],subIn[1:0],4'd0};
+			yAddr = {freq_prevAddr[11:6],k[1:0],4'd0};		
 			addOutA = copyAddOutA;
 			addOutB = copyAddOutB;
 			L_addOutA = copyL_addOutA;
@@ -184,7 +184,7 @@ begin
 	COPY2:
 	begin
 		xAddr = lsp_eleAddr;
-		yAddr = {freq_prevAddr[10:6],6'd0};		
+		yAddr = {freq_prevAddr[11:6],6'd0};		
 		addOutA = copyAddOutA;
 		addOutB = copyAddOutB;
 		L_addOutA = copyL_addOutA;

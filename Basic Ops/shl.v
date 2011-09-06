@@ -31,7 +31,7 @@ output reg overflow;
 wire var1gt0 = ~(var1[15]);
 wire [15:0] negvar2 = ~(var2) + 16'd1; 
 
-reg [31:0] resultat;
+reg [31:0] resultat, resultatcheck;
 
 always @(*)
 begin
@@ -53,13 +53,15 @@ begin
   end
   else 
   begin
-		if(var1[15] == 1) begin
-			resultat = {16'd1,var1} << (negvar2 + 'd1);
-		end
-		else begin
-			resultat = {16'd0,var1} << (negvar2 + 'd1);
-		end
-      if((negvar2 > 16'd15) && (var1 != 0) || resultat[31:16] != 16'hffff || resultat[31:16] != 16'd0)
+		if (var1[15] == 1)
+			resultat = {16'hffff,var1} * (32'd1 << var2);
+		else
+			resultat = {16'd0,var1} * (32'd1 << var2);
+		if (resultat[15] == 1)
+			resultatcheck = {16'hffff, resultat[15:0]};
+		else
+			resultatcheck = {16'd0, resultat[15:0]};
+        if(((var2 > 16'd15) && (var1 != 0)) || resultatcheck != resultat)
 		begin
 			overflow = 1;
 			if(var1[15] == 0)

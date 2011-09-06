@@ -172,7 +172,7 @@ begin
 			end
 			else if(start == 1)
 			begin				
-				memReadAddr = {lsfAddr[10:4],i[3:0]};
+				memReadAddr = {lsfAddr[11:4],i[3:0]};
 				nextstate = S1;
 			end
 		end	//INIT
@@ -239,7 +239,7 @@ begin
 				memOut = addIn;
 			else if(addIn[15] == 1)
 				memOut = {16'hffff,addIn[15:0]};
-			memWriteAddr = {lspAddr[10:4],i[3:0]};
+			memWriteAddr = {lspAddr[11:4],i[3:0]};
 			memWriteEn = 1;
 			nextstate = S5;
 		end//S4
@@ -251,7 +251,7 @@ begin
 			nexti = addIn;
 			iLD = 1;
 			nextstate = S1;
-			memReadAddr = {lsfAddr[10:4],nexti[3:0]};
+			memReadAddr = {lsfAddr[11:4],nexti[3:0]};
 		end//S5
 	endcase
 

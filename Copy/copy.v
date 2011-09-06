@@ -108,9 +108,9 @@ begin
 			end
 			else if(count < L)
 			begin				
-				addOutA = {5'd0,xAddr[10:0]};
+				addOutA = {4'd0,xAddr[11:0]};
 				addOutB = count;
-				memReadAddr = addIn[10:0];
+				memReadAddr = addIn[11:0];
 				nextstate = COPY_STATE;
 			end
 		end//COUNT_LOOP
@@ -118,9 +118,9 @@ begin
 		COPY_STATE:
 		begin
 			memOut = memIn;
-			L_addOutA = {21'd0,yAddr[10:0]};
+			L_addOutA = {20'd0,yAddr[11:0]};
 			L_addOutB = {16'd0,count[15:0]};			
-			memWriteAddr = L_addIn[10:0];
+			memWriteAddr = L_addIn[11:0];
 			memWriteEn = 1;
 			addOutA = count;
 			addOutB = 16'd1;
