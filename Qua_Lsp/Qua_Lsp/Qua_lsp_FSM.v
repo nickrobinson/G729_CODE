@@ -102,7 +102,6 @@ module Qua_lsp_FSM(clk, reset, start, L_addIn, L_subIn, L_multIn, L_macIn, addIn
 	wire [15:0] lsf_lsp2_ShrVar1Out, lsf_lsp2_ShrVar2Out;
 	wire [31:0] lsf_lsp2_L_shrVar1Out;
 	wire [15:0] lsf_lsp2_L_shrNumShiftOut;
-	wire lsf_lsp2_L_shrReady;
 	wire [31:0] lsf_lsp2_MemOut;
 	wire [11:0] lsf_lsp2_MemReadAddr,  lsf_lsp2_MemWriteAddr;
 	wire [11:0] lsf_lsp2_ConstantMemAddr;
@@ -144,7 +143,6 @@ module Qua_lsp_FSM(clk, reset, start, L_addIn, L_subIn, L_multIn, L_macIn, addIn
 	wire [15:0] lsp_lsf2_shlOutVar1, lsp_lsf2_shlOutVar2;
 	wire [31:0] lsp_lsf2_L_shrVar1Out;
 	wire [15:0] lsp_lsf2_L_shrNumShiftOut;
-	wire lsp_lsf2_L_shrReady;
 	wire [31:0] lsp_lsf2_MemOut;
 	wire [11:0] lsp_lsf2_MemReadAddr,  lsp_lsf2_MemWriteAddr;
 	wire [11:0] lsp_lsf2_ConstantMemAddr;

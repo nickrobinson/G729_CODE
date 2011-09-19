@@ -205,7 +205,7 @@ begin
 		FOR_LOOP1_BODY1:	//state 2
 		begin
 			if(memIn[15] == 1)
-				nextL_acc = {16'd1,memIn[15:0]};
+				nextL_acc = {16'hffff,memIn[15:0]};
 			else if(memIn[15] == 0)
 				nextL_acc = {16'd0,memIn[15:0]};
 			L_accLD = 1;
@@ -220,7 +220,7 @@ begin
 		FOR_LOOP1_BODY2:		//state 3
 		begin
 			if(memIn[15] == 1)
-				nextL_accB = {16'd1,memIn[15:0]};
+				nextL_accB = {16'hffff,memIn[15:0]};
 			else if(memIn[15] == 0)
 				nextL_accB = {16'd0,memIn[15:0]};
 			L_accBLD = 1;

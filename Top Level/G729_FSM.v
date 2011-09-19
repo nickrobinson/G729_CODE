@@ -20,7 +20,8 @@
 //
 //////////////////////////////////////////////////////////////////////////////////
 module G729_FSM(clock, reset,start,divErr,frame_done,autocorrDone,lagDone,levinsonDone,AzDone,
-					 mathMuxSel,autocorrReady,lagReady,levinsonReady,AzReady,done);
+					 Qua_lspDone,Int_lpcDone,Int_qlpcDone,Math1Done,mathMuxSel,autocorrReady,lagReady,levinsonReady,
+					 AzReady,Qua_lspReady,Int_lpcReady,Int_qlpcReady,Math1Ready,done);
     
 	 //inputs
 	 input clock;
@@ -32,6 +33,10 @@ module G729_FSM(clock, reset,start,divErr,frame_done,autocorrDone,lagDone,levins
 	 input lagDone;
 	 input levinsonDone;
 	 input AzDone;
+	 input Qua_lspDone;
+	 input Int_lpcDone;
+ 	 input Int_qlpcDone;
+	 input Math1Done;
 	 
 	 ///outputs
 	 output reg [5:0] mathMuxSel;
@@ -39,6 +44,10 @@ module G729_FSM(clock, reset,start,divErr,frame_done,autocorrDone,lagDone,levins
 	 output reg lagReady;
 	 output reg levinsonReady;
 	 output reg AzReady;
+	 output reg Qua_lspReady;
+	 output reg Int_lpcReady;
+	 output reg Int_qlpcReady;
+	 output reg Math1Ready;
 	 output reg done;
 	 
 	 parameter INIT = 3'd0;
@@ -50,6 +59,11 @@ module G729_FSM(clock, reset,start,divErr,frame_done,autocorrDone,lagDone,levins
 	 parameter SUB_MODULE_LAG_DONE = 5'd3;
 	 parameter SUB_MODULE_LEVINSON_DONE = 5'd4;
 	 parameter SUB_MODULE_AZ_DONE = 5'd5;
+	 parameter SUB_MODULE_QUA_LSP_DONE = 5'd6;
+	 parameter SUB_MODULE_INT_LPC_DONE = 5'd7;
+ 	 parameter SUB_MODULE_INT_QLPC_DONE = 5'd8;
+	 parameter SUB_MODULE_MATH1_DONE = 5'd9;
+
 	 
 	 //working regs
 	 reg [2:0] frameDoneState, nextFrameDoneState;
@@ -96,6 +110,10 @@ module G729_FSM(clock, reset,start,divErr,frame_done,autocorrDone,lagDone,levins
 		lagReady = 0;
 		levinsonReady = 0;
 		AzReady = 0;
+		Qua_lspReady = 0;
+		Int_lpcReady = 0;
+		Int_qlpcReady = 0;
+		Math1Ready = 0;
 		
 		if(divErr == 1)
 			nextsubModuleState = SUB_MODULE_START;
@@ -169,14 +187,68 @@ module G729_FSM(clock, reset,start,divErr,frame_done,autocorrDone,lagDone,levins
 			else if(AzDone == 1)
 			begin
 				mathMuxSel = 6'd4;
+				nextsubModuleState = SUB_MODULE_QUA_LSP_DONE;
+				Qua_lspReady = 1;
+			end				
+		end//SUB_MODULE_AZ_DONE		
+		
+		SUB_MODULE_QUA_LSP_DONE:
+		begin
+			mathMuxSel = 6'd4;
+			if(Qua_lspDone == 0)
+				nextsubModuleState = SUB_MODULE_QUA_LSP_DONE;
+			else if(Qua_lspDone == 1)
+			begin
+				mathMuxSel = 6'd5;
+				nextsubModuleState = SUB_MODULE_INT_LPC_DONE;
+				Int_lpcReady = 1;
+			end				
+		end//SUB_MODULE_QUA_LSP_DONE		
+		
+		SUB_MODULE_INT_LPC_DONE:
+		begin
+			mathMuxSel = 6'd5;
+			if(Int_lpcDone == 0)
+				nextsubModuleState = SUB_MODULE_INT_LPC_DONE;
+			else if(Int_lpcDone == 1)
+			begin
+				mathMuxSel = 6'd6;
+				nextsubModuleState = SUB_MODULE_INT_QLPC_DONE;
+				Int_qlpcReady = 1;
+			end				
+		end//SUB_MODULE_INT_LPC_DONE		
+		
+		SUB_MODULE_INT_QLPC_DONE:
+		begin
+			mathMuxSel = 6'd6;
+			if(Int_qlpcDone == 0)
+				nextsubModuleState = SUB_MODULE_INT_QLPC_DONE;
+			else if(Int_qlpcDone == 1)
+			begin
+				mathMuxSel = 6'd7;
+				nextsubModuleState = SUB_MODULE_MATH1_DONE;
+				Math1Ready = 1;
+			end				
+		end//SUB_MODULE_INT_QLPC_DONE		
+		
+		SUB_MODULE_MATH1_DONE:
+		begin
+			mathMuxSel = 6'd7;
+			if(Math1Done == 0)
+				nextsubModuleState = SUB_MODULE_MATH1_DONE;
+			else if(Math1Done == 1)
+			begin
+				mathMuxSel = 6'd8;
 				nextsubModuleState = SUB_MODULE_START;
 				done = 1;
 			end				
-		end//SUB_MODULE_LEVINSON_DONE		
-		
+		end//SUB_MODULE_MATH1_DONE		
+
+
+
 		endcase
 		
-	 end////Sub-Module state machine
+	 end//Sub-Module state machine
 	 
 	 //Autocorr Ready state machine
 	 always @(*)

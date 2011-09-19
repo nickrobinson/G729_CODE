@@ -20,7 +20,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 module lsp_lsf2FSM(start,clk,reset,subIn,L_subIn,L_multIn,addIn,shlIn,L_shrIn,multIn,memIn,
 						 constantMemIn,lspAddr,lsfAddr,subOutA,subOutB,L_subOutA,L_subOutB,L_multOutA,L_multOutB,
-						 addOutA,addOutB,shlOutA,shlOutB,L_shrVar1Out,L_shrNumShiftOut,multOutA,multOutB,
+						 addOutA,addOutB,L_shrVar1Out,L_shrNumShiftOut,multOutA,multOutB,
 						 shlVar1Out,shlVar2Out,memReadAddr,memWriteAddr,memOut,memWriteEn,constantMemAddr,done);
 `include "constants_param_list.v"
 //Inputs
@@ -42,7 +42,6 @@ output reg [15:0] subOutA,subOutB;
 output reg [31:0] L_subOutA,L_subOutB;
 output reg [15:0] L_multOutA,L_multOutB;
 output reg [15:0] addOutA,addOutB;
-output reg [15:0] shlOutA,shlOutB;
 output reg [31:0] L_shrVar1Out;
 output reg [15:0] L_shrNumShiftOut;
 output reg [15:0] multOutA,multOutB;
@@ -168,8 +167,6 @@ begin
 	L_multOutB = 0;
 	addOutA = 0;
 	addOutB = 0;
-	shlOutA = 0;
-	shlOutB = 0;
 	L_shrVar1Out = 0;
 	L_shrNumShiftOut = 0;
 	multOutA = 0;
@@ -206,7 +203,7 @@ begin
 			if(i >= 0 && i < 4'd10)
 			begin
 				constantMemAddr = {TABLE2[11:6],ind[5:0]};
-				memReadAddr = {lspAddr[10:4],i[3:0]};
+				memReadAddr = {lspAddr[11:4],i[3:0]};
 				nextstate = S2;
 			end
 			else if(i == 4'hf)
@@ -240,7 +237,7 @@ begin
 			else if (subIn[15] == 0)
 				nextstate = S3;
 			constantMemAddr = {TABLE2[11:6],nextind[5:0]};
-			memReadAddr = {lspAddr[10:4],i[3:0]};
+			memReadAddr = {lspAddr[11:4],i[3:0]};
 		end//S2
 		
 		//offset = sub(lsp[i], table2[ind]);
@@ -280,7 +277,7 @@ begin
 			multOutB = 16'd25736;
 			memOut = multIn;
 			memWriteEn = 1;
-			memWriteAddr = {lsfAddr[10:4],i[3:0]};			
+			memWriteAddr = {lsfAddr[11:4],i[3:0]};			
 			subOutA = {12'd0,i[3:0]};
 			subOutB = 16'd1;
 			nexti = subIn[3:0];

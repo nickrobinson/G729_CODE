@@ -31,7 +31,7 @@ module LPC_Mem_Ctrl(clock, reset, In_Done, In_Sample, Out_Count, Out_Sample, fra
    output [15:0] Out_Sample;
 	output frame_done;
 
-	reg [8:0] addra;
+//	reg [8:0] addra;
 	reg [8:0] nextaddra;
 	reg [8:0] addrb;
 	reg [8:0] nextaddrb;
@@ -45,6 +45,7 @@ module LPC_Mem_Ctrl(clock, reset, In_Done, In_Sample, Out_Count, Out_Sample, fra
 	reg [5:0] nextframe_count;
 	wire [15:0] dinb;
 	wire [15:0] doutb;
+	wire [10:0] addra;
 	 
 	parameter rstate1 = 2'd0;
 	parameter rstate2 = 2'd1;
@@ -60,83 +61,85 @@ module LPC_Mem_Ctrl(clock, reset, In_Done, In_Sample, Out_Count, Out_Sample, fra
 	reg [1:0] rnextState;
 	 
 	AutoCorr_mem_1 i_AutoCorr_mem_1(.addra(addra),.dina(16'd0),.wea(1'd0),.clka(clock),
-		.douta(Out_Sample), .addrb(addrb), .dinb(dinb), .web(web), .clkb(clock), .doutb(doutb));
-		
+		.douta(Out_Sample), .addrb(addrb), .dinb(dinb), .web(webflag), .clkb(clock), .doutb(doutb));
+	
 	assign dinb = In_Sample;
+	
+	assign addra = {3'd0, Out_Count};
 	 
-	always@(posedge clock)begin
-		if(reset) begin
-			rcurrentState <= rstate1;
-		end
-		else begin
-			rcurrentState <= rnextState;
-		end
-	end
-	
-	always@(posedge clock)begin
-		if(reset) begin
-			addra <= start1;
-		end
-		else begin
-			addra <= nextaddra;
-		end
-	end
-	
-	always@(*)begin
-	
-		rnextState = rcurrentState; 
-		case(rcurrentState)
-		
-			rstate1: begin
-				nextaddra = start1 + Out_Count;
-				if(addra == 279) begin
-					rnextState = rstate2;
-					nextaddra = start2;
-				end
-				else
-					rnextState = rstate1;
-			end
-			
-			rstate2: begin
-				if(Out_Count >= 200)
-					nextaddra = Out_Count - 200;
-				else if(Out_Count < 200)
-					nextaddra = start2 + Out_Count;
-				if(addra == 39) begin
-					rnextState = rstate3;
-					nextaddra = start3;
-				end
-				else
-					rnextState = rstate2;
-			end
-			
-			rstate3: begin
-				if(Out_Count < 120)
-					nextaddra = start3 + Out_Count;
-				else
-					nextaddra = Out_Count - 120;
-				if(addra == 119) begin
-					rnextState = rstate4;
-					nextaddra = start4;
-				end
-				else
-					rnextState = rstate3;
-			end
-			
-			rstate4: begin
-				if(Out_Count < 40)
-					nextaddra = start4 + Out_Count;
-				else
-					nextaddra = Out_Count - 40;
-				if(addra == 199) begin
-					rnextState = rstate1;
-					nextaddra = start1;
-				end
-				else
-					rnextState = rstate4;
-			end
-		endcase
-	end
+//	always@(posedge clock)begin
+//		if(reset) begin
+//			rcurrentState <= rstate1;
+//		end
+//		else begin
+//			rcurrentState <= rnextState;
+//		end
+//	end
+//	
+//	always@(posedge clock)begin
+//		if(reset) begin
+//			addra <= start1;
+//		end
+//		else begin
+//			addra <= nextaddra;
+//		end
+//	end
+//	
+//	always@(*)begin
+//	
+//		rnextState = rcurrentState; 
+//		case(rcurrentState)
+//		
+//			rstate1: begin
+//				nextaddra = start1 + Out_Count;
+//				if(addra == 279) begin
+//					rnextState = rstate2;
+//					nextaddra = start2;
+//				end
+//				else
+//					rnextState = rstate1;
+//			end
+//			
+//			rstate2: begin
+//				if(Out_Count >= 200)
+//					nextaddra = Out_Count - 200;
+//				else if(Out_Count < 200)
+//					nextaddra = start2 + Out_Count;
+//				if(addra == 39) begin
+//					rnextState = rstate3;
+//					nextaddra = start3;
+//				end
+//				else
+//					rnextState = rstate2;
+//			end
+//			
+//			rstate3: begin
+//				if(Out_Count < 120)
+//					nextaddra = start3 + Out_Count;
+//				else
+//					nextaddra = Out_Count - 120;
+//				if(addra == 119) begin
+//					rnextState = rstate4;
+//					nextaddra = start4;
+//				end
+//				else
+//					rnextState = rstate3;
+//			end
+//			
+//			rstate4: begin
+//				if(Out_Count < 40)
+//					nextaddra = start4 + Out_Count;
+//				else
+//					nextaddra = Out_Count - 40;
+//				if(addra == 199) begin
+//					rnextState = rstate1;
+//					nextaddra = start1;
+//				end
+//				else
+//					rnextState = rstate4;
+//			end
+//		endcase
+//	end
 	
 	always@(posedge clock)begin
 		if(reset) begin
@@ -156,17 +159,17 @@ module LPC_Mem_Ctrl(clock, reset, In_Done, In_Sample, Out_Count, Out_Sample, fra
 		end
 	end
 	
-	always@(posedge clock) begin
-		if(reset) begin
-			web = 0;
-		end
-		else begin
-			if(webflag)
-				web = 1;
-			else
-				web = 0;
-		end
-	end
+//	always@(posedge clock) begin
+//		if(reset) begin
+//			web = 0;
+//		end
+//		else begin
+//			if(webflag)
+//				web = 1;
+//			else
+//				web = 0;
+//		end
+//	end
 	
 	always@(posedge clock) begin
 		if(reset) begin
@@ -184,8 +187,8 @@ module LPC_Mem_Ctrl(clock, reset, In_Done, In_Sample, Out_Count, Out_Sample, fra
 		nextaddrb = addrb;
 		nextframe_count = frame_count;
 		if(In_Done) begin
-			if(addrb == 319) begin
-				nextaddrb = 0;
+			if(addrb == 239) begin
+				nextaddrb = 160;
 				webflag = 1;
 				nextframe_count = frame_count + 1;
 			end
