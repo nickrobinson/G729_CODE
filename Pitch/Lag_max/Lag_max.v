@@ -346,6 +346,8 @@ module Lag_max(clk, start, reset, done, signal, L_frame, lag_max, lag_min, cor_m
 								nexti = lag_max;
 								nextstate = S1;
 							end
+						else
+							nextstate = INIT;
 					end
 					
 				S1:	//start of i loop
@@ -424,7 +426,8 @@ module Lag_max(clk, start, reset, done, signal, L_frame, lag_max, lag_min, cor_m
 						L_add_a = p1;
 						L_add_b = 'd1;
 						next_p1 = L_add_in[15:0];							//p1++
-						nextstate = S2;
+						readAddr = add_in;
+						nextstate = S3;
 					end
 					
 				S6:
