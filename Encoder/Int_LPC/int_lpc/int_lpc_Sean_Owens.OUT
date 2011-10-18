@@ -1,0 +1,15 @@
+Latch and Mismatch Report
+Report Generated From: int_lpc.syr
+==================================================
+Name of Author: Sean Owens
+Name of Module: int_lpc
+==================================================
+
+
+==================================================
+==================================================
+
+Number of Modules with Latches = 0
+Number of Lines in Synthesis Report = 1404
+Number of Parsed Warnings = 0
+Warnings to Lines Percentage = 0.000000%

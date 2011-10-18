@@ -1,0 +1,650 @@
+Release 12.4 - xst M.81d (nt64)
+Copyright (c) 1995-2010 Xilinx, Inc.  All rights reserved.
+--> Parameter TMPDIR set to xst/projnav.tmp
+
+
+Total REAL time to Xst completion: 0.00 secs
+Total CPU time to Xst completion: 0.10 secs
+ 
+--> Parameter xsthdpdir set to xst
+
+
+Total REAL time to Xst completion: 0.00 secs
+Total CPU time to Xst completion: 0.10 secs
+ 
+--> Reading design: lsp_lsf.prj
+
+TABLE OF CONTENTS
+  1) Synthesis Options Summary
+  2) HDL Compilation
+  3) Design Hierarchy Analysis
+  4) HDL Analysis
+  5) HDL Synthesis
+     5.1) HDL Synthesis Report
+  6) Advanced HDL Synthesis
+     6.1) Advanced HDL Synthesis Report
+  7) Low Level Synthesis
+  8) Partition Report
+  9) Final Report
+	9.1) Device utilization summary
+	9.2) Partition Resource Summary
+	9.3) TIMING REPORT
+
+
+=========================================================================
+*                      Synthesis Options Summary                        *
+=========================================================================
+---- Source Parameters
+Input File Name                    : "lsp_lsf.prj"
+Input Format                       : mixed
+Ignore Synthesis Constraint File   : NO
+
+---- Target Parameters
+Output File Name                   : "lsp_lsf"
+Output Format                      : NGC
+Target Device                      : xc5vlx110t-1-ff1136
+
+---- Source Options
+Top Module Name                    : lsp_lsf
+Automatic FSM Extraction           : YES
+FSM Encoding Algorithm             : Auto
+Safe Implementation                : No
+FSM Style                          : LUT
+RAM Extraction                     : Yes
+RAM Style                          : Auto
+ROM Extraction                     : Yes
+Mux Style                          : Auto
+Decoder Extraction                 : YES
+Priority Encoder Extraction        : Yes
+Shift Register Extraction          : YES
+Logical Shifter Extraction         : YES
+XOR Collapsing                     : YES
+ROM Style                          : Auto
+Mux Extraction                     : Yes
+Resource Sharing                   : YES
+Asynchronous To Synchronous        : NO
+Use DSP Block                      : Auto
+Automatic Register Balancing       : No
+
+---- Target Options
+LUT Combining                      : Off
+Reduce Control Sets                : Off
+Add IO Buffers                     : YES
+Global Maximum Fanout              : 100000
+Add Generic Clock Buffer(BUFG)     : 32
+Register Duplication               : YES
+Slice Packing                      : YES
+Optimize Instantiated Primitives   : NO
+Use Clock Enable                   : Auto
+Use Synchronous Set                : Auto
+Use Synchronous Reset              : Auto
+Pack IO Registers into IOBs        : Auto
+Equivalent register Removal        : YES
+
+---- General Options
+Optimization Goal                  : Speed
+Optimization Effort                : 1
+Power Reduction                    : NO
+Keep Hierarchy                     : No
+Netlist Hierarchy                  : As_Optimized
+RTL Output                         : Yes
+Global Optimization                : AllClockNets
+Read Cores                         : YES
+Write Timing Constraints           : NO
+Cross Clock Analysis               : NO
+Hierarchy Separator                : /
+Bus Delimiter                      : <>
+Case Specifier                     : Maintain
+Slice Utilization Ratio            : 100
+BRAM Utilization Ratio             : 100
+DSP48 Utilization Ratio            : 100
+Verilog 2001                       : YES
+Auto BRAM Packing                  : NO
+Slice Utilization Ratio Delta      : 5
+
+=========================================================================
+
+
+=========================================================================
+*                          HDL Compilation                              *
+=========================================================================
+Compiling verilog file "lsp_lsf.v" in library work
+Compiling verilog include file "constants_param_list.v"
+Compiling verilog include file "paramList.v"
+Module <lsp_lsf> compiled
+No errors in compilation
+Analysis of file <"lsp_lsf.prj"> succeeded.
+ 
+
+=========================================================================
+*                     Design Hierarchy Analysis                         *
+=========================================================================
+Analyzing hierarchy for module <lsp_lsf> in library <work> with parameters.
+	A100 = "00000000000000000000111111110100"
+	A140 = "00000000000000000000111111111100"
+	ACELP_DN = "100001000000"
+	ACELP_EXTRA = "001010111000"
+	ACELP_RR = "010000000000"
+	AQ_T_HIGH = "001100110000"
+	AQ_T_LOW = "001100100000"
+	AUTOCORR_R = "000100000000"
+	AUTOCORR_Y = "000000000000"
+	A_T_HIGH = "001100010000"
+	A_T_LOW = "001100000000"
+	B100 = "00000000000000000000111111110000"
+	B140 = "00000000000000000000111111111000"
+	BITSNO = "00000000000000000000111110110000"
+	CODE = "100010000000"
+	COEF = "00000000000000000000111111100100"
+	COR_H = "001111000000"
+	D17_P_SIGN = "100000000000"
+	FG = "00000000000000000000101100000000"
+	FG_SUM = "00000000000000000000111011000000"
+	FG_SUM_INV = "00000000000000000000111011100000"
+	FREQ_PREV = "001000110000"
+	GBK1 = "00000000000000000000111110000000"
+	GBK2 = "00000000000000000000111100100000"
+	GET_WEGT_BUF = "001011000000"
+	GRID = "00000000000000000000110010000000"
+	H1 = "011010000000"
+	IMAP1 = "00000000000000000000111111011000"
+	IMAP2 = "00000000000000000000111110100000"
+	INTERPOLATION_LSF_INT = "000110100000"
+	INTERPOLATION_LSF_NEW = "000110110000"
+	INTER_3 = "00000000000000000000111101110000"
+	INTER_3L = "00000000000000000000111100000000"
+	INT_LPC_F1 = "000111100000"
+	INT_LPC_F2 = "000111101000"
+	INT_LPC_LSP = "000111010000"
+	INT_LPC_LSP_TEMP = "000111110000"
+	LAG_WINDOW_R_PRIME = "000100010000"
+	LEVINSON_DURBIN_ANEXT = "000100110000"
+	LEVINSON_DURBIN_AOLD = "000101000000"
+	LEVINSON_DURBIN_ATEMP = "000101010000"
+	LEVINSON_DURBIN_RC = "000101100000"
+	LEVINSON_DURBIN_RCOLD = "000101110000"
+	LSPCB1 = "00000000000000000000000000000000"
+	LSPCB2 = "00000000000000000000100000000000"
+	LSPGETQ_BUF = "000100100000"
+	LSP_NEW = "000110000000"
+	LSP_NEW_Q = "001011010000"
+	LSP_OLD = "000110010000"
+	LSP_OLD_Q = "001011100000"
+	LSP_SELECT_1_BUF = "001011111000"
+	LSP_SELECT_1_INDEX = "000111000111"
+	LSP_SELECT_1_RBUF = "001011110000"
+	LSP_SELECT_1_WEGT = "001010110000"
+	L_COEF = "00000000000000000000111111101000"
+	MAP1 = "00000000000000000000111111001000"
+	MAP2 = "00000000000000000000111110010000"
+	PERC_VAR_GAMMA1 = "000111000000"
+	PERC_VAR_GAMMA2 = "000111000010"
+	PERC_VAR_LAR = "000111001000"
+	PERC_VAR_LAR_NEW = "000111001100"
+	PERC_VAR_LAR_OLD = "000111000100"
+	PRED = "00000000000000000000111111100000"
+	QUA_LSP_MODE_INDEX = "000111000110"
+	RELSPWED_BUF = "001000100000"
+	SLOPE = "00000000000000000000110110000000"
+	SLOPE_ACOS = "00000000000000000000111001000000"
+	SLOPE_COS = "00000000000000000000111000000000"
+	SYN_FILT_TEMP = "001101000000"
+	TABLE1 = "00000000000000000000101110000000"
+	TABLE2 = "00000000000000000000110111000000"
+	TABLOG = "00000000000000000000110100000000"
+	TABPOW = "00000000000000000000110011000000"
+	TABSQR = "00000000000000000000110101000000"
+	TAB_HUP_L = "00000000000000000000110000000000"
+	TAB_HUP_S = "00000000000000000000111101000000"
+	TAB_ZONE = "00000000000000000000101000000000"
+	THR1 = "00000000000000000000111111101100"
+	THR2 = "00000000000000000000111111010000"
+	WEIGHT_AZ_AP_OUT = "001000010000"
+	XX = "001000000000"
+	XXXXXXX = "001010111100"
+	Y2 = "100011000000"
+	ZZZZZZZZZZZ = "00000000000000000000111111000000"
+	ZZZZZZZZZZZZZ = "00000000000000000000111101100000"
+	ZZZZZZZZZZZZZZ = "00000000000000000000111010000000"
+	init = "00000000000000000000000000000000"
+	state1 = "00000000000000000000000000000001"
+	state10 = "00000000000000000000000000001010"
+	state2 = "00000000000000000000000000000010"
+	state3 = "00000000000000000000000000000011"
+	state4 = "00000000000000000000000000000100"
+	state5 = "00000000000000000000000000000101"
+	state6 = "00000000000000000000000000000110"
+	state7 = "00000000000000000000000000000111"
+	state8 = "00000000000000000000000000001000"
+	state9 = "00000000000000000000000000001001"
+	xxxx = "100100000000"
+	xxxxx = "101000000000"
+	xxxxxx = "110000000000"
+
+
+=========================================================================
+*                            HDL Analysis                               *
+=========================================================================
+Analyzing top module <lsp_lsf>.
+	A100 = 32'b00000000000000000000111111110100
+	A140 = 32'b00000000000000000000111111111100
+	ACELP_DN = 12'b100001000000
+	ACELP_EXTRA = 12'b001010111000
+	ACELP_RR = 12'b010000000000
+	AQ_T_HIGH = 12'b001100110000
+	AQ_T_LOW = 12'b001100100000
+	AUTOCORR_R = 12'b000100000000
+	AUTOCORR_Y = 12'b000000000000
+	A_T_HIGH = 12'b001100010000
+	A_T_LOW = 12'b001100000000
+	B100 = 32'b00000000000000000000111111110000
+	B140 = 32'b00000000000000000000111111111000
+	BITSNO = 32'b00000000000000000000111110110000
+	CODE = 12'b100010000000
+	COEF = 32'b00000000000000000000111111100100
+	COR_H = 12'b001111000000
+	D17_P_SIGN = 12'b100000000000
+	FG = 32'b00000000000000000000101100000000
+	FG_SUM = 32'b00000000000000000000111011000000
+	FG_SUM_INV = 32'b00000000000000000000111011100000
+	FREQ_PREV = 12'b001000110000
+	GBK1 = 32'b00000000000000000000111110000000
+	GBK2 = 32'b00000000000000000000111100100000
+	GET_WEGT_BUF = 12'b001011000000
+	GRID = 32'b00000000000000000000110010000000
+	H1 = 12'b011010000000
+	IMAP1 = 32'b00000000000000000000111111011000
+	IMAP2 = 32'b00000000000000000000111110100000
+	INTERPOLATION_LSF_INT = 12'b000110100000
+	INTERPOLATION_LSF_NEW = 12'b000110110000
+	INTER_3 = 32'b00000000000000000000111101110000
+	INTER_3L = 32'b00000000000000000000111100000000
+	INT_LPC_F1 = 12'b000111100000
+	INT_LPC_F2 = 12'b000111101000
+	INT_LPC_LSP = 12'b000111010000
+	INT_LPC_LSP_TEMP = 12'b000111110000
+	LAG_WINDOW_R_PRIME = 12'b000100010000
+	LEVINSON_DURBIN_ANEXT = 12'b000100110000
+	LEVINSON_DURBIN_AOLD = 12'b000101000000
+	LEVINSON_DURBIN_ATEMP = 12'b000101010000
+	LEVINSON_DURBIN_RC = 12'b000101100000
+	LEVINSON_DURBIN_RCOLD = 12'b000101110000
+	LSPCB1 = 32'b00000000000000000000000000000000
+	LSPCB2 = 32'b00000000000000000000100000000000
+	LSPGETQ_BUF = 12'b000100100000
+	LSP_NEW = 12'b000110000000
+	LSP_NEW_Q = 12'b001011010000
+	LSP_OLD = 12'b000110010000
+	LSP_OLD_Q = 12'b001011100000
+	LSP_SELECT_1_BUF = 12'b001011111000
+	LSP_SELECT_1_INDEX = 12'b000111000111
+	LSP_SELECT_1_RBUF = 12'b001011110000
+	LSP_SELECT_1_WEGT = 12'b001010110000
+	L_COEF = 32'b00000000000000000000111111101000
+	MAP1 = 32'b00000000000000000000111111001000
+	MAP2 = 32'b00000000000000000000111110010000
+	PERC_VAR_GAMMA1 = 12'b000111000000
+	PERC_VAR_GAMMA2 = 12'b000111000010
+	PERC_VAR_LAR = 12'b000111001000
+	PERC_VAR_LAR_NEW = 12'b000111001100
+	PERC_VAR_LAR_OLD = 12'b000111000100
+	PRED = 32'b00000000000000000000111111100000
+	QUA_LSP_MODE_INDEX = 12'b000111000110
+	RELSPWED_BUF = 12'b001000100000
+	SLOPE = 32'b00000000000000000000110110000000
+	SLOPE_ACOS = 32'b00000000000000000000111001000000
+	SLOPE_COS = 32'b00000000000000000000111000000000
+	SYN_FILT_TEMP = 12'b001101000000
+	TABLE1 = 32'b00000000000000000000101110000000
+	TABLE2 = 32'b00000000000000000000110111000000
+	TABLOG = 32'b00000000000000000000110100000000
+	TABPOW = 32'b00000000000000000000110011000000
+	TABSQR = 32'b00000000000000000000110101000000
+	TAB_HUP_L = 32'b00000000000000000000110000000000
+	TAB_HUP_S = 32'b00000000000000000000111101000000
+	TAB_ZONE = 32'b00000000000000000000101000000000
+	THR1 = 32'b00000000000000000000111111101100
+	THR2 = 32'b00000000000000000000111111010000
+	WEIGHT_AZ_AP_OUT = 12'b001000010000
+	XX = 12'b001000000000
+	XXXXXXX = 12'b001010111100
+	Y2 = 12'b100011000000
+	ZZZZZZZZZZZ = 32'b00000000000000000000111111000000
+	ZZZZZZZZZZZZZ = 32'b00000000000000000000111101100000
+	ZZZZZZZZZZZZZZ = 32'b00000000000000000000111010000000
+	init = 32'b00000000000000000000000000000000
+	state1 = 32'b00000000000000000000000000000001
+	state10 = 32'b00000000000000000000000000001010
+	state2 = 32'b00000000000000000000000000000010
+	state3 = 32'b00000000000000000000000000000011
+	state4 = 32'b00000000000000000000000000000100
+	state5 = 32'b00000000000000000000000000000101
+	state6 = 32'b00000000000000000000000000000110
+	state7 = 32'b00000000000000000000000000000111
+	state8 = 32'b00000000000000000000000000001000
+	state9 = 32'b00000000000000000000000000001001
+	xxxx = 12'b100100000000
+	xxxxx = 12'b101000000000
+	xxxxxx = 12'b110000000000
+Module <lsp_lsf> is correct for synthesis.
+ 
+
+=========================================================================
+*                           HDL Synthesis                               *
+=========================================================================
+
+Performing bidirectional port resolution...
+
+Synthesizing Unit <lsp_lsf>.
+    Related source file is "lsp_lsf.v".
+WARNING:Xst:647 - Input <lsf_addr1<3:0>> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
+WARNING:Xst:647 - Input <lsf_addr2<3:0>> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
+WARNING:Xst:647 - Input <L_add_in<15:0>> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
+    Found finite state machine <FSM_0> for signal <currentstate>.
+    -----------------------------------------------------------------------
+    | States             | 11                                             |
+    | Transitions        | 15                                             |
+    | Inputs             | 4                                              |
+    | Outputs            | 10                                             |
+    | Clock              | clock                     (rising_edge)        |
+    | Reset              | reset                     (positive)           |
+    | Reset type         | synchronous                                    |
+    | Reset State        | 0000                                           |
+    | Encoding           | automatic                                      |
+    | Implementation     | LUT                                            |
+    -----------------------------------------------------------------------
+    Found 4x32-bit ROM for signal <L_add_outb>.
+    Found 6-bit comparator less for signal <currentstate$cmp_lt0000> created at line 151.
+    Found 6-bit register for signal <ind>.
+    Found 5-bit register for signal <iterator1>.
+    Found 32-bit register for signal <temp1>.
+    Found 1-bit register for signal <temp2>.
+    Summary:
+	inferred   1 Finite State Machine(s).
+	inferred   1 ROM(s).
+	inferred  44 D-type flip-flop(s).
+	inferred   1 Comparator(s).
+Unit <lsp_lsf> synthesized.
+
+
+=========================================================================
+HDL Synthesis Report
+
+Macro Statistics
+# ROMs                                                 : 1
+ 4x32-bit ROM                                          : 1
+# Registers                                            : 3
+ 32-bit register                                       : 1
+ 5-bit register                                        : 1
+ 6-bit register                                        : 1
+# Comparators                                          : 1
+ 6-bit comparator less                                 : 1
+
+=========================================================================
+
+=========================================================================
+*                       Advanced HDL Synthesis                          *
+=========================================================================
+
+Analyzing FSM <FSM_0> for best encoding.
+Optimizing FSM <currentstate/FSM> on signal <currentstate[1:11]> with one-hot encoding.
+----------------------
+ State | Encoding
+----------------------
+ 0000  | 00000000001
+ 0001  | 00000000010
+ 0010  | 00000000100
+ 0011  | 00000001000
+ 0100  | 00000100000
+ 0101  | 00000010000
+ 0110  | 00001000000
+ 0111  | 00010000000
+ 1000  | 00100000000
+ 1001  | 01000000000
+ 1010  | 10000000000
+----------------------
+
+=========================================================================
+Advanced HDL Synthesis Report
+
+Macro Statistics
+# FSMs                                                 : 1
+# ROMs                                                 : 1
+ 4x32-bit ROM                                          : 1
+# Registers                                            : 43
+ Flip-Flops                                            : 43
+# Comparators                                          : 1
+ 6-bit comparator less                                 : 1
+
+=========================================================================
+
+=========================================================================
+*                         Low Level Synthesis                           *
+=========================================================================
+
+Optimizing unit <lsp_lsf> ...
+
+Mapping all equations...
+Building and optimizing final netlist ...
+Found area constraint ratio of 100 (+ 5) on block lsp_lsf, actual ratio is 0.
+FlipFlop currentstate_FSM_FFd10 has been replicated 1 time(s)
+FlipFlop currentstate_FSM_FFd3 has been replicated 1 time(s)
+FlipFlop iterator1_4 has been replicated 1 time(s)
+
+Final Macro Processing ...
+
+=========================================================================
+Final Register Report
+
+Macro Statistics
+# Registers                                            : 57
+ Flip-Flops                                            : 57
+
+=========================================================================
+
+=========================================================================
+*                           Partition Report                            *
+=========================================================================
+
+Partition Implementation Status
+-------------------------------
+
+  No Partitions were found in this design.
+
+-------------------------------
+
+=========================================================================
+*                            Final Report                               *
+=========================================================================
+Final Results
+RTL Top Level Output File Name     : lsp_lsf.ngr
+Top Level Output File Name         : lsp_lsf
+Output Format                      : NGC
+Optimization Goal                  : Speed
+Keep Hierarchy                     : No
+
+Design Statistics
+# IOs                              : 547
+
+Cell Usage :
+# BELS                             : 316
+#      GND                         : 1
+#      LUT2                        : 39
+#      LUT3                        : 101
+#      LUT4                        : 34
+#      LUT5                        : 86
+#      LUT6                        : 55
+# FlipFlops/Latches                : 57
+#      FDR                         : 30
+#      FDRS                        : 18
+#      FDS                         : 9
+# Clock Buffers                    : 1
+#      BUFGP                       : 1
+# IO Buffers                       : 522
+#      IBUF                        : 211
+#      OBUF                        : 311
+=========================================================================
+
+Device utilization summary:
+---------------------------
+
+Selected Device : 5vlx110tff1136-1 
+
+
+Slice Logic Utilization: 
+ Number of Slice Registers:              57  out of  69120     0%  
+ Number of Slice LUTs:                  315  out of  69120     0%  
+    Number used as Logic:               315  out of  69120     0%  
+
+Slice Logic Distribution: 
+ Number of LUT Flip Flop pairs used:    319
+   Number with an unused Flip Flop:     262  out of    319    82%  
+   Number with an unused LUT:             4  out of    319     1%  
+   Number of fully used LUT-FF pairs:    53  out of    319    16%  
+   Number of unique control sets:        19
+
+IO Utilization: 
+ Number of IOs:                         547
+ Number of bonded IOBs:                 523  out of    640    81%  
+
+Specific Feature Utilization:
+ Number of BUFG/BUFGCTRLs:                1  out of     32     3%  
+
+---------------------------
+Partition Resource Summary:
+---------------------------
+
+  No Partitions were found in this design.
+
+---------------------------
+
+
+=========================================================================
+TIMING REPORT
+
+NOTE: THESE TIMING NUMBERS ARE ONLY A SYNTHESIS ESTIMATE.
+      FOR ACCURATE TIMING INFORMATION PLEASE REFER TO THE TRACE REPORT
+      GENERATED AFTER PLACE-and-ROUTE.
+
+Clock Information:
+------------------
+-----------------------------------+------------------------+-------+
+Clock Signal                       | Clock buffer(FF name)  | Load  |
+-----------------------------------+------------------------+-------+
+clock                              | BUFGP                  | 57    |
+-----------------------------------+------------------------+-------+
+
+Asynchronous Control Signals Information:
+----------------------------------------
+No asynchronous control signals found in this design
+
+Timing Summary:
+---------------
+Speed Grade: -1
+
+   Minimum period: 2.186ns (Maximum Frequency: 457.533MHz)
+   Minimum input arrival time before clock: 2.733ns
+   Maximum output required time after clock: 4.656ns
+   Maximum combinational path delay: 4.673ns
+
+Timing Detail:
+--------------
+All values displayed in nanoseconds (ns)
+
+=========================================================================
+Timing constraint: Default period analysis for Clock 'clock'
+  Clock period: 2.186ns (frequency: 457.533MHz)
+  Total number of paths / destination ports: 309 / 77
+-------------------------------------------------------------------------
+Delay:               2.186ns (Levels of Logic = 1)
+  Source:            currentstate_FSM_FFd9 (FF)
+  Destination:       temp1_16 (FF)
+  Source Clock:      clock rising
+  Destination Clock: clock rising
+
+  Data Path: currentstate_FSM_FFd9 to temp1_16
+                                Gate     Net
+    Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
+    ----------------------------------------  ------------
+     FDR:C->Q             77   0.471   0.712  currentstate_FSM_FFd9 (currentstate_FSM_FFd9)
+     LUT4:I2->O            1   0.094   0.336  next_temp1<31>_SW0 (N62)
+     FDRS:S                    0.573          temp1_31
+    ----------------------------------------
+    Total                      2.186ns (1.138ns logic, 1.048ns route)
+                                       (52.1% logic, 47.9% route)
+
+=========================================================================
+Timing constraint: Default OFFSET IN BEFORE for Clock 'clock'
+  Total number of paths / destination ports: 236 / 122
+-------------------------------------------------------------------------
+Offset:              2.733ns (Levels of Logic = 3)
+  Source:            sub_in<15> (PAD)
+  Destination:       temp1_15 (FF)
+  Destination Clock: clock rising
+
+  Data Path: sub_in<15> to temp1_15
+                                Gate     Net
+    Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
+    ----------------------------------------  ------------
+     IBUF:I->O            16   0.818   1.151  sub_in_15_IBUF (sub_in_15_IBUF)
+     LUT6:I0->O            1   0.094   0.576  next_temp1<15>_SW1 (N42)
+     LUT5:I3->O            1   0.094   0.000  next_temp1<15> (next_temp1<15>)
+     FDR:D                    -0.018          temp1_15
+    ----------------------------------------
+    Total                      2.733ns (1.006ns logic, 1.727ns route)
+                                       (36.8% logic, 63.2% route)
+
+=========================================================================
+Timing constraint: Default OFFSET OUT AFTER for Clock 'clock'
+  Total number of paths / destination ports: 474 / 224
+-------------------------------------------------------------------------
+Offset:              4.656ns (Levels of Logic = 3)
+  Source:            currentstate_FSM_FFd4 (FF)
+  Destination:       sub_outa<3> (PAD)
+  Source Clock:      clock rising
+
+  Data Path: currentstate_FSM_FFd4 to sub_outa<3>
+                                Gate     Net
+    Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
+    ----------------------------------------  ------------
+     FDR:C->Q             87   0.471   0.713  currentstate_FSM_FFd4 (currentstate_FSM_FFd4)
+     LUT2:I0->O            4   0.094   0.496  sub_outa<0>11 (N11)
+     LUT6:I5->O            1   0.094   0.336  sub_outa<3>1 (sub_outa_3_OBUF)
+     OBUF:I->O                 2.452          sub_outa_3_OBUF (sub_outa<3>)
+    ----------------------------------------
+    Total                      4.656ns (3.111ns logic, 1.545ns route)
+                                       (66.8% logic, 33.2% route)
+
+=========================================================================
+Timing constraint: Default path analysis
+  Total number of paths / destination ports: 323 / 179
+-------------------------------------------------------------------------
+Delay:               4.673ns (Levels of Logic = 3)
+  Source:            lsf_addr1<11> (PAD)
+  Destination:       scratch_mem_read_addr<11> (PAD)
+
+  Data Path: lsf_addr1<11> to scratch_mem_read_addr<11>
+                                Gate     Net
+    Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
+    ----------------------------------------  ------------
+     IBUF:I->O             1   0.818   0.973  lsf_addr1_11_IBUF (lsf_addr1_11_IBUF)
+     LUT5:I0->O            1   0.094   0.336  scratch_mem_read_addr<11>1 (scratch_mem_read_addr_11_OBUF)
+     OBUF:I->O                 2.452          scratch_mem_read_addr_11_OBUF (scratch_mem_read_addr<11>)
+    ----------------------------------------
+    Total                      4.673ns (3.364ns logic, 1.309ns route)
+                                       (72.0% logic, 28.0% route)
+
+=========================================================================
+
+
+Total REAL time to Xst completion: 8.00 secs
+Total CPU time to Xst completion: 8.54 secs
+ 
+--> 
+
+Total memory usage is 277524 kilobytes
+
+Number of errors   :    0 (   0 filtered)
+Number of warnings :    3 (   0 filtered)
+Number of infos    :    0 (   0 filtered)
+

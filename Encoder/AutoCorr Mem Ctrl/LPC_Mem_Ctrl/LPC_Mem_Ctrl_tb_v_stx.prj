@@ -1,0 +1,4 @@
+verilog isim_temp "../AutoCorr_mem_1.v"
+verilog isim_temp "LPC_Mem_Ctrl.v"
+verilog isim_temp "../LPC_Mem_Ctrl_tb.v"
+verilog isim_temp "C:/Xilinx92i/verilog/src/glbl.v"

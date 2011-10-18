@@ -1,0 +1,75 @@
+##############################################################
+#
+# Xilinx Core Generator version J.36
+# Date: Tue Oct 05 20:02:37 2010
+#
+##############################################################
+#
+#  This file contains the customisation parameters for a
+#  Xilinx CORE Generator IP GUI. It is strongly recommended
+#  that you do not manually alter this file as it may cause
+#  unexpected and unsupported behavior.
+#
+##############################################################
+#
+# BEGIN Project Options
+SET addpads = False
+SET asysymbol = False
+SET busformat = BusFormatAngleBracketNotRipped
+SET createndf = False
+SET designentry = Verilog
+SET device = xc5vlx30
+SET devicefamily = virtex5
+SET flowvendor = Other
+SET formalverification = False
+SET foundationsym = False
+SET implementationfiletype = Ngc
+SET package = ff324
+SET removerpms = False
+SET simulationfiles = Behavioral
+SET speedgrade = -3
+SET verilogsim = True
+SET vhdlsim = False
+# END Project Options
+# BEGIN Select
+SELECT Block_Memory_Generator family Xilinx,_Inc. 2.4
+# END Select
+# BEGIN Parameters
+CSET algorithm=Minimum_Area
+CSET assume_synchronous_clk=false
+CSET byte_size=9
+CSET coe_file=no_coe_file_loaded
+CSET collision_warnings=ALL
+CSET component_name=AutoCorr_mem_1
+CSET disable_collision_warnings=false
+CSET disable_out_of_range_warnings=false
+CSET ecc=false
+CSET enable_a=Always_Enabled
+CSET enable_b=Always_Enabled
+CSET fill_remaining_memory_locations=true
+CSET load_init_file=false
+CSET memory_type=True_Dual_Port_RAM
+CSET operating_mode_a=READ_FIRST
+CSET operating_mode_b=WRITE_FIRST
+CSET output_reset_value_a=0
+CSET output_reset_value_b=0
+CSET primitive=8kx2
+CSET read_width_a=16
+CSET read_width_b=16
+CSET register_output_of_memory_core=false
+CSET register_output_of_memory_primitives=false
+CSET remaining_memory_locations=0
+CSET single_bit_ecc=false
+CSET use_byte_write_enable=false
+CSET use_ramb16bwer_reset_behavior=false
+CSET use_regcea_pin=false
+CSET use_regceb_pin=false
+CSET use_ssra_pin=false
+CSET use_ssrb_pin=false
+CSET write_depth_a=320
+CSET write_width_a=16
+CSET write_width_b=16
+# END Parameters
+GENERATE
+# CRC: c4b786b6
+

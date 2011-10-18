@@ -1,0 +1,15 @@
+Latch and Mismatch Report
+Report Generated From: int_qlpc.syr
+==================================================
+Name of Author: Sean Owens
+Name of Module: int_qlpc
+==================================================
+
+
+==================================================
+==================================================
+
+Number of Modules with Latches = 0
+Number of Lines in Synthesis Report = 1136
+Number of Parsed Warnings = 0
+Warnings to Lines Percentage = 0.000000%

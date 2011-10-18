@@ -1,0 +1,31 @@
+Latch and Mismatch Report
+Report Generated From: Weight_Az/Weight_Az_Top.syr
+===============================
+Name of Author: Troy Huguet
+Name of Module: Weight Az
+===============================
+
+
+====================================================
+====================================================
+====================================================
+
+Synthesizing Unit <Weight_Az>.
+
+WARNING:Xst:737 - Found 16-bit latch for signal <nextgamma>. Latches may be generated from incomplete case or if statements. We do not recommend the use of latches in FPGA/CPLD designs, as they may lead to timing problems.
+
+WARNING:Xst:737 - Found 16-bit latch for signal <add_a>. Latches may be generated from incomplete case or if statements. We do not recommend the use of latches in FPGA/CPLD designs, as they may lead to timing problems.
+
+WARNING:Xst:737 - Found 32-bit latch for signal <L_add_a>. Latches may be generated from incomplete case or if statements. We do not recommend the use of latches in FPGA/CPLD designs, as they may lead to timing problems.
+
+WARNING:Xst:737 - Found 16-bit latch for signal <L_mult_b>. Latches may be generated from incomplete case or if statements. We do not recommend the use of latches in FPGA/CPLD designs, as they may lead to timing problems.
+
+WARNING:Xst:737 - Found 16-bit latch for signal <L_mult_a>. Latches may be generated from incomplete case or if statements. We do not recommend the use of latches in FPGA/CPLD designs, as they may lead to timing problems.
+
+====================================================
+====================================================
+
+Number of Modules with Latches = 1
+Number of Lines in Synthesis Report = 640
+Number of Parsed Warnings = 5
+Warnings to Lines Percentage = 0.781250%
