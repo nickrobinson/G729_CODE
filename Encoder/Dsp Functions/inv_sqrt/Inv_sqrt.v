@@ -286,6 +286,7 @@ begin
 		begin
 			L_shlVar1Out = L_x;
 			L_shlNumShiftOut = exp;
+			L_shlReady = 1;
 			if(L_shlDone == 0)
 				nextstate = S2_5;
 			else if(L_shlDone == 1)

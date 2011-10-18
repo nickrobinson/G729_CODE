@@ -21,10 +21,12 @@
 module Pitch_ol(clk, start, reset, done, signal, pit_min, pit_max, L_frame, p_max1, writeAddr, writeOut, writeEn,
 						readAddr, readIn, L_mac_a, L_mac_b, L_mac_c, L_mac_overflow, L_mac_in, mult_a, mult_b, mult_in, 
 						shr_a, shr_b, shr_in, shl_a, shl_b, shl_in, add_a, add_b, add_in, sub_a, sub_b, sub_in, L_sub_a, 
-						L_sub_b, L_sub_in, Lag_max_readAddr, /*Lag_max_readIn*/, L_msu_a, L_msu_b, L_shr_b, L_msu_c, L_shr_a,
+						L_sub_b, L_sub_in, L_msu_a, L_msu_b, L_shr_b, L_msu_c, L_shr_a,
 						L_add_a, L_add_b, L_mult_a, L_mult_b, L_mult_in, L_msu_in, L_shr_in, L_add_in, norm_l_in, 
 						norm_l_done, L_shl_in, L_shl_done, constantMemIn, norm_l_var1, norm_l_ready, L_shl_var1, 
 						L_shl_numshift, L_shl_ready, constantMemAddr);
+
+	`include "paramList.v"
 
 	input clk, start, reset;
 	input [11:0] signal;
@@ -63,6 +65,7 @@ module Pitch_ol(clk, start, reset, done, signal, pit_min, pit_max, L_frame, p_ma
 	parameter S11 = 11;
 	parameter S12 = 12;
 	parameter S13 = 13;
+	parameter S14 = 14;
 	
 	reg [3:0] state, nextstate;
 	reg [15:0] i, nexti, j, nextj;
@@ -90,7 +93,6 @@ module Pitch_ol(clk, start, reset, done, signal, pit_min, pit_max, L_frame, p_ma
 	wire [11:0] Lag_max_writeAddr;
 	wire [31:0] Lag_max_writeOut;
 	wire Lag_max_writeEn;
-	output [11:0] Lag_max_readAddr;
 //	input [31:0] Lag_max_readIn;
 //	wire [15:0] Lag_max_add_in, Lag_max_sub_in;
 //	wire [31:0] Lag_max_L_mac_in, Lag_max_L_sub_in; 
@@ -101,6 +103,7 @@ module Pitch_ol(clk, start, reset, done, signal, pit_min, pit_max, L_frame, p_ma
 	wire [31:0] Lag_max_L_mac_c;
 	wire [31:0] Lag_max_L_sub_a, Lag_max_L_sub_b;	
 	wire [15:0] Lag_max_shr_a, Lag_max_shr_b;
+	wire [11:0] Lag_max_readAddr;
 //	wire [15:0] Lag_max_shr_in, Lag_max_mult_in;
 	output [15:0] L_msu_a, L_msu_b, L_shr_b;
 	output [31:0] L_msu_c, L_shr_a;
@@ -271,7 +274,7 @@ module Pitch_ol(clk, start, reset, done, signal, pit_min, pit_max, L_frame, p_ma
 	always @(posedge clk)
 		begin
 			if(reset)
-				scaled_signal <= 0;
+				scaled_signal <= SCALED_SIGNAL;
 			else
 				scaled_signal <= next_scaled_signal;
 		end
@@ -404,9 +407,9 @@ module Pitch_ol(clk, start, reset, done, signal, pit_min, pit_max, L_frame, p_ma
 				
 				S3:
 					begin
-						add_a = scal_sig;
-						add_b = i;
-						readAddr = add_in;								//readIn = scal_sig[i]
+//						add_a = scal_sig;
+//						add_b = i;
+//						readAddr = add_in;								//readIn = scal_sig[i]
 						nextstate = S4;
 					end
 					
@@ -423,11 +426,12 @@ module Pitch_ol(clk, start, reset, done, signal, pit_min, pit_max, L_frame, p_ma
 					begin
 						if(overflow == 1)
 							begin
-								if(i < L_frame)
+								if((i[15] == 1) || (i < (L_frame-'d1)))
 									begin
 										shr_a = readIn;
 										shr_b = 'd3;
 										temp_sig = shr_in;						//scal_sig[i] = shr(signal[i], 3);
+										writeOut = shr_in;
 										nextstate = S3;
 									end
 								
@@ -439,11 +443,12 @@ module Pitch_ol(clk, start, reset, done, signal, pit_min, pit_max, L_frame, p_ma
 							begin
 								if(t0 < 'd1048576)
 									begin
-										if(i < L_frame)
+										if((i[15] == 1) || (i < (L_frame-'d1)))
 											begin
 												shl_a = readIn;
 												shl_b = 'd3;
 												temp_sig = shl_in;						//scal_sig[i] = shl(signal[i], 3);
+												writeOut = shl_in;
 												nextstate = S3;
 											end
 										else
@@ -452,15 +457,23 @@ module Pitch_ol(clk, start, reset, done, signal, pit_min, pit_max, L_frame, p_ma
 								
 								else
 									begin
-										if(i < L_frame)
+										if((i[15] == 1) || (i < (L_frame-'d1)))
 											begin
 												temp_sig = readIn;						//scal_sig[i] = signal[i];
+												writeOut = readIn;
 												nextstate = S3;
 											end
 										else
 											nextstate = S6;
 									end
-							end 
+							end
+						 add_a = scal_sig;
+						 add_b = i;
+						 sub_a = i;
+						 sub_b = 16'hffff;
+						 nexti = sub_in;
+  						 writeAddr = add_in;
+						 writeEn = 1;
 					end 
 					
 				S6:
@@ -605,24 +618,25 @@ module Pitch_ol(clk, start, reset, done, signal, pit_min, pit_max, L_frame, p_ma
 						sub_a = mult_in;
 						sub_b = max3;
 						if(sub_in[15] == 1)										//if(sub(mult(max1,THRESHPIT),max3)<0)
-							begin 
 								next_p_max1 = p_max3;								//p_max1 = p_max3;
-								next_done = 'd1;
-								nextstate = S13;
-							end
-						else
-							next_done = 'd1;
-							nextstate = S13;
-					end
-					
-				S13:
-					begin
 						next_done = 'd0;
-						nextstate = INIT;
+						nextstate = S13;
 					end
 
-					
-					
+				S13:
+					begin
+						next_done = 'd1;
+						writeAddr = T_OP;
+						writeOut = p_max1;
+						writeEn = 1;
+						nextstate = S14;
+					end
+
+				S14:
+				begin
+					nextstate = INIT;
+					next_done = 'd0;
+				end
 			endcase
 		end
 endmodule

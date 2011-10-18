@@ -284,7 +284,7 @@ always @(*) begin
 		xRequested = i[7:0];
 		hamIn = i[7:0];
 		multOutA = xIn;
-		multOutB = hamOut;		
+		multOutB = hamOut;
 		writeRequested = {AUTOCORR_Y[11:8],i[7:0]}; 
 		writeEn = 1;
 		memOut = multIn;

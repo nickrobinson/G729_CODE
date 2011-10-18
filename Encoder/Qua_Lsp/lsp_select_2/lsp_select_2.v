@@ -244,17 +244,31 @@ begin
 		
 		STATE_INIT:	//state 0
 		begin
-			count1Reset = 1;
-			tempRReset = 1;
-			tempBReset = 1;
-			tempMinReset = 1;
-			if(start == 0)
-				nextstate = STATE_INIT;
-			else 
+//			count1Reset = 1;
+//			tempRReset = 1;
+//			tempBReset = 1;
+//			tempMinReset = 1;
+//			if(start == 0)
+//				nextstate = STATE_INIT;
+//			else 
+//			begin
+//				nextstate = STATE_LOOP_1_1;
+//				nextcount1 = NC;
+//				count1Ld = 1;
+//			end
+			if(start == 1)
 			begin
 				nextstate = STATE_LOOP_1_1;
 				nextcount1 = NC;
 				count1Ld = 1;
+			end
+			else
+			begin
+				nextstate = STATE_INIT;
+				count1Reset = 1;
+				tempRReset = 1;
+				tempBReset = 1;
+				tempMinReset = 1;
 			end
 		end
 		
@@ -267,7 +281,7 @@ begin
 			end
 			else if(count1 < M)
 			begin
-				memReadAddr = {rbufAddr[11:3], count1[2:0]};
+				memReadAddr = {rbufAddr[11:4], count1[3:0]};
 				nextstate = STATE_LOOP_1_2;
 			end	
 		end
@@ -276,7 +290,7 @@ begin
 		begin
 			nexttempR = memIn[15:0]; 
 			tempRLd = 1;
-			constMemAddr = {lspcb1Addr[11:3], count1[2:0]};	//Modify this to follow the new 12 bit addressing
+			constMemAddr = {lspcb1Addr[11:4], count1[3:0]};	//Modify this to follow the new 12 bit addressing
 			nextstate = STATE_LOOP_1_3;
 		end
 		
@@ -285,7 +299,7 @@ begin
 			subOutA = tempR;
 			subOutB = constMemIn[15:0];
 			memOut[15:0] = subIn;
-			memWriteAddr = {LSP_SELECT_1_BUF[11:3], count1[2:0]};
+			memWriteAddr = {LSP_SELECT_1_BUF[11:4], count1[3:0]};
 			memWriteEn = 1;
 			L_addOutA = count1;
 			L_addOutB = 1;
@@ -331,7 +345,7 @@ begin
 			end
 			else if(count2 < M)
 			begin
-				memReadAddr = {LSP_SELECT_1_BUF[11:3], count2[2:0]};
+				memReadAddr = {LSP_SELECT_1_BUF[11:4], count2[3:0]};
 				nextstate = STATE_LOOP_INNER_2;
 			end	
 		end
@@ -350,7 +364,7 @@ begin
 			subOutB = constMemIn[15:0];
 			nexttemp1 = subIn;
 			temp1Ld = 1;
-			memReadAddr = {wegtAddr[11:3], count2[2:0]};
+			memReadAddr = {wegtAddr[11:4], count2[3:0]};
 			nextstate = STATE_LOOP_INNER_4;
 		end
 		

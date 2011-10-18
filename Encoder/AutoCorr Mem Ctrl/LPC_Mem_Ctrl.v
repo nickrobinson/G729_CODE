@@ -14,7 +14,7 @@
 //						 to create a circular buffer that abstracts address referencing
 //						 from the Pre-processing and Auto-correlation blocks.
 //
-// Dependencies: 	 AutoCorr_mem_1.xco
+// Dependencies: 	 auto_corr_mem_1
 //
 // Revision: 0.02 - Increased memory capacity and subsequent logic.  Added write
 //						  management.
@@ -23,282 +23,197 @@
 //
 //////////////////////////////////////////////////////////////////////////////////
 module LPC_Mem_Ctrl(clock, reset, In_Done, In_Sample, Out_Count, Out_Sample, frame_done);
+   input clock;
+	input reset;
+	input In_Done;
+   input [15:0] In_Sample;
+   input [7:0] Out_Count;
+   output [31:0] Out_Sample;
+	output frame_done;
 
-//Inputs
-input clock;
-input reset;
-input In_Done;
-input [15:0] In_Sample;
-input [7:0] Out_Count;
-
-//Outputs
-output [15:0] Out_Sample;
-output reg frame_done;
-
-//Internal Regs
-reg [3:0] readState,nextreadState;
-reg [3:0] writeState,nextwriteState;
-reg [6:0] count,nextcount;
-reg countLD;
-reg [8:0] readAddr,writeAddr;
-reg writeEn;
-wire [15:0] doutb;
-
-
-parameter INIT = 4'd0;
-parameter S1 = 4'd1;
-parameter S2 = 4'd2;
-parameter S3 = 4'd3;
-parameter S4 = 4'd4;
-parameter S5 = 4'd5;
-parameter S6 = 4'd6;
-parameter S7 = 4'd7;
-
-always @(posedge clock)
-begin
-	if(reset)
-		readState <= INIT;
-	else
-		readState <= nextreadState;
-end
-
-always @(posedge clock)
-begin
-	if(reset)
-		writeState <= INIT;
-	else
-		writeState <= nextwriteState;
-end
+	reg [8:0] nextaddra;
+	reg [7:0] addrb;
+	reg [8:0] nextaddrb;
+	reg [15:0] dina;
+	reg wea;
+	reg web;
+	reg webflag;
+	reg frame_done;
+	reg framedoneflag;
+	reg [5:0] frame_count;
+	reg [5:0] nextframe_count;
+	reg [31:0] dinb;
+	wire [31:0] doutb;
+	 
+	parameter rstate1 = 2'd0;
+	parameter rstate2 = 2'd1;
+	parameter rstate3 = 2'd2;
+	parameter rstate4 = 2'd3;
 	
-always @(posedge clock)
-begin
-	if(reset)
-		count <= 0;
-	else if(countLD)
-		count = nextcount;
-end
-
-//THE MEMORY
-AutoCorr_mem_1 i_AutoCorr_mem_1(
-											.addra(readAddr),
-											.dina(16'd0),
-											.wea(1'd0),
-											.clka(clock),
-											.douta(Out_Sample),
-											.addrb(writeAddr), 
-											.dinb(In_Sample), 
-											.web(writeEn), 
-											.clkb(clock), 
-											.doutb(doutb)
-											);
-
-//writing always block
-always @(*)
-begin
-	writeAddr = 0;
-	writeEn = 0;
-	nextwriteState = writeState;
-	nextcount = count;
-	countLD = 0;
-	frame_done = 0;
-	case(writeState)
-		INIT:
-		begin		
-			if(In_Done)
-			begin
-				if(count == 79)
-				begin
-					writeAddr = (count + 200)%320;
-					writeEn = 1;
-					nextcount = 0;
-					countLD = 1;
-					nextwriteState = S1;
-					frame_done = 1;
-				end
-				
-				else
-				begin
-					writeAddr = (count + 200)%320;
-					writeEn = 1;
-					nextcount = count + 1;
-					countLD = 1;
-					nextwriteState = INIT;
-					if(count == 39)
-						frame_done = 1;
-				end				
-			end
-			else
-				nextwriteState = INIT;
-		end//INIT
-		
-		S1:
-		begin
-			if(In_Done)
-			begin
-				if(count == 79)
-				begin
-					writeAddr = (count + 280)%320;
-					writeEn = 1;
-					nextcount = 0;
-					countLD = 1;
-					nextwriteState = S2;
-					frame_done = 1;
-				end
-				
-				else
-				begin
-					writeAddr = (count + 280)%320;
-					writeEn = 1;
-					nextcount = count + 1;
-					countLD = 1;
-					nextwriteState = S1;
-					if(count == 39)
-						frame_done = 1;
-				end				
-			end
-			else
-				nextwriteState = S1;
-		end//S1
-		
-		S2:
-		begin
-			if(In_Done)
-			begin
-				if(count == 79)
-				begin
-					writeAddr = (count + 40)%320;
-					writeEn = 1;
-					nextcount = 0;
-					countLD = 1;
-					nextwriteState = S3;
-					frame_done = 1;
-				end
-				
-				else
-				begin
-					writeAddr = (count + 40)%320;
-					writeEn = 1;
-					nextcount = count + 1;
-					countLD = 1;
-					nextwriteState = S2;
-					if(count == 39)
-						frame_done = 1;
-				end				
-			end
-			else
-				nextwriteState = S2;
-		end//S2
-		
-		S3:
-		begin
-			if(In_Done)
-			begin
-				if(count == 79)
-				begin
-					writeAddr = (count + 120)%320;
-					writeEn = 1;
-					nextcount = 0;
-					countLD = 1;
-					nextwriteState = INIT;
-					frame_done = 1;
-				end
-				
-				else
-				begin
-					writeAddr = (count + 120)%320;
-					writeEn = 1;
-					nextcount = count + 1;
-					countLD = 1;
-					nextwriteState = S3;
-					if(count == 39)
-						frame_done = 1;
-				end				
-			end
-			else
-				nextwriteState = S3;
-		end//S3		
-	endcase	
-end//always
-
-//read address always block
-always @(*)
-begin
-
-	nextreadState = readState;
-	readAddr = 0;
-	case(readState)
+	parameter start1 = 9'd40;
+	parameter start2 = 9'd120;
+	parameter start3 = 9'd200;
+	parameter start4 = 9'd280;
 	
-		INIT:
-		begin
-			readAddr = (Out_Count + 40)%320;
-			if(Out_Count >= 239)			
-				nextreadState = S1;
+	reg [1:0] rcurrentState;
+	reg [1:0] rnextState;
+	 
+//	Speech_Memory_Controller Speech_Mem (.addra(Out_Count),.dina(16'd0),.wea(1'd0),.clka(clock),
+//		.douta(Out_Sample), .addrb(addrb), .dinb(dinb), .web(webflag), .clkb(clock), .doutb(doutb));
+
+	Speech_Memory_Controller Speech_Mem (.addra(addrb),.dina(dinb),.wea(webflag),.clka(clock),
+		.clkb(clock), .addrb(Out_Count), .doutb(Out_Sample));
+
+	always @ (*)
+	begin
+		if (In_Sample[15] == 1)
+			dinb = {16'hffff, In_Sample};
+		else
+			dinb = {16'd0, In_Sample};
+	end
+	
+//	always@(posedge clock)begin
+//		if(reset) begin
+//			rcurrentState <= rstate1;
+//		end
+//		else begin
+//			rcurrentState <= rnextState;
+//		end
+//	end
+//	
+//	always@(posedge clock)begin
+//		if(reset) begin
+//			addra <= start1;
+//		end
+//		else begin
+//			addra <= nextaddra;
+//		end
+//	end
+//	
+//	always@(*)begin
+//	
+//		rnextState = rcurrentState; 
+//		case(rcurrentState)
+//		
+//			rstate1: begin
+//				nextaddra = start1 + Out_Count;
+//				if(addra == 279) begin
+//					rnextState = rstate2;
+//					nextaddra = start2;
+//				end
+//				else
+//					rnextState = rstate1;
+//			end
+//			
+//			rstate2: begin
+//				if(Out_Count >= 200)
+//					nextaddra = Out_Count - 200;
+//				else if(Out_Count < 200)
+//					nextaddra = start2 + Out_Count;
+//				if(addra == 39) begin
+//					rnextState = rstate3;
+//					nextaddra = start3;
+//				end
+//				else
+//					rnextState = rstate2;
+//			end
+//			
+//			rstate3: begin
+//				if(Out_Count < 120)
+//					nextaddra = start3 + Out_Count;
+//				else
+//					nextaddra = Out_Count - 120;
+//				if(addra == 119) begin
+//					rnextState = rstate4;
+//					nextaddra = start4;
+//				end
+//				else
+//					rnextState = rstate3;
+//			end
+//			
+//			rstate4: begin
+//				if(Out_Count < 40)
+//					nextaddra = start4 + Out_Count;
+//				else
+//					nextaddra = Out_Count - 40;
+//				if(addra == 199) begin
+//					rnextState = rstate1;
+//					nextaddra = start1;
+//				end
+//				else
+//					rnextState = rstate4;
+//			end
+//		endcase
+//	end
+	
+	always@(posedge clock)begin
+		if(reset) begin
+			addrb <= 160;
+		end
+		else begin
+			addrb <= nextaddrb;
+		end
+	end
+	
+	always@(posedge clock)begin
+		if(reset) begin
+			frame_count <= 0;
+		end
+		else begin
+			frame_count <= nextframe_count;
+		end
+	end
+	
+//	always@(posedge clock) begin
+//		if(reset) begin
+//			web = 0;
+//		end
+//		else begin
+//			if(webflag)
+//				web = 1;
+//			else
+//				web = 0;
+//		end
+//	end
+	
+	always@(posedge clock) begin
+		if(reset) begin
+			frame_done = 0;
+		end
+		else begin
+			if(framedoneflag)
+				frame_done = 1;
 			else
-				nextreadState = INIT;
-		end//INIT
-		
-		S1:
-		begin
-			readAddr = (Out_Count + 40)%320;
-			if(Out_Count == 0)
-				nextreadState = S2;
-			else
-				nextreadState = S1;
-		end//S1
-		
-		S2:
-		begin
-			readAddr = (Out_Count + 120)%320;
-			if(Out_Count >= 239)			
-				nextreadState = S3;
-			else
-				nextreadState = S2;
-		end//S2
-		
-		S3:
-		begin
-			readAddr = (Out_Count + 120)%320;
-			if(Out_Count == 0)
-				nextreadState = S4;
-			else
-				nextreadState = S3;
-		end//S3
-		
-		S4:
-		begin
-			readAddr = (Out_Count + 200)%320;
-			if(Out_Count >= 239)			
-				nextreadState = S5;
-			else
-				nextreadState = S4;
-		end//S4
-			
-		S5:
-		begin
-			readAddr = (Out_Count + 200)%320;
-			if(Out_Count == 0)
-				nextreadState = S6;
-			else
-				nextreadState = S5;
-		end//S5
-			
-		S6:
-		begin
-			readAddr = (Out_Count + 280)%320;
-			if(Out_Count >= 239)			
-				nextreadState = S7;
-			else
-				nextreadState = S6;
-		end//S3
-		
-		S7:
-		begin
-			readAddr = (Out_Count + 280)%320;
-			if(Out_Count == 0)
-				nextreadState = INIT;
-			else
-				nextreadState = S7;
-		end//S7
-	endcase
-end//alwways
+				frame_done = 0;
+		end
+	end
+
+	always@(*)begin
+		nextaddrb = addrb;
+		nextframe_count = frame_count;
+		if(In_Done) begin
+			if(addrb == 239) begin
+				nextaddrb = 160;
+				webflag = 1;
+				nextframe_count = frame_count + 1;
+			end
+			else begin
+				nextaddrb = addrb + 8'd1;
+				webflag = 1;
+				nextframe_count = frame_count + 1;
+			end
+			if(nextframe_count == 6'd40) begin
+				nextframe_count = 6'd0;
+				framedoneflag = 1;
+			end
+		end
+	end
+	
+	always@(negedge In_Done)begin
+		framedoneflag = 0;
+		webflag = 0;
+	end
+
+	
+	
 endmodule

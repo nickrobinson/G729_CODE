@@ -45,6 +45,7 @@ module Weight_Az(start, clk, done, reset, A, AP, gammaAddr, readAddr, readIn, wr
 	parameter S4 = 4;
 	parameter S5 = 5;
 	parameter S6 = 6;
+	parameter S7 = 7;
 	
 	parameter m = 10;
 	wire [31:0] readIn;
@@ -158,7 +159,10 @@ module Weight_Az(start, clk, done, reset, A, AP, gammaAddr, readAddr, readIn, wr
 						L_add_a = L_mult_in;
 						L_add_b = 32'h00008000;
 						writeAddr = {AP[11:4], iter[3:0]};
-						writeOut = L_add_in[31:16];
+						if (L_add_in[31] == 1)
+							writeOut = {16'hffff, L_add_in[31:16]};
+						else
+							writeOut = {16'h0000, L_add_in[31:16]};
 						writeEn = 1;
 						nextstate = S5;
 					end
@@ -183,11 +187,20 @@ module Weight_Az(start, clk, done, reset, A, AP, gammaAddr, readAddr, readIn, wr
 						L_add_a = L_mult_in;
 						L_add_b = 32'h00008000;
 						writeAddr = {AP[11:4], 4'd10};
-						writeOut = L_add_in[31:16];
+						if (L_add_in[31] == 1)
+							writeOut = {16'hffff, L_add_in[31:16]};
+						else
+							writeOut = {16'h0000, L_add_in[31:16]};
 						writeEn = 1;
+						nextstate = S7;
+					end
+					
+				S7:
+					begin
 						done = 1;
 						nextstate = INIT;
 					end
+
 				
 			endcase
 		end

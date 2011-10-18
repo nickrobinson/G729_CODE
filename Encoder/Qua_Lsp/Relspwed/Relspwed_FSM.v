@@ -1294,6 +1294,7 @@ module Relspwed_FSM(clk, reset, start, L_addIn, L_subIn, L_multIn, L_macIn, addI
 				memWriteAddr = {code_anaAddr[11:1], 1'd1};
 				memReadAddr = {RELSPWED_CAND[11:1], tempIndex[0]};
 				memOut = temp[15:0] | memIn[15:0];
+				memWriteEn = 1;
 				nextstate = GET_QUANT_1;
 			end
 			

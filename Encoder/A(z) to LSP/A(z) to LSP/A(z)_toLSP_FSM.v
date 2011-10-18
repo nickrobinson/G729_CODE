@@ -1582,7 +1582,11 @@ begin
 	INTERPOLATION6:
 	begin
 		lspWriteRequested = {LSP_NEW[11:4],nfCount[3:0]};
-		lspOut = {16'd0,xInt};
+		if (xInt[15] == 1)
+			lspOut = {16'hffff,xInt[15:0]};
+		else
+			lspOut = {16'h0000,xInt[15:0]};
+//		lspOut = {16'd0,xInt};
 		lspWrite = 1;
 		nextxLow = xInt;
 		xLowld = 1;
@@ -1667,6 +1671,16 @@ begin
 		end///if(pChebpsSel = CHEBPS_10)
 	end//CHEB4
 	
+// if( sub(nf, M) < 0)
+// {
+//    for(i=0; i<M; i++)
+//    {
+//      lsp[i] = old_lsp[i];
+//    }
+//
+// /* printf("\n !!Not 10 roots found in Az_lsp()!!!\n"); */
+// }
+	
 	ROOTS_CHECK:
 	begin
 		subOutA = nfCount;
@@ -1695,16 +1709,21 @@ begin
 			end
 			else if(count < 10)
 			begin
-				lspReadRequested = {LSP_NEW[11:4],count[3:0]};
-				nextstate = ROOTS_CHECK_WAIT2;				
+				addOutA = count;
+				addOutB = 16'd1;
+				nextcount = addIn;
+				countld = 1;
+				nextstate = ROOTS_CHECK;
 			end	
 		end
 	end//ROOTS_CHECK
 	
 	ROOTS_CHECK_WAIT1:
 	begin
-		lspReadRequested = {LSP_OLD[11:4],count[3:0]};	//reading from old LSP
-		lspOut = {16'd0,lspIn};
+		if (lspIn[15] == 1)
+			lspOut = {16'hffff,lspIn};
+		else
+			lspOut = {16'h0000,lspIn};
 		lspWriteRequested = {LSP_NEW[11:4],count[3:0]};
 		lspWrite = 1;
 		addOutA = count;
@@ -1713,19 +1732,6 @@ begin
 		countld = 1;
 		nextstate = ROOTS_CHECK;
 	end//ROOTS_CHECK_WAIT1
-	
-	ROOTS_CHECK_WAIT2:
-	begin
-		lspReadRequested = {LSP_NEW[11:4],count[3:0]};
-		lspOut = {16'd0,lspIn};
-		lspWriteRequested = {LSP_OLD[11:4],count[3:0]};
-		lspWrite = 1;
-		addOutA = count;
-		addOutB = 16'd1;
-		nextcount = addIn;
-		countld = 1;
-		nextstate = ROOTS_CHECK;
-	end//ROOTS_CHECK_WAIT2
 	endcase
 
 end

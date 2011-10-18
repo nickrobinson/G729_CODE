@@ -583,7 +583,10 @@ module Levinson_Durbin_FSM(clock,reset,start,done,abs_in,abs_out,negate_out,nega
 			end
 			
 			state3: begin
-				scratch_mem_out = k[31:16];
+				if (k[31] == 'd1)
+					scratch_mem_out = {16'hffff, k[31:16]};
+				else
+					scratch_mem_out = {16'h0000, k[31:16]};
 				scratch_mem_write_addr = {LEVINSON_DURBIN_RC[11:4],4'd0};
 				scratch_mem_write_en = 1'd1;
 				nextstate = state4;
@@ -686,7 +689,7 @@ module Levinson_Durbin_FSM(clock,reset,start,done,abs_in,abs_out,negate_out,nega
 			state10: begin
 				if(iterator1 >= 'd11) begin
 					next_iterator1 = 2;
-					scratch_mem_out = 'd4096;
+					scratch_mem_out = {19'h00000, 13'd4096};
 					scratch_mem_write_addr = {A_T_HIGH[11:4],4'd0};
 					scratch_mem_write_en = 1'd1;
 					nextstate = 29;
@@ -848,7 +851,10 @@ module Levinson_Durbin_FSM(clock,reset,start,done,abs_in,abs_out,negate_out,nega
 			state16_5: begin
 				sub_outa = iterator1;
 				sub_outb = 1;
-				scratch_mem_out = k[31:16];
+				if (k[31] == 'd1)
+					scratch_mem_out = {16'hffff, k[31:16]};
+				else
+					scratch_mem_out = {16'h0000, k[31:16]};
 				scratch_mem_write_addr = {LEVINSON_DURBIN_RC[11:4],sub_in[3:0]};
 				scratch_mem_write_en = 1'd1;
 				nextstate = state17;
@@ -881,7 +887,10 @@ module Levinson_Durbin_FSM(clock,reset,start,done,abs_in,abs_out,negate_out,nega
 			waitstate5:
 			begin
 				scratch_mem_read_addr = {LEVINSON_DURBIN_AOLD[11:4], iterator4[3:0]};
-				scratch_mem_out = scratch_mem_in;
+				if (scratch_mem_in[15] == 'd1)
+					scratch_mem_out = {16'hffff, scratch_mem_in[31:16]};
+				else
+					scratch_mem_out = {16'h0000, scratch_mem_in[31:16]};
 				scratch_mem_write_addr = {A_T_HIGH[11:4], iterator4[3:0]};
 				scratch_mem_write_en = 1'd1;				
 				sub_outa = add_in;
@@ -898,7 +907,10 @@ module Levinson_Durbin_FSM(clock,reset,start,done,abs_in,abs_out,negate_out,nega
 			waitstate0:
 			begin
 				scratch_mem_read_addr = {LEVINSON_DURBIN_RCOLD[11:4], 4'd0};
-				scratch_mem_out = scratch_mem_in;
+				if (scratch_mem_in[15] == 'd1)
+					scratch_mem_out = {16'hffff, scratch_mem_in[31:16]};
+				else
+					scratch_mem_out = {16'h0000, scratch_mem_in[31:16]};
 				scratch_mem_write_addr = {LEVINSON_DURBIN_RC[11:4], 4'd0};
 				scratch_mem_write_en = 1'd1;
 				nextstate = state20;
@@ -912,7 +924,10 @@ module Levinson_Durbin_FSM(clock,reset,start,done,abs_in,abs_out,negate_out,nega
 			waitstate6:
 			begin
 				scratch_mem_read_addr = {LEVINSON_DURBIN_RCOLD[11:4], 4'd1};
-				scratch_mem_out = scratch_mem_in;
+				if (scratch_mem_in[15] == 'd1)
+					scratch_mem_out = {16'hffff, scratch_mem_in[31:16]};
+				else
+					scratch_mem_out = {16'h0000, scratch_mem_in[31:16]};
 				scratch_mem_write_addr = {LEVINSON_DURBIN_RC[11:4], 4'd1};
 				scratch_mem_write_en = 1'd1;
 				done = 1'd1;
@@ -1121,7 +1136,10 @@ module Levinson_Durbin_FSM(clock,reset,start,done,abs_in,abs_out,negate_out,nega
 			begin
 				next_iterator6 = 'd1;
 				scratch_mem_read_addr = {LEVINSON_DURBIN_RC[11:4],4'd0};
-				scratch_mem_out = scratch_mem_in;
+				if (scratch_mem_in[15] == 'd1)
+					scratch_mem_out = {16'hffff, scratch_mem_in[31:16]};
+				else
+					scratch_mem_out = {16'h0000, scratch_mem_in[31:16]};
 				scratch_mem_write_addr = {LEVINSON_DURBIN_RCOLD[11:4],4'd0};
 				scratch_mem_write_en = 1'd1;
 				nextstate = state32;
@@ -1143,7 +1161,11 @@ module Levinson_Durbin_FSM(clock,reset,start,done,abs_in,abs_out,negate_out,nega
 					L_add_outa = L_shl_in;
 					L_add_outb = 32'h0000_8000;
 					next_temp2 = L_add_in;
-					scratch_mem_out = L_add_in[31:16];					
+					scratch_mem_out = L_add_in[31:16];	
+					if (L_add_in[31] == 'd1)
+						scratch_mem_out = {16'hffff, L_add_in[31:16]};
+					else
+						scratch_mem_out = {16'h0000, L_add_in[31:16]};
 					scratch_mem_write_addr = {A_T_HIGH[11:4],iterator6[3:0]};
 					scratch_mem_write_en = 1'd1;
 					nextstate = state31;
@@ -1173,7 +1195,10 @@ module Levinson_Durbin_FSM(clock,reset,start,done,abs_in,abs_out,negate_out,nega
 			waitstate4:
 			begin
 				scratch_mem_read_addr = {LEVINSON_DURBIN_RC[11:4],4'd1};
-				scratch_mem_out = scratch_mem_in;
+				if (scratch_mem_in[15] == 'd1)
+					scratch_mem_out = {16'hffff, scratch_mem_in[31:16]};
+				else
+					scratch_mem_out = {16'h0000, scratch_mem_in[31:16]};
 				scratch_mem_write_addr = {LEVINSON_DURBIN_RCOLD[11:4],4'd1};
 				scratch_mem_write_en = 1'd1;
 				done = 1'd1;

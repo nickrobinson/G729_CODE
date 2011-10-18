@@ -19,8 +19,11 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module G729_FSM(clock, reset,start,divErr,frame_done,autocorrDone,lagDone,levinsonDone,AzDone,
-					 mathMuxSel,autocorrReady,lagReady,levinsonReady,AzReady,done);
+module G729_FSM(clock,reset,start,divErr,frame_done,autocorrDone,lagDone,levinsonDone,AzDone,Qua_lspDone,
+				Int_lpcDone,Int_qlpcDone,Math1Done,perc_varDone,Weight_AzDone,ResiduDone,Syn_filtDone,Pitch_olDone,Math2Done,Math3Done,i_subfr,mathMuxSel,autocorrReady,lagReady,
+				levinsonReady, AzReady,Qua_lspReady,Int_lpcReady,Int_qlpcReady,Math1Ready,perc_varReady,Weight_AzReady,ResiduReady,Syn_filtReady,Pitch_olReady,Math2Ready,Math3Ready,LDk,LDi_subfr,
+				LDi_gamma,LDT_op,LDT0,LDT0_min,LDT0_max,LDT0_frac,LDgain_pit,LDgain_code,LDindex,LDtemp,LDA_Addr,LDAq_Addr,resetk,reseti_subfr,reseti_gamma,resetT_op,resetT0,resetT0_min,
+				resetT0_max,resetT0_frac,resetgain_pit,resetgain_code,resetindex,resettemp,resetA_Addr,resetAq_Addr,LDL_temp,resetL_temp,done);
     
 	 //inputs
 	 input clock;
@@ -32,29 +35,89 @@ module G729_FSM(clock, reset,start,divErr,frame_done,autocorrDone,lagDone,levins
 	 input lagDone;
 	 input levinsonDone;
 	 input AzDone;
+	 input Qua_lspDone;
+	 input Int_lpcDone;
+ 	 input Int_qlpcDone;
+	 input Math1Done;
+	 input perc_varDone;
+	 input Weight_AzDone;
+	 input ResiduDone;
+	 input Syn_filtDone;
+	 input Pitch_olDone;
+	 input Math2Done;
+	 input Math3Done;
+	 
+	 input [15:0] i_subfr;
 	 
 	 ///outputs
+	 output reg LDk, LDi_subfr, LDi_gamma, LDT_op, LDT0, LDT0_min, LDT0_max, LDT0_frac, LDgain_pit, LDgain_code, LDindex, LDtemp, LDA_Addr, LDAq_Addr;
+	 output reg resetk, reseti_subfr, reseti_gamma, resetT_op, resetT0, resetT0_min, resetT0_max, resetT0_frac, resetgain_pit, resetgain_code, resetindex, resettemp, resetA_Addr, resetAq_Addr;
+    output reg LDL_temp;
+    output reg resetL_temp;
+	 
 	 output reg [5:0] mathMuxSel;
 	 output reg autocorrReady;
 	 output reg lagReady;
 	 output reg levinsonReady;
 	 output reg AzReady;
+	 output reg Qua_lspReady;
+	 output reg Int_lpcReady;
+	 output reg Int_qlpcReady;
+	 output reg Math1Ready;
+	 output reg perc_varReady;
+	 output reg Weight_AzReady;
+	 output reg ResiduReady;
+	 output reg Syn_filtReady;
+	 output reg Pitch_olReady;
+	 output reg Math2Ready;
+	 output reg Math3Ready;
 	 output reg done;
+	 
+	 parameter L_FRAME = 'd80;
 	 
 	 parameter INIT = 3'd0;
 	 parameter S0 = 3'd1;
 	 parameter S1 = 3'd2;
-	 parameter SUB_MODULE_START = 5'd0;
-	 parameter SUB_MODULE_AUTOCORR_READY = 5'd1;
-	 parameter SUB_MODULE_AUTOCORR_DONE = 5'd2;
-	 parameter SUB_MODULE_LAG_DONE = 5'd3;
-	 parameter SUB_MODULE_LEVINSON_DONE = 5'd4;
-	 parameter SUB_MODULE_AZ_DONE = 5'd5;
-	 
+	 parameter SUB_MODULE_START = 6'd0;
+	 parameter SUB_MODULE_AUTOCORR_READY = 6'd1;
+	 parameter SUB_MODULE_AUTOCORR_DONE = 6'd2;
+	 parameter SUB_MODULE_LAG_DONE = 6'd3;
+	 parameter SUB_MODULE_LEVINSON_DONE = 6'd4;
+	 parameter SUB_MODULE_AZ_DONE = 6'd5;
+	 parameter SUB_MODULE_QUA_LSP_DONE = 6'd6;
+	 parameter SUB_MODULE_INT_LPC_DONE = 6'd7;
+ 	 parameter SUB_MODULE_INT_QLPC_DONE = 6'd8;
+	 parameter SUB_MODULE_MATH1_DONE = 6'd9;
+	 parameter SUB_MODULE_PERC_VAR_DONE = 6'd10;
+	 parameter SUB_MODULE_WEIGHT_AZ1_DONE = 6'd11;
+	 parameter SUB_MODULE_WEIGHT_AZ_WAIT1 = 6'd12;
+	 parameter SUB_MODULE_WEIGHT_AZ2_DONE = 6'd13;
+	 parameter SUB_MODULE_RESIDU1_DONE = 6'd14;
+	 parameter SUB_MODULE_SYN_FILT1_DONE = 6'd15;
+	 parameter SUB_MODULE_WEIGHT_AZ3_DONE = 6'd16;
+	 parameter SUB_MODULE_WEIGHT_AZ_WAIT2 = 6'd17;
+	 parameter SUB_MODULE_WEIGHT_AZ4_DONE = 6'd18;
+	 parameter SUB_MODULE_RESIDU2_DONE = 6'd19;
+	 parameter SUB_MODULE_SYN_FILT2_DONE = 6'd20;
+	 parameter SUB_MODULE_PITCH_OL_DONE = 6'd21;
+	 parameter SUB_MODULE_MATH2_DONE = 6'd22;
+	 parameter TL_FOR_LOOP = 6'd23;
+	 parameter SUB_MODULE_WEIGHT_AZ5_DONE = 6'd24;
+	 parameter SUB_MODULE_WEIGHT_AZ_WAIT3 = 6'd25;
+	 parameter SUB_MODULE_WEIGHT_AZ6_DONE = 6'd26;
+	 parameter SUB_MODULE_MATH3_DONE = 6'd27;
+	 parameter SUB_MODULE_SYN_FILT3_DONE = 6'd28;
+	 parameter SUB_MODULE_SYN_FILT_WAIT = 6'd29;
+	 parameter SUB_MODULE_SYN_FILT4_DONE = 6'd30;
+
+
+	 parameter TL_FOR_LOOP_INC = 6'd62;
+	 parameter TL_DONE = 6'd63;
+
 	 //working regs
 	 reg [2:0] frameDoneState, nextFrameDoneState;
 	 reg [2:0] frameDoneCount,frameDoneCountLoad,frameDoneCountReset;	
-	 reg [4:0] subModuleState,nextsubModuleState;
+	 reg [5:0] subModuleState,nextsubModuleState;
 	 
 	//autocorr ready state machine flop
 		always @(posedge clock)
@@ -89,94 +152,473 @@ module G729_FSM(clock, reset,start,divErr,frame_done,autocorrDone,lagDone,levins
 	 //Sub-Module state machine
 	 always@(*)
 	 begin
-	 
+	   LDk = 0;
+		LDi_subfr = 0;
+		LDi_gamma = 0;
+		LDT_op = 0;
+		LDT0 = 0;
+		LDT0_min = 0;
+		LDT0_max = 0;
+		LDT0_frac = 0;
+		LDgain_pit = 0;
+		LDgain_code = 0;
+		LDindex = 0;
+		LDtemp = 0;
+	   LDL_temp = 0;
+		LDA_Addr = 0;
+		LDAq_Addr = 0;
+		resetk = 0; 
+		reseti_subfr = 0;
+		reseti_gamma = 0;
+		resetT_op = 0;
+		resetT0 = 0;
+		resetT0_min = 0;
+		resetT0_max = 0; 
+		resetT0_frac = 0;
+		resetgain_pit = 0;
+		resetgain_code = 0;
+		resetindex = 0;
+		resettemp = 0;
+		resetL_temp = 0;
+		resetA_Addr = 0;
+		resetAq_Addr = 0;
+
 		mathMuxSel = 0;
 		done = 0;
 		nextsubModuleState = subModuleState;
 		lagReady = 0;
 		levinsonReady = 0;
 		AzReady = 0;
+		Qua_lspReady = 0;
+		Int_lpcReady = 0;
+		Int_qlpcReady = 0;
+		Math1Ready = 0;
+		perc_varReady = 0;
+		Weight_AzReady = 0;
+		ResiduReady = 0;
+		Syn_filtReady = 0;
+		Pitch_olReady = 0;
+		Math2Ready = 0;
+		Math3Ready = 0;
 		
 		if(divErr == 1)
 			nextsubModuleState = SUB_MODULE_START;
 			
 		case(subModuleState)
 		
-		SUB_MODULE_START:
-		begin
-			if(start == 0)
-				nextsubModuleState = SUB_MODULE_START;
-			else if(start == 1)
-				nextsubModuleState = SUB_MODULE_AUTOCORR_READY;
-		end	//SUB_MODULE_START
-		
-		SUB_MODULE_AUTOCORR_READY:
-		begin
-			if(autocorrReady == 0)
-				nextsubModuleState = SUB_MODULE_AUTOCORR_READY;
-			else if(autocorrReady == 1)
+			SUB_MODULE_START:
 			begin
-				nextsubModuleState = SUB_MODULE_AUTOCORR_DONE;
+				if(start == 0)
+				begin
+					nextsubModuleState = SUB_MODULE_START;
+					resetk = 1; 
+					reseti_subfr = 1;
+					reseti_gamma = 1;
+					resetT_op = 1;
+					resetT0 = 1;
+					resetT0_min = 1;
+					resetT0_max = 1; 
+					resetT0_frac = 1;
+					resetgain_pit = 1;
+					resetgain_code = 1;
+					resetindex = 1;
+					resettemp = 1;
+					resetL_temp = 1;
+					resetA_Addr = 1;
+					resetAq_Addr = 1;
+				end	
+				else if(start == 1)
+					nextsubModuleState = SUB_MODULE_AUTOCORR_READY;
+			end	//SUB_MODULE_START
+			
+			SUB_MODULE_AUTOCORR_READY:
+			begin
+				if(autocorrReady == 0)
+					nextsubModuleState = SUB_MODULE_AUTOCORR_READY;
+				else if(autocorrReady == 1)
+				begin
+					nextsubModuleState = SUB_MODULE_AUTOCORR_DONE;
+					mathMuxSel = 6'd0;
+				end
+			end//SUB_MODULE_AUTOCORR_READY
+			
+			SUB_MODULE_AUTOCORR_DONE:
+			begin
 				mathMuxSel = 6'd0;
-			end
-		end//SUB_MODULE_AUTOCORR_READY
-		
-		SUB_MODULE_AUTOCORR_DONE:
-		begin
-			mathMuxSel = 6'd0;
-			if(autocorrDone == 0)
-				nextsubModuleState = SUB_MODULE_AUTOCORR_DONE;
-			else if(autocorrDone == 1)
-			begin	
-				
+				if(autocorrDone == 0)
+					nextsubModuleState = SUB_MODULE_AUTOCORR_DONE;
+				else if(autocorrDone == 1)
+				begin	
+					
+					mathMuxSel = 6'd1;
+					lagReady = 1;
+					nextsubModuleState = SUB_MODULE_LAG_DONE; 
+				end				
+			end//SUB_MODULE_AUTOCORR_DONE
+			
+			SUB_MODULE_LAG_DONE:
+			begin
 				mathMuxSel = 6'd1;
-				lagReady = 1;
-				nextsubModuleState = SUB_MODULE_LAG_DONE; 
-			end				
-		end//SUB_MODULE_AUTOCORR_DONE
-		
-		SUB_MODULE_LAG_DONE:
-		begin
-			mathMuxSel = 6'd1;
-			if(lagDone == 0)
-				nextsubModuleState = SUB_MODULE_LAG_DONE;
-			else if(lagDone == 1)
-			begin				
+				if(lagDone == 0)
+					nextsubModuleState = SUB_MODULE_LAG_DONE;
+				else if(lagDone == 1)
+				begin				
+					mathMuxSel = 6'd2;
+					nextsubModuleState = SUB_MODULE_LEVINSON_DONE;
+					levinsonReady = 1;
+				end				
+			end//SUB_MODULE_AUTOCORR_DONE
+			
+			SUB_MODULE_LEVINSON_DONE:
+			begin
 				mathMuxSel = 6'd2;
-				nextsubModuleState = SUB_MODULE_LEVINSON_DONE;
-				levinsonReady = 1;
-			end				
-		end//SUB_MODULE_AUTOCORR_DONE
-		
-		SUB_MODULE_LEVINSON_DONE:
-		begin
-			mathMuxSel = 6'd2;
-			if(levinsonDone == 0)
-				nextsubModuleState = SUB_MODULE_LEVINSON_DONE;
-			else if(levinsonDone == 1)
-			begin					
+				if(levinsonDone == 0)
+					nextsubModuleState = SUB_MODULE_LEVINSON_DONE;
+				else if(levinsonDone == 1)
+				begin					
+					mathMuxSel = 6'd3;
+					nextsubModuleState = SUB_MODULE_AZ_DONE;
+					AzReady = 1;		
+				end				
+			end//SUB_MODULE_LEVINSON_DONE
+			
+			SUB_MODULE_AZ_DONE:
+			begin
 				mathMuxSel = 6'd3;
-				nextsubModuleState = SUB_MODULE_AZ_DONE;
-				AzReady = 1;		
-			end				
-		end//SUB_MODULE_LEVINSON_DONE
-		
-		SUB_MODULE_AZ_DONE:
-		begin
-			mathMuxSel = 6'd3;
-			if(AzDone == 0)
-				nextsubModuleState = SUB_MODULE_AZ_DONE;
-			else if(AzDone == 1)
+				if(AzDone == 0)
+					nextsubModuleState = SUB_MODULE_AZ_DONE;
+				else if(AzDone == 1)
+				begin
+					mathMuxSel = 6'd4;
+					nextsubModuleState = SUB_MODULE_QUA_LSP_DONE;
+					Qua_lspReady = 1;
+				end				
+			end//SUB_MODULE_AZ_DONE		
+			
+			SUB_MODULE_QUA_LSP_DONE:
 			begin
 				mathMuxSel = 6'd4;
-				nextsubModuleState = SUB_MODULE_START;
-				done = 1;
-			end				
-		end//SUB_MODULE_LEVINSON_DONE		
+				if(Qua_lspDone == 0)
+					nextsubModuleState = SUB_MODULE_QUA_LSP_DONE;
+				else if(Qua_lspDone == 1)
+				begin
+					mathMuxSel = 6'd5;
+					nextsubModuleState = SUB_MODULE_INT_LPC_DONE;
+					Int_lpcReady = 1;
+				end				
+			end//SUB_MODULE_QUA_LSP_DONE		
+			
+			SUB_MODULE_INT_LPC_DONE:
+			begin
+				mathMuxSel = 6'd5;
+				if(Int_lpcDone == 0)
+					nextsubModuleState = SUB_MODULE_INT_LPC_DONE;
+				else if(Int_lpcDone == 1)
+				begin
+					mathMuxSel = 6'd6;
+					nextsubModuleState = SUB_MODULE_INT_QLPC_DONE;
+					Int_qlpcReady = 1;
+				end				
+			end//SUB_MODULE_INT_LPC_DONE		
+			
+			SUB_MODULE_INT_QLPC_DONE:
+			begin
+				mathMuxSel = 6'd6;
+				if(Int_qlpcDone == 0)
+					nextsubModuleState = SUB_MODULE_INT_QLPC_DONE;
+				else if(Int_qlpcDone == 1)
+				begin
+					mathMuxSel = 6'd7;
+					nextsubModuleState = SUB_MODULE_MATH1_DONE;
+					Math1Ready = 1;
+				end				
+			end//SUB_MODULE_INT_QLPC_DONE		
+			
+			SUB_MODULE_MATH1_DONE:
+			begin
+				mathMuxSel = 6'd7;
+				if(Math1Done == 0)
+					nextsubModuleState = SUB_MODULE_MATH1_DONE;
+				else if(Math1Done == 1)
+				begin
+					mathMuxSel = 6'd8;
+					nextsubModuleState = SUB_MODULE_PERC_VAR_DONE;
+					perc_varReady = 1;
+				end				
+			end//SUB_MODULE_MATH1_DONE		
+
+			SUB_MODULE_PERC_VAR_DONE:
+			begin
+				mathMuxSel = 6'd8;
+				if(perc_varDone == 0)
+					nextsubModuleState = SUB_MODULE_PERC_VAR_DONE;
+				else if(perc_varDone == 1)
+				begin
+					mathMuxSel = 6'd9;
+					nextsubModuleState = SUB_MODULE_WEIGHT_AZ1_DONE;
+					Weight_AzReady = 1;
+				end				
+			end//SUB_MODULE_PERC_VAR_DONE		
+
+			SUB_MODULE_WEIGHT_AZ1_DONE:
+			begin
+				mathMuxSel = 6'd9;
+				if(Weight_AzDone == 0)
+					nextsubModuleState = SUB_MODULE_WEIGHT_AZ1_DONE;
+				else if(Weight_AzDone == 1)
+				begin
+					nextsubModuleState = SUB_MODULE_WEIGHT_AZ_WAIT1;
+				end				
+			end//SUB_MODULE_WEIGHT_AZ1_DONE		
+
+			SUB_MODULE_WEIGHT_AZ_WAIT1:
+			begin
+					mathMuxSel = 6'd10;
+					nextsubModuleState = SUB_MODULE_WEIGHT_AZ2_DONE;
+					Weight_AzReady = 1;
+			end//SUB_MODULE_WEIGHT_AZ_WAIT1	
+
+			SUB_MODULE_WEIGHT_AZ2_DONE:
+			begin
+				mathMuxSel = 6'd10;
+				if(Weight_AzDone == 0)
+					nextsubModuleState = SUB_MODULE_WEIGHT_AZ2_DONE;
+				else if(Weight_AzDone == 1)
+				begin
+					mathMuxSel = 6'd11;
+					nextsubModuleState = SUB_MODULE_RESIDU1_DONE;
+					ResiduReady = 1;
+				end				
+			end//SUB_MODULE_WEIGHT_AZ2_DONE		
+
+			SUB_MODULE_RESIDU1_DONE:
+			begin
+				mathMuxSel = 6'd11;
+				if(ResiduDone == 0)
+					nextsubModuleState = SUB_MODULE_RESIDU1_DONE;
+				else if(ResiduDone == 1)
+				begin
+					mathMuxSel = 6'd12;
+					nextsubModuleState = SUB_MODULE_SYN_FILT1_DONE;
+					Syn_filtReady = 1;
+				end				
+			end//SUB_MODULE_RESIDU1_DONE		
 		
+			SUB_MODULE_SYN_FILT1_DONE:
+			begin
+				mathMuxSel = 6'd12;
+				if(Syn_filtDone == 0)
+					nextsubModuleState = SUB_MODULE_SYN_FILT1_DONE;
+				else if(Syn_filtDone == 1)
+				begin
+					mathMuxSel = 6'd13;
+					nextsubModuleState = SUB_MODULE_WEIGHT_AZ3_DONE;
+					Weight_AzReady = 1;
+				end				
+			end//SUB_MODULE_SYN_FILT1_DONE		
+
+			SUB_MODULE_WEIGHT_AZ3_DONE:
+			begin
+				mathMuxSel = 6'd13;
+				if(Weight_AzDone == 0)
+					nextsubModuleState = SUB_MODULE_WEIGHT_AZ3_DONE;
+				else if(Weight_AzDone == 1)
+				begin
+					nextsubModuleState = SUB_MODULE_WEIGHT_AZ_WAIT2;
+				end				
+			end//SUB_MODULE_WEIGHT_AZ3_DONE		
+
+			SUB_MODULE_WEIGHT_AZ_WAIT2:
+			begin
+					mathMuxSel = 6'd14;
+					nextsubModuleState = SUB_MODULE_WEIGHT_AZ4_DONE;
+					Weight_AzReady = 1;
+			end//SUB_MODULE_WEIGHT_AZ_WAIT2		
+
+			SUB_MODULE_WEIGHT_AZ4_DONE:
+			begin
+				mathMuxSel = 6'd14;
+				if(Weight_AzDone == 0)
+					nextsubModuleState = SUB_MODULE_WEIGHT_AZ4_DONE;
+				else if(Weight_AzDone == 1)
+				begin
+					mathMuxSel = 6'd15;
+					nextsubModuleState = SUB_MODULE_RESIDU2_DONE;
+					ResiduReady = 1;
+				end				
+			end//SUB_MODULE_WEIGHT_AZ4_DONE		
+
+			SUB_MODULE_RESIDU2_DONE:
+			begin
+				mathMuxSel = 6'd15;
+				if(ResiduDone == 0)
+					nextsubModuleState = SUB_MODULE_RESIDU2_DONE;
+				else if(ResiduDone == 1)
+				begin
+					mathMuxSel = 6'd16;
+					nextsubModuleState = SUB_MODULE_SYN_FILT2_DONE;
+					Syn_filtReady = 1;
+				end				
+			end//SUB_MODULE_RESIDU2_DONE		
+
+			SUB_MODULE_SYN_FILT2_DONE:
+			begin
+				mathMuxSel = 6'd16;
+				if(Syn_filtDone == 0)
+					nextsubModuleState = SUB_MODULE_SYN_FILT2_DONE;
+				else if(Syn_filtDone == 1)
+				begin
+					mathMuxSel = 6'd17;
+					nextsubModuleState = SUB_MODULE_PITCH_OL_DONE;
+					Pitch_olReady = 1;
+				end				
+			end//SUB_MODULE_SYN_FILT2_DONE		
+	
+			SUB_MODULE_PITCH_OL_DONE:
+			begin
+				mathMuxSel = 6'd17;
+				if(Pitch_olDone == 0)
+					nextsubModuleState = SUB_MODULE_PITCH_OL_DONE;
+				else if(Pitch_olDone == 1)
+				begin
+					LDT_op = 1;
+					mathMuxSel = 6'd18;
+					nextsubModuleState = SUB_MODULE_MATH2_DONE;
+					Math2Ready = 1;
+				end				
+			end//SUB_MODULE_PITCH_OL_DONE	
+			
+			SUB_MODULE_MATH2_DONE:
+			begin
+				mathMuxSel = 6'd18;
+				if(Math2Done == 0)
+					nextsubModuleState = SUB_MODULE_MATH2_DONE;
+				else if(Math2Done == 1)
+				begin
+					LDT0_min = 1;
+					LDT0_max = 1;
+					LDA_Addr = 1;
+					LDAq_Addr = 1;
+					reseti_gamma = 1;
+					mathMuxSel = 6'd19;
+					nextsubModuleState = TL_FOR_LOOP;
+				end				
+			end//SUB_MODULE_MATH2_DONE		
+
+			TL_FOR_LOOP:
+			begin
+				if(i_subfr < L_FRAME)
+				begin
+					nextsubModuleState = SUB_MODULE_WEIGHT_AZ5_DONE;
+					mathMuxSel = 6'd19;
+					Weight_AzReady = 1;
+				end
+				else
+				begin
+					reseti_subfr = 1;
+					reseti_gamma = 1;
+					nextsubModuleState = TL_DONE;
+				end
+			end//TL_FOR_LOOP		
+			
+			SUB_MODULE_WEIGHT_AZ5_DONE:
+			begin
+				mathMuxSel = 6'd19;
+				if(Weight_AzDone == 0)
+					nextsubModuleState = SUB_MODULE_WEIGHT_AZ5_DONE;
+				else if(Weight_AzDone == 1)
+				begin
+					nextsubModuleState = SUB_MODULE_WEIGHT_AZ_WAIT3;
+				end				
+			end//SUB_MODULE_WEIGHT_AZ5_DONE		
+
+			SUB_MODULE_WEIGHT_AZ_WAIT3:
+			begin
+					mathMuxSel = 6'd20;
+					nextsubModuleState = SUB_MODULE_WEIGHT_AZ6_DONE;
+					Weight_AzReady = 1;
+			end//SUB_MODULE_WEIGHT_AZ_WAIT3		
+
+			SUB_MODULE_WEIGHT_AZ6_DONE:
+			begin
+				mathMuxSel = 6'd20;
+				if(Weight_AzDone == 0)
+					nextsubModuleState = SUB_MODULE_WEIGHT_AZ6_DONE;
+				else if(Weight_AzDone == 1)
+				begin
+					mathMuxSel = 6'd21;
+					nextsubModuleState = SUB_MODULE_MATH3_DONE;
+					Math3Ready = 1;
+				end				
+			end//SUB_MODULE_WEIGHT_AZ6_DONE		
+
+			SUB_MODULE_MATH3_DONE:
+			begin
+				mathMuxSel = 6'd21;
+				if(Math3Done == 0)
+					nextsubModuleState = SUB_MODULE_MATH3_DONE;
+				else if(Math3Done == 1)
+				begin
+					LDi_gamma = 1;
+					mathMuxSel = 6'd22;
+					nextsubModuleState = SUB_MODULE_SYN_FILT3_DONE;
+					Syn_filtReady = 1;
+				end				
+			end//SUB_MODULE_MATH3_DONE		
+
+			SUB_MODULE_SYN_FILT3_DONE:
+			begin
+				mathMuxSel = 6'd22;
+				if(Syn_filtDone == 0)
+					nextsubModuleState = SUB_MODULE_SYN_FILT3_DONE;
+				else if(Syn_filtDone == 1)
+				begin
+					nextsubModuleState = SUB_MODULE_SYN_FILT_WAIT;
+				end				
+			end//SUB_MODULE_SYN_FILT3_DONE		
+			
+			SUB_MODULE_SYN_FILT_WAIT:
+			begin
+					mathMuxSel = 6'd23;
+					nextsubModuleState = SUB_MODULE_SYN_FILT4_DONE;
+					Syn_filtReady = 1;
+			end//SUB_MODULE_SYN_FILT_WAIT		
+
+			SUB_MODULE_SYN_FILT4_DONE:
+			begin
+				mathMuxSel = 6'd23;
+				if(Syn_filtDone == 0)
+					nextsubModuleState = SUB_MODULE_SYN_FILT4_DONE;
+				else if(Syn_filtDone == 1)
+				begin
+					mathMuxSel = 6'd24;
+					nextsubModuleState = TL_FOR_LOOP_INC;
+				end				
+			end//SUB_MODULE_SYN_FILT4_DONE		
+
+
+
+
+
+
+
+
+
+
+			TL_FOR_LOOP_INC:
+			begin
+					LDi_subfr = 1; 
+					nextsubModuleState = TL_FOR_LOOP;
+			end//TL_FOR_LOOP_INC		
+
+			TL_DONE:
+			begin
+					done = 1;
+					nextsubModuleState = SUB_MODULE_START;
+			end//TL_DONE		
+
 		endcase
-		
-	 end////Sub-Module state machine
+	end//Sub-Module state machine
 	 
 	 //Autocorr Ready state machine
 	 always @(*)

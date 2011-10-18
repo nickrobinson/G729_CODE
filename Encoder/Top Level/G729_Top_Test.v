@@ -25,33 +25,224 @@
 
 module G729_Top_Test_v;
 
+	`include "constants_param_list.v"
+	`include "paramList.v"
+	
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//		Top Level Input/Output
+	//
+	//////////////////////////////////////////////////////////////////////////////////////////////
+
 	// Inputs
 	reg clock;
 	reg reset;
 	reg start;
 	reg [15:0] in;
 	reg [11:0] outBufAddr;
+	reg testdone;
 	
 	// Outputs	
 	wire [31:0] out;
 	wire done;
 	
 	
-	//Working regs
-	reg [15:0] samplesmem [0:9999];
-	reg [31:0] outputmem[0:9999];
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//		Working regs
+	//
+	//////////////////////////////////////////////////////////////////////////////////////////////
+
+	//Input Samples
+	reg [15:0] samplesmem [0:10239];
 	
+	//Pre-Processor
+	reg [31:0] Pre_Process_new_speech [0:10239];
+	
+	//Autocorellation
+	reg [31:0] Autocorr_r [0:10239];
+	
+	//Lag-Window
+	reg [31:0] Lag_window_r [0:10239];
+	
+	//Levinson-Durbin
+	reg [31:0] Levinson_A_t_MP1 [0:10239];
+	reg [31:0] Levinson_rc [0:10239];
+	
+	//A(Z) to LSP
+	reg [31:0] Az_lsp_lsp_new [0:10239];
+	
+	//Qua_lsp
+	reg [31:0] Qua_lsp_lsp_new_q [0:9999];
+	reg [31:0] Qua_lsp_ana [0:9999];
+
+	//Int_lpc
+	reg [31:0] Int_lpc_lsf_int [0:4999];
+	reg [31:0] Int_lpc_lsf_new [0:4999];
+	reg [31:0] Int_lpc_A_t [0:4999];
+	
+	//Int_qlpc
+	reg [31:0] Int_qlpc_Aq_t [0:4999];
+	
+	//TL_Math1
+	reg [31:0] TL_Math1_lsp_old [0:4999];
+	reg [31:0] TL_Math1_lsp_old_q [0:4999];
+
+	//perc_var
+	reg [31:0] perc_var_gamma1 [0:4999];
+	reg [31:0] perc_var_gamma2 [0:4999];
+	reg [31:0] perc_var_lsf_int [0:4999];
+	reg [31:0] perc_var_lsf_new [0:4999];
+
+	//Weight_Az1
+	reg [31:0] Weight_Az1_Ap1 [0:4999];
+
+	//Weight_Az2
+	reg [31:0] Weight_Az2_Ap2 [0:4999];
+
+	//Residu1
+	reg [31:0] Residu1_wsp [0:4999];
+
+	//Syn_filt1
+	reg [31:0] Syn_filt1_wsp [0:4999];
+	reg [31:0] Syn_filt1_mem_w [0:4999];
+
+	//Weight_Az3
+	reg [31:0] Weight_Az3_Ap1 [0:4999];
+
+	//Weight_Az4
+	reg [31:0] Weight_Az4_Ap2 [0:4999];
+
+	//Residu2
+	reg [31:0] Residu2_wsp [0:4999];
+
+	//Syn_filt2
+	reg [31:0] Syn_filt2_wsp [0:4999];
+	reg [31:0] Syn_filt2_mem_w [0:4999];
+	
+	//Pitch_ol
+	reg [31:0] Pitch_ol_T_op [0:4999];
+	
+	//Weight_Az5
+	reg [31:0] Weight_Az5_Ap1 [0:4999];
+
+	//Weight_Az6
+	reg [31:0] Weight_Az6_Ap2 [0:4999];
+
+	//TL_Math3
+	reg [31:0] TL_Math3_ai_zero [0:4999];
+
+	//Syn_filt3
+	reg [31:0] Syn_filt3_h1 [0:4999];
+	reg [31:0] Syn_filt3_zero [0:4999];
+
+	//Syn_filt4
+	reg [31:0] Syn_filt4_h1 [0:4999];
+	reg [31:0] Syn_filt4_zero [0:4999];
+
 	//working integers
 	integer i;
 	integer k;
+	integer z;
+	reg flag1,flag2,flag3,flag4;	
+	
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//		Input/Output Samples
+	//
+	//////////////////////////////////////////////////////////////////////////////////////////////
+
 	
 	initial
 	begin
-		// samples out are samples from ITU G.729 test vectors
+		//Input Samples
 		$readmemh("samples.out", samplesmem);
-		$readmemh("az_lsp_out.out", outputmem);
-	end	
 		
+		//Pre-Processor
+		$readmemh("filtered.out", Pre_Process_new_speech);
+		
+		//Autocorellation
+		$readmemh("Autocorr_r.out", Autocorr_r);
+		
+		//Lag-Window
+		$readmemh("Lag_window_r.out", Lag_window_r);
+		
+		//Levinson-Durbin
+		$readmemh("Levinson_A_t_MP1.out", Levinson_A_t_MP1);
+		$readmemh("Levinson_rc.out", Levinson_rc);
+		
+		//A(Z) to LSP
+		$readmemh("Az_lsp_lsp_new.out", Az_lsp_lsp_new);
+	
+		//Qua_lsp
+		$readmemh("Qua_lsp_lsp_new_q.out", Qua_lsp_lsp_new_q);
+		$readmemh("Qua_lsp_ana.out", Qua_lsp_ana);
+
+		//Int_lpc
+		$readmemh("Int_lpc_lsf_int.out", Int_lpc_lsf_int);
+		$readmemh("Int_lpc_lsf_new.out", Int_lpc_lsf_new);
+		$readmemh("Int_lpc_A_t.out", Int_lpc_A_t);
+		
+		//Int_qlpc
+		$readmemh("Int_qlpc_Aq_t.out", Int_qlpc_Aq_t);
+
+		//TL_Math1
+		$readmemh("TL_Math1_lsp_old.out", TL_Math1_lsp_old);
+		$readmemh("TL_Math1_lsp_old_q.out", TL_Math1_lsp_old_q);
+
+		//perc_var
+		$readmemh("perc_var_gamma1.out", perc_var_gamma1);
+		$readmemh("perc_var_gamma2.out", perc_var_gamma2);
+		$readmemh("perc_var_lsf_int.out", perc_var_lsf_int);
+		$readmemh("perc_var_lsf_new.out", perc_var_lsf_new);
+		
+		//Weight_Az1
+		$readmemh("Weight_Az1_Ap1.out", Weight_Az1_Ap1);
+		
+		//Weight_Az2
+		$readmemh("Weight_Az2_Ap2.out", Weight_Az2_Ap2);
+
+		//Residu1
+		$readmemh("Residu1_wsp.out", Residu1_wsp);
+
+		//Syn_filt
+		$readmemh("Syn_filt1_wsp.out", Syn_filt1_wsp);
+		$readmemh("Syn_filt1_mem_w.out", Syn_filt1_mem_w);
+		
+		//Weight_Az3
+		$readmemh("Weight_Az3_Ap1.out", Weight_Az3_Ap1);
+		
+		//Weight_Az4
+		$readmemh("Weight_Az4_Ap2.out", Weight_Az4_Ap2);
+		
+		//Residu2
+		$readmemh("Residu2_wsp.out", Residu2_wsp);
+
+		//Syn_filt2
+		$readmemh("Syn_filt2_wsp.out", Syn_filt2_wsp);
+		$readmemh("Syn_filt2_mem_w.out", Syn_filt2_mem_w);
+
+		//Pitch_ol
+		$readmemh("Pitch_ol_T_op.out", Pitch_ol_T_op);
+
+		//Weight_Az5
+		$readmemh("Weight_Az5_Ap1.out", Weight_Az5_Ap1);
+		
+		//Weight_Az6
+		$readmemh("Weight_Az6_Ap2.out", Weight_Az6_Ap2);
+
+		//TL_Math3
+		$readmemh("TL_Math3_ai_zero.out", TL_Math3_ai_zero);
+
+		//Syn_filt3
+		$readmemh("Syn_filt3_h1.out", Syn_filt3_h1);
+		$readmemh("Syn_filt3_zero.out", Syn_filt3_zero);
+
+		//Syn_filt4
+		$readmemh("Syn_filt4_h1.out", Syn_filt4_h1);
+		$readmemh("Syn_filt4_zero.out", Syn_filt4_zero);
+	end	
+
 	// Instantiate the Unit Under Test (UUT)
 	G729_Top uut (
 		.clock(clock), 
@@ -60,26 +251,87 @@ module G729_Top_Test_v;
 		.in(in),
 		.outBufAddr(outBufAddr),
 		.out(out), 
+		.testdone(testdone),
 		.done(done)
 	);
+	
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//		Parameters
+	//
+	//////////////////////////////////////////////////////////////////////////////////////////////
 
-	initial begin
-		// Initialize Inputs
+	parameter OLD_SPEECH = 'd0;
+	parameter PRM_SIZE = 'd11;
+	parameter L_SUBFR = 'd40;
+	parameter L_TOTAL = 'd240;
+	parameter L_FRAME = 'd80;
+	parameter L_NEXT = 'd40;
+	parameter L_WINDOW = 'd240;
+	parameter PIT_MIN = 'd20;
+	parameter PIT_MAX = 'd143;
+	parameter L_INTERPOL = 'd11;
+	parameter M = 'd10;
+	parameter MP1 = M + 'd1;
+
+	parameter NEW_SPEECH = OLD_SPEECH + L_TOTAL - L_FRAME;
+	parameter SPEECH = OLD_SPEECH + L_TOTAL - L_FRAME - L_NEXT;                    
+	parameter P_WINDOW = OLD_SPEECH + L_TOTAL - L_WINDOW;
+	parameter WSP = OLD_WSP + PIT_MAX;
+	parameter EXC = OLD_EXC + PIT_MAX + L_INTERPOL;
+	parameter ZERO = AI_ZERO + MP1;
+	// parameter error = mem_err + M;
+	
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//		Begin Test
+	//
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	
+	initial 
+	begin
+			
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//		Initialization of Test
+	//
+	//////////////////////////////////////////////////////////////////////////////////////////////
+			
 		clock = 0;
 		reset = 0;
 		start = 0;
 		in = 0;
+		testdone = 1;
 		outBufAddr = 0;
+		flag1 = 0;
+		flag2 = 0;
+		flag3 = 0;
+		flag4 = 0;
 		
 		#50;
-      reset = 1;
+		reset = 1;
 		#50;		
 		reset = 0;
 		#100;			// Wait 100 ns for global reset to finish
-		for(k=0;k<120;k=k+1)
-		begin		
+					
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//		Begin Encoder
+	//
+	//////////////////////////////////////////////////////////////////////////////////////////////
+			
+		for(k=0;k<128;k=k+1)
+		begin
+
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//		Input Samples
+	//
+	//////////////////////////////////////////////////////////////////////////////////////////////
+		
 			@(posedge clock);
 			@(posedge clock) #5;
+			testdone = 1;
 			for (i=0;i<80;i=i+1)
 				begin
 				  @(posedge clock);
@@ -87,25 +339,1077 @@ module G729_Top_Test_v;
 				  in = samplesmem[i+80*k];
 				  @(posedge clock);
 				  start = 0;			  
-				  #600;
+				  #300;
 				end			
-			// Add stimulus here
-			wait(done);
 			
-			for (i = 0; i<10;i=i+1)
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//		Pre-Processor
+	//
+	//////////////////////////////////////////////////////////////////////////////////////////////
+			
+			wait(done);
+			testdone = 0;
+			flag1 = 0;
+			@(posedge clock);
+			@(posedge clock) #5;
+
+			for (i = 0; i<L_FRAME;i=i+1)
 			begin		
-					outBufAddr = 12'd384 + i;
-					@(posedge clock);
-					@(posedge clock) #5;
-					if (out != outputmem[i+10*k])
-						$display($time, " ERROR: output[%d] = %x, expected = %x", i+10*k, out, outputmem[i+10*k]);
-					else if (out == outputmem[i+10*k])
-						$display($time, " CORRECT:  output[%d] = %x", i+10*k, out);	
-					else
-						$display($time, " ERROR: output[%d] = %x, expected = %x", i+11*k, out, outputmem[i+10*k]);
-					@(posedge clock);
-					@(posedge clock) #5;
+				@(posedge clock);
+				@(posedge clock);
+				@(posedge clock) #5;
+				outBufAddr = NEW_SPEECH + i;
+				@(posedge clock);
+				@(posedge clock) #5;
+				if (out != Pre_Process_new_speech[i+L_FRAME*k])
+				begin
+					$display($time, " ERROR: new_speech[%d] = %x, expected = %x", i+L_FRAME*k, out, Pre_Process_new_speech[i+L_FRAME*k]);
+					flag1 = 1;
+				end
+				@(posedge clock);
+				@(posedge clock) #5;
+			end
+			
+			if (flag1)
+				$display($time, "!!!!!Pre_Process Failed: new_speech!!!!!");
+			else
+				$display($time, "*****Pre_Process Completed Successfully*****");
+
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//		Autocorellation
+	//
+	//////////////////////////////////////////////////////////////////////////////////////////////
+			
+			testdone = 1;
+			wait(done);
+			testdone = 0;
+			flag1 = 0;
+			@(posedge clock);
+			@(posedge clock) #5;
+
+			for (i = 0; i<MP1;i=i+1)
+			begin		
+				@(posedge clock);
+				@(posedge clock);
+				@(posedge clock) #5;
+				outBufAddr = {AUTOCORR_R[11:4],i[3:0]};
+				@(posedge clock);
+				@(posedge clock) #5;
+				if (out != Autocorr_r[i+MP1*k])
+				begin
+					$display($time, " ERROR: r[%d] = %x, expected = %x", i+MP1*k, out, Autocorr_r[i+MP1*k]);
+					flag1 = 1;
+				end
+				@(posedge clock);
+				@(posedge clock) #5;
+			end
+			
+			if (flag1)
+				$display($time, "!!!!!Autocorr Failed: r!!!!!");
+			else
+				$display($time, "*****Autocorr Completed Successfully*****");
+
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//		Lag-Window
+	//
+	//////////////////////////////////////////////////////////////////////////////////////////////
+			
+			testdone = 1;
+			wait(done);
+			testdone = 0;
+			flag1 = 0;
+			@(posedge clock);
+			@(posedge clock) #5;
+
+			for (i = 0; i<MP1;i=i+1)
+			begin		
+				@(posedge clock);
+				@(posedge clock);
+				@(posedge clock) #5;
+				outBufAddr = {LAG_WINDOW_R_PRIME[11:4],i[3:0]};
+				@(posedge clock);
+				@(posedge clock) #5;
+				if (out != Lag_window_r[i+MP1*k])
+				begin
+					$display($time, " ERROR: r[%d] = %x, expected = %x", i+MP1*k, out, Lag_window_r[i+MP1*k]);
+					flag1 = 1;
+				end
+				@(posedge clock);
+				@(posedge clock) #5;
+			end
+			
+			if (flag1)
+				$display($time, "!!!!!Lag_window Failed: r!!!!!");
+			else
+				$display($time, "*****Lag_window Completed Successfully*****");
+
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//		Levinson-Durbin
+	//
+	//////////////////////////////////////////////////////////////////////////////////////////////
+			
+			testdone = 1;
+			wait(done);
+			testdone = 0;
+			flag1 = 0;
+			flag2 = 0;
+			@(posedge clock);
+			@(posedge clock) #5;
+
+			for (i = 0; i<MP1;i=i+1)
+			begin		
+				@(posedge clock);
+				@(posedge clock);
+				@(posedge clock) #5;
+				outBufAddr = {A_T_HIGH[11:4],i[3:0]};
+				@(posedge clock);
+				@(posedge clock) #5;
+				if (out != Levinson_A_t_MP1[i+MP1*k])
+				begin
+					$display($time, " ERROR: A_t_MP1[%d] = %x, expected = %x", i+MP1*k, out, Levinson_A_t_MP1[i+MP1*k]);
+					flag1 = 1;
+				end
+				@(posedge clock);
+				@(posedge clock) #5;
+			end
+
+			@(posedge clock);
+			@(posedge clock) #5;
+
+			for (i = 0; i<M;i=i+1)
+			begin		
+					
+				@(posedge clock);
+				@(posedge clock);
+				@(posedge clock) #5;
+				outBufAddr = {LEVINSON_DURBIN_RC[11:4],i[3:0]};
+				@(posedge clock);
+				@(posedge clock) #5;
+				if (out != Levinson_rc[i+M*k])
+				begin
+					$display($time, " ERROR: rc[%d] = %x, expected = %x", i+M*k, out, Levinson_rc[i+M*k]);
+					flag2 = 1;
+				end
+				@(posedge clock);
+				@(posedge clock) #5;
+			end
+
+			if (flag1)
+				$display($time, "!!!!!Levinson Failed: A_t_MP1!!!!!");
+			if (flag2)
+				$display($time, "!!!!!Levinson Failed: rc!!!!!");
+			if (!flag1 && !flag2)
+				$display($time, "*****Levinson Completed Successfully*****");
+			
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//		A(Z) to LSP
+	//
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	
+			testdone = 1;
+			wait(done);
+			testdone = 0;
+			flag1 = 0;
+			@(posedge clock);
+			@(posedge clock) #5;
+			
+			for (i = 0; i<M;i=i+1)
+			begin		
+				outBufAddr = LSP_NEW + i;
+				@(posedge clock);
+				@(posedge clock) #5;
+				if (out != Az_lsp_lsp_new[i+M*k])
+				begin
+					$display($time, " ERROR: lsp_new[%d] = %x, expected = %x", i+M*k, out, Az_lsp_lsp_new[i+M*k]);
+					flag1 = 1;
+				end
+				@(posedge clock);
+				@(posedge clock) #5;
 			end	
+			
+			if (flag1)
+				$display($time, "!!!!!Az_lsp Failed: lsp_new!!!!!");
+			else
+				$display($time, "*****Az_lsp Completed Successfully*****");
+
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//		Qua_lsp
+	//
+	//////////////////////////////////////////////////////////////////////////////////////////////
+
+			testdone = 1;
+			wait(done);
+			testdone = 0;
+			flag1 = 0;
+			flag2 = 0;
+			@(posedge clock);
+			@(posedge clock) #5;
+			
+			for (i = 0; i<M;i=i+1)
+			begin		
+				outBufAddr = LSP_NEW_Q + i;
+				@(posedge clock);
+				@(posedge clock) #5;
+				if (out != Qua_lsp_lsp_new_q[i+M*k])
+				begin
+					$display($time, " ERROR: lsp_new_q[%d] = %x, expected = %x", i+M*k, out, Qua_lsp_lsp_new_q[i+M*k]);
+					flag1 = 1;
+				end
+				@(posedge clock);
+				@(posedge clock) #5;
+			end	
+			
+			for (i = 0; i<PRM_SIZE;i=i+1)
+			begin		
+				outBufAddr = PRM + i;
+				@(posedge clock);
+				@(posedge clock) #5;
+				if (out != Qua_lsp_ana[i+PRM_SIZE*k])
+				begin
+					$display($time, " ERROR: ana[%d] = %x, expected = %x", i+PRM_SIZE*k, out, Qua_lsp_ana[i+PRM_SIZE*k]);
+					flag2 = 1;
+				end
+				@(posedge clock);
+				@(posedge clock) #5;
+			end	
+			
+			if (flag1)
+				$display($time, "!!!!!Qua_lsp Failed: lsp_new_q!!!!!");
+			if (flag2)
+				$display($time, "!!!!!Qua_lsp Failed: ana!!!!!");
+			if (!flag1 && !flag2)
+				$display($time, "*****Qua_lsp Completed Successfully*****");
+
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//		Int_lpc
+	//
+	//////////////////////////////////////////////////////////////////////////////////////////////
+			
+			testdone = 1;
+			wait(done);
+			testdone = 0;
+			flag1 = 0;
+			flag2 = 0;
+			flag3 = 0;
+			@(posedge clock);
+			@(posedge clock) #5;
+
+			for (i = 0; i<M;i=i+1)
+			begin		
+				@(posedge clock);
+				@(posedge clock);
+				@(posedge clock) #5;
+				outBufAddr = {INTERPOLATION_LSF_INT[11:4],i[3:0]};
+				@(posedge clock);
+				@(posedge clock) #5;
+				if (out != Int_lpc_lsf_int[i+M*k])
+				begin
+					$display($time, " ERROR: lsf_int[%d] = %x, expected = %x", i+M*k, out, Int_lpc_lsf_int[i+M*k]);
+					flag1 = 1;
+				end
+				@(posedge clock);
+				@(posedge clock) #5;
+			end
+
+			@(posedge clock);
+			@(posedge clock) #5;
+
+			for (i = 0; i<M;i=i+1)
+			begin		
+				@(posedge clock);
+				@(posedge clock);
+				@(posedge clock) #5;
+				outBufAddr = {INTERPOLATION_LSF_NEW[11:4],i[3:0]};
+				@(posedge clock);
+				@(posedge clock) #5;
+				if (out != Int_lpc_lsf_new[i+M*k])
+				begin
+					$display($time, " ERROR: lsf_new[%d] = %x, expected = %x", i+M*k, out, Int_lpc_lsf_new[i+M*k]);
+					flag2 = 1;
+				end
+				@(posedge clock);
+				@(posedge clock) #5;
+			end
+
+			@(posedge clock);
+			@(posedge clock) #5;
+			
+			for (i = 0; i<MP1; i=i+1)
+			begin		
+				@(posedge clock);
+				@(posedge clock);
+				@(posedge clock) #5;
+				outBufAddr = {A_T_LOW[11:4],i[3:0]};
+				@(posedge clock);
+				@(posedge clock) #5;
+				if (out != Int_lpc_A_t[i+MP1*k])
+				begin
+					$display($time, " ERROR: A_t[%d] = %x, expected = %x", i+MP1*k, out, Int_lpc_A_t[i+MP1*k]);
+					flag3 = 1;
+				end
+				@(posedge clock);
+				@(posedge clock) #5;
+			end
+
+			if (flag1)
+				$display($time, "!!!!!Int_lpc Failed: lsf_int!!!!!");
+			if (flag2)
+				$display($time, "!!!!!Int_lpc Failed: lsf_new!!!!!");
+			if (flag3)
+				$display($time, "!!!!!Int_lpc Failed: A_t!!!!!");
+			if (!flag1 && !flag2 && !flag3)
+				$display($time, "*****Int_lpc Completed Successfully*****");
+			
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//		Int_qlpc
+	//
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	
+			testdone = 1;
+			wait(done);
+			testdone = 0;
+			flag1 = 0;
+			@(posedge clock);
+			@(posedge clock) #5;
+
+			for (i = 0; i<(MP1*2); i=i+1)
+			begin		
+				@(posedge clock);
+				@(posedge clock);
+				@(posedge clock) #5;
+				if (i < MP1)
+					outBufAddr = AQ_T_LOW + i;
+				else
+					outBufAddr = AQ_T_HIGH + (i%MP1);
+				@(posedge clock);
+				@(posedge clock) #5;
+				if (out != Int_qlpc_Aq_t[i+(MP1*2)*k])
+				begin
+					$display($time, " ERROR: Aq_t[%d] = %x, expected = %x", i+(MP1*2)*k, out, Int_qlpc_Aq_t[i+(MP1*2)*k]);
+					flag1 = 1;
+				end
+				@(posedge clock);
+				@(posedge clock) #5;
+			end
+			
+			if (flag1)
+				$display($time, "!!!!!Int_qlpc Failed: Aq_t!!!!!");
+			else
+				$display($time, "*****Int_qlpc Completed Successfully*****");
+
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//		TL_Math1
+	//
+	//////////////////////////////////////////////////////////////////////////////////////////////
+			
+			testdone = 1;
+			wait(done);
+			testdone = 0;
+			flag1 = 0;
+			flag2 = 0;
+			@(posedge clock);
+			@(posedge clock) #5;
+			
+			for (i = 0; i<M; i=i+1)
+			begin		
+				@(posedge clock);
+				@(posedge clock);
+				@(posedge clock) #5;
+				outBufAddr = LSP_OLD + i;
+				@(posedge clock);
+				@(posedge clock) #5;
+				if (out != TL_Math1_lsp_old[i+M*k])
+				begin
+					$display($time, " ERROR: lsp_old[%d] = %x, expected = %x", i+M*k, out, TL_Math1_lsp_old[i+M*k]);
+					flag1 = 1;
+				end
+				@(posedge clock);
+				@(posedge clock) #5;
+			end
+			
+			for (i = 0; i<M; i=i+1)
+			begin		
+				@(posedge clock);
+				@(posedge clock);
+				@(posedge clock) #5;
+				outBufAddr = LSP_OLD_Q + i;
+				@(posedge clock);
+				@(posedge clock) #5;
+				if (out != TL_Math1_lsp_old_q[i+M*k])
+				begin
+					$display($time, " ERROR: lsp_old_q[%d] = %x, expected = %x", i+M*k, out, TL_Math1_lsp_old_q[i+M*k]);
+					flag2 = 1;
+				end
+				@(posedge clock);
+				@(posedge clock) #5;
+			end
+			
+			if (flag1)
+				$display($time, "!!!!!TL_Math1 Failed: lsp_old!!!!!");
+			if (flag2)
+				$display($time, "!!!!!TL_Math1 Failed: lsp_old_q!!!!!");
+			if (!flag1 && !flag2)
+				$display($time, "*****TL_Math1 Completed Successfully*****");
+
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//		perc_var
+	//
+	//////////////////////////////////////////////////////////////////////////////////////////////
+			
+
+			testdone = 1;
+			wait(done);
+			testdone = 0;
+			flag1 = 0;
+			flag2 = 0;
+			flag3 = 0;
+			flag4 = 0;
+			@(posedge clock);
+			@(posedge clock) #5;
+			
+			for (i = 0; i<2; i=i+1)
+			begin		
+				@(posedge clock);
+				@(posedge clock);
+				@(posedge clock) #5;
+				outBufAddr = PERC_VAR_GAMMA1 + i;
+				@(posedge clock);
+				@(posedge clock) #5;
+				if (out != perc_var_gamma1[i+2*k])
+				begin
+					$display($time, " ERROR: gamma1[%d] = %x, expected = %x", i+2*k, out, perc_var_gamma1[i+2*k]);
+					flag1 = 1;
+				end
+				@(posedge clock);
+				@(posedge clock) #5;
+			end
+			
+			for (i = 0; i<2; i=i+1)
+			begin		
+				@(posedge clock);
+				@(posedge clock);
+				@(posedge clock) #5;
+				outBufAddr = PERC_VAR_GAMMA2 + i;
+				@(posedge clock);
+				@(posedge clock) #5;
+				if (out != perc_var_gamma2[i+2*k])
+				begin
+					$display($time, " ERROR: gamma2[%d] = %x, expected = %x", i+2*k, out, perc_var_gamma2[i+2*k]);
+					flag2 = 1;
+				end
+				@(posedge clock);
+				@(posedge clock) #5;
+			end
+
+			for (i = 0; i<M; i=i+1)
+			begin		
+				@(posedge clock);
+				@(posedge clock);
+				@(posedge clock) #5;
+				outBufAddr = INTERPOLATION_LSF_INT + i;
+				@(posedge clock);
+				@(posedge clock) #5;
+				if (out != perc_var_lsf_int[i+M*k])
+				begin
+					$display($time, " ERROR: lsf_int[%d] = %x, expected = %x", i+M*k, out, perc_var_lsf_int[i+M*k]);
+					flag3 = 1;
+				end
+				@(posedge clock);
+				@(posedge clock) #5;
+			end
+
+			for (i = 0; i<M; i=i+1)
+			begin		
+				@(posedge clock);
+				@(posedge clock);
+				@(posedge clock) #5;
+				outBufAddr = INTERPOLATION_LSF_NEW + i;
+				@(posedge clock);
+				@(posedge clock) #5;
+				if (out != perc_var_lsf_new[i+M*k])
+				begin
+					$display($time, " ERROR: lsf_new[%d] = %x, expected = %x", i+M*k, out, perc_var_lsf_new[i+M*k]);
+					flag4 = 1;
+				end
+				@(posedge clock);
+				@(posedge clock) #5;
+			end
+			
+			if (flag1)
+				$display($time, "!!!!!perc_var Failed: gamma1!!!!!");
+			if (flag2)
+				$display($time, "!!!!!perc_var Failed: gamma2!!!!!");
+			if (flag3)
+				$display($time, "!!!!!perc_var Failed: lsf_int!!!!!");
+			if (flag4)
+				$display($time, "!!!!!perc_var Failed: lsf_new!!!!!");
+			if (!flag1 && !flag2 && !flag3 && !flag4)
+				$display($time, "*****perc_var Completed Successfully*****");
+			
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//		Weight_Az1
+	//
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	
+			testdone = 1;
+			wait(done);
+			testdone = 0;
+			flag1 = 0;
+			@(posedge clock);
+			@(posedge clock) #5;
+			
+			for (i = 0; i<MP1;i=i+1)
+			begin		
+				outBufAddr = WEIGHT_AZ_AP_OUT + i;
+				@(posedge clock);
+				@(posedge clock) #5;
+				if (out != Weight_Az1_Ap1[i+MP1*k])
+				begin
+					$display($time, " ERROR: Ap1[%d] = %x, expected = %x", i+MP1*k, out, Weight_Az1_Ap1[i+MP1*k]);
+					flag1 = 1;
+				end
+				@(posedge clock);
+				@(posedge clock) #5;
+			end	
+			
+			if (flag1)
+				$display($time, "!!!!!Weight_Az1 Failed: Ap1!!!!!");
+			else
+				$display($time, "*****Weight_Az1 Completed Successfully*****");
+			
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//		Weight_Az2
+	//
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	
+			testdone = 1;
+			wait(done);
+			testdone = 0;
+			flag1 = 0;
+			@(posedge clock);
+			@(posedge clock) #5;
+			
+			for (i = 0; i<MP1;i=i+1)
+			begin		
+				outBufAddr = WEIGHT_AZ_AP_OUT2 + i;
+				@(posedge clock);
+				@(posedge clock) #5;
+				if (out != Weight_Az2_Ap2[i+MP1*k])
+				begin
+					$display($time, " ERROR: Ap2[%d] = %x, expected = %x", i+MP1*k, out, Weight_Az2_Ap2[i+MP1*k]);
+					flag1 = 1;
+				end
+				@(posedge clock);
+				@(posedge clock) #5;
+			end	
+			
+			if (flag1)
+				$display($time, "!!!!!Weight_Az2 Failed: Ap2!!!!!");
+			else
+				$display($time, "*****Weight_Az2 Completed Successfully*****");
+
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//		Residu1
+	//
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	
+			testdone = 1;
+			wait(done);
+			testdone = 0;
+			flag1 = 0;
+			@(posedge clock);
+			@(posedge clock) #5;
+			
+			for (i = 0; i<L_SUBFR;i=i+1)
+			begin		
+				outBufAddr = WSP + i;
+				@(posedge clock);
+				@(posedge clock) #5;
+				if (out != Residu1_wsp[i+L_SUBFR*k])
+				begin
+					$display($time, " ERROR: wsp[%d] = %x, expected = %x", i+L_SUBFR*k, out, Residu1_wsp[i+L_SUBFR*k]);
+					flag1 = 1;
+				end
+				@(posedge clock);
+				@(posedge clock) #5;
+			end	
+			
+			if (flag1)
+				$display($time, "!!!!!Residu1 Failed: wsp!!!!!");
+			else
+				$display($time, "*****Residu1 Completed Successfully*****");
+
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//		Syn_filt1
+	//
+	//////////////////////////////////////////////////////////////////////////////////////////////
+			
+			testdone = 1;
+			wait(done);
+			testdone = 0;
+			flag1 = 0;
+			flag2 = 0;
+			@(posedge clock);
+			@(posedge clock) #5;
+			
+			for (i = 0; i<L_SUBFR; i=i+1)
+			begin		
+				@(posedge clock);
+				@(posedge clock);
+				@(posedge clock) #5;
+				outBufAddr = WSP + i;
+				@(posedge clock);
+				@(posedge clock) #5;
+				if (out != Syn_filt1_wsp[i+L_SUBFR*k])
+				begin
+					$display($time, " ERROR: wsp[%d] = %x, expected = %x", i+L_SUBFR*k, out, Syn_filt1_wsp[i+L_SUBFR*k]);
+					flag1 = 1;
+				end
+				@(posedge clock);
+				@(posedge clock) #5;
+			end
+			
+			for (i = 0; i<M; i=i+1)
+			begin		
+				@(posedge clock);
+				@(posedge clock);
+				@(posedge clock) #5;
+				outBufAddr = MEM_W + i;
+				@(posedge clock);
+				@(posedge clock) #5;
+				if (out != Syn_filt1_mem_w[i+M*k])
+				begin
+					$display($time, " ERROR: mem_w[%d] = %x, expected = %x", i+M*k, out, Syn_filt1_mem_w[i+M*k]);
+					flag2 = 1;
+				end
+				@(posedge clock);
+				@(posedge clock) #5;
+			end
+			
+			if (flag1)
+				$display($time, "!!!!!Syn_filt1 Failed: wsp!!!!!");
+			if (flag2)
+				$display($time, "!!!!!Syn_filt1 Failed: mem_w!!!!!");
+			if (!flag1 && !flag2)
+				$display($time, "*****Syn_filt1 Completed Successfully*****");
+
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//		Weight_Az3
+	//
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	
+			testdone = 1;
+			wait(done);
+			testdone = 0;
+			flag1 = 0;
+			@(posedge clock);
+			@(posedge clock) #5;
+			
+			for (i = 0; i<MP1;i=i+1)
+			begin		
+				outBufAddr = WEIGHT_AZ_AP_OUT + i;
+				@(posedge clock);
+				@(posedge clock) #5;
+				if (out != Weight_Az3_Ap1[i+MP1*k])
+				begin
+					$display($time, " ERROR: Ap1[%d] = %x, expected = %x", i+MP1*k, out, Weight_Az3_Ap1[i+MP1*k]);
+					flag1 = 1;
+				end
+				@(posedge clock);
+				@(posedge clock) #5;
+			end	
+			
+			if (flag1)
+				$display($time, "!!!!!Weight_Az3 Failed: Ap1!!!!!");
+			else
+				$display($time, "*****Weight_Az3 Completed Successfully*****");
+			
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//		Weight_Az4
+	//
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	
+			testdone = 1;
+			wait(done);
+			testdone = 0;
+			flag1 = 0;
+			@(posedge clock);
+			@(posedge clock) #5;
+			
+			for (i = 0; i<MP1;i=i+1)
+			begin		
+				outBufAddr = WEIGHT_AZ_AP_OUT2 + i;
+				@(posedge clock);
+				@(posedge clock) #5;
+				if (out != Weight_Az4_Ap2[i+MP1*k])
+				begin
+					$display($time, " ERROR: Ap2[%d] = %x, expected = %x", i+MP1*k, out, Weight_Az4_Ap2[i+MP1*k]);
+					flag1 = 1;
+				end
+				@(posedge clock);
+				@(posedge clock) #5;
+			end	
+			
+			if (flag1)
+				$display($time, "!!!!!Weight_Az4 Failed: Ap2!!!!!");
+			else
+				$display($time, "*****Weight_Az4 Completed Successfully*****");
+
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//		Residu2
+	//
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	
+			testdone = 1;
+			wait(done);
+			testdone = 0;
+			flag1 = 0;
+			@(posedge clock);
+			@(posedge clock) #5;
+			
+			for (i = 0; i<L_SUBFR;i=i+1)
+			begin		
+				outBufAddr = WSP + L_SUBFR + i;
+				@(posedge clock);
+				@(posedge clock) #5;
+				if (out != Residu2_wsp[i+L_SUBFR*k])
+				begin
+					$display($time, " ERROR: wsp[L_SUBFR+%d] = %x, expected = %x", i+L_SUBFR*k, out, Residu2_wsp[i+L_SUBFR*k]);
+					flag1 = 1;
+				end
+				@(posedge clock);
+				@(posedge clock) #5;
+			end	
+			
+			if (flag1)
+				$display($time, "!!!!!Residu2 Failed: wsp!!!!!");
+			else
+				$display($time, "*****Residu2 Completed Successfully*****");
+
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//		Syn_filt2
+	//
+	//////////////////////////////////////////////////////////////////////////////////////////////
+			
+			testdone = 1;
+			wait(done);
+			testdone = 0;
+			flag1 = 0;
+			flag2 = 0;
+			@(posedge clock);
+			@(posedge clock) #5;
+			
+			for (i = 0; i<L_SUBFR; i=i+1)
+			begin		
+				@(posedge clock);
+				@(posedge clock);
+				@(posedge clock) #5;
+				outBufAddr = WSP + L_SUBFR + i;
+				@(posedge clock);
+				@(posedge clock) #5;
+				if (out != Syn_filt2_wsp[i+L_SUBFR*k])
+				begin
+					$display($time, " ERROR: wsp[L_SUBFR+%d] = %x, expected = %x", i+L_SUBFR*k, out, Syn_filt2_wsp[i+L_SUBFR*k]);
+					flag1 = 1;
+				end
+				@(posedge clock);
+				@(posedge clock) #5;
+			end
+			
+			for (i = 0; i<M; i=i+1)
+			begin		
+				@(posedge clock);
+				@(posedge clock);
+				@(posedge clock) #5;
+				outBufAddr = MEM_W + i;
+				@(posedge clock);
+				@(posedge clock) #5;
+				if (out != Syn_filt2_mem_w[i+M*k])
+				begin
+					$display($time, " ERROR: mem_w[%d] = %x, expected = %x", i+M*k, out, Syn_filt2_mem_w[i+M*k]);
+					flag2 = 1;
+				end
+				@(posedge clock);
+				@(posedge clock) #5;
+			end
+			
+			if (flag1)
+				$display($time, "!!!!!Syn_filt2 Failed: wsp!!!!!");
+			if (flag2)
+				$display($time, "!!!!!Syn_filt2 Failed: mem_w!!!!!");
+			if (!flag1 && !flag2)
+				$display($time, "*****Syn_filt2 Completed Successfully*****");
+
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//		Pitch_ol
+	//
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	
+			testdone = 1;
+			wait(done);
+			testdone = 0;
+			flag1 = 0;
+			@(posedge clock);
+			@(posedge clock) #5;
+			
+			outBufAddr = T_OP;
+			@(posedge clock);
+			@(posedge clock) #5;
+			if (out != Pitch_ol_T_op[k])
+			begin
+				$display($time, " ERROR: T_op[%d] = %x, expected = %x", k, out, Pitch_ol_T_op[k]);
+				flag1 = 1;
+			end
+			@(posedge clock);
+			@(posedge clock) #5;
+			
+			if (flag1)
+				$display($time, "!!!!!Pitch_ol Failed: T_op!!!!!");
+			else
+				$display($time, "*****Pitch_ol Completed Successfully*****");
+
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//		TL_Math2
+	//
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	
+			testdone = 1;
+			wait(done);
+			testdone = 0;
+			$display($time, "*****TL_Math2 Completed Successfully*****");
+
+		//////////////////////////////////////////////////////////////////////////////////////////////
+		//
+		//		Weight_Az5
+		//
+		//////////////////////////////////////////////////////////////////////////////////////////////
+			
+			for (z = 0; z < 2; z = z + 1)
+			begin
+
+				@(posedge clock);
+				@(posedge clock) #5;
+				testdone = 1;
+				wait(done);
+				testdone = 0;
+				flag1 = 0;
+				@(posedge clock);
+				@(posedge clock) #5;
+				
+				for (i = 0; i<MP1;i=i+1)
+				begin		
+					outBufAddr = WEIGHT_AZ_AP_OUT + i;
+					@(posedge clock);
+					@(posedge clock) #5;
+					if (out != Weight_Az5_Ap1[(2*k+z)*MP1+i])
+					begin
+						$display($time, " ERROR: Ap1[%d] = %x, expected = %x", (2*k+z)*MP1+i, out, Weight_Az5_Ap1[(2*k+z)*MP1+i]);
+						flag1 = 1;
+					end
+					@(posedge clock);
+					@(posedge clock) #5;
+				end	
+				
+				if (flag1)
+					$display($time, "!!!!!Weight_Az5 Failed: Ap1!!!!!");
+				else
+					$display($time, "*****Weight_Az5 Completed Successfully*****");
+				
+		//////////////////////////////////////////////////////////////////////////////////////////////
+		//
+		//		Weight_Az6
+		//
+		//////////////////////////////////////////////////////////////////////////////////////////////
+		
+				testdone = 1;
+				wait(done);
+				testdone = 0;
+				flag1 = 0;
+				@(posedge clock);
+				@(posedge clock) #5;
+				
+				for (i = 0; i<MP1;i=i+1)
+				begin		
+					outBufAddr = WEIGHT_AZ_AP_OUT2 + i;
+					@(posedge clock);
+					@(posedge clock) #5;
+					if (out != Weight_Az6_Ap2[(2*k+z)*MP1+i])
+					begin
+						$display($time, " ERROR: Ap2[%d] = %x, expected = %x", (2*k+z)*MP1+i, out, Weight_Az6_Ap2[(2*k+z)*MP1+i]);
+						flag1 = 1;
+					end
+					@(posedge clock);
+					@(posedge clock) #5;
+				end	
+				
+				if (flag1)
+					$display($time, "!!!!!Weight_Az6 Failed: Ap2!!!!!");
+				else
+					$display($time, "*****Weight_Az6 Completed Successfully*****");
+
+		//////////////////////////////////////////////////////////////////////////////////////////////
+		//
+		//		TL_Math3
+		//
+		//////////////////////////////////////////////////////////////////////////////////////////////
+		
+				testdone = 1;
+				wait(done);
+				testdone = 0;
+				flag1 = 0;
+				@(posedge clock);
+				@(posedge clock) #5;
+				
+				for (i = 0; i<MP1;i=i+1)
+				begin		
+					outBufAddr = AI_ZERO + i;
+					@(posedge clock);
+					@(posedge clock) #5;
+					if (out != TL_Math3_ai_zero[(2*k+z)*MP1+i])
+					begin
+						$display($time, " ERROR: ai_zero[%d] = %x, expected = %x", (2*k+z)*MP1+i, out, TL_Math3_ai_zero[(2*k+z)*MP1+i]);
+						flag1 = 1;
+					end
+					@(posedge clock);
+					@(posedge clock) #5;
+				end	
+				
+				if (flag1)
+					$display($time, "!!!!!TL_Math3 Failed: ai_zero!!!!!");
+				else
+					$display($time, "*****TL_Math3 Completed Successfully*****");
+
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//		Syn_filt3
+	//
+	//////////////////////////////////////////////////////////////////////////////////////////////
+			
+			testdone = 1;
+			wait(done);
+			testdone = 0;
+			flag1 = 0;
+			flag2 = 0;
+			@(posedge clock);
+			@(posedge clock) #5;
+			
+			for (i = 0; i<L_SUBFR; i=i+1)
+			begin		
+				@(posedge clock);
+				@(posedge clock);
+				@(posedge clock) #5;
+				outBufAddr = H1 + i;
+				@(posedge clock);
+				@(posedge clock) #5;
+				if (out != Syn_filt3_h1[(2*k+z)*L_SUBFR+i])
+				begin
+					$display($time, " ERROR: h1[%d] = %x, expected = %x", (2*k+z)*L_SUBFR+i, out, Syn_filt3_h1[(2*k+z)*L_SUBFR+i]);
+					flag1 = 1;
+				end
+				@(posedge clock);
+				@(posedge clock) #5;
+			end
+			
+			for (i = 0; i<M; i=i+1)
+			begin		
+				@(posedge clock);
+				@(posedge clock);
+				@(posedge clock) #5;
+				outBufAddr = ZERO + i;
+				@(posedge clock);
+				@(posedge clock) #5;
+				if (out != Syn_filt3_zero[(2*k+z)*M+i])
+				begin
+					$display($time, " ERROR: zero[%d] = %x, expected = %x", (2*k+z)*M+i, out, Syn_filt3_zero[(2*k+z)*M+i]);
+					flag2 = 1;
+				end
+				@(posedge clock);
+				@(posedge clock) #5;
+			end
+			
+			if (flag1)
+				$display($time, "!!!!!Syn_filt3 Failed: h1!!!!!");
+			if (flag2)
+				$display($time, "!!!!!Syn_filt3 Failed: zero!!!!!");
+			if (!flag1 && !flag2)
+				$display($time, "*****Syn_filt3 Completed Successfully*****");
+
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//		Syn_filt4
+	//
+	//////////////////////////////////////////////////////////////////////////////////////////////
+			
+			testdone = 1;
+			wait(done);
+			testdone = 0;
+			flag1 = 0;
+			flag2 = 0;
+			@(posedge clock);
+			@(posedge clock) #5;
+			
+			for (i = 0; i<L_SUBFR; i=i+1)
+			begin		
+				@(posedge clock);
+				@(posedge clock);
+				@(posedge clock) #5;
+				outBufAddr = H1 + i;
+				@(posedge clock);
+				@(posedge clock) #5;
+				if (out != Syn_filt4_h1[(2*k+z)*L_SUBFR+i])
+				begin
+					$display($time, " ERROR: h1[%d] = %x, expected = %x", (2*k+z)*L_SUBFR+i, out, Syn_filt4_h1[(2*k+z)*L_SUBFR+i]);
+					flag1 = 1;
+				end
+				@(posedge clock);
+				@(posedge clock) #5;
+			end
+			
+			for (i = 0; i<M; i=i+1)
+			begin		
+				@(posedge clock);
+				@(posedge clock);
+				@(posedge clock) #5;
+				outBufAddr = ZERO + i;
+				@(posedge clock);
+				@(posedge clock) #5;
+				if (out != Syn_filt4_zero[(2*k+z)*M+i])
+				begin
+					$display($time, " ERROR: zero[%d] = %x, expected = %x", (2*k+z)*M+i, out, Syn_filt4_zero[(2*k+z)*M+i]);
+					flag2 = 1;
+				end
+				@(posedge clock);
+				@(posedge clock) #5;
+			end
+			
+			if (flag1)
+				$display($time, "!!!!!Syn_filt4 Failed: h1!!!!!");
+			if (flag2)
+				$display($time, "!!!!!Syn_filt4 Failed: zero!!!!!");
+			if (!flag1 && !flag2)
+				$display($time, "*****Syn_filt4 Completed Successfully*****");
+
+			end//z for loop
 		end//k for loop
 	end//initial 
 	

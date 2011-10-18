@@ -18,16 +18,16 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module Residu(clk, reset, start, done, A, X, Y, LG, FSMdataIn1, FSMdataIn2, FSMwriteEn, FSMreadAddr1, 
-				  FSMreadAddr2, FSMwriteAddr, FSMdataOut, L_multOutA, L_multOutB, L_multIn, L_macOutA, 
-				  L_macOutB, L_macOutC, L_macIn, subOutA, subOutB, subIn, L_shlOutA, L_shlOutB, L_shlIn,
-				  addOutA, addOutB, addIn, L_addOutA, L_addOutB, L_addIn, L_shlDone, L_shlReady);
+module Residu(clk, reset, start, done, A, X, Y, LG, memReadDataA, memReadDataX, memWriteEn, memReadAddrA,
+				  memReadAddrX, memWriteAddr, memWriteData, L_multOutA, L_multOutB, L_multIn, L_macOutA, L_macOutB, 
+				  L_macOutC, L_macIn, subOutA, subOutB, subIn, L_shlOutA, L_shlOutB, L_shlIn, addOutA, 
+				  addOutB, addIn, L_addOutA, L_addOutB, L_addIn, L_shlDone, L_shlReady);
 
 //Inputs
 input clk, reset, start;
 input [11:0] A, X, Y;
 input [5:0] LG;
-input [31:0] FSMdataIn1, FSMdataIn2;
+input [31:0] memReadDataA, memReadDataX;
 input [31:0] L_multIn;
 input [15:0] subIn;
 input [31:0] L_macIn;
@@ -38,10 +38,10 @@ input L_shlDone;
 
 //Outputs
 output reg done;
-output reg FSMwriteEn;
-output reg [11:0] FSMreadAddr1, FSMreadAddr2;
-output reg [11:0] FSMwriteAddr;
-output reg [31:0] FSMdataOut;
+output reg memWriteEn;
+output reg [11:0] memReadAddrA, memReadAddrX;
+output reg [11:0] memWriteAddr;
+output reg [31:0] memWriteData;
 output reg [15:0] subOutA, subOutB;
 output reg [15:0] L_multOutA, L_multOutB;
 output reg [15:0] L_macOutA, L_macOutB;
@@ -129,7 +129,7 @@ parameter S5_MEM2 = 4'd5;
 parameter S6_LMAC = 4'd6;
 parameter S7_LSHL = 4'd7;
 parameter S8_ROUND = 4'd8;
-parameter S9_DONE = 4'd9;
+parameter S9_INC = 4'd9;
 parameter S10_DONE = 4'd10;
 parameter M = 4'd10;
 
@@ -170,12 +170,12 @@ begin
 	nextS = S;
 	resetS = 0;
 	ldS = 0;
-	FSMreadAddr1 = 0;
-	FSMreadAddr2 = 0;
+	memReadAddrA = 0;
+	memReadAddrX = 0;
 	done = 0;
-	FSMwriteEn = 0;
-	FSMwriteAddr = 0;
-	FSMdataOut = 0;
+	memWriteEn = 0;
+	memWriteAddr = 0;
+	memWriteData = 0;
 	subOutA = 0;
 	subOutB = 0;
 	L_multOutA = 0;
@@ -210,7 +210,7 @@ begin
 			begin
 				addOutA = X;
 				addOutB = I;
-				FSMreadAddr2 = addIn[11:0];
+				memReadAddrX = addIn[11:0];
 				nextstate = S2_MEM1;
 			end
 			else 
@@ -219,8 +219,8 @@ begin
 		
 		S2_MEM1:
 		begin
-			FSMreadAddr1 = A[11:0];
-			nexttemp = FSMdataIn2;
+			memReadAddrA = A[11:0];
+			nexttemp = memReadDataX;
 			ldtemp = 1;
 			nextstate = S3_LMULT;
 		end
@@ -228,7 +228,7 @@ begin
 		S3_LMULT:
 		begin
 			L_multOutA = temp;
-			L_multOutB = FSMdataIn1;
+			L_multOutB = memReadDataA;
 			nextS = L_multIn;
 			ldS = 1;
 			nextstate = S4_FOR2;
@@ -240,7 +240,7 @@ begin
 			begin
 				addOutA = A;
 				addOutB = J;
-				FSMreadAddr1 = addIn;
+				memReadAddrA = addIn;
 				nextstate = S5_MEM2;
 			end
 			else
@@ -254,8 +254,8 @@ begin
 			//add instead of concatenate
 			addOutA = {5'd0, X[10:0]};
 			addOutB = subIn;
-			FSMreadAddr2 = addIn;
-			nexttemp = FSMdataIn1;
+			memReadAddrX = addIn;
+			nexttemp = memReadDataA;
 			ldtemp = 1;
 			nextstate = S6_LMAC;
 		end
@@ -263,7 +263,7 @@ begin
 		S6_LMAC:
 		begin
 			L_macOutA = temp[15:0];
-			L_macOutB = FSMdataIn2[15:0];
+			L_macOutB = memReadDataX[15:0];
 			L_macOutC = S;
 			nextS = L_macIn;
 			ldS = 1;
@@ -296,17 +296,17 @@ begin
 			L_addOutA = S;
 			L_addOutB = 32'h00008000;
 			if(L_addIn[31] == 1)
-				FSMdataOut = {16'hffff,L_addIn[31:16]};
+				memWriteData = {16'hffff,L_addIn[31:16]};
 			else if(L_addIn[31] == 0)
-				FSMdataOut = {16'd0,L_addIn[31:16]};
+				memWriteData = {16'd0,L_addIn[31:16]};
 			addOutA = Y;
 			addOutB = I;
-			FSMwriteAddr = addIn;
-			FSMwriteEn = 1;
-			nextstate = S9_DONE;
+			memWriteAddr = addIn;
+			memWriteEn = 1;
+			nextstate = S9_INC;
 		end
 		
-		S9_DONE:
+		S9_INC:
 		begin
 			addOutA = I;
 			addOutB = 'd1;
@@ -321,9 +321,6 @@ begin
 			done = 1;
 			nextstate = S0_INIT;
 		end
-		
-		default:
-			nextstate = S0_INIT;
 		
 	endcase
 end
