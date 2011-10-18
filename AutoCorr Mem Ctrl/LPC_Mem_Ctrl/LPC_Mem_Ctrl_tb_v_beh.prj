@@ -1,4 +1,0 @@
-verilog work "../AutoCorr_mem_1.v"
-verilog work "LPC_Mem_Ctrl.v"
-verilog work "../LPC_Mem_Ctrl_tb.v"
-verilog work "C:/Xilinx92i/verilog/src/glbl.v"
