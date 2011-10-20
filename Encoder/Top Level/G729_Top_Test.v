@@ -140,6 +140,13 @@ module G729_Top_Test_v;
 	reg [31:0] Syn_filt4_h1 [0:4999];
 	reg [31:0] Syn_filt4_zero [0:4999];
 
+	//Residu3
+	reg [31:0] Residu3_exc [0:4999];
+	
+	//Syn_filt5
+	reg [31:0] Syn_filt5_error [0:4999];
+	reg [31:0] Syn_filt5_mem_err [0:4999];
+
 	//working integers
 	integer i;
 	integer k;
@@ -241,6 +248,13 @@ module G729_Top_Test_v;
 		//Syn_filt4
 		$readmemh("Syn_filt4_h1.out", Syn_filt4_h1);
 		$readmemh("Syn_filt4_zero.out", Syn_filt4_zero);
+		
+		//Residu3
+		$readmemh("Residu3_exc.out", Residu3_exc);
+		
+		//Syn_filt5
+		$readmemh("Syn_filt5_error.out", Syn_filt5_error);
+		$readmemh("Syn_filt5_mem_err.out", Syn_filt5_mem_err);
 	end	
 
 	// Instantiate the Unit Under Test (UUT)
@@ -280,7 +294,7 @@ module G729_Top_Test_v;
 	parameter WSP = OLD_WSP + PIT_MAX;
 	parameter EXC = OLD_EXC + PIT_MAX + L_INTERPOL;
 	parameter ZERO = AI_ZERO + MP1;
-	// parameter error = mem_err + M;
+	parameter ERROR = MEM_ERR + M;
 	
 	//////////////////////////////////////////////////////////////////////////////////////////////
 	//
@@ -1305,54 +1319,54 @@ module G729_Top_Test_v;
 	//
 	//////////////////////////////////////////////////////////////////////////////////////////////
 			
-			testdone = 1;
-			wait(done);
-			testdone = 0;
-			flag1 = 0;
-			flag2 = 0;
-			@(posedge clock);
-			@(posedge clock) #5;
-			
-			for (i = 0; i<L_SUBFR; i=i+1)
-			begin		
-				@(posedge clock);
+				testdone = 1;
+				wait(done);
+				testdone = 0;
+				flag1 = 0;
+				flag2 = 0;
 				@(posedge clock);
 				@(posedge clock) #5;
-				outBufAddr = H1 + i;
-				@(posedge clock);
-				@(posedge clock) #5;
-				if (out != Syn_filt3_h1[(2*k+z)*L_SUBFR+i])
-				begin
-					$display($time, " ERROR: h1[%d] = %x, expected = %x", (2*k+z)*L_SUBFR+i, out, Syn_filt3_h1[(2*k+z)*L_SUBFR+i]);
-					flag1 = 1;
+				
+				for (i = 0; i<L_SUBFR; i=i+1)
+				begin		
+					@(posedge clock);
+					@(posedge clock);
+					@(posedge clock) #5;
+					outBufAddr = H1 + i;
+					@(posedge clock);
+					@(posedge clock) #5;
+					if (out != Syn_filt3_h1[(2*k+z)*L_SUBFR+i])
+					begin
+						$display($time, " ERROR: h1[%d] = %x, expected = %x", (2*k+z)*L_SUBFR+i, out, Syn_filt3_h1[(2*k+z)*L_SUBFR+i]);
+						flag1 = 1;
+					end
+					@(posedge clock);
+					@(posedge clock) #5;
 				end
-				@(posedge clock);
-				@(posedge clock) #5;
-			end
-			
-			for (i = 0; i<M; i=i+1)
-			begin		
-				@(posedge clock);
-				@(posedge clock);
-				@(posedge clock) #5;
-				outBufAddr = ZERO + i;
-				@(posedge clock);
-				@(posedge clock) #5;
-				if (out != Syn_filt3_zero[(2*k+z)*M+i])
-				begin
-					$display($time, " ERROR: zero[%d] = %x, expected = %x", (2*k+z)*M+i, out, Syn_filt3_zero[(2*k+z)*M+i]);
-					flag2 = 1;
+				
+				for (i = 0; i<M; i=i+1)
+				begin		
+					@(posedge clock);
+					@(posedge clock);
+					@(posedge clock) #5;
+					outBufAddr = ZERO + i;
+					@(posedge clock);
+					@(posedge clock) #5;
+					if (out != Syn_filt3_zero[(2*k+z)*M+i])
+					begin
+						$display($time, " ERROR: zero[%d] = %x, expected = %x", (2*k+z)*M+i, out, Syn_filt3_zero[(2*k+z)*M+i]);
+						flag2 = 1;
+					end
+					@(posedge clock);
+					@(posedge clock) #5;
 				end
-				@(posedge clock);
-				@(posedge clock) #5;
-			end
-			
-			if (flag1)
-				$display($time, "!!!!!Syn_filt3 Failed: h1!!!!!");
-			if (flag2)
-				$display($time, "!!!!!Syn_filt3 Failed: zero!!!!!");
-			if (!flag1 && !flag2)
-				$display($time, "*****Syn_filt3 Completed Successfully*****");
+				
+				if (flag1)
+					$display($time, "!!!!!Syn_filt3 Failed: h1!!!!!");
+				if (flag2)
+					$display($time, "!!!!!Syn_filt3 Failed: zero!!!!!");
+				if (!flag1 && !flag2)
+					$display($time, "*****Syn_filt3 Completed Successfully*****");
 
 	//////////////////////////////////////////////////////////////////////////////////////////////
 	//
@@ -1360,54 +1374,152 @@ module G729_Top_Test_v;
 	//
 	//////////////////////////////////////////////////////////////////////////////////////////////
 			
-			testdone = 1;
-			wait(done);
-			testdone = 0;
-			flag1 = 0;
-			flag2 = 0;
-			@(posedge clock);
-			@(posedge clock) #5;
-			
-			for (i = 0; i<L_SUBFR; i=i+1)
-			begin		
-				@(posedge clock);
+				testdone = 1;
+				wait(done);
+				testdone = 0;
+				flag1 = 0;
+				flag2 = 0;
 				@(posedge clock);
 				@(posedge clock) #5;
-				outBufAddr = H1 + i;
-				@(posedge clock);
-				@(posedge clock) #5;
-				if (out != Syn_filt4_h1[(2*k+z)*L_SUBFR+i])
-				begin
-					$display($time, " ERROR: h1[%d] = %x, expected = %x", (2*k+z)*L_SUBFR+i, out, Syn_filt4_h1[(2*k+z)*L_SUBFR+i]);
-					flag1 = 1;
+				
+				for (i = 0; i<L_SUBFR; i=i+1)
+				begin		
+					@(posedge clock);
+					@(posedge clock);
+					@(posedge clock) #5;
+					outBufAddr = H1 + i;
+					@(posedge clock);
+					@(posedge clock) #5;
+					if (out != Syn_filt4_h1[(2*k+z)*L_SUBFR+i])
+					begin
+						$display($time, " ERROR: h1[%d] = %x, expected = %x", (2*k+z)*L_SUBFR+i, out, Syn_filt4_h1[(2*k+z)*L_SUBFR+i]);
+						flag1 = 1;
+					end
+					@(posedge clock);
+					@(posedge clock) #5;
 				end
-				@(posedge clock);
-				@(posedge clock) #5;
-			end
-			
-			for (i = 0; i<M; i=i+1)
-			begin		
-				@(posedge clock);
-				@(posedge clock);
-				@(posedge clock) #5;
-				outBufAddr = ZERO + i;
-				@(posedge clock);
-				@(posedge clock) #5;
-				if (out != Syn_filt4_zero[(2*k+z)*M+i])
-				begin
-					$display($time, " ERROR: zero[%d] = %x, expected = %x", (2*k+z)*M+i, out, Syn_filt4_zero[(2*k+z)*M+i]);
-					flag2 = 1;
+				
+				for (i = 0; i<M; i=i+1)
+				begin		
+					@(posedge clock);
+					@(posedge clock);
+					@(posedge clock) #5;
+					outBufAddr = ZERO + i;
+					@(posedge clock);
+					@(posedge clock) #5;
+					if (out != Syn_filt4_zero[(2*k+z)*M+i])
+					begin
+						$display($time, " ERROR: zero[%d] = %x, expected = %x", (2*k+z)*M+i, out, Syn_filt4_zero[(2*k+z)*M+i]);
+						flag2 = 1;
+					end
+					@(posedge clock);
+					@(posedge clock) #5;
 				end
+				
+				if (flag1)
+					$display($time, "!!!!!Syn_filt4 Failed: h1!!!!!");
+				if (flag2)
+					$display($time, "!!!!!Syn_filt4 Failed: zero!!!!!");
+				if (!flag1 && !flag2)
+					$display($time, "*****Syn_filt4 Completed Successfully*****");
+
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//		Residu3
+	//
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	
+				testdone = 1;
+				wait(done);
+				testdone = 0;
+				flag1 = 0;
 				@(posedge clock);
 				@(posedge clock) #5;
-			end
+				
+				for (i = 0; i<L_SUBFR;i=i+1)
+				begin
+					if (z == 'd0)
+						outBufAddr = EXC + i;
+					else
+						outBufAddr = EXC + L_SUBFR + i;
+					@(posedge clock);
+					@(posedge clock) #5;
+					if (out != Residu3_exc[(2*k+z)*L_SUBFR+i])
+					begin
+						if (z == 'd0)
+							$display($time, " ERROR: exc[%d] = %x, expected = %x", (2*k+z)*L_SUBFR+i, out, Residu3_exc[(2*k+z)*L_SUBFR+i]);
+						else
+							$display($time, " ERROR: exc[L_SUBFR+%d] = %x, expected = %x", (2*k+z)*L_SUBFR+i, out, Residu3_exc[(2*k+z)*L_SUBFR+i]);
+						flag1 = 1;
+					end
+					@(posedge clock);
+					@(posedge clock) #5;
+				end	
+				
+				if (flag1)
+				begin
+					if (z == 'd0)
+						$display($time, "!!!!!Residu3 Failed: exc!!!!!");
+					else
+						$display($time, "!!!!!Residu3 Failed: exc[L_SUBFR]!!!!!");
+				end
+				else
+					$display($time, "*****Residu3 Completed Successfully*****");
+
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//		Syn_filt5
+	//
+	//////////////////////////////////////////////////////////////////////////////////////////////
 			
-			if (flag1)
-				$display($time, "!!!!!Syn_filt4 Failed: h1!!!!!");
-			if (flag2)
-				$display($time, "!!!!!Syn_filt4 Failed: zero!!!!!");
-			if (!flag1 && !flag2)
-				$display($time, "*****Syn_filt4 Completed Successfully*****");
+				testdone = 1;
+				wait(done);
+				testdone = 0;
+				flag1 = 0;
+				flag2 = 0;
+				@(posedge clock);
+				@(posedge clock) #5;
+				
+				for (i = 0; i<L_SUBFR; i=i+1)
+				begin		
+					@(posedge clock);
+					@(posedge clock);
+					@(posedge clock) #5;
+					outBufAddr = ERROR + i;
+					@(posedge clock);
+					@(posedge clock) #5;
+					if (out != Syn_filt5_error[(2*k+z)*L_SUBFR+i])
+					begin
+						$display($time, " ERROR: error[%d] = %x, expected = %x", (2*k+z)*L_SUBFR+i, out, Syn_filt5_error[(2*k+z)*L_SUBFR+i]);
+						flag1 = 1;
+					end
+					@(posedge clock);
+					@(posedge clock) #5;
+				end
+				
+				for (i = 0; i<M; i=i+1)
+				begin		
+					@(posedge clock);
+					@(posedge clock);
+					@(posedge clock) #5;
+					outBufAddr = MEM_ERR + i;
+					@(posedge clock);
+					@(posedge clock) #5;
+					if (out != Syn_filt5_mem_err[(2*k+z)*M+i])
+					begin
+						$display($time, " ERROR: mem_err[%d] = %x, expected = %x", (2*k+z)*M+i, out, Syn_filt5_mem_err[(2*k+z)*M+i]);
+						flag2 = 1;
+					end
+					@(posedge clock);
+					@(posedge clock) #5;
+				end
+				
+				if (flag1)
+					$display($time, "!!!!!Syn_filt5 Failed: error!!!!!");
+				if (flag2)
+					$display($time, "!!!!!Syn_filt5 Failed: mem_err!!!!!");
+				if (!flag1 && !flag2)
+					$display($time, "*****Syn_filt5 Completed Successfully*****");
 
 			end//z for loop
 		end//k for loop
