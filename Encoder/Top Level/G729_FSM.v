@@ -111,6 +111,8 @@ module G729_FSM(clock,reset,start,divErr,frame_done,autocorrDone,lagDone,levinso
 	 parameter SUB_MODULE_SYN_FILT4_DONE = 6'd30;
 	 parameter SUB_MODULE_RESIDU3_DONE = 6'd31;
 	 parameter SUB_MODULE_SYN_FILT5_DONE = 6'd32;
+	 parameter SUB_MODULE_RESIDU4_DONE = 6'd33;
+	 parameter SUB_MODULE_SYN_FILT6_DONE = 6'd34;
 
 
 	 parameter TL_FOR_LOOP_INC = 6'd62;
@@ -619,11 +621,37 @@ module G729_FSM(clock,reset,start,divErr,frame_done,autocorrDone,lagDone,levinso
 					nextsubModuleState = SUB_MODULE_SYN_FILT5_DONE;
 				else if(Syn_filtDone == 1)
 				begin
-					LDi_subfr = 1; 
 					mathMuxSel = 6'd26;
-					nextsubModuleState = TL_FOR_LOOP_INC;
+					nextsubModuleState = SUB_MODULE_RESIDU4_DONE;
+					ResiduReady = 1;
 				end				
 			end//SUB_MODULE_SYN_FILT5_DONE		
+
+			SUB_MODULE_RESIDU4_DONE:
+			begin
+				mathMuxSel = 6'd26;
+				if(ResiduDone == 0)
+					nextsubModuleState = SUB_MODULE_RESIDU4_DONE;
+				else if(ResiduDone == 1)
+				begin
+					mathMuxSel = 6'd27;
+					nextsubModuleState = SUB_MODULE_SYN_FILT6_DONE;
+					Syn_filtReady = 1;
+				end				
+			end//SUB_MODULE_RESIDU4_DONE		
+
+			SUB_MODULE_SYN_FILT6_DONE:
+			begin
+				mathMuxSel = 6'd27;
+				if(Syn_filtDone == 0)
+					nextsubModuleState = SUB_MODULE_SYN_FILT6_DONE;
+				else if(Syn_filtDone == 1)
+				begin
+					LDi_subfr = 1; 
+					mathMuxSel = 6'd28;
+					nextsubModuleState = TL_FOR_LOOP_INC;
+				end				
+			end//SUB_MODULE_SYN_FILT6_DONE		
 
 
 

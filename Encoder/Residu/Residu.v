@@ -252,7 +252,7 @@ begin
 			subOutA = {10'd0, I[5:0]};
 			subOutB = {12'd0, J[3:0]};
 			//add instead of concatenate
-			addOutA = {5'd0, X[10:0]};
+			addOutA = {5'd0, X[11:0]};
 			addOutB = subIn;
 			memReadAddrX = addIn;
 			nexttemp = memReadDataA;

@@ -147,6 +147,13 @@ module G729_Top_Test_v;
 	reg [31:0] Syn_filt5_error [0:4999];
 	reg [31:0] Syn_filt5_mem_err [0:4999];
 
+	//Residu4
+	reg [31:0] Residu4_xn [0:4999];
+	
+	//Syn_filt6
+	reg [31:0] Syn_filt6_xn [0:4999];
+	reg [31:0] Syn_filt6_mem_w0 [0:4999];
+
 	//working integers
 	integer i;
 	integer k;
@@ -255,6 +262,13 @@ module G729_Top_Test_v;
 		//Syn_filt5
 		$readmemh("Syn_filt5_error.out", Syn_filt5_error);
 		$readmemh("Syn_filt5_mem_err.out", Syn_filt5_mem_err);
+
+		//Residu4
+		$readmemh("Residu4_xn.out", Residu4_xn);
+		
+		//Syn_filt6
+		$readmemh("Syn_filt6_xn.out", Syn_filt6_xn);
+		$readmemh("Syn_filt6_mem_w0.out", Syn_filt6_mem_w0);
 	end	
 
 	// Instantiate the Unit Under Test (UUT)
@@ -1520,6 +1534,93 @@ module G729_Top_Test_v;
 					$display($time, "!!!!!Syn_filt5 Failed: mem_err!!!!!");
 				if (!flag1 && !flag2)
 					$display($time, "*****Syn_filt5 Completed Successfully*****");
+
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//		Residu4
+	//
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	
+				testdone = 1;
+				wait(done);
+				testdone = 0;
+				flag1 = 0;
+				@(posedge clock);
+				@(posedge clock) #5;
+				
+				for (i = 0; i<L_SUBFR;i=i+1)
+				begin
+					outBufAddr = XN + i;
+					@(posedge clock);
+					@(posedge clock) #5;
+					if (out != Residu4_xn[(2*k+z)*L_SUBFR+i])
+					begin
+						$display($time, " ERROR: xn[%d] = %x, expected = %x", (2*k+z)*L_SUBFR+i, out, Residu4_xn[(2*k+z)*L_SUBFR+i]);
+						flag1 = 1;
+					end
+					@(posedge clock);
+					@(posedge clock) #5;
+				end	
+				
+				if (flag1)
+					$display($time, "!!!!!Residu4 Failed: xn!!!!!");
+				else
+					$display($time, "*****Residu4 Completed Successfully*****");
+
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//		Syn_filt6
+	//
+	//////////////////////////////////////////////////////////////////////////////////////////////
+			
+				testdone = 1;
+				wait(done);
+				testdone = 0;
+				flag1 = 0;
+				flag2 = 0;
+				@(posedge clock);
+				@(posedge clock) #5;
+				
+				for (i = 0; i<L_SUBFR; i=i+1)
+				begin		
+					@(posedge clock);
+					@(posedge clock);
+					@(posedge clock) #5;
+					outBufAddr = XN + i;
+					@(posedge clock);
+					@(posedge clock) #5;
+					if (out != Syn_filt6_xn[(2*k+z)*L_SUBFR+i])
+					begin
+						$display($time, " ERROR: xn[%d] = %x, expected = %x", (2*k+z)*L_SUBFR+i, out, Syn_filt6_xn[(2*k+z)*L_SUBFR+i]);
+						flag1 = 1;
+					end
+					@(posedge clock);
+					@(posedge clock) #5;
+				end
+				
+				for (i = 0; i<M; i=i+1)
+				begin		
+					@(posedge clock);
+					@(posedge clock);
+					@(posedge clock) #5;
+					outBufAddr = MEM_W0 + i;
+					@(posedge clock);
+					@(posedge clock) #5;
+					if (out != Syn_filt6_mem_w0[(2*k+z)*M+i])
+					begin
+						$display($time, " ERROR: mem_w0[%d] = %x, expected = %x", (2*k+z)*M+i, out, Syn_filt6_mem_w0[(2*k+z)*M+i]);
+						flag2 = 1;
+					end
+					@(posedge clock);
+					@(posedge clock) #5;
+				end
+				
+				if (flag1)
+					$display($time, "!!!!!Syn_filt6 Failed: xn!!!!!");
+				if (flag2)
+					$display($time, "!!!!!Syn_filt6 Failed: mem_w0!!!!!");
+				if (!flag1 && !flag2)
+					$display($time, "*****Syn_filt6 Completed Successfully*****");
 
 			end//z for loop
 		end//k for loop
