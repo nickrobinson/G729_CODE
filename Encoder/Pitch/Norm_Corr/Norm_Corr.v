@@ -18,7 +18,7 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module Norm_Corr(clk,start,reset,excAddr,t_min,t_max,addIn,L_addIn,L_macIn,L_msuIn,L_multIn,
+module Norm_Corr(clk,start,reset,excAddr,xnAddr,hAddr,t_min,t_max,addIn,L_addIn,L_macIn,L_msuIn,L_multIn,
 					  L_negateIn,L_shlIn,L_shlDone,L_shrIn,L_subIn,multIn,norm_lIn,norm_lDone,shrIn,
 					  subIn,constantMemIn,memIn,addOutA,addOutB,L_addOutA,L_addOutB,L_negateOut,
 					  L_macOutA,L_macOutB,L_macOutC,L_msuOutA,L_msuOutB,L_msuOutC,L_multOutA,L_multOutB,
@@ -30,6 +30,8 @@ module Norm_Corr(clk,start,reset,excAddr,t_min,t_max,addIn,L_addIn,L_macIn,L_msu
 //Inputs
 input clk,start,reset;
 input [11:0] excAddr;
+input [11:0] xnAddr;
+input [11:0] hAddr;
 input [15:0] t_min;
 input [15:0] t_max;
 input [15:0] addIn;
@@ -581,7 +583,7 @@ begin
 		S3:
 		begin
 			Convolve_xAddr = L_temp[11:0]; 
-			Convolve_hAddr = H1;
+			Convolve_hAddr = hAddr;
 			Convolve_yAddr = NORM_CORR_EXCF;
 			memWriteEn = Convolve_memWriteEn;
 			memReadAddr = Convolve_memWriteAddr;
@@ -855,7 +857,7 @@ begin
 		begin
 			nextL_temp = memIn[15:0];
 			L_tempLD = 1;
-			memReadAddr = {XN[11:6],j[5:0]};
+			memReadAddr = {xnAddr[11:6],j[5:0]};
 			nextstate = S18;
 		end//S17
 		
@@ -1009,7 +1011,7 @@ begin
 			end
 			else if(j[15] == 0 && j != 0)
 			begin
-				addOutA = H1;
+				addOutA = hAddr;
 				addOutB = j;
 				memReadAddr = addIn[11:0];
 				nextstate = S28;

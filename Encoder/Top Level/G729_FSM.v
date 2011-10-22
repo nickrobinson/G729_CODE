@@ -152,6 +152,7 @@ module G729_FSM(clock,reset,start,divErr,
 	 parameter SUB_MODULE_SYN_FILT5_DONE = 6'd32;
 	 parameter SUB_MODULE_RESIDU4_DONE = 6'd33;
 	 parameter SUB_MODULE_SYN_FILT6_DONE = 6'd34;
+	 parameter SUB_MODULE_PITCH_FR3_DONE = 6'd35;
 
 
 	 parameter TL_FOR_LOOP_INC = 6'd62;
@@ -703,13 +704,26 @@ module G729_FSM(clock,reset,start,divErr,
 					nextsubModuleState = SUB_MODULE_SYN_FILT6_DONE;
 				else if(Syn_filtDone == 1)
 				begin
-					LDi_subfr = 1; 
 					mathMuxSel = 6'd28;
-					nextsubModuleState = TL_FOR_LOOP_INC;
+					nextsubModuleState = SUB_MODULE_PITCH_FR3_DONE;
+					Pitch_fr3Ready = 1;
 				end				
 			end//SUB_MODULE_SYN_FILT6_DONE		
 
-
+			SUB_MODULE_PITCH_FR3_DONE:
+			begin
+				mathMuxSel = 6'd28;
+				if(Pitch_fr3Done == 0)
+					nextsubModuleState = SUB_MODULE_PITCH_FR3_DONE;
+				else if(Pitch_fr3Done == 1)
+				begin
+					LDi_subfr = 1; 
+					LDT0 = 1; 
+					LDT0_frac = 1;
+					mathMuxSel = 6'd29;
+					nextsubModuleState = TL_FOR_LOOP_INC;
+				end				
+			end//SUB_MODULE_SYN_FILT6_DONE		
 
 
 

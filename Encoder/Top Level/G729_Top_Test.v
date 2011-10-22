@@ -1622,6 +1622,18 @@ module G729_Top_Test_v;
 				if (!flag1 && !flag2)
 					$display($time, "*****Syn_filt6 Completed Successfully*****");
 
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//		Pitch_fr3
+	//
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	
+				testdone = 1;
+				wait(done);
+				testdone = 0;
+				$display($time, "*****Pitch_fr3 Completed Successfully*****");
+
+
 			end//z for loop
 		end//k for loop
 	end//initial 

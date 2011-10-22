@@ -19,7 +19,7 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module Pitch_fr3(clock,start,reset,done,out,i_subfr,exc,
+module Pitch_fr3(clock,start,reset,done,exc,xn,h,L_subfr,t0_min,t0_max,i_subfr,pit_frac,lag,
 						sub_outa,sub_outb,sub_in,
 						add_outa,add_outb,add_in,
 						L_add_outa,L_add_outb,L_add_in,
@@ -46,8 +46,15 @@ module Pitch_fr3(clock,start,reset,done,out,i_subfr,exc,
 	output reg done;
 	
 	input [11:0] exc;
+	input [11:0] xn;
+	input [11:0] h;
+	input [15:0] L_subfr;
+	input [15:0] t0_min;
+	input [15:0] t0_max;
 	input [15:0] i_subfr;
-	output reg [15:0] out;
+	
+	output reg [15:0] pit_frac;
+	output reg [15:0] lag;
 	
 	input [31:0] scratch_mem_in;
 	output reg scratch_mem_write_en;
@@ -105,9 +112,8 @@ module Pitch_fr3(clock,start,reset,done,out,i_subfr,exc,
 	output reg [11:0] constant_mem_read_addr;
 	
 	reg next_done;
-	reg [15:0] next_out;
 	
-	reg [15:0] i,next_i,t_min,next_t_min,t_max,next_t_max,max,next_max,lag,next_lag,frac,next_frac,
+	reg [15:0] i,next_i,t_min,next_t_min,t_max,next_t_max,max,next_max,next_pit_frac,next_lag,frac,next_frac,
 					corr,next_corr,corr_int,next_corr_int;
 					
 	reg [15:0] temp_t_min,next_temp_t_min,temp_t_max,next_temp_t_max;
@@ -142,7 +148,7 @@ module Pitch_fr3(clock,start,reset,done,out,i_subfr,exc,
 	wire norm_corr_done;
 	
 	Norm_Corr i_Norm_Corr(
-						.clk(clock),.start(norm_corr_start),.reset(reset),.excAddr(exc),
+						.clk(clock),.start(norm_corr_start),.reset(reset),.excAddr(exc),.xnAddr(xn),.hAddr(h),
 						.t_min(t_min),.t_max(t_max),
 						.addIn(add_in),.L_addIn(L_add_in),.L_macIn(L_mac_in),.L_msuIn(L_msu_in),.L_multIn(L_mult_in),
 					  .L_negateIn(L_negate_in),.L_shlIn(L_shl_in),.L_shlDone(L_shl_done),.L_shrIn(L_shr_in),
@@ -218,9 +224,9 @@ module Pitch_fr3(clock,start,reset,done,out,i_subfr,exc,
 	
 	always@(posedge clock) begin
 		if(reset)
-			out = 'd0;
+			lag = 'd0;
 		else
-			out = next_out;
+			lag = next_lag;
 	end
 	
 	always@(posedge clock) begin
@@ -256,6 +262,13 @@ module Pitch_fr3(clock,start,reset,done,out,i_subfr,exc,
 			lag = 'd0;
 		else
 			lag = next_lag;
+	end
+
+	always@(posedge clock) begin
+		if(reset)
+			pit_frac = 'd0;
+		else
+			pit_frac = next_pit_frac;
 	end
 	
 	always@(posedge clock) begin
@@ -329,12 +342,12 @@ module Pitch_fr3(clock,start,reset,done,out,i_subfr,exc,
 	always@(*) begin
 		nextstate = currentstate;
 		next_done = done;
-		next_out = out;
+		next_lag = lag;
 		next_i = i;
 		next_t_min = t_min;
 		next_t_max = t_max;
 		next_max = max;
-		next_lag = lag;
+		next_pit_frac = pit_frac;
 		next_frac = frac;
 		next_corr = corr;
 		next_corr_int = corr_int;
@@ -404,22 +417,22 @@ module Pitch_fr3(clock,start,reset,done,out,i_subfr,exc,
 			end
 			
 			state1: begin
-				scratch_mem_read_addr = T0_MIN;
+				//scratch_mem_read_addr = T0_MIN;
 				nextstate = state2;
 			end
 			
 			state2: begin
-				next_temp_t_min = scratch_mem_in[15:0];
-				sub_outa = scratch_mem_in[15:0];
+				next_temp_t_min = t0_min[15:0];
+				sub_outa = t0_min[15:0];
 				sub_outb = 'd4;
 				next_t_min = sub_in;
-				scratch_mem_read_addr = T0_MAX;
+				//scratch_mem_read_addr = T0_MAX;
 				nextstate = state3;
 			end
 			
 			state3: begin
-				next_temp_t_max = scratch_mem_in[15:0];
-				add_outa = scratch_mem_in[15:0];
+				next_temp_t_max = t0_max[15:0];
+				add_outa = t0_max[15:0];
 				add_outb = 'd4;
 				next_t_max = add_in;
 				sub_outa = {5'd0,PITCH_FR3_CORR_V};
@@ -492,10 +505,11 @@ module Pitch_fr3(clock,start,reset,done,out,i_subfr,exc,
 					sub_outa = lag;
 					sub_outb = 'd84;
 					if(i_subfr == 'd0 && sub_in[15] == 'd0 && sub_in != 'd0) begin
-						scratch_mem_write_addr = T0_FRAC;
-						scratch_mem_out = 'd0;
-						scratch_mem_write_en = 'd1;
-						next_out = lag;
+						// scratch_mem_write_addr = T0_FRAC;
+						// scratch_mem_out = 'd0;
+						// scratch_mem_write_en = 'd1;
+						next_pit_frac = 'd0;
+						next_lag = lag;
 						next_done = 'd1;
 						nextstate = done_state;
 					end
@@ -627,10 +641,11 @@ module Pitch_fr3(clock,start,reset,done,out,i_subfr,exc,
 			end
 			
 			state14: begin
-				scratch_mem_write_addr = T0_FRAC;
-				scratch_mem_out = frac;
-				scratch_mem_write_en = 'd1;
-				next_out = lag;
+				// scratch_mem_write_addr = T0_FRAC;
+				// scratch_mem_out = frac;
+				// scratch_mem_write_en = 'd1;
+				next_pit_frac = frac;
+				next_lag = lag;
 				next_done = 'd1;
 				nextstate = done_state;
 			end
@@ -642,6 +657,7 @@ module Pitch_fr3(clock,start,reset,done,out,i_subfr,exc,
 				next_t_min = 'd0;
 				next_t_max = 'd0;
 				next_max = 'd0;
+				next_pit_frac = 'd0;
 				next_lag = 'd0;
 				next_frac = 'd0;
 				next_corr = 'd0;
