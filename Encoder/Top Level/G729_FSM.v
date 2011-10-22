@@ -19,9 +19,15 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module G729_FSM(clock,reset,start,divErr,frame_done,autocorrDone,lagDone,levinsonDone,AzDone,Qua_lspDone,
-				Int_lpcDone,Int_qlpcDone,Math1Done,perc_varDone,Weight_AzDone,ResiduDone,Syn_filtDone,Pitch_olDone,Math2Done,Math3Done,i_subfr,mathMuxSel,autocorrReady,lagReady,
-				levinsonReady, AzReady,Qua_lspReady,Int_lpcReady,Int_qlpcReady,Math1Ready,perc_varReady,Weight_AzReady,ResiduReady,Syn_filtReady,Pitch_olReady,Math2Ready,Math3Ready,LDk,LDi_subfr,
+module G729_FSM(clock,reset,start,divErr,
+				frame_done,autocorrDone,lagDone,levinsonDone,AzDone,Qua_lspDone,Int_lpcDone,Int_qlpcDone,Math1Done,perc_varDone,Weight_AzDone,ResiduDone,Syn_filtDone,
+				Pitch_olDone,Math2Done,Math3Done,Pitch_fr3Done,Enc_lag3Done,Parity_PitchDone,Pred_lt_3Done,ConvolveDone,G_pitchDone,Math4Done,test_errDone,ACELP_CodebookDone,
+				Math5Done,Corr_xy2Done,Qua_gainDone,Math6Done,update_exc_errDone,Math7Done,CopyDone,prm2bits_ld8kDone,
+				i_subfr,mathMuxSel,
+				autocorrReady,lagReady,levinsonReady, AzReady,Qua_lspReady,Int_lpcReady,Int_qlpcReady,Math1Ready,perc_varReady,Weight_AzReady,ResiduReady,Syn_filtReady,Pitch_olReady,
+				Math2Ready,Math3Ready,Pitch_fr3Ready,Enc_lag3Ready,Parity_PitchReady,Pred_lt_3Ready,ConvolveReady,G_pitchReady,Math4Ready,test_errReady,ACELP_CodebookReady,Math5Ready,
+				Corr_xy2Ready,Qua_gainReady,Math6Ready,update_exc_errReady,Math7Ready,CopyReady,prm2bits_ld8kReady,	
+				LDk,LDi_subfr,
 				LDi_gamma,LDT_op,LDT0,LDT0_min,LDT0_max,LDT0_frac,LDgain_pit,LDgain_code,LDindex,LDtemp,LDA_Addr,LDAq_Addr,resetk,reseti_subfr,reseti_gamma,resetT_op,resetT0,resetT0_min,
 				resetT0_max,resetT0_frac,resetgain_pit,resetgain_code,resetindex,resettemp,resetA_Addr,resetAq_Addr,LDL_temp,resetL_temp,done);
     
@@ -46,7 +52,23 @@ module G729_FSM(clock,reset,start,divErr,frame_done,autocorrDone,lagDone,levinso
 	 input Pitch_olDone;
 	 input Math2Done;
 	 input Math3Done;
-	 
+	input Pitch_fr3Done;	//New submodules
+	input Enc_lag3Done;
+	input Parity_PitchDone;
+	input Pred_lt_3Done;
+	input ConvolveDone;
+	input G_pitchDone;
+	input Math4Done;
+	input test_errDone;
+	input ACELP_CodebookDone;
+	input Math5Done;
+	input Corr_xy2Done;
+	input Qua_gainDone;
+	input Math6Done;
+	input update_exc_errDone;
+	input Math7Done;
+	input CopyDone;
+	input prm2bits_ld8kDone;	 //End new submodules
 	 input [15:0] i_subfr;
 	 
 	 ///outputs
@@ -71,6 +93,23 @@ module G729_FSM(clock,reset,start,divErr,frame_done,autocorrDone,lagDone,levinso
 	 output reg Pitch_olReady;
 	 output reg Math2Ready;
 	 output reg Math3Ready;
+	output reg Pitch_fr3Ready;		//New submodules
+	output reg Enc_lag3Ready;
+	output reg Parity_PitchReady;
+	output reg Pred_lt_3Ready;
+	output reg ConvolveReady;
+	output reg G_pitchReady;
+	output reg Math4Ready;
+	output reg test_errReady;
+	output reg ACELP_CodebookReady;
+	output reg Math5Ready;
+	output reg Corr_xy2Ready;
+	output reg Qua_gainReady;
+	output reg Math6Ready;
+	output reg update_exc_errReady;
+	output reg Math7Ready;
+	output reg CopyReady;
+	output reg prm2bits_ld8kReady;	 //End new submodules
 	 output reg done;
 	 
 	 parameter L_FRAME = 'd80;
@@ -204,6 +243,23 @@ module G729_FSM(clock,reset,start,divErr,frame_done,autocorrDone,lagDone,levinso
 		Pitch_olReady = 0;
 		Math2Ready = 0;
 		Math3Ready = 0;
+		Pitch_fr3Ready = 0;		// New submodules
+		Enc_lag3Ready = 0;
+		Parity_PitchReady = 0;
+		Pred_lt_3Ready = 0;
+		ConvolveReady = 0;
+		G_pitchReady = 0;
+		Math4Ready = 0;
+		test_errReady = 0;
+		ACELP_CodebookReady = 0;
+		Math5Ready = 0;
+		Corr_xy2Ready = 0;
+		Qua_gainReady = 0;
+		Math6Ready = 0;
+		update_exc_errReady = 0;
+		Math7Ready = 0;
+		CopyReady = 0;
+		prm2bits_ld8kReady = 0;		//End new submodules
 		
 		if(divErr == 1)
 			nextsubModuleState = SUB_MODULE_START;

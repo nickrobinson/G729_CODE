@@ -23,10 +23,13 @@
 //
 //////////////////////////////////////////////////////////////////////////////////
 module G729_Pipe (clock,reset,xn,preProcReady,autocorrReady,lagReady,levinsonReady,AzReady,Qua_lspReady,
-						Int_lpcReady,Int_qlpcReady,Math1Ready,perc_varReady,Weight_AzReady,ResiduReady,Syn_filtReady,Pitch_olReady,Math2Ready,Math3Ready,
+						Int_lpcReady,Int_qlpcReady,Math1Ready,perc_varReady,Weight_AzReady,ResiduReady,Syn_filtReady,Pitch_olReady,Math2Ready,Math3Ready,Pitch_fr3Ready,Enc_lag3Ready,Parity_PitchReady,
+						Pred_lt_3Ready,ConvolveReady,G_pitchReady,Math4Ready,test_errReady,ACELP_CodebookReady,Math5Ready,Corr_xy2Ready,Qua_gainReady,Math6Ready,update_exc_errReady,Math7Ready,CopyReady,prm2bits_ld8kReady,
 						LDk,LDi_subfr,LDi_gamma,LDT_op,LDT0,LDT0_min,LDT0_max,LDT0_frac,LDgain_pit,LDgain_code,LDindex,LDtemp,LDA_Addr,LDAq_Addr,resetk,reseti_subfr,reseti_gamma,resetT_op,
 						resetT0,resetT0_min,resetT0_max,resetT0_frac,resetgain_pit,resetgain_code,resetindex,resettemp,resetA_Addr,resetAq_Addr,LDL_temp,resetL_temp,mathMuxSel,frame_done,autocorrDone,lagDone,
-						levinsonDone,AzDone,Qua_lspDone,Int_lpcDone,Int_qlpcDone,Math1Done,perc_varDone,Weight_AzDone,ResiduDone,Syn_filtDone,Pitch_olDone,Math2Done,Math3Done,i_subfr,divErr,outBufAddr,out);
+						levinsonDone,AzDone,Qua_lspDone,Int_lpcDone,Int_qlpcDone,Math1Done,perc_varDone,Weight_AzDone,ResiduDone,Syn_filtDone,Pitch_olDone,Math2Done,Math3Done,Pitch_fr3Done,Enc_lag3Done,Parity_PitchDone,
+						Pred_lt_3Done,ConvolveDone,G_pitchDone,Math4Done,test_errDone,ACELP_CodebookDone,Math5Done,Corr_xy2Done,Qua_gainDone,Math6Done,update_exc_errDone,Math7Done,CopyDone,prm2bits_ld8kDone,		
+						i_subfr,divErr,outBufAddr,out);
 
 `include "paramList.v"
    
@@ -50,6 +53,23 @@ module G729_Pipe (clock,reset,xn,preProcReady,autocorrReady,lagReady,levinsonRea
 	input Pitch_olReady;
 	input Math2Ready;
 	input Math3Ready;
+	input Pitch_fr3Ready;		//New submodules
+	input Enc_lag3Ready;
+	input Parity_PitchReady;
+	input Pred_lt_3Ready;
+	input ConvolveReady;
+	input G_pitchReady;
+	input Math4Ready;
+	input test_errReady;
+	input ACELP_CodebookReady;
+	input Math5Ready;
+	input Corr_xy2Ready;
+	input Qua_gainReady;
+	input Math6Ready;
+	input update_exc_errReady;
+	input Math7Ready;
+	input CopyReady;
+	input prm2bits_ld8kReady;	 //End new submodules
 	input [5:0] mathMuxSel;
 	input [11:0] outBufAddr;
 	input LDk, LDi_subfr, LDi_gamma, LDT_op, LDT0, LDT0_min, LDT0_max, LDT0_frac, LDgain_pit, LDgain_code, LDindex, LDtemp, LDA_Addr, LDAq_Addr;
@@ -74,6 +94,23 @@ module G729_Pipe (clock,reset,xn,preProcReady,autocorrReady,lagReady,levinsonRea
 	output Pitch_olDone;
 	output Math2Done;
 	output Math3Done;
+	output Pitch_fr3Done;	//New submodules
+	output Enc_lag3Done;
+	output Parity_PitchDone;
+	output Pred_lt_3Done;
+	output ConvolveDone;
+	output G_pitchDone;
+	output Math4Done;
+	output test_errDone;
+	output ACELP_CodebookDone;
+	output Math5Done;
+	output Corr_xy2Done;
+	output Qua_gainDone;
+	output Math6Done;
+	output update_exc_errDone;
+	output Math7Done;
+	output CopyDone;
+	output prm2bits_ld8kDone;	
 	output i_subfr;
 	output reg divErr;
 	output [31:0] out;	
