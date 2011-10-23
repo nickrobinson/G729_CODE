@@ -40,17 +40,14 @@ module de_acelp_pipe(clk, start, reset, done, scratch_mem_in,
 	wire [15:0] shr_a, shr_b;
 	wire [15:0] shl_a, shl_b;
 	wire [15:0] add_in, shr_in, shl_in;
-	//wire [15:0] shr_a, shr_b, shl_a, shl_b, add_a, add_b;
 	
 	wire scratch_mem_write_en;
 	wire [11:0] scratch_mem_read_addr, scratch_mem_write_addr;
 	wire [31:0] scratch_mem_out;
 	
-	//wire [15:0] sign, index;
-	
 	de_acelp i_de_acelp(
 	.clk(clk), .start(start), .reset(reset), .done(done),
-	/*.sign(sign), .index(index),*/ .add_in(add_in), .shr_in(shr_in),
+   .add_in(add_in), .shr_in(shr_in),
 	.shl_in(shl_in), .add_a(add_a), .add_b(add_b), .shr_a(shr_a),
 	.shr_b(shr_b), .shl_a(shl_a), .shl_b(shl_b), .scratch_mem_write_en(scratch_mem_write_en),
 	.scratch_mem_read_addr(scratch_mem_read_addr), .scratch_mem_write_addr(scratch_mem_write_addr),
@@ -58,7 +55,7 @@ module de_acelp_pipe(clk, start, reset, done, scratch_mem_in,
 	
 	add i_add(.a(add_a), .b(add_b), .overflow(), .sum(add_in));
 	shl i_shl(.var1(shl_a), .var2(shl_b), .overflow(), .result(shl_in));
-	shr i_shr(.var1(shr_a), .var2(shl_b), .overflow(), .result(shr_in));
+	shr i_shr(.var1(shr_a), .var2(shr_b), .overflow(), .result(shr_in));
 	
 	//mem write address mux
 	always @(*)
