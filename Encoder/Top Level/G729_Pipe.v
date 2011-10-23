@@ -548,6 +548,8 @@ module G729_Pipe (clock,reset,xn,preProcReady,autocorrReady,lagReady,levinsonRea
 	wire Pitch_ol_memWriteEn; 
 
 	//TL_Math2 Wires
+	wire [15:0] TL_Math2_nextT0_min;
+	wire [15:0] TL_Math2_nextT0_max;
 	wire [15:0] TL_Math2_addOutA; 
 	wire [15:0] TL_Math2_addOutB; 
 	wire [15:0] TL_Math2_subOutA; 
@@ -591,13 +593,62 @@ module G729_Pipe (clock,reset,xn,preProcReady,autocorrReady,lagReady,levinsonRea
 	wire [31:0] Pitch_fr3_norm_l_out;
 	wire Pitch_fr3_norm_l_start;
 	wire [15:0] Pitch_fr3_shrVar1Out; 
-	wire [15:0] Pitch_fr3_shrVar2Out; 
+	wire [15:0] Pitch_fr3_shrVar2Out;
+	
 	wire [11:0] Pitch_fr3_memReadAddr; 
 	wire [11:0] Pitch_fr3_memWriteAddr; 
 	wire [31:0] Pitch_fr3_memIn; 
 	wire [11:0] Pitch_fr3_constantMemAddr; 
 	wire Pitch_fr3_memWriteEn; 
+	
+	//Enc_lag3 Wires
+	wire [15:0] Enc_lag3_nextT0_min;
+	wire [15:0] Enc_lag3_nextT0_max;
+	wire [15:0] Enc_lag3_addOutA;
+	wire [15:0] Enc_lag3_addOutB;
+	wire [15:0] Enc_lag3_subOutA;
+	wire [15:0] Enc_lag3_subOutB;
+	
+	wire [11:0] Enc_lag3_memReadAddr;	
+	wire [11:0] Enc_lag3_memWriteAddr;
+	wire Enc_lag3_memWriteEn;
+	wire [31:0] Enc_lag3_memIn;
 
+	//Parity_Pitch Wires
+	wire [15:0] Parity_pitch_addOutA;
+	wire [15:0] Parity_pitch_addOutB;
+	wire [15:0] Parity_pitch_shrVar1Out;
+	wire [15:0] Parity_pitch_shrVar2Out;
+
+	//Pred_lt_3 Wires
+	
+	//Convolve Wires
+
+	//G_pitch Wires
+
+	//Math 4 Wires
+
+	//test_err Wires
+
+	//ACELP_Codebook Wires
+
+	//Math 5 Wires
+
+	//Corr_xy2 Wires
+
+	//Qua_gain Wires
+
+	//Math 6 Wires
+
+	//update_exc_err Wires
+
+	//Math 7 Wires
+
+	//Copy Wires
+
+	//prm2bits_ld8kDone Wires
+
+	
 //	//////////////////////////////////////////////////////////////////////////////////////////////
 //	//
 //	//		FFs
@@ -610,128 +661,6 @@ module G729_Pipe (clock,reset,xn,preProcReady,autocorrReady,lagReady,levinsonRea
 // Word16 temp;
 // Word32 L_temp;
 
-	always @(posedge clock)
-	begin
-		if(reset)
-			k <= 0;
-		else if(resetk)
-			k <= 0;
-		else if(LDk)
-			k <= nextk;
-	end
-	always @(posedge clock)
-	begin
-		if(reset)
-			i_subfr <= 0;
-		else if(reseti_subfr)
-			i_subfr <= 0;
-		else if(LDi_subfr)
-		begin
-			i_subfr <= i_subfr + L_SUBFR;
-		end
-	end
-	wire [15:0] i_subfr_in;
-	always @(posedge clock)
-	begin
-		if(reset)
-			i_gamma <= 0;
-		else if(reseti_gamma)
-			i_gamma <= 0;
-		else if(LDi_gamma)
-		begin
-			i_gamma <= i_gamma + 'd1;
-		end
-	end
-	always @(posedge clock)
-	begin
-		if(reset)
-			T_op <= 0;
-		else if(resetT_op)
-			T_op <= 0;
-		else if(LDT_op)
-			T_op <= nextT_op;
-	end
-	always @(posedge clock)
-	begin
-		if(reset)
-			T0 <= 0;
-		else if(resetT0)
-			T0 <= 0;
-		else if(LDT0)
-			T0 <= nextT0;
-	end
-	always @(posedge clock)
-	begin
-		if(reset)
-			T0_min <= 0;
-		else if(resetT0_min)
-			T0_min <= 0;
-		else if(LDT0_min)
-			T0_min <= nextT0_min;
-	end
-	always @(posedge clock)
-	begin
-		if(reset)
-			T0_max <= 0;
-		else if(resetT0_max)
-			T0_max <= 0;
-		else if(LDT0_max)
-			T0_max <= nextT0_max;
-	end
-	always @(posedge clock)
-	begin
-		if(reset)
-			T0_frac <= 0;
-		else if(resetT0_frac)
-			T0_frac <= 0;
-		else if(LDT0_frac)
-			T0_frac <= nextT0_frac;
-	end
-	always @(posedge clock)
-	begin
-		if(reset)
-			gain_pit <= 0;
-		else if(resetgain_pit)
-			gain_pit <= 0;
-		else if(LDgain_pit)
-			gain_pit <= nextgain_pit;
-	end
-	always @(posedge clock)
-	begin
-		if(reset)
-			gain_code <= 0;
-		else if(resetgain_code)
-			gain_code <= 0;
-		else if(LDgain_code)
-			gain_code <= nextgain_code;
-	end
-	always @(posedge clock)
-	begin
-		if(reset)
-			index <= 0;
-		else if(resetindex)
-			index <= 0;
-		else if(LDindex)
-			index <= nextindex;
-	end
-	always @(posedge clock)
-	begin
-		if(reset)
-			temp <= 0;
-		else if(resettemp)
-			temp <= 0;
-		else if(LDtemp)
-			temp <= nexttemp;
-	end
-	always @(posedge clock)
-	begin
-		if(reset)
-			L_temp <= 0;
-		else if(resetL_temp)
-			L_temp <= 0;
-		else if(LDL_temp)
-			L_temp <= nextL_temp;
-	end
 	always @(posedge clock)
 	begin
 		if(reset)
@@ -760,124 +689,313 @@ module G729_Pipe (clock,reset,xn,preProcReady,autocorrReady,lagReady,levinsonRea
 				Aq_Addr <= AQ_T_LOW;
 		end
 	end
-
-	//////////////////////////////////////////////////////////////////////////////////////////////
-	//
-	//		L_mult
-	//
-	//////////////////////////////////////////////////////////////////////////////////////////////
-	wire [15:0] L_mult_a, L_mult_b;
-	
-	L_mult i_L_mult_1(.a(L_mult_a),.b(L_mult_b),.overflow(L_mult_overflow),.product(L_mult_out));
-
-	mux128_16 i_mux128_16_L_mult_a(
-												.in0(autocorr_zero16),
-												.in1(lag_L_multOutA),
-												.in2(levinson_L_mult_outa),
-												.in3(Az_L_multOutA),
-												.in4(Qua_lsp_L_multOutA),.in5(Int_lpc_L_multOutA),
-			.in6(Int_qlpc_L_multOutA),.in7(0),.in8(perc_var_L_multOutA),.in9(Weight_Az_L_multOutA),.in10(Weight_Az_L_multOutA),.in11(Residu_L_multOutA),.in12(Syn_filt_L_multOutA),.in13(Weight_Az_L_multOutA),.in14(Weight_Az_L_multOutA),.in15(Residu_L_multOutA),
-			.in16(Syn_filt_L_multOutA),.in17(Pitch_ol_L_multOutA),.in18(0),.in19(Weight_Az_L_multOutA),.in20(Weight_Az_L_multOutA),.in21(0),.in22(Syn_filt_L_multOutA),.in23(Syn_filt_L_multOutA),.in24(Residu_L_multOutA),
-			.in25(Syn_filt_L_multOutA),.in26(Residu_L_multOutA),.in27(Syn_filt_L_multOutA),.in28(Pitch_fr3_L_multOutA),.in29(0),.in30(0),.in31(0),.in32(0),.in33(0),
-			.in34(0),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
-			.in43(0),.in44(0),.in45(0),.in46(0),.in47(0),.in48(0),.in49(0),.in50(0),.in51(0),
-			.in52(0),.in53(0),.in54(0),.in55(0),.in56(),.in57(0),.in58(0),.in59(0),.in60(0),
-			.in61(0),.in62(0),.in63(0),.in64(0),.in65(0),.in66(0),.in67(0),.in68(0),.in69(0),
-			.in70(0),.in71(0),.in72(0),.in73(0),.in74(0),.in75(0),.in76(0),.in77(0),.in78(0),
-			.in79(0),.in80(0),.in81(0),.in82(0),.in83(0),.in84(0),.in85(0),.in86(0),.in87(0),
-			.in88(0),.in89(0),.in90(0),.in91(0),.in92(0),.in93(0),.in94(0),.in95(0),.in96(0),
-			.in97(0),.in98(0),.in99(0),.in100(0),.in101(0),.in102(0),.in103(0),.in104(0),.in105(0),
-			.in106(0),.in107(0),.in108(0),.in109(0),.in110(0),.in111(0),.in112(0),.in113(0),
-			.in114(0),.in115(0),.in116(0),.in117(0),.in118(0),.in119(0),.in120(0),.in121(0),
-			.in122(0),.in123(0),.in124(0),.in125(0),.in126(0),.in127(0),.sel(mathMuxSel),.out(L_mult_a));
-	
-	mux128_16 i_mux128_16_L_mult_b(
-											.in0(autocorr_zero16),
-											.in1(lag_L_multOutB),
-											.in2(levinson_L_mult_outb),
-											.in3(Az_L_multOutB),
-											.in4(Qua_lsp_L_multOutB),.in5(Int_lpc_L_multOutB),
-			.in6(Int_qlpc_L_multOutB),.in7(0),.in8(perc_var_L_multOutB),.in9(Weight_Az_L_multOutB),.in10(Weight_Az_L_multOutB),.in11(Residu_L_multOutB),.in12(Syn_filt_L_multOutB),.in13(Weight_Az_L_multOutB),.in14(Weight_Az_L_multOutB),.in15(Residu_L_multOutB),
-			.in16(Syn_filt_L_multOutB),.in17(Pitch_ol_L_multOutB),.in18(0),.in19(Weight_Az_L_multOutB),.in20(Weight_Az_L_multOutB),.in21(0),.in22(Syn_filt_L_multOutB),.in23(Syn_filt_L_multOutB),.in24(Residu_L_multOutB),
-			.in25(Syn_filt_L_multOutB),.in26(Residu_L_multOutB),.in27(Syn_filt_L_multOutB),.in28(Pitch_fr3_L_multOutB),.in29(0),.in30(0),.in31(0),.in32(0),.in33(0),
-			.in34(0),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
-			.in43(0),.in44(0),.in45(0),.in46(0),.in47(0),.in48(0),.in49(0),.in50(0),.in51(0),
-			.in52(0),.in53(0),.in54(0),.in55(0),.in56(),.in57(0),.in58(0),.in59(0),.in60(0),
-			.in61(0),.in62(0),.in63(0),.in64(0),.in65(0),.in66(0),.in67(0),.in68(0),.in69(0),
-			.in70(0),.in71(0),.in72(0),.in73(0),.in74(0),.in75(0),.in76(0),.in77(0),.in78(0),
-			.in79(0),.in80(0),.in81(0),.in82(0),.in83(0),.in84(0),.in85(0),.in86(0),.in87(0),
-			.in88(0),.in89(0),.in90(0),.in91(0),.in92(0),.in93(0),.in94(0),.in95(0),.in96(0),
-			.in97(0),.in98(0),.in99(0),.in100(0),.in101(0),.in102(0),.in103(0),.in104(0),.in105(0),
-			.in106(0),.in107(0),.in108(0),.in109(0),.in110(0),.in111(0),.in112(0),.in113(0),
-			.in114(0),.in115(0),.in116(0),.in117(0),.in118(0),.in119(0),.in120(0),.in121(0),
-			.in122(0),.in123(0),.in124(0),.in125(0),.in126(0),.in127(0),.sel(mathMuxSel),.out(L_mult_b));
-	
-	//////////////////////////////////////////////////////////////////////////////////////////////
-	//
-	//		mult
-	//
-	//////////////////////////////////////////////////////////////////////////////////////////////
-	wire [15:0] mult_a,mult_b;
-	reg multRout;	
-	
-	always@(*)
+	always @(posedge clock)
 	begin
-		case(mathMuxSel)
-		'd0:		multRout = multRselOut;
-		default:	multRout = 0;
-		endcase
+		if(reset)
+			gain_code <= 0;
+		else if(resetgain_code)
+			gain_code <= 0;
+		else if(LDgain_code)
+			gain_code <= nextgain_code;
+	end	
+	always @(posedge clock)
+	begin
+		if(reset)
+			gain_pit <= 0;
+		else if(resetgain_pit)
+			gain_pit <= 0;
+		else if(LDgain_pit)
+			gain_pit <= nextgain_pit;
+	end	
+	always @(posedge clock)
+	begin
+		if(reset)
+			i_gamma <= 0;
+		else if(reseti_gamma)
+			i_gamma <= 0;
+		else if(LDi_gamma)
+		begin
+			i_gamma <= i_gamma + 'd1;
+		end
+	end	
+	always @(posedge clock)
+	begin
+		if(reset)
+			i_subfr <= 0;
+		else if(reseti_subfr)
+			i_subfr <= 0;
+		else if(LDi_subfr)
+		begin
+			i_subfr <= i_subfr + L_SUBFR;
+		end
 	end
-
-	mult i_mult_1(
-						.a(mult_a),
-						.b(mult_b),
-						.multRsel(multRout),
-						.overflow(mult_overflow),
-						.product(mult_out)
+	wire [15:0] i_subfr_in;
+	always @(posedge clock)
+	begin
+		if(reset)
+			index <= 0;
+		else if(resetindex)
+			index <= 0;
+		else if(LDindex)
+			index <= nextindex;
+	end
+	always @(posedge clock)
+	begin
+		if(reset)
+			k <= 0;
+		else if(resetk)
+			k <= 0;
+		else if(LDk)
+			k <= nextk;
+	end	
+	always @(posedge clock)
+	begin
+		if(reset)
+			L_temp <= 0;
+		else if(resetL_temp)
+			L_temp <= 0;
+		else if(LDL_temp)
+			L_temp <= nextL_temp;
+	end	
+	always @(posedge clock)
+	begin
+		if(reset)
+			T_op <= 0;
+		else if(resetT_op)
+			T_op <= 0;
+		else if(LDT_op)
+			T_op <= nextT_op;
+	end
+	always @(posedge clock)
+	begin
+		if(reset)
+			T0 <= 0;
+		else if(resetT0)
+			T0 <= 0;
+		else if(LDT0)
+			T0 <= nextT0;
+	end
+	always @(posedge clock)
+	begin
+		if(reset)
+			T0_frac <= 0;
+		else if(resetT0_frac)
+			T0_frac <= 0;
+		else if(LDT0_frac)
+			T0_frac <= nextT0_frac;
+	end	
+	always @(posedge clock)
+	begin
+		if(reset)
+			T0_max <= 0;
+		else if(resetT0_max)
+			T0_max <= 0;
+		else if(LDT0_max)
+			T0_max <= nextT0_max;
+	end
+	mux128_16 i_mux128_16_T0_max(
+												.in0(0),
+												.in1(0),
+												.in2(0),
+												.in3(0),
+												.in4(0),.in5(0),
+		.in6(0),.in7(0),.in8(0),.in9(0),.in10(0),.in11(0),.in12(0),.in13(0),.in14(0),.in15(0),
+		.in16(0),.in17(0),.in18(TL_Math2_nextT0_max),.in19(0),.in20(0),.in21(0),.in22(0),.in23(0),.in24(0),
+		.in25(0),.in26(0),.in27(0),.in28(0),.in29(Enc_lag3_nextT0_max),.in30(0),.in31(0),.in32(0),.in33(0),
+		.in34(0),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
+		.in43(0),.in44(0),.in45(0),.in46(0),.in47(0),.in48(0),.in49(0),.in50(0),.in51(0),
+		.in52(0),.in53(0),.in54(0),.in55(0),.in56(),.in57(0),.in58(0),.in59(0),.in60(0),
+		.in61(0),.in62(0),.in63(0),.in64(0),.in65(0),.in66(0),.in67(0),.in68(0),.in69(0),
+		.in70(0),.in71(0),.in72(0),.in73(0),.in74(0),.in75(0),.in76(0),.in77(0),.in78(0),
+		.in79(0),.in80(0),.in81(0),.in82(0),.in83(0),.in84(0),.in85(0),.in86(0),.in87(0),
+		.in88(0),.in89(0),.in90(0),.in91(0),.in92(0),.in93(0),.in94(0),.in95(0),.in96(0),
+		.in97(0),.in98(0),.in99(0),.in100(0),.in101(0),.in102(0),.in103(0),.in104(0),.in105(0),
+		.in106(0),.in107(0),.in108(0),.in109(0),.in110(0),.in111(0),.in112(0),.in113(0),
+		.in114(0),.in115(0),.in116(0),.in117(0),.in118(0),.in119(0),.in120(0),.in121(0),
+		.in122(0),.in123(0),.in124(0),.in125(0),.in126(0),.in127(0),.sel(mathMuxSel),.out(nextT0_max));
+	always @(posedge clock)
+	begin
+		if(reset)
+			T0_min <= 0;
+		else if(resetT0_min)
+			T0_min <= 0;
+		else if(LDT0_min)
+			T0_min <= nextT0_min;
+	end
+		mux128_16 i_mux128_16_T0_min(
+												.in0(0),
+												.in1(0),
+												.in2(0),
+												.in3(0),
+												.in4(0),.in5(0),
+		.in6(0),.in7(0),.in8(0),.in9(0),.in10(0),.in11(0),.in12(0),.in13(0),.in14(0),.in15(0),
+		.in16(0),.in17(0),.in18(TL_Math2_nextT0_min),.in19(0),.in20(0),.in21(0),.in22(0),.in23(0),.in24(0),
+		.in25(0),.in26(0),.in27(0),.in28(0),.in29(Enc_lag3_nextT0_min),.in30(0),.in31(0),.in32(0),.in33(0),
+		.in34(0),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
+		.in43(0),.in44(0),.in45(0),.in46(0),.in47(0),.in48(0),.in49(0),.in50(0),.in51(0),
+		.in52(0),.in53(0),.in54(0),.in55(0),.in56(),.in57(0),.in58(0),.in59(0),.in60(0),
+		.in61(0),.in62(0),.in63(0),.in64(0),.in65(0),.in66(0),.in67(0),.in68(0),.in69(0),
+		.in70(0),.in71(0),.in72(0),.in73(0),.in74(0),.in75(0),.in76(0),.in77(0),.in78(0),
+		.in79(0),.in80(0),.in81(0),.in82(0),.in83(0),.in84(0),.in85(0),.in86(0),.in87(0),
+		.in88(0),.in89(0),.in90(0),.in91(0),.in92(0),.in93(0),.in94(0),.in95(0),.in96(0),
+		.in97(0),.in98(0),.in99(0),.in100(0),.in101(0),.in102(0),.in103(0),.in104(0),.in105(0),
+		.in106(0),.in107(0),.in108(0),.in109(0),.in110(0),.in111(0),.in112(0),.in113(0),
+		.in114(0),.in115(0),.in116(0),.in117(0),.in118(0),.in119(0),.in120(0),.in121(0),
+		.in122(0),.in123(0),.in124(0),.in125(0),.in126(0),.in127(0),.sel(mathMuxSel),.out(nextT0_min));
+	always @(posedge clock)
+	begin
+		if(reset)
+			temp <= 0;
+		else if(resettemp)
+			temp <= 0;
+		else if(LDtemp)
+			temp <= nexttemp;
+	end
+	
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//		add
+	//
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	wire [15:0] add_a,add_b;
+	
+	add i_add_1(
+					.a(add_a),
+					.b(add_b),
+					.overflow(add_overflow),
+					.sum(add_out)
+					);
+					
+		mux128_16 i_mux128_16_add_a(
+											.in0(autocorr_addOutA),
+											.in1(lag_addOutA),
+											.in2(levinson_add_outa),
+											.in3(Az_addOutA),
+											.in4(Qua_lsp_addOutA),.in5(Int_lpc_addOutA),
+		.in6(Int_qlpc_addOutA),.in7(Math1_addOutA),.in8(perc_var_addOutA),.in9(Weight_Az_addOutA),.in10(Weight_Az_addOutA),.in11(Residu_addOutA),.in12(Syn_filt_addOutA),.in13(Weight_Az_addOutA),.in14(Weight_Az_addOutA),.in15(Residu_addOutA),
+		.in16(Syn_filt_addOutA),.in17(Pitch_ol_addOutA),.in18(TL_Math2_addOutA),.in19(Weight_Az_addOutA),.in20(Weight_Az_addOutA),.in21(TL_Math3_addOutA),.in22(Syn_filt_addOutA),.in23(Syn_filt_addOutA),.in24(Residu_addOutA),
+		.in25(Syn_filt_addOutA),.in26(Residu_addOutA),.in27(Syn_filt_addOutA),.in28(Pitch_fr3_addOutA),.in29(Enc_lag3_addOutA),.in30(0),.in31(0),.in32(0),.in33(0),
+		.in34(0),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
+		.in43(0),.in44(0),.in45(0),.in46(0),.in47(0),.in48(0),.in49(0),.in50(0),.in51(0),
+		.in52(0),.in53(0),.in54(0),.in55(0),.in56(),.in57(0),.in58(0),.in59(0),.in60(0),
+		.in61(0),.in62(0),.in63(0),.in64(0),.in65(0),.in66(0),.in67(0),.in68(0),.in69(0),
+		.in70(0),.in71(0),.in72(0),.in73(0),.in74(0),.in75(0),.in76(0),.in77(0),.in78(0),
+		.in79(0),.in80(0),.in81(0),.in82(0),.in83(0),.in84(0),.in85(0),.in86(0),.in87(0),
+		.in88(0),.in89(0),.in90(0),.in91(0),.in92(0),.in93(0),.in94(0),.in95(0),.in96(0),
+		.in97(0),.in98(0),.in99(0),.in100(0),.in101(0),.in102(0),.in103(0),.in104(0),.in105(0),
+		.in106(0),.in107(0),.in108(0),.in109(0),.in110(0),.in111(0),.in112(0),.in113(0),
+		.in114(0),.in115(0),.in116(0),.in117(0),.in118(0),.in119(0),.in120(0),.in121(0),
+		.in122(0),.in123(0),.in124(0),.in125(0),.in126(0),.in127(0),.sel(mathMuxSel),.out(add_a));
+	
+	mux128_16 i_mux128_16_add_b(
+											.in0(autocorr_addOutB),
+											.in1(lag_addOutB),
+											.in2(levinson_add_outb),
+											.in3(Az_addOutB),
+											.in4(Qua_lsp_addOutB),.in5(Int_lpc_addOutB),
+		.in6(Int_qlpc_addOutB),.in7(Math1_addOutB),.in8(perc_var_addOutB),.in9(Weight_Az_addOutB),.in10(Weight_Az_addOutB),.in11(Residu_addOutB),.in12(Syn_filt_addOutB),.in13(Weight_Az_addOutB),.in14(Weight_Az_addOutB),.in15(Residu_addOutB),
+		.in16(Syn_filt_addOutB),.in17(Pitch_ol_addOutB),.in18(TL_Math2_addOutB),.in19(Weight_Az_addOutB),.in20(Weight_Az_addOutB),.in21(TL_Math3_addOutB),.in22(Syn_filt_addOutB),.in23(Syn_filt_addOutB),.in24(Residu_addOutB),
+		.in25(Syn_filt_addOutB),.in26(Residu_addOutB),.in27(Syn_filt_addOutB),.in28(Pitch_fr3_addOutB),.in29(Enc_lag3_addOutB),.in30(0),.in31(0),.in32(0),.in33(0),
+		.in34(0),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
+		.in43(0),.in44(0),.in45(0),.in46(0),.in47(0),.in48(0),.in49(0),.in50(0),.in51(0),
+		.in52(0),.in53(0),.in54(0),.in55(0),.in56(),.in57(0),.in58(0),.in59(0),.in60(0),
+		.in61(0),.in62(0),.in63(0),.in64(0),.in65(0),.in66(0),.in67(0),.in68(0),.in69(0),
+		.in70(0),.in71(0),.in72(0),.in73(0),.in74(0),.in75(0),.in76(0),.in77(0),.in78(0),
+		.in79(0),.in80(0),.in81(0),.in82(0),.in83(0),.in84(0),.in85(0),.in86(0),.in87(0),
+		.in88(0),.in89(0),.in90(0),.in91(0),.in92(0),.in93(0),.in94(0),.in95(0),.in96(0),
+		.in97(0),.in98(0),.in99(0),.in100(0),.in101(0),.in102(0),.in103(0),.in104(0),.in105(0),
+		.in106(0),.in107(0),.in108(0),.in109(0),.in110(0),.in111(0),.in112(0),.in113(0),
+		.in114(0),.in115(0),.in116(0),.in117(0),.in118(0),.in119(0),.in120(0),.in121(0),
+		.in122(0),.in123(0),.in124(0),.in125(0),.in126(0),.in127(0),.sel(mathMuxSel),.out(add_b));
+		
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//		L_abs
+	//
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	wire [31:0] L_abs_a;
+	
+	L_abs i_L_abs_1(
+						.var_in(L_abs_a),
+						.var_out(L_abs_out)
 						);
 	
-	mux128_16 i_mux128_16_mult_a(
-											.in0(autocorr_multOutA),
-											.in1(lag_multOutA),
-											.in2(levinson_mult_outa),
-											.in3(Az_multOutA),
-											.in4(Qua_lsp_multOutA),.in5(Int_lpc_multOutA),
-			.in6(Int_qlpc_multOutA),.in7(0),.in8(perc_var_multOutA),.in9(0),.in10(0),.in11(0),.in12(0),.in13(0),.in14(0),.in15(0),
-			.in16(0),.in17(Pitch_ol_multOutA),.in18(0),.in19(0),.in20(0),.in21(0),.in22(0),.in23(0),.in24(0),
-			.in25(0),.in26(0),.in27(0),.in28(Pitch_fr3_multOutA),.in29(0),.in30(0),.in31(0),.in32(0),.in33(0),
-			.in34(0),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
-			.in43(0),.in44(0),.in45(0),.in46(0),.in47(0),.in48(0),.in49(0),.in50(0),.in51(0),
-			.in52(0),.in53(0),.in54(0),.in55(0),.in56(),.in57(0),.in58(0),.in59(0),.in60(0),
-			.in61(0),.in62(0),.in63(0),.in64(0),.in65(0),.in66(0),.in67(0),.in68(0),.in69(0),
-			.in70(0),.in71(0),.in72(0),.in73(0),.in74(0),.in75(0),.in76(0),.in77(0),.in78(0),
-			.in79(0),.in80(0),.in81(0),.in82(0),.in83(0),.in84(0),.in85(0),.in86(0),.in87(0),
-			.in88(0),.in89(0),.in90(0),.in91(0),.in92(0),.in93(0),.in94(0),.in95(0),.in96(0),
-			.in97(0),.in98(0),.in99(0),.in100(0),.in101(0),.in102(0),.in103(0),.in104(0),.in105(0),
-			.in106(0),.in107(0),.in108(0),.in109(0),.in110(0),.in111(0),.in112(0),.in113(0),
-			.in114(0),.in115(0),.in116(0),.in117(0),.in118(0),.in119(0),.in120(0),.in121(0),
-			.in122(0),.in123(0),.in124(0),.in125(0),.in126(0),.in127(0),.sel(mathMuxSel),.out(mult_a));
-			
-	mux128_16 i_mux128_16_mult_b(
-											.in0(autocorr_multOutB),
-											.in1(lag_multOutB),
-											.in2(levinson_mult_outb),
-											.in3(Az_multOutB),
-											.in4(Qua_lsp_multOutB),.in5(Int_lpc_multOutB),
-			.in6(Int_qlpc_multOutB),.in7(0),.in8(perc_var_multOutB),.in9(0),.in10(0),.in11(0),.in12(0),.in13(0),.in14(0),.in15(0),
-			.in16(0),.in17(Pitch_ol_multOutB),.in18(0),.in19(0),.in20(0),.in21(0),.in22(0),.in23(0),.in24(0),
-			.in25(0),.in26(0),.in27(0),.in28(Pitch_fr3_multOutB),.in29(0),.in30(0),.in31(0),.in32(0),.in33(0),
-			.in34(0),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
-			.in43(0),.in44(0),.in45(0),.in46(0),.in47(0),.in48(0),.in49(0),.in50(0),.in51(0),
-			.in52(0),.in53(0),.in54(0),.in55(0),.in56(),.in57(0),.in58(0),.in59(0),.in60(0),
-			.in61(0),.in62(0),.in63(0),.in64(0),.in65(0),.in66(0),.in67(0),.in68(0),.in69(0),
-			.in70(0),.in71(0),.in72(0),.in73(0),.in74(0),.in75(0),.in76(0),.in77(0),.in78(0),
-			.in79(0),.in80(0),.in81(0),.in82(0),.in83(0),.in84(0),.in85(0),.in86(0),.in87(0),
-			.in88(0),.in89(0),.in90(0),.in91(0),.in92(0),.in93(0),.in94(0),.in95(0),.in96(0),
-			.in97(0),.in98(0),.in99(0),.in100(0),.in101(0),.in102(0),.in103(0),.in104(0),.in105(0),
-			.in106(0),.in107(0),.in108(0),.in109(0),.in110(0),.in111(0),.in112(0),.in113(0),
-			.in114(0),.in115(0),.in116(0),.in117(0),.in118(0),.in119(0),.in120(0),.in121(0),
-			.in122(0),.in123(0),.in124(0),.in125(0),.in126(0),.in127(0),.sel(mathMuxSel),.out(mult_b));
+	mux128_32 i_mux128_32_L_abs_a(
+											.in0(autocorr_zero32),
+											.in1(lag_zero32),
+											.in2(levinson_abs_out),
+											.in3(Az_zero32),.in4(0),.in5(Int_lpc_L_abs_out),
+		.in6(Int_qlpc_L_abs_out),.in7(0),.in8(0),.in9(0),.in10(0),.in11(0),.in12(0),.in13(0),.in14(0),.in15(0),
+		.in16(0),.in17(0),.in18(0),.in19(0),.in20(0),.in21(0),.in22(0),.in23(0),.in24(0),
+		.in25(0),.in26(0),.in27(0),.in28(0),.in29(0),.in30(0),.in31(0),.in32(0),.in33(0),
+		.in34(0),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
+		.in43(0),.in44(0),.in45(0),.in46(0),.in47(0),.in48(0),.in49(0),.in50(0),.in51(0),
+		.in52(0),.in53(0),.in54(0),.in55(0),.in56(),.in57(0),.in58(0),.in59(0),.in60(0),
+		.in61(0),.in62(0),.in63(0),.in64(0),.in65(0),.in66(0),.in67(0),.in68(0),.in69(0),
+		.in70(0),.in71(0),.in72(0),.in73(0),.in74(0),.in75(0),.in76(0),.in77(0),.in78(0),
+		.in79(0),.in80(0),.in81(0),.in82(0),.in83(0),.in84(0),.in85(0),.in86(0),.in87(0),
+		.in88(0),.in89(0),.in90(0),.in91(0),.in92(0),.in93(0),.in94(0),.in95(0),.in96(0),
+		.in97(0),.in98(0),.in99(0),.in100(0),.in101(0),.in102(0),.in103(0),.in104(0),.in105(0),
+		.in106(0),.in107(0),.in108(0),.in109(0),.in110(0),.in111(0),.in112(0),.in113(0),
+		.in114(0),.in115(0),.in116(0),.in117(0),.in118(0),.in119(0),.in120(0),.in121(0),
+		.in122(0),.in123(0),.in124(0),.in125(0),.in126(0),.in127(0),.sel(mathMuxSel),.out(L_abs_a));		
+		
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//		L_add
+	//
+	//////////////////////////////////////////////////////////////////////////////////////////////	
+	wire [31:0] L_add_a,L_add_b;
 	
+	L_add i_L_add_1(
+						.a(L_add_a),
+						.b(L_add_b),
+						.overflow(L_add_overflow),
+						.sum(L_add_out)
+						);
+	
+	mux128_32 i_mux128_32_L_add_a(
+											.in0(autocorr_zero32),
+											.in1(lag_zero32),
+											.in2(levinson_L_add_outa),
+											.in3(Az_L_addOutA),
+											.in4(Qua_lsp_L_addOutA),.in5(Int_lpc_L_addOutA),
+		.in6(Int_qlpc_L_addOutA),.in7(0),.in8(perc_var_L_addOutA),.in9(Weight_Az_L_addOutA),.in10(Weight_Az_L_addOutA),.in11(Residu_L_addOutA),.in12(Syn_filt_L_addOutA),.in13(Weight_Az_L_addOutA),.in14(Weight_Az_L_addOutA),.in15(Residu_L_addOutA),
+		.in16(Syn_filt_L_addOutA),.in17(Pitch_ol_L_addOutA),.in18(0),.in19(Weight_Az_L_addOutA),.in20(Weight_Az_L_addOutA),.in21(0),.in22(Syn_filt_L_addOutA),.in23(Syn_filt_L_addOutA),.in24(Residu_L_addOutA),
+		.in25(Syn_filt_L_addOutA),.in26(Residu_L_addOutA),.in27(Syn_filt_L_addOutA),.in28(Pitch_fr3_L_addOutA),.in29(0),.in30(0),.in31(0),.in32(0),.in33(0),
+		.in34(0),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
+		.in43(0),.in44(0),.in45(0),.in46(0),.in47(0),.in48(0),.in49(0),.in50(0),.in51(0),
+		.in52(0),.in53(0),.in54(0),.in55(0),.in56(),.in57(0),.in58(0),.in59(0),.in60(0),
+		.in61(0),.in62(0),.in63(0),.in64(0),.in65(0),.in66(0),.in67(0),.in68(0),.in69(0),
+		.in70(0),.in71(0),.in72(0),.in73(0),.in74(0),.in75(0),.in76(0),.in77(0),.in78(0),
+		.in79(0),.in80(0),.in81(0),.in82(0),.in83(0),.in84(0),.in85(0),.in86(0),.in87(0),
+		.in88(0),.in89(0),.in90(0),.in91(0),.in92(0),.in93(0),.in94(0),.in95(0),.in96(0),
+		.in97(0),.in98(0),.in99(0),.in100(0),.in101(0),.in102(0),.in103(0),.in104(0),.in105(0),
+		.in106(0),.in107(0),.in108(0),.in109(0),.in110(0),.in111(0),.in112(0),.in113(0),
+		.in114(0),.in115(0),.in116(0),.in117(0),.in118(0),.in119(0),.in120(0),.in121(0),
+		.in122(0),.in123(0),.in124(0),.in125(0),.in126(0),.in127(0),.sel(mathMuxSel),.out(L_add_a));
+		
+	mux128_32 i_mux128_32_L_add_b(
+											.in0(autocorr_zero32),
+											.in1(lag_zero32),
+											.in2(levinson_L_add_outb),
+											.in3(Az_L_addOutB),
+											.in4(Qua_lsp_L_addOutB),.in5(Int_lpc_L_addOutB),
+		.in6(Int_qlpc_L_addOutB),.in7(0),.in8(perc_var_L_addOutB),.in9(Weight_Az_L_addOutB),.in10(Weight_Az_L_addOutB),.in11(Residu_L_addOutB),.in12(Syn_filt_L_addOutB),.in13(Weight_Az_L_addOutB),.in14(Weight_Az_L_addOutB),.in15(Residu_L_addOutB),
+		.in16(Syn_filt_L_addOutB),.in17(Pitch_ol_L_addOutB),.in18(0),.in19(Weight_Az_L_addOutB),.in20(Weight_Az_L_addOutB),.in21(0),.in22(Syn_filt_L_addOutB),.in23(Syn_filt_L_addOutB),.in24(Residu_L_addOutB),
+		.in25(Syn_filt_L_addOutB),.in26(Residu_L_addOutB),.in27(Syn_filt_L_addOutB),.in28(Pitch_fr3_L_addOutB),.in29(0),.in30(0),.in31(0),.in32(0),.in33(0),
+		.in34(0),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
+		.in43(0),.in44(0),.in45(0),.in46(0),.in47(0),.in48(0),.in49(0),.in50(0),.in51(0),
+		.in52(0),.in53(0),.in54(0),.in55(0),.in56(),.in57(0),.in58(0),.in59(0),.in60(0),
+		.in61(0),.in62(0),.in63(0),.in64(0),.in65(0),.in66(0),.in67(0),.in68(0),.in69(0),
+		.in70(0),.in71(0),.in72(0),.in73(0),.in74(0),.in75(0),.in76(0),.in77(0),.in78(0),
+		.in79(0),.in80(0),.in81(0),.in82(0),.in83(0),.in84(0),.in85(0),.in86(0),.in87(0),
+		.in88(0),.in89(0),.in90(0),.in91(0),.in92(0),.in93(0),.in94(0),.in95(0),.in96(0),
+		.in97(0),.in98(0),.in99(0),.in100(0),.in101(0),.in102(0),.in103(0),.in104(0),.in105(0),
+		.in106(0),.in107(0),.in108(0),.in109(0),.in110(0),.in111(0),.in112(0),.in113(0),
+		.in114(0),.in115(0),.in116(0),.in117(0),.in118(0),.in119(0),.in120(0),.in121(0),
+		.in122(0),.in123(0),.in124(0),.in125(0),.in126(0),.in127(0),.sel(mathMuxSel),.out(L_add_b));
+
 	//////////////////////////////////////////////////////////////////////////////////////////////
 	//
 	//		L_mac
@@ -956,7 +1074,7 @@ module G729_Pipe (clock,reset,xn,preProcReady,autocorrReady,lagReady,levinsonRea
 		.in106(0),.in107(0),.in108(0),.in109(0),.in110(0),.in111(0),.in112(0),.in113(0),
 		.in114(0),.in115(0),.in116(0),.in117(0),.in118(0),.in119(0),.in120(0),.in121(0),
 		.in122(0),.in123(0),.in124(0),.in125(0),.in126(0),.in127(0),.sel(mathMuxSel),.out(L_mac_c));
-	
+		
 	//////////////////////////////////////////////////////////////////////////////////////////////
 	//
 	//		L_msu
@@ -1034,239 +1152,91 @@ module G729_Pipe (clock,reset,xn,preProcReady,autocorrReady,lagReady,levinsonRea
 		.in97(0),.in98(0),.in99(0),.in100(0),.in101(0),.in102(0),.in103(0),.in104(0),.in105(0),
 		.in106(0),.in107(0),.in108(0),.in109(0),.in110(0),.in111(0),.in112(0),.in113(0),
 		.in114(0),.in115(0),.in116(0),.in117(0),.in118(0),.in119(0),.in120(0),.in121(0),
-		.in122(0),.in123(0),.in124(0),.in125(0),.in126(0),.in127(0),.sel(mathMuxSel),.out(L_msu_c));
+		.in122(0),.in123(0),.in124(0),.in125(0),.in126(0),.in127(0),.sel(mathMuxSel),.out(L_msu_c));		
 		
 	//////////////////////////////////////////////////////////////////////////////////////////////
 	//
-	//		L_add
-	//
-	//////////////////////////////////////////////////////////////////////////////////////////////	
-	wire [31:0] L_add_a,L_add_b;
-	
-	L_add i_L_add_1(
-						.a(L_add_a),
-						.b(L_add_b),
-						.overflow(L_add_overflow),
-						.sum(L_add_out)
-						);
-	
-	mux128_32 i_mux128_32_L_add_a(
-											.in0(autocorr_zero32),
-											.in1(lag_zero32),
-											.in2(levinson_L_add_outa),
-											.in3(Az_L_addOutA),
-											.in4(Qua_lsp_L_addOutA),.in5(Int_lpc_L_addOutA),
-		.in6(Int_qlpc_L_addOutA),.in7(0),.in8(perc_var_L_addOutA),.in9(Weight_Az_L_addOutA),.in10(Weight_Az_L_addOutA),.in11(Residu_L_addOutA),.in12(Syn_filt_L_addOutA),.in13(Weight_Az_L_addOutA),.in14(Weight_Az_L_addOutA),.in15(Residu_L_addOutA),
-		.in16(Syn_filt_L_addOutA),.in17(Pitch_ol_L_addOutA),.in18(0),.in19(Weight_Az_L_addOutA),.in20(Weight_Az_L_addOutA),.in21(0),.in22(Syn_filt_L_addOutA),.in23(Syn_filt_L_addOutA),.in24(Residu_L_addOutA),
-		.in25(Syn_filt_L_addOutA),.in26(Residu_L_addOutA),.in27(Syn_filt_L_addOutA),.in28(Pitch_fr3_L_addOutA),.in29(0),.in30(0),.in31(0),.in32(0),.in33(0),
-		.in34(0),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
-		.in43(0),.in44(0),.in45(0),.in46(0),.in47(0),.in48(0),.in49(0),.in50(0),.in51(0),
-		.in52(0),.in53(0),.in54(0),.in55(0),.in56(),.in57(0),.in58(0),.in59(0),.in60(0),
-		.in61(0),.in62(0),.in63(0),.in64(0),.in65(0),.in66(0),.in67(0),.in68(0),.in69(0),
-		.in70(0),.in71(0),.in72(0),.in73(0),.in74(0),.in75(0),.in76(0),.in77(0),.in78(0),
-		.in79(0),.in80(0),.in81(0),.in82(0),.in83(0),.in84(0),.in85(0),.in86(0),.in87(0),
-		.in88(0),.in89(0),.in90(0),.in91(0),.in92(0),.in93(0),.in94(0),.in95(0),.in96(0),
-		.in97(0),.in98(0),.in99(0),.in100(0),.in101(0),.in102(0),.in103(0),.in104(0),.in105(0),
-		.in106(0),.in107(0),.in108(0),.in109(0),.in110(0),.in111(0),.in112(0),.in113(0),
-		.in114(0),.in115(0),.in116(0),.in117(0),.in118(0),.in119(0),.in120(0),.in121(0),
-		.in122(0),.in123(0),.in124(0),.in125(0),.in126(0),.in127(0),.sel(mathMuxSel),.out(L_add_a));
-		
-	mux128_32 i_mux128_32_L_add_b(
-											.in0(autocorr_zero32),
-											.in1(lag_zero32),
-											.in2(levinson_L_add_outb),
-											.in3(Az_L_addOutB),
-											.in4(Qua_lsp_L_addOutB),.in5(Int_lpc_L_addOutB),
-		.in6(Int_qlpc_L_addOutB),.in7(0),.in8(perc_var_L_addOutB),.in9(Weight_Az_L_addOutB),.in10(Weight_Az_L_addOutB),.in11(Residu_L_addOutB),.in12(Syn_filt_L_addOutB),.in13(Weight_Az_L_addOutB),.in14(Weight_Az_L_addOutB),.in15(Residu_L_addOutB),
-		.in16(Syn_filt_L_addOutB),.in17(Pitch_ol_L_addOutB),.in18(0),.in19(Weight_Az_L_addOutB),.in20(Weight_Az_L_addOutB),.in21(0),.in22(Syn_filt_L_addOutB),.in23(Syn_filt_L_addOutB),.in24(Residu_L_addOutB),
-		.in25(Syn_filt_L_addOutB),.in26(Residu_L_addOutB),.in27(Syn_filt_L_addOutB),.in28(Pitch_fr3_L_addOutB),.in29(0),.in30(0),.in31(0),.in32(0),.in33(0),
-		.in34(0),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
-		.in43(0),.in44(0),.in45(0),.in46(0),.in47(0),.in48(0),.in49(0),.in50(0),.in51(0),
-		.in52(0),.in53(0),.in54(0),.in55(0),.in56(),.in57(0),.in58(0),.in59(0),.in60(0),
-		.in61(0),.in62(0),.in63(0),.in64(0),.in65(0),.in66(0),.in67(0),.in68(0),.in69(0),
-		.in70(0),.in71(0),.in72(0),.in73(0),.in74(0),.in75(0),.in76(0),.in77(0),.in78(0),
-		.in79(0),.in80(0),.in81(0),.in82(0),.in83(0),.in84(0),.in85(0),.in86(0),.in87(0),
-		.in88(0),.in89(0),.in90(0),.in91(0),.in92(0),.in93(0),.in94(0),.in95(0),.in96(0),
-		.in97(0),.in98(0),.in99(0),.in100(0),.in101(0),.in102(0),.in103(0),.in104(0),.in105(0),
-		.in106(0),.in107(0),.in108(0),.in109(0),.in110(0),.in111(0),.in112(0),.in113(0),
-		.in114(0),.in115(0),.in116(0),.in117(0),.in118(0),.in119(0),.in120(0),.in121(0),
-		.in122(0),.in123(0),.in124(0),.in125(0),.in126(0),.in127(0),.sel(mathMuxSel),.out(L_add_b));
-		
-	//////////////////////////////////////////////////////////////////////////////////////////////
-	//
-	//		L_sub
+	//		L_mult
 	//
 	//////////////////////////////////////////////////////////////////////////////////////////////
-	wire [31:0] L_sub_a,L_sub_b;
+	wire [15:0] L_mult_a, L_mult_b;
 	
-	L_sub i_L_sub_1(
-						.a(L_sub_a),
-						.b(L_sub_b),
-						.overflow(L_sub_overflow),
-						.diff(L_sub_out)
-						);
+	L_mult i_L_mult_1(.a(L_mult_a),.b(L_mult_b),.overflow(L_mult_overflow),.product(L_mult_out));
 
-		
-	mux128_32 i_mux128_32_L_sub_a(
-											.in0(autocorr_zero32),
-											.in1(lag_zero32),
-											.in2(levinson_L_sub_outa),
-											.in3(Az_L_subOutA),
-											.in4(Qua_lsp_L_subOutA),.in5(Int_lpc_L_subOutA),
-		.in6(Int_qlpc_L_subOutA),.in7(0),.in8(perc_var_L_subOutA),.in9(0),.in10(0),.in11(0),.in12(0),.in13(0),.in14(0),.in15(0),
-		.in16(0),.in17(Pitch_ol_L_subOutA),.in18(TL_Math2_L_subOutA),.in19(0),.in20(0),.in21(0),.in22(0),.in23(0),.in24(0),
-		.in25(0),.in26(0),.in27(0),.in28(Pitch_fr3_L_subOutA),.in29(0),.in30(0),.in31(0),.in32(0),.in33(0),
-		.in34(0),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
-		.in43(0),.in44(0),.in45(0),.in46(0),.in47(0),.in48(0),.in49(0),.in50(0),.in51(0),
-		.in52(0),.in53(0),.in54(0),.in55(0),.in56(),.in57(0),.in58(0),.in59(0),.in60(0),
-		.in61(0),.in62(0),.in63(0),.in64(0),.in65(0),.in66(0),.in67(0),.in68(0),.in69(0),
-		.in70(0),.in71(0),.in72(0),.in73(0),.in74(0),.in75(0),.in76(0),.in77(0),.in78(0),
-		.in79(0),.in80(0),.in81(0),.in82(0),.in83(0),.in84(0),.in85(0),.in86(0),.in87(0),
-		.in88(0),.in89(0),.in90(0),.in91(0),.in92(0),.in93(0),.in94(0),.in95(0),.in96(0),
-		.in97(0),.in98(0),.in99(0),.in100(0),.in101(0),.in102(0),.in103(0),.in104(0),.in105(0),
-		.in106(0),.in107(0),.in108(0),.in109(0),.in110(0),.in111(0),.in112(0),.in113(0),
-		.in114(0),.in115(0),.in116(0),.in117(0),.in118(0),.in119(0),.in120(0),.in121(0),
-		.in122(0),.in123(0),.in124(0),.in125(0),.in126(0),.in127(0),.sel(mathMuxSel),.out(L_sub_a));
-		
-	mux128_32 i_mux128_32_L_sub_b(
-											.in0(autocorr_zero32),
-											.in1(lag_zero32),
-											.in2(levinson_L_sub_outb),
-											.in3(Az_L_subOutB),
-											.in4(Qua_lsp_L_subOutB),.in5(Int_lpc_L_subOutB),
-		.in6(Int_qlpc_L_subOutB),.in7(0),.in8(perc_var_L_subOutB),.in9(0),.in10(0),.in11(0),.in12(0),.in13(0),.in14(0),.in15(0),
-		.in16(0),.in17(Pitch_ol_L_subOutB),.in18(TL_Math2_L_subOutB),.in19(0),.in20(0),.in21(0),.in22(0),.in23(0),.in24(0),
-		.in25(0),.in26(0),.in27(0),.in28(Pitch_fr3_L_subOutB),.in29(0),.in30(0),.in31(0),.in32(0),.in33(0),
-		.in34(0),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
-		.in43(0),.in44(0),.in45(0),.in46(0),.in47(0),.in48(0),.in49(0),.in50(0),.in51(0),
-		.in52(0),.in53(0),.in54(0),.in55(0),.in56(),.in57(0),.in58(0),.in59(0),.in60(0),
-		.in61(0),.in62(0),.in63(0),.in64(0),.in65(0),.in66(0),.in67(0),.in68(0),.in69(0),
-		.in70(0),.in71(0),.in72(0),.in73(0),.in74(0),.in75(0),.in76(0),.in77(0),.in78(0),
-		.in79(0),.in80(0),.in81(0),.in82(0),.in83(0),.in84(0),.in85(0),.in86(0),.in87(0),
-		.in88(0),.in89(0),.in90(0),.in91(0),.in92(0),.in93(0),.in94(0),.in95(0),.in96(0),
-		.in97(0),.in98(0),.in99(0),.in100(0),.in101(0),.in102(0),.in103(0),.in104(0),.in105(0),
-		.in106(0),.in107(0),.in108(0),.in109(0),.in110(0),.in111(0),.in112(0),.in113(0),
-		.in114(0),.in115(0),.in116(0),.in117(0),.in118(0),.in119(0),.in120(0),.in121(0),
-		.in122(0),.in123(0),.in124(0),.in125(0),.in126(0),.in127(0),.sel(mathMuxSel),.out(L_sub_b));
-	
-	//////////////////////////////////////////////////////////////////////////////////////////////
-	//
-	//		norm_l
-	//
-	//////////////////////////////////////////////////////////////////////////////////////////////
-	wire [31:0] norm_l_a;
-	wire norm_l_start;
-	
-	norm_l i_norm_l_1(
-							.var1(norm_l_a),
-							.norm(norm_l_out),
-							.clk(clock),
-							.ready(norm_l_start),
-							.reset(reset||autocorr_norm_lReset),
-							.done(norm_l_done)
-							);
-
-	mux128_32 i_mux128_32_norm_l_a(
-											.in0(autocorr_norm_lVar1Out),
-											.in1(lag_zero32),
-											.in2(levinson_norm_L_out),
-											.in3(Az_zero32),
-											.in4(0),.in5(Int_lpc_norm_l_out),
-		.in6(Int_qlpc_norm_l_out),.in7(0),.in8(0),.in9(0),.in10(0),.in11(0),.in12(0),.in13(0),.in14(0),.in15(0),
-		.in16(0),.in17(Pitch_ol_norm_l_out),.in18(0),.in19(0),.in20(0),.in21(0),.in22(0),.in23(0),.in24(0),
-		.in25(0),.in26(0),.in27(0),.in28(Pitch_fr3_norm_l_out),.in29(0),.in30(0),.in31(0),.in32(0),.in33(0),
-		.in34(0),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
-		.in43(0),.in44(0),.in45(0),.in46(0),.in47(0),.in48(0),.in49(0),.in50(0),.in51(0),
-		.in52(0),.in53(0),.in54(0),.in55(0),.in56(),.in57(0),.in58(0),.in59(0),.in60(0),
-		.in61(0),.in62(0),.in63(0),.in64(0),.in65(0),.in66(0),.in67(0),.in68(0),.in69(0),
-		.in70(0),.in71(0),.in72(0),.in73(0),.in74(0),.in75(0),.in76(0),.in77(0),.in78(0),
-		.in79(0),.in80(0),.in81(0),.in82(0),.in83(0),.in84(0),.in85(0),.in86(0),.in87(0),
-		.in88(0),.in89(0),.in90(0),.in91(0),.in92(0),.in93(0),.in94(0),.in95(0),.in96(0),
-		.in97(0),.in98(0),.in99(0),.in100(0),.in101(0),.in102(0),.in103(0),.in104(0),.in105(0),
-		.in106(0),.in107(0),.in108(0),.in109(0),.in110(0),.in111(0),.in112(0),.in113(0),
-		.in114(0),.in115(0),.in116(0),.in117(0),.in118(0),.in119(0),.in120(0),.in121(0),
-		.in122(0),.in123(0),.in124(0),.in125(0),.in126(0),.in127(0),.sel(mathMuxSel),.out(norm_l_a));
-		
-	mux128_1 i_mux128_1_norm_l_start(
-												.in0(autocorr_norm_lReady),
-												.in1(lag_zero),
-												.in2(levinson_norm_L_start),
-												.in3(Az_zero),
-												.in4(0),.in5(Int_lpc_norm_l_start),
-		.in6(Int_qlpc_norm_l_start),.in7(0),.in8(0),.in9(0),.in10(0),.in11(0),.in12(0),.in13(0),.in14(0),.in15(0),
-		.in16(0),.in17(Pitch_ol_norm_l_start),.in18(0),.in19(0),.in20(0),.in21(0),.in22(0),.in23(0),.in24(0),
-		.in25(0),.in26(0),.in27(0),.in28(Pitch_fr3_norm_l_start),.in29(0),.in30(0),.in31(0),.in32(0),.in33(0),
-		.in34(0),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
-		.in43(0),.in44(0),.in45(0),.in46(0),.in47(0),.in48(0),.in49(0),.in50(0),.in51(0),
-		.in52(0),.in53(0),.in54(0),.in55(0),.in56(),.in57(0),.in58(0),.in59(0),.in60(0),
-		.in61(0),.in62(0),.in63(0),.in64(0),.in65(0),.in66(0),.in67(0),.in68(0),.in69(0),
-		.in70(0),.in71(0),.in72(0),.in73(0),.in74(0),.in75(0),.in76(0),.in77(0),.in78(0),
-		.in79(0),.in80(0),.in81(0),.in82(0),.in83(0),.in84(0),.in85(0),.in86(0),.in87(0),
-		.in88(0),.in89(0),.in90(0),.in91(0),.in92(0),.in93(0),.in94(0),.in95(0),.in96(0),
-		.in97(0),.in98(0),.in99(0),.in100(0),.in101(0),.in102(0),.in103(0),.in104(0),.in105(0),
-		.in106(0),.in107(0),.in108(0),.in109(0),.in110(0),.in111(0),.in112(0),.in113(0),
-		.in114(0),.in115(0),.in116(0),.in117(0),.in118(0),.in119(0),.in120(0),.in121(0),
-		.in122(0),.in123(0),.in124(0),.in125(0),.in126(0),.in127(0),.sel(mathMuxSel),.out(norm_l_start));
-		
-	//////////////////////////////////////////////////////////////////////////////////////////////
-	//
-	//		norm_s
-	//
-	//////////////////////////////////////////////////////////////////////////////////////////////
-	wire [15:0] norm_s_a;
-	wire norm_s_start;
-	
-	norm_s i_norm_s_1(
-							.var1(norm_s_a),
-							.norm(norm_s_out),
-							.clk(clock),
-							.ready(norm_s_start),
-							.reset(reset),
-							.done(norm_s_done)
-							);
-				
-	mux128_16 i_mux128_16_norm_s_a(
+	mux128_16 i_mux128_16_L_mult_a(
 												.in0(autocorr_zero16),
-												.in1(lag_zero16),
-												.in2(0),
-												.in3(Az_norm_sOut),
-												.in4(Qua_lsp_norm_sOut),.in5(0),
-		.in6(0),.in7(0),.in8(0),.in9(0),.in10(0),.in11(0),.in12(0),.in13(0),.in14(0),.in15(0),
-		.in16(0),.in17(0),.in18(0),.in19(0),.in20(0),.in21(0),.in22(0),.in23(0),.in24(0),
-		.in25(0),.in26(0),.in27(0),.in28(0),.in29(0),.in30(0),.in31(0),.in32(0),.in33(0),
-		.in34(0),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
-		.in43(0),.in44(0),.in45(0),.in46(0),.in47(0),.in48(0),.in49(0),.in50(0),.in51(0),
-		.in52(0),.in53(0),.in54(0),.in55(0),.in56(),.in57(0),.in58(0),.in59(0),.in60(0),
-		.in61(0),.in62(0),.in63(0),.in64(0),.in65(0),.in66(0),.in67(0),.in68(0),.in69(0),
-		.in70(0),.in71(0),.in72(0),.in73(0),.in74(0),.in75(0),.in76(0),.in77(0),.in78(0),
-		.in79(0),.in80(0),.in81(0),.in82(0),.in83(0),.in84(0),.in85(0),.in86(0),.in87(0),
-		.in88(0),.in89(0),.in90(0),.in91(0),.in92(0),.in93(0),.in94(0),.in95(0),.in96(0),
-		.in97(0),.in98(0),.in99(0),.in100(0),.in101(0),.in102(0),.in103(0),.in104(0),.in105(0),
-		.in106(0),.in107(0),.in108(0),.in109(0),.in110(0),.in111(0),.in112(0),.in113(0),
-		.in114(0),.in115(0),.in116(0),.in117(0),.in118(0),.in119(0),.in120(0),.in121(0),
-		.in122(0),.in123(0),.in124(0),.in125(0),.in126(0),.in127(0),.sel(mathMuxSel),.out(norm_s_a));
-		
-		mux128_1 i_mux128_1_norm_s_start(
-												.in0(autocorr_zero),
-												.in1(lag_zero),
-												.in2(0),
-												.in3(Az_norm_sReady),
-												.in4(Qua_lsp_norm_sReady),.in5(0),
-		.in6(0),.in7(0),.in8(0),.in9(0),.in10(0),.in11(0),.in12(0),.in13(0),.in14(0),.in15(0),
-		.in16(0),.in17(0),.in18(0),.in19(0),.in20(0),.in21(0),.in22(0),.in23(0),.in24(0),
-		.in25(0),.in26(0),.in27(0),.in28(0),.in29(0),.in30(0),.in31(0),.in32(0),.in33(0),
-		.in34(0),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
-		.in43(0),.in44(0),.in45(0),.in46(0),.in47(0),.in48(0),.in49(0),.in50(0),.in51(0),
-		.in52(0),.in53(0),.in54(0),.in55(0),.in56(),.in57(0),.in58(0),.in59(0),.in60(0),
-		.in61(0),.in62(0),.in63(0),.in64(0),.in65(0),.in66(0),.in67(0),.in68(0),.in69(0),
-		.in70(0),.in71(0),.in72(0),.in73(0),.in74(0),.in75(0),.in76(0),.in77(0),.in78(0),
-		.in79(0),.in80(0),.in81(0),.in82(0),.in83(0),.in84(0),.in85(0),.in86(0),.in87(0),
-		.in88(0),.in89(0),.in90(0),.in91(0),.in92(0),.in93(0),.in94(0),.in95(0),.in96(0),
-		.in97(0),.in98(0),.in99(0),.in100(0),.in101(0),.in102(0),.in103(0),.in104(0),.in105(0),
-		.in106(0),.in107(0),.in108(0),.in109(0),.in110(0),.in111(0),.in112(0),.in113(0),
-		.in114(0),.in115(0),.in116(0),.in117(0),.in118(0),.in119(0),.in120(0),.in121(0),
-		.in122(0),.in123(0),.in124(0),.in125(0),.in126(0),.in127(0),.sel(mathMuxSel),.out(norm_s_start));
+												.in1(lag_L_multOutA),
+												.in2(levinson_L_mult_outa),
+												.in3(Az_L_multOutA),
+												.in4(Qua_lsp_L_multOutA),.in5(Int_lpc_L_multOutA),
+			.in6(Int_qlpc_L_multOutA),.in7(0),.in8(perc_var_L_multOutA),.in9(Weight_Az_L_multOutA),.in10(Weight_Az_L_multOutA),.in11(Residu_L_multOutA),.in12(Syn_filt_L_multOutA),.in13(Weight_Az_L_multOutA),.in14(Weight_Az_L_multOutA),.in15(Residu_L_multOutA),
+			.in16(Syn_filt_L_multOutA),.in17(Pitch_ol_L_multOutA),.in18(0),.in19(Weight_Az_L_multOutA),.in20(Weight_Az_L_multOutA),.in21(0),.in22(Syn_filt_L_multOutA),.in23(Syn_filt_L_multOutA),.in24(Residu_L_multOutA),
+			.in25(Syn_filt_L_multOutA),.in26(Residu_L_multOutA),.in27(Syn_filt_L_multOutA),.in28(Pitch_fr3_L_multOutA),.in29(0),.in30(0),.in31(0),.in32(0),.in33(0),
+			.in34(0),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
+			.in43(0),.in44(0),.in45(0),.in46(0),.in47(0),.in48(0),.in49(0),.in50(0),.in51(0),
+			.in52(0),.in53(0),.in54(0),.in55(0),.in56(),.in57(0),.in58(0),.in59(0),.in60(0),
+			.in61(0),.in62(0),.in63(0),.in64(0),.in65(0),.in66(0),.in67(0),.in68(0),.in69(0),
+			.in70(0),.in71(0),.in72(0),.in73(0),.in74(0),.in75(0),.in76(0),.in77(0),.in78(0),
+			.in79(0),.in80(0),.in81(0),.in82(0),.in83(0),.in84(0),.in85(0),.in86(0),.in87(0),
+			.in88(0),.in89(0),.in90(0),.in91(0),.in92(0),.in93(0),.in94(0),.in95(0),.in96(0),
+			.in97(0),.in98(0),.in99(0),.in100(0),.in101(0),.in102(0),.in103(0),.in104(0),.in105(0),
+			.in106(0),.in107(0),.in108(0),.in109(0),.in110(0),.in111(0),.in112(0),.in113(0),
+			.in114(0),.in115(0),.in116(0),.in117(0),.in118(0),.in119(0),.in120(0),.in121(0),
+			.in122(0),.in123(0),.in124(0),.in125(0),.in126(0),.in127(0),.sel(mathMuxSel),.out(L_mult_a));
 	
+	mux128_16 i_mux128_16_L_mult_b(
+											.in0(autocorr_zero16),
+											.in1(lag_L_multOutB),
+											.in2(levinson_L_mult_outb),
+											.in3(Az_L_multOutB),
+											.in4(Qua_lsp_L_multOutB),.in5(Int_lpc_L_multOutB),
+			.in6(Int_qlpc_L_multOutB),.in7(0),.in8(perc_var_L_multOutB),.in9(Weight_Az_L_multOutB),.in10(Weight_Az_L_multOutB),.in11(Residu_L_multOutB),.in12(Syn_filt_L_multOutB),.in13(Weight_Az_L_multOutB),.in14(Weight_Az_L_multOutB),.in15(Residu_L_multOutB),
+			.in16(Syn_filt_L_multOutB),.in17(Pitch_ol_L_multOutB),.in18(0),.in19(Weight_Az_L_multOutB),.in20(Weight_Az_L_multOutB),.in21(0),.in22(Syn_filt_L_multOutB),.in23(Syn_filt_L_multOutB),.in24(Residu_L_multOutB),
+			.in25(Syn_filt_L_multOutB),.in26(Residu_L_multOutB),.in27(Syn_filt_L_multOutB),.in28(Pitch_fr3_L_multOutB),.in29(0),.in30(0),.in31(0),.in32(0),.in33(0),
+			.in34(0),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
+			.in43(0),.in44(0),.in45(0),.in46(0),.in47(0),.in48(0),.in49(0),.in50(0),.in51(0),
+			.in52(0),.in53(0),.in54(0),.in55(0),.in56(),.in57(0),.in58(0),.in59(0),.in60(0),
+			.in61(0),.in62(0),.in63(0),.in64(0),.in65(0),.in66(0),.in67(0),.in68(0),.in69(0),
+			.in70(0),.in71(0),.in72(0),.in73(0),.in74(0),.in75(0),.in76(0),.in77(0),.in78(0),
+			.in79(0),.in80(0),.in81(0),.in82(0),.in83(0),.in84(0),.in85(0),.in86(0),.in87(0),
+			.in88(0),.in89(0),.in90(0),.in91(0),.in92(0),.in93(0),.in94(0),.in95(0),.in96(0),
+			.in97(0),.in98(0),.in99(0),.in100(0),.in101(0),.in102(0),.in103(0),.in104(0),.in105(0),
+			.in106(0),.in107(0),.in108(0),.in109(0),.in110(0),.in111(0),.in112(0),.in113(0),
+			.in114(0),.in115(0),.in116(0),.in117(0),.in118(0),.in119(0),.in120(0),.in121(0),
+			.in122(0),.in123(0),.in124(0),.in125(0),.in126(0),.in127(0),.sel(mathMuxSel),.out(L_mult_b));
+			
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//		L_negate
+	//
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	wire [31:0] L_negate_a;
+	
+	L_negate i_L_negate_1(
+								.var_in(L_negate_a),
+								.var_out(L_negate_out)
+								);
+
+	mux128_32 i_mux128_32_L_negate_a(
+												.in0(autocorr_zero32),
+												.in1(lag_zero32),
+												.in2(levinson_negate_out),
+												.in3(Az_zero32),.in4(0),.in5(Int_lpc_L_negate_out),
+		.in6(Int_qlpc_L_negate_out),.in7(0),.in8(0),.in9(0),.in10(0),.in11(0),.in12(0),.in13(0),.in14(0),.in15(0),
+		.in16(0),.in17(0),.in18(0),.in19(0),.in20(0),.in21(0),.in22(0),.in23(0),.in24(0),
+		.in25(0),.in26(0),.in27(0),.in28(Pitch_fr3_L_negate_out),.in29(0),.in30(0),.in31(0),.in32(0),.in33(0),
+		.in34(0),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
+		.in43(0),.in44(0),.in45(0),.in46(0),.in47(0),.in48(0),.in49(0),.in50(0),.in51(0),
+		.in52(0),.in53(0),.in54(0),.in55(0),.in56(),.in57(0),.in58(0),.in59(0),.in60(0),
+		.in61(0),.in62(0),.in63(0),.in64(0),.in65(0),.in66(0),.in67(0),.in68(0),.in69(0),
+		.in70(0),.in71(0),.in72(0),.in73(0),.in74(0),.in75(0),.in76(0),.in77(0),.in78(0),
+		.in79(0),.in80(0),.in81(0),.in82(0),.in83(0),.in84(0),.in85(0),.in86(0),.in87(0),
+		.in88(0),.in89(0),.in90(0),.in91(0),.in92(0),.in93(0),.in94(0),.in95(0),.in96(0),
+		.in97(0),.in98(0),.in99(0),.in100(0),.in101(0),.in102(0),.in103(0),.in104(0),.in105(0),
+		.in106(0),.in107(0),.in108(0),.in109(0),.in110(0),.in111(0),.in112(0),.in113(0),
+		.in114(0),.in115(0),.in116(0),.in117(0),.in118(0),.in119(0),.in120(0),.in121(0),
+		.in122(0),.in123(0),.in124(0),.in125(0),.in126(0),.in127(0),.sel(mathMuxSel),.out(L_negate_a));			
+
 	//////////////////////////////////////////////////////////////////////////////////////////////
 	//
 	//		L_shl
@@ -1404,26 +1374,214 @@ module G729_Pipe (clock,reset,xn,preProcReady,autocorrReady,lagReady,levinsonRea
 		.in97(0),.in98(0),.in99(0),.in100(0),.in101(0),.in102(0),.in103(0),.in104(0),.in105(0),
 		.in106(0),.in107(0),.in108(0),.in109(0),.in110(0),.in111(0),.in112(0),.in113(0),
 		.in114(0),.in115(0),.in116(0),.in117(0),.in118(0),.in119(0),.in120(0),.in121(0),
-		.in122(0),.in123(0),.in124(0),.in125(0),.in126(0),.in127(0),.sel(mathMuxSel),.out(L_shr_b));
-	
+		.in122(0),.in123(0),.in124(0),.in125(0),.in126(0),.in127(0),.sel(mathMuxSel),.out(L_shr_b));		
+
 	//////////////////////////////////////////////////////////////////////////////////////////////
 	//
-	//		L_abs
+	//		L_sub
 	//
 	//////////////////////////////////////////////////////////////////////////////////////////////
-	wire [31:0] L_abs_a;
+	wire [31:0] L_sub_a,L_sub_b;
 	
-	L_abs i_L_abs_1(
-						.var_in(L_abs_a),
-						.var_out(L_abs_out)
+	L_sub i_L_sub_1(
+						.a(L_sub_a),
+						.b(L_sub_b),
+						.overflow(L_sub_overflow),
+						.diff(L_sub_out)
 						);
-	
-	mux128_32 i_mux128_32_L_abs_a(
+
+		
+	mux128_32 i_mux128_32_L_sub_a(
 											.in0(autocorr_zero32),
 											.in1(lag_zero32),
-											.in2(levinson_abs_out),
-											.in3(Az_zero32),.in4(0),.in5(Int_lpc_L_abs_out),
-		.in6(Int_qlpc_L_abs_out),.in7(0),.in8(0),.in9(0),.in10(0),.in11(0),.in12(0),.in13(0),.in14(0),.in15(0),
+											.in2(levinson_L_sub_outa),
+											.in3(Az_L_subOutA),
+											.in4(Qua_lsp_L_subOutA),.in5(Int_lpc_L_subOutA),
+		.in6(Int_qlpc_L_subOutA),.in7(0),.in8(perc_var_L_subOutA),.in9(0),.in10(0),.in11(0),.in12(0),.in13(0),.in14(0),.in15(0),
+		.in16(0),.in17(Pitch_ol_L_subOutA),.in18(TL_Math2_L_subOutA),.in19(0),.in20(0),.in21(0),.in22(0),.in23(0),.in24(0),
+		.in25(0),.in26(0),.in27(0),.in28(Pitch_fr3_L_subOutA),.in29(0),.in30(0),.in31(0),.in32(0),.in33(0),
+		.in34(0),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
+		.in43(0),.in44(0),.in45(0),.in46(0),.in47(0),.in48(0),.in49(0),.in50(0),.in51(0),
+		.in52(0),.in53(0),.in54(0),.in55(0),.in56(),.in57(0),.in58(0),.in59(0),.in60(0),
+		.in61(0),.in62(0),.in63(0),.in64(0),.in65(0),.in66(0),.in67(0),.in68(0),.in69(0),
+		.in70(0),.in71(0),.in72(0),.in73(0),.in74(0),.in75(0),.in76(0),.in77(0),.in78(0),
+		.in79(0),.in80(0),.in81(0),.in82(0),.in83(0),.in84(0),.in85(0),.in86(0),.in87(0),
+		.in88(0),.in89(0),.in90(0),.in91(0),.in92(0),.in93(0),.in94(0),.in95(0),.in96(0),
+		.in97(0),.in98(0),.in99(0),.in100(0),.in101(0),.in102(0),.in103(0),.in104(0),.in105(0),
+		.in106(0),.in107(0),.in108(0),.in109(0),.in110(0),.in111(0),.in112(0),.in113(0),
+		.in114(0),.in115(0),.in116(0),.in117(0),.in118(0),.in119(0),.in120(0),.in121(0),
+		.in122(0),.in123(0),.in124(0),.in125(0),.in126(0),.in127(0),.sel(mathMuxSel),.out(L_sub_a));
+		
+	mux128_32 i_mux128_32_L_sub_b(
+											.in0(autocorr_zero32),
+											.in1(lag_zero32),
+											.in2(levinson_L_sub_outb),
+											.in3(Az_L_subOutB),
+											.in4(Qua_lsp_L_subOutB),.in5(Int_lpc_L_subOutB),
+		.in6(Int_qlpc_L_subOutB),.in7(0),.in8(perc_var_L_subOutB),.in9(0),.in10(0),.in11(0),.in12(0),.in13(0),.in14(0),.in15(0),
+		.in16(0),.in17(Pitch_ol_L_subOutB),.in18(TL_Math2_L_subOutB),.in19(0),.in20(0),.in21(0),.in22(0),.in23(0),.in24(0),
+		.in25(0),.in26(0),.in27(0),.in28(Pitch_fr3_L_subOutB),.in29(0),.in30(0),.in31(0),.in32(0),.in33(0),
+		.in34(0),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
+		.in43(0),.in44(0),.in45(0),.in46(0),.in47(0),.in48(0),.in49(0),.in50(0),.in51(0),
+		.in52(0),.in53(0),.in54(0),.in55(0),.in56(),.in57(0),.in58(0),.in59(0),.in60(0),
+		.in61(0),.in62(0),.in63(0),.in64(0),.in65(0),.in66(0),.in67(0),.in68(0),.in69(0),
+		.in70(0),.in71(0),.in72(0),.in73(0),.in74(0),.in75(0),.in76(0),.in77(0),.in78(0),
+		.in79(0),.in80(0),.in81(0),.in82(0),.in83(0),.in84(0),.in85(0),.in86(0),.in87(0),
+		.in88(0),.in89(0),.in90(0),.in91(0),.in92(0),.in93(0),.in94(0),.in95(0),.in96(0),
+		.in97(0),.in98(0),.in99(0),.in100(0),.in101(0),.in102(0),.in103(0),.in104(0),.in105(0),
+		.in106(0),.in107(0),.in108(0),.in109(0),.in110(0),.in111(0),.in112(0),.in113(0),
+		.in114(0),.in115(0),.in116(0),.in117(0),.in118(0),.in119(0),.in120(0),.in121(0),
+		.in122(0),.in123(0),.in124(0),.in125(0),.in126(0),.in127(0),.sel(mathMuxSel),.out(L_sub_b));
+		
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//		mult
+	//
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	wire [15:0] mult_a,mult_b;
+	reg multRout;	
+	
+	always@(*)
+	begin
+		case(mathMuxSel)
+		'd0:		multRout = multRselOut;
+		default:	multRout = 0;
+		endcase
+	end
+
+	mult i_mult_1(
+						.a(mult_a),
+						.b(mult_b),
+						.multRsel(multRout),
+						.overflow(mult_overflow),
+						.product(mult_out)
+						);
+	
+	mux128_16 i_mux128_16_mult_a(
+											.in0(autocorr_multOutA),
+											.in1(lag_multOutA),
+											.in2(levinson_mult_outa),
+											.in3(Az_multOutA),
+											.in4(Qua_lsp_multOutA),.in5(Int_lpc_multOutA),
+			.in6(Int_qlpc_multOutA),.in7(0),.in8(perc_var_multOutA),.in9(0),.in10(0),.in11(0),.in12(0),.in13(0),.in14(0),.in15(0),
+			.in16(0),.in17(Pitch_ol_multOutA),.in18(0),.in19(0),.in20(0),.in21(0),.in22(0),.in23(0),.in24(0),
+			.in25(0),.in26(0),.in27(0),.in28(Pitch_fr3_multOutA),.in29(0),.in30(0),.in31(0),.in32(0),.in33(0),
+			.in34(0),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
+			.in43(0),.in44(0),.in45(0),.in46(0),.in47(0),.in48(0),.in49(0),.in50(0),.in51(0),
+			.in52(0),.in53(0),.in54(0),.in55(0),.in56(),.in57(0),.in58(0),.in59(0),.in60(0),
+			.in61(0),.in62(0),.in63(0),.in64(0),.in65(0),.in66(0),.in67(0),.in68(0),.in69(0),
+			.in70(0),.in71(0),.in72(0),.in73(0),.in74(0),.in75(0),.in76(0),.in77(0),.in78(0),
+			.in79(0),.in80(0),.in81(0),.in82(0),.in83(0),.in84(0),.in85(0),.in86(0),.in87(0),
+			.in88(0),.in89(0),.in90(0),.in91(0),.in92(0),.in93(0),.in94(0),.in95(0),.in96(0),
+			.in97(0),.in98(0),.in99(0),.in100(0),.in101(0),.in102(0),.in103(0),.in104(0),.in105(0),
+			.in106(0),.in107(0),.in108(0),.in109(0),.in110(0),.in111(0),.in112(0),.in113(0),
+			.in114(0),.in115(0),.in116(0),.in117(0),.in118(0),.in119(0),.in120(0),.in121(0),
+			.in122(0),.in123(0),.in124(0),.in125(0),.in126(0),.in127(0),.sel(mathMuxSel),.out(mult_a));
+			
+	mux128_16 i_mux128_16_mult_b(
+											.in0(autocorr_multOutB),
+											.in1(lag_multOutB),
+											.in2(levinson_mult_outb),
+											.in3(Az_multOutB),
+											.in4(Qua_lsp_multOutB),.in5(Int_lpc_multOutB),
+			.in6(Int_qlpc_multOutB),.in7(0),.in8(perc_var_multOutB),.in9(0),.in10(0),.in11(0),.in12(0),.in13(0),.in14(0),.in15(0),
+			.in16(0),.in17(Pitch_ol_multOutB),.in18(0),.in19(0),.in20(0),.in21(0),.in22(0),.in23(0),.in24(0),
+			.in25(0),.in26(0),.in27(0),.in28(Pitch_fr3_multOutB),.in29(0),.in30(0),.in31(0),.in32(0),.in33(0),
+			.in34(0),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
+			.in43(0),.in44(0),.in45(0),.in46(0),.in47(0),.in48(0),.in49(0),.in50(0),.in51(0),
+			.in52(0),.in53(0),.in54(0),.in55(0),.in56(),.in57(0),.in58(0),.in59(0),.in60(0),
+			.in61(0),.in62(0),.in63(0),.in64(0),.in65(0),.in66(0),.in67(0),.in68(0),.in69(0),
+			.in70(0),.in71(0),.in72(0),.in73(0),.in74(0),.in75(0),.in76(0),.in77(0),.in78(0),
+			.in79(0),.in80(0),.in81(0),.in82(0),.in83(0),.in84(0),.in85(0),.in86(0),.in87(0),
+			.in88(0),.in89(0),.in90(0),.in91(0),.in92(0),.in93(0),.in94(0),.in95(0),.in96(0),
+			.in97(0),.in98(0),.in99(0),.in100(0),.in101(0),.in102(0),.in103(0),.in104(0),.in105(0),
+			.in106(0),.in107(0),.in108(0),.in109(0),.in110(0),.in111(0),.in112(0),.in113(0),
+			.in114(0),.in115(0),.in116(0),.in117(0),.in118(0),.in119(0),.in120(0),.in121(0),
+			.in122(0),.in123(0),.in124(0),.in125(0),.in126(0),.in127(0),.sel(mathMuxSel),.out(mult_b));
+	
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//		norm_l
+	//
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	wire [31:0] norm_l_a;
+	wire norm_l_start;
+	
+	norm_l i_norm_l_1(
+							.var1(norm_l_a),
+							.norm(norm_l_out),
+							.clk(clock),
+							.ready(norm_l_start),
+							.reset(reset||autocorr_norm_lReset),
+							.done(norm_l_done)
+							);
+
+	mux128_32 i_mux128_32_norm_l_a(
+											.in0(autocorr_norm_lVar1Out),
+											.in1(lag_zero32),
+											.in2(levinson_norm_L_out),
+											.in3(Az_zero32),
+											.in4(0),.in5(Int_lpc_norm_l_out),
+		.in6(Int_qlpc_norm_l_out),.in7(0),.in8(0),.in9(0),.in10(0),.in11(0),.in12(0),.in13(0),.in14(0),.in15(0),
+		.in16(0),.in17(Pitch_ol_norm_l_out),.in18(0),.in19(0),.in20(0),.in21(0),.in22(0),.in23(0),.in24(0),
+		.in25(0),.in26(0),.in27(0),.in28(Pitch_fr3_norm_l_out),.in29(0),.in30(0),.in31(0),.in32(0),.in33(0),
+		.in34(0),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
+		.in43(0),.in44(0),.in45(0),.in46(0),.in47(0),.in48(0),.in49(0),.in50(0),.in51(0),
+		.in52(0),.in53(0),.in54(0),.in55(0),.in56(),.in57(0),.in58(0),.in59(0),.in60(0),
+		.in61(0),.in62(0),.in63(0),.in64(0),.in65(0),.in66(0),.in67(0),.in68(0),.in69(0),
+		.in70(0),.in71(0),.in72(0),.in73(0),.in74(0),.in75(0),.in76(0),.in77(0),.in78(0),
+		.in79(0),.in80(0),.in81(0),.in82(0),.in83(0),.in84(0),.in85(0),.in86(0),.in87(0),
+		.in88(0),.in89(0),.in90(0),.in91(0),.in92(0),.in93(0),.in94(0),.in95(0),.in96(0),
+		.in97(0),.in98(0),.in99(0),.in100(0),.in101(0),.in102(0),.in103(0),.in104(0),.in105(0),
+		.in106(0),.in107(0),.in108(0),.in109(0),.in110(0),.in111(0),.in112(0),.in113(0),
+		.in114(0),.in115(0),.in116(0),.in117(0),.in118(0),.in119(0),.in120(0),.in121(0),
+		.in122(0),.in123(0),.in124(0),.in125(0),.in126(0),.in127(0),.sel(mathMuxSel),.out(norm_l_a));
+		
+	mux128_1 i_mux128_1_norm_l_start(
+												.in0(autocorr_norm_lReady),
+												.in1(lag_zero),
+												.in2(levinson_norm_L_start),
+												.in3(Az_zero),
+												.in4(0),.in5(Int_lpc_norm_l_start),
+		.in6(Int_qlpc_norm_l_start),.in7(0),.in8(0),.in9(0),.in10(0),.in11(0),.in12(0),.in13(0),.in14(0),.in15(0),
+		.in16(0),.in17(Pitch_ol_norm_l_start),.in18(0),.in19(0),.in20(0),.in21(0),.in22(0),.in23(0),.in24(0),
+		.in25(0),.in26(0),.in27(0),.in28(Pitch_fr3_norm_l_start),.in29(0),.in30(0),.in31(0),.in32(0),.in33(0),
+		.in34(0),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
+		.in43(0),.in44(0),.in45(0),.in46(0),.in47(0),.in48(0),.in49(0),.in50(0),.in51(0),
+		.in52(0),.in53(0),.in54(0),.in55(0),.in56(),.in57(0),.in58(0),.in59(0),.in60(0),
+		.in61(0),.in62(0),.in63(0),.in64(0),.in65(0),.in66(0),.in67(0),.in68(0),.in69(0),
+		.in70(0),.in71(0),.in72(0),.in73(0),.in74(0),.in75(0),.in76(0),.in77(0),.in78(0),
+		.in79(0),.in80(0),.in81(0),.in82(0),.in83(0),.in84(0),.in85(0),.in86(0),.in87(0),
+		.in88(0),.in89(0),.in90(0),.in91(0),.in92(0),.in93(0),.in94(0),.in95(0),.in96(0),
+		.in97(0),.in98(0),.in99(0),.in100(0),.in101(0),.in102(0),.in103(0),.in104(0),.in105(0),
+		.in106(0),.in107(0),.in108(0),.in109(0),.in110(0),.in111(0),.in112(0),.in113(0),
+		.in114(0),.in115(0),.in116(0),.in117(0),.in118(0),.in119(0),.in120(0),.in121(0),
+		.in122(0),.in123(0),.in124(0),.in125(0),.in126(0),.in127(0),.sel(mathMuxSel),.out(norm_l_start));
+		
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//		norm_s
+	//
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	wire [15:0] norm_s_a;
+	wire norm_s_start;
+	
+	norm_s i_norm_s_1(
+							.var1(norm_s_a),
+							.norm(norm_s_out),
+							.clk(clock),
+							.ready(norm_s_start),
+							.reset(reset),
+							.done(norm_s_done)
+							);
+				
+	mux128_16 i_mux128_16_norm_s_a(
+												.in0(autocorr_zero16),
+												.in1(lag_zero16),
+												.in2(0),
+												.in3(Az_norm_sOut),
+												.in4(Qua_lsp_norm_sOut),.in5(0),
+		.in6(0),.in7(0),.in8(0),.in9(0),.in10(0),.in11(0),.in12(0),.in13(0),.in14(0),.in15(0),
 		.in16(0),.in17(0),.in18(0),.in19(0),.in20(0),.in21(0),.in22(0),.in23(0),.in24(0),
 		.in25(0),.in26(0),.in27(0),.in28(0),.in29(0),.in30(0),.in31(0),.in32(0),.in33(0),
 		.in34(0),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
@@ -1436,29 +1594,17 @@ module G729_Pipe (clock,reset,xn,preProcReady,autocorrReady,lagReady,levinsonRea
 		.in97(0),.in98(0),.in99(0),.in100(0),.in101(0),.in102(0),.in103(0),.in104(0),.in105(0),
 		.in106(0),.in107(0),.in108(0),.in109(0),.in110(0),.in111(0),.in112(0),.in113(0),
 		.in114(0),.in115(0),.in116(0),.in117(0),.in118(0),.in119(0),.in120(0),.in121(0),
-		.in122(0),.in123(0),.in124(0),.in125(0),.in126(0),.in127(0),.sel(mathMuxSel),.out(L_abs_a));
-	
+		.in122(0),.in123(0),.in124(0),.in125(0),.in126(0),.in127(0),.sel(mathMuxSel),.out(norm_s_a));
 		
-	//////////////////////////////////////////////////////////////////////////////////////////////
-	//
-	//		L_negate
-	//
-	//////////////////////////////////////////////////////////////////////////////////////////////
-	wire [31:0] L_negate_a;
-	
-	L_negate i_L_negate_1(
-								.var_in(L_negate_a),
-								.var_out(L_negate_out)
-								);
-
-	mux128_32 i_mux128_32_L_negate_a(
-												.in0(autocorr_zero32),
-												.in1(lag_zero32),
-												.in2(levinson_negate_out),
-												.in3(Az_zero32),.in4(0),.in5(Int_lpc_L_negate_out),
-		.in6(Int_qlpc_L_negate_out),.in7(0),.in8(0),.in9(0),.in10(0),.in11(0),.in12(0),.in13(0),.in14(0),.in15(0),
+		mux128_1 i_mux128_1_norm_s_start(
+												.in0(autocorr_zero),
+												.in1(lag_zero),
+												.in2(0),
+												.in3(Az_norm_sReady),
+												.in4(Qua_lsp_norm_sReady),.in5(0),
+		.in6(0),.in7(0),.in8(0),.in9(0),.in10(0),.in11(0),.in12(0),.in13(0),.in14(0),.in15(0),
 		.in16(0),.in17(0),.in18(0),.in19(0),.in20(0),.in21(0),.in22(0),.in23(0),.in24(0),
-		.in25(0),.in26(0),.in27(0),.in28(Pitch_fr3_L_negate_out),.in29(0),.in30(0),.in31(0),.in32(0),.in33(0),
+		.in25(0),.in26(0),.in27(0),.in28(0),.in29(0),.in30(0),.in31(0),.in32(0),.in33(0),
 		.in34(0),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
 		.in43(0),.in44(0),.in45(0),.in46(0),.in47(0),.in48(0),.in49(0),.in50(0),.in51(0),
 		.in52(0),.in53(0),.in54(0),.in55(0),.in56(),.in57(0),.in58(0),.in59(0),.in60(0),
@@ -1469,173 +1615,8 @@ module G729_Pipe (clock,reset,xn,preProcReady,autocorrReady,lagReady,levinsonRea
 		.in97(0),.in98(0),.in99(0),.in100(0),.in101(0),.in102(0),.in103(0),.in104(0),.in105(0),
 		.in106(0),.in107(0),.in108(0),.in109(0),.in110(0),.in111(0),.in112(0),.in113(0),
 		.in114(0),.in115(0),.in116(0),.in117(0),.in118(0),.in119(0),.in120(0),.in121(0),
-		.in122(0),.in123(0),.in124(0),.in125(0),.in126(0),.in127(0),.sel(mathMuxSel),.out(L_negate_a));
+		.in122(0),.in123(0),.in124(0),.in125(0),.in126(0),.in127(0),.sel(mathMuxSel),.out(norm_s_start));
 	
-	//////////////////////////////////////////////////////////////////////////////////////////////
-	//
-	//		add
-	//
-	//////////////////////////////////////////////////////////////////////////////////////////////
-	wire [15:0] add_a,add_b;
-	
-	add i_add_1(
-					.a(add_a),
-					.b(add_b),
-					.overflow(add_overflow),
-					.sum(add_out)
-					);
-					
-		mux128_16 i_mux128_16_add_a(
-											.in0(autocorr_addOutA),
-											.in1(lag_addOutA),
-											.in2(levinson_add_outa),
-											.in3(Az_addOutA),
-											.in4(Qua_lsp_addOutA),.in5(Int_lpc_addOutA),
-		.in6(Int_qlpc_addOutA),.in7(Math1_addOutA),.in8(perc_var_addOutA),.in9(Weight_Az_addOutA),.in10(Weight_Az_addOutA),.in11(Residu_addOutA),.in12(Syn_filt_addOutA),.in13(Weight_Az_addOutA),.in14(Weight_Az_addOutA),.in15(Residu_addOutA),
-		.in16(Syn_filt_addOutA),.in17(Pitch_ol_addOutA),.in18(TL_Math2_addOutA),.in19(Weight_Az_addOutA),.in20(Weight_Az_addOutA),.in21(TL_Math3_addOutA),.in22(Syn_filt_addOutA),.in23(Syn_filt_addOutA),.in24(Residu_addOutA),
-		.in25(Syn_filt_addOutA),.in26(Residu_addOutA),.in27(Syn_filt_addOutA),.in28(Pitch_fr3_addOutA),.in29(0),.in30(0),.in31(0),.in32(0),.in33(0),
-		.in34(0),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
-		.in43(0),.in44(0),.in45(0),.in46(0),.in47(0),.in48(0),.in49(0),.in50(0),.in51(0),
-		.in52(0),.in53(0),.in54(0),.in55(0),.in56(),.in57(0),.in58(0),.in59(0),.in60(0),
-		.in61(0),.in62(0),.in63(0),.in64(0),.in65(0),.in66(0),.in67(0),.in68(0),.in69(0),
-		.in70(0),.in71(0),.in72(0),.in73(0),.in74(0),.in75(0),.in76(0),.in77(0),.in78(0),
-		.in79(0),.in80(0),.in81(0),.in82(0),.in83(0),.in84(0),.in85(0),.in86(0),.in87(0),
-		.in88(0),.in89(0),.in90(0),.in91(0),.in92(0),.in93(0),.in94(0),.in95(0),.in96(0),
-		.in97(0),.in98(0),.in99(0),.in100(0),.in101(0),.in102(0),.in103(0),.in104(0),.in105(0),
-		.in106(0),.in107(0),.in108(0),.in109(0),.in110(0),.in111(0),.in112(0),.in113(0),
-		.in114(0),.in115(0),.in116(0),.in117(0),.in118(0),.in119(0),.in120(0),.in121(0),
-		.in122(0),.in123(0),.in124(0),.in125(0),.in126(0),.in127(0),.sel(mathMuxSel),.out(add_a));
-	
-	mux128_16 i_mux128_16_add_b(
-											.in0(autocorr_addOutB),
-											.in1(lag_addOutB),
-											.in2(levinson_add_outb),
-											.in3(Az_addOutB),
-											.in4(Qua_lsp_addOutB),.in5(Int_lpc_addOutB),
-		.in6(Int_qlpc_addOutB),.in7(Math1_addOutB),.in8(perc_var_addOutB),.in9(Weight_Az_addOutB),.in10(Weight_Az_addOutB),.in11(Residu_addOutB),.in12(Syn_filt_addOutB),.in13(Weight_Az_addOutB),.in14(Weight_Az_addOutB),.in15(Residu_addOutB),
-		.in16(Syn_filt_addOutB),.in17(Pitch_ol_addOutB),.in18(TL_Math2_addOutB),.in19(Weight_Az_addOutB),.in20(Weight_Az_addOutB),.in21(TL_Math3_addOutB),.in22(Syn_filt_addOutB),.in23(Syn_filt_addOutB),.in24(Residu_addOutB),
-		.in25(Syn_filt_addOutB),.in26(Residu_addOutB),.in27(Syn_filt_addOutB),.in28(Pitch_fr3_addOutB),.in29(0),.in30(0),.in31(0),.in32(0),.in33(0),
-		.in34(0),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
-		.in43(0),.in44(0),.in45(0),.in46(0),.in47(0),.in48(0),.in49(0),.in50(0),.in51(0),
-		.in52(0),.in53(0),.in54(0),.in55(0),.in56(),.in57(0),.in58(0),.in59(0),.in60(0),
-		.in61(0),.in62(0),.in63(0),.in64(0),.in65(0),.in66(0),.in67(0),.in68(0),.in69(0),
-		.in70(0),.in71(0),.in72(0),.in73(0),.in74(0),.in75(0),.in76(0),.in77(0),.in78(0),
-		.in79(0),.in80(0),.in81(0),.in82(0),.in83(0),.in84(0),.in85(0),.in86(0),.in87(0),
-		.in88(0),.in89(0),.in90(0),.in91(0),.in92(0),.in93(0),.in94(0),.in95(0),.in96(0),
-		.in97(0),.in98(0),.in99(0),.in100(0),.in101(0),.in102(0),.in103(0),.in104(0),.in105(0),
-		.in106(0),.in107(0),.in108(0),.in109(0),.in110(0),.in111(0),.in112(0),.in113(0),
-		.in114(0),.in115(0),.in116(0),.in117(0),.in118(0),.in119(0),.in120(0),.in121(0),
-		.in122(0),.in123(0),.in124(0),.in125(0),.in126(0),.in127(0),.sel(mathMuxSel),.out(add_b));
-	//////////////////////////////////////////////////////////////////////////////////////////////
-	//
-	//		sub
-	//
-	//////////////////////////////////////////////////////////////////////////////////////////////
-	wire [15:0] sub_a,sub_b;
-	
-	sub i_sub_1(
-					.a(sub_a),
-					.b(sub_b),
-					.overflow(sub_overflow),
-					.diff(sub_out)
-					);
-
-	mux128_16 i_mux128_16_sub_a(
-											.in0(autocorr_subOutA),
-											.in1(lag_zero16),
-											.in2(levinson_sub_outa),
-											.in3(Az_subOutA),
-											.in4(Qua_lsp_subOutA),.in5(Int_lpc_subOutA),
-		.in6(Int_qlpc_subOutA),.in7(0),.in8(perc_var_subOutA),.in9(0),.in10(0),.in11(Residu_subOutA),.in12(Syn_filt_subOutA),.in13(0),.in14(0),.in15(Residu_subOutA),
-		.in16(Syn_filt_subOutA),.in17(Pitch_ol_subOutA),.in18(TL_Math2_subOutA),.in19(0),.in20(0),.in21(0),.in22(Syn_filt_subOutA),.in23(Syn_filt_subOutA),.in24(Residu_subOutA),
-		.in25(Syn_filt_subOutA),.in26(Residu_subOutA),.in27(Syn_filt_subOutA),.in28(Pitch_fr3_subOutA),.in29(0),.in30(0),.in31(0),.in32(0),.in33(0),
-		.in34(0),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
-		.in43(0),.in44(0),.in45(0),.in46(0),.in47(0),.in48(0),.in49(0),.in50(0),.in51(0),
-		.in52(0),.in53(0),.in54(0),.in55(0),.in56(),.in57(0),.in58(0),.in59(0),.in60(0),
-		.in61(0),.in62(0),.in63(0),.in64(0),.in65(0),.in66(0),.in67(0),.in68(0),.in69(0),
-		.in70(0),.in71(0),.in72(0),.in73(0),.in74(0),.in75(0),.in76(0),.in77(0),.in78(0),
-		.in79(0),.in80(0),.in81(0),.in82(0),.in83(0),.in84(0),.in85(0),.in86(0),.in87(0),
-		.in88(0),.in89(0),.in90(0),.in91(0),.in92(0),.in93(0),.in94(0),.in95(0),.in96(0),
-		.in97(0),.in98(0),.in99(0),.in100(0),.in101(0),.in102(0),.in103(0),.in104(0),.in105(0),
-		.in106(0),.in107(0),.in108(0),.in109(0),.in110(0),.in111(0),.in112(0),.in113(0),
-		.in114(0),.in115(0),.in116(0),.in117(0),.in118(0),.in119(0),.in120(0),.in121(0),
-		.in122(0),.in123(0),.in124(0),.in125(0),.in126(0),.in127(0),.sel(mathMuxSel),.out(sub_a));
-	
-	mux128_16 i_mux128_16_sub_b(
-											.in0(autocorr_subOutB),
-											.in1(lag_zero16),
-											.in2(levinson_sub_outb),
-											.in3(Az_subOutB),
-											.in4(Qua_lsp_subOutB),.in5(Int_lpc_subOutB),
-		.in6(Int_qlpc_subOutB),.in7(0),.in8(perc_var_subOutB),.in9(0),.in10(0),.in11(Residu_subOutB),.in12(Syn_filt_subOutB),.in13(0),.in14(0),.in15(Residu_subOutB),
-		.in16(Syn_filt_subOutB),.in17(Pitch_ol_subOutB),.in18(TL_Math2_subOutB),.in19(0),.in20(0),.in21(0),.in22(Syn_filt_subOutB),.in23(Syn_filt_subOutB),.in24(Residu_subOutB),
-		.in25(Syn_filt_subOutB),.in26(Residu_subOutB),.in27(Syn_filt_subOutB),.in28(Pitch_fr3_subOutB),.in29(0),.in30(0),.in31(0),.in32(0),.in33(0),
-		.in34(0),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
-		.in43(0),.in44(0),.in45(0),.in46(0),.in47(0),.in48(0),.in49(0),.in50(0),.in51(0),
-		.in52(0),.in53(0),.in54(0),.in55(0),.in56(),.in57(0),.in58(0),.in59(0),.in60(0),
-		.in61(0),.in62(0),.in63(0),.in64(0),.in65(0),.in66(0),.in67(0),.in68(0),.in69(0),
-		.in70(0),.in71(0),.in72(0),.in73(0),.in74(0),.in75(0),.in76(0),.in77(0),.in78(0),
-		.in79(0),.in80(0),.in81(0),.in82(0),.in83(0),.in84(0),.in85(0),.in86(0),.in87(0),
-		.in88(0),.in89(0),.in90(0),.in91(0),.in92(0),.in93(0),.in94(0),.in95(0),.in96(0),
-		.in97(0),.in98(0),.in99(0),.in100(0),.in101(0),.in102(0),.in103(0),.in104(0),.in105(0),
-		.in106(0),.in107(0),.in108(0),.in109(0),.in110(0),.in111(0),.in112(0),.in113(0),
-		.in114(0),.in115(0),.in116(0),.in117(0),.in118(0),.in119(0),.in120(0),.in121(0),
-		.in122(0),.in123(0),.in124(0),.in125(0),.in126(0),.in127(0),.sel(mathMuxSel),.out(sub_b));
-	//////////////////////////////////////////////////////////////////////////////////////////////
-	//
-	//		shr
-	//
-	//////////////////////////////////////////////////////////////////////////////////////////////
-	wire [15:0] shr_var1,shr_var2;
-	
-	shr i_shr_1shr(
-						.var1(shr_var1),
-						.var2(shr_var2),
-						.overflow(shr_overflow),
-						.result(shr_out)
-						);
-	
-	mux128_16 i_mux128_16_shr_var1(
-												.in0(autocorr_shrVar1Out),
-												.in1(lag_zero16),
-												.in2(0),
-												.in3(Az_shrOutVar1),
-												.in4(Qua_lsp_shrVar1Out),.in5(Int_lpc_shrVar1Out),
-		.in6(Int_qlpc_shrVar1Out),.in7(0),.in8(perc_var_shrVar1Out),.in9(0),.in10(0),.in11(0),.in12(0),.in13(0),.in14(0),.in15(0),
-		.in16(0),.in17(Pitch_ol_shrVar1Out),.in18(0),.in19(0),.in20(0),.in21(0),.in22(0),.in23(0),.in24(0),
-		.in25(0),.in26(0),.in27(0),.in28(Pitch_fr3_shrVar1Out),.in29(0),.in30(0),.in31(0),.in32(0),.in33(0),
-		.in34(0),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
-		.in43(0),.in44(0),.in45(0),.in46(0),.in47(0),.in48(0),.in49(0),.in50(0),.in51(0),
-		.in52(0),.in53(0),.in54(0),.in55(0),.in56(),.in57(0),.in58(0),.in59(0),.in60(0),
-		.in61(0),.in62(0),.in63(0),.in64(0),.in65(0),.in66(0),.in67(0),.in68(0),.in69(0),
-		.in70(0),.in71(0),.in72(0),.in73(0),.in74(0),.in75(0),.in76(0),.in77(0),.in78(0),
-		.in79(0),.in80(0),.in81(0),.in82(0),.in83(0),.in84(0),.in85(0),.in86(0),.in87(0),
-		.in88(0),.in89(0),.in90(0),.in91(0),.in92(0),.in93(0),.in94(0),.in95(0),.in96(0),
-		.in97(0),.in98(0),.in99(0),.in100(0),.in101(0),.in102(0),.in103(0),.in104(0),.in105(0),
-		.in106(0),.in107(0),.in108(0),.in109(0),.in110(0),.in111(0),.in112(0),.in113(0),
-		.in114(0),.in115(0),.in116(0),.in117(0),.in118(0),.in119(0),.in120(0),.in121(0),
-		.in122(0),.in123(0),.in124(0),.in125(0),.in126(0),.in127(0),.sel(mathMuxSel),.out(shr_var1));
-	
-	mux128_16 i_mux128_16_shr_var2(
-												.in0(autocorr_shrVar2Out),
-												.in1(lag_zero16),
-												.in2(0),
-												.in3(Az_shrOutVar2),
-												.in4(Qua_lsp_shrVar2Out),.in5(Int_lpc_shrVar2Out),
-		.in6(Int_qlpc_shrVar2Out),.in7(0),.in8(perc_var_shrVar2Out),.in9(0),.in10(0),.in11(0),.in12(0),.in13(0),.in14(0),.in15(0),
-		.in16(0),.in17(Pitch_ol_shrVar2Out),.in18(0),.in19(0),.in20(0),.in21(0),.in22(0),.in23(0),.in24(0),
-		.in25(0),.in26(0),.in27(0),.in28(Pitch_fr3_shrVar2Out),.in29(0),.in30(0),.in31(0),.in32(0),.in33(0),
-		.in34(0),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
-		.in43(0),.in44(0),.in45(0),.in46(0),.in47(0),.in48(0),.in49(0),.in50(0),.in51(0),
-		.in52(0),.in53(0),.in54(0),.in55(0),.in56(),.in57(0),.in58(0),.in59(0),.in60(0),
-		.in61(0),.in62(0),.in63(0),.in64(0),.in65(0),.in66(0),.in67(0),.in68(0),.in69(0),
-		.in70(0),.in71(0),.in72(0),.in73(0),.in74(0),.in75(0),.in76(0),.in77(0),.in78(0),
-		.in79(0),.in80(0),.in81(0),.in82(0),.in83(0),.in84(0),.in85(0),.in86(0),.in87(0),
-		.in88(0),.in89(0),.in90(0),.in91(0),.in92(0),.in93(0),.in94(0),.in95(0),.in96(0),
-		.in97(0),.in98(0),.in99(0),.in100(0),.in101(0),.in102(0),.in103(0),.in104(0),.in105(0),
-		.in106(0),.in107(0),.in108(0),.in109(0),.in110(0),.in111(0),.in112(0),.in113(0),
-		.in114(0),.in115(0),.in116(0),.in117(0),.in118(0),.in119(0),.in120(0),.in121(0),
-		.in122(0),.in123(0),.in124(0),.in125(0),.in126(0),.in127(0),.sel(mathMuxSel),.out(shr_var2));
 	//////////////////////////////////////////////////////////////////////////////////////////////
 	//
 	//		shl
@@ -1691,6 +1672,119 @@ module G729_Pipe (clock,reset,xn,preProcReady,autocorrReady,lagReady,levinsonRea
 		.in106(0),.in107(0),.in108(0),.in109(0),.in110(0),.in111(0),.in112(0),.in113(0),
 		.in114(0),.in115(0),.in116(0),.in117(0),.in118(0),.in119(0),.in120(0),.in121(0),
 		.in122(0),.in123(0),.in124(0),.in125(0),.in126(0),.in127(0),.sel(mathMuxSel),.out(shl_var2));
+
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//		shr
+	//
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	wire [15:0] shr_var1,shr_var2;
+	
+	shr i_shr_1shr(
+						.var1(shr_var1),
+						.var2(shr_var2),
+						.overflow(shr_overflow),
+						.result(shr_out)
+						);
+	
+	mux128_16 i_mux128_16_shr_var1(
+												.in0(autocorr_shrVar1Out),
+												.in1(lag_zero16),
+												.in2(0),
+												.in3(Az_shrOutVar1),
+												.in4(Qua_lsp_shrVar1Out),.in5(Int_lpc_shrVar1Out),
+		.in6(Int_qlpc_shrVar1Out),.in7(0),.in8(perc_var_shrVar1Out),.in9(0),.in10(0),.in11(0),.in12(0),.in13(0),.in14(0),.in15(0),
+		.in16(0),.in17(Pitch_ol_shrVar1Out),.in18(0),.in19(0),.in20(0),.in21(0),.in22(0),.in23(0),.in24(0),
+		.in25(0),.in26(0),.in27(0),.in28(Pitch_fr3_shrVar1Out),.in29(0),.in30(0),.in31(0),.in32(0),.in33(0),
+		.in34(0),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
+		.in43(0),.in44(0),.in45(0),.in46(0),.in47(0),.in48(0),.in49(0),.in50(0),.in51(0),
+		.in52(0),.in53(0),.in54(0),.in55(0),.in56(),.in57(0),.in58(0),.in59(0),.in60(0),
+		.in61(0),.in62(0),.in63(0),.in64(0),.in65(0),.in66(0),.in67(0),.in68(0),.in69(0),
+		.in70(0),.in71(0),.in72(0),.in73(0),.in74(0),.in75(0),.in76(0),.in77(0),.in78(0),
+		.in79(0),.in80(0),.in81(0),.in82(0),.in83(0),.in84(0),.in85(0),.in86(0),.in87(0),
+		.in88(0),.in89(0),.in90(0),.in91(0),.in92(0),.in93(0),.in94(0),.in95(0),.in96(0),
+		.in97(0),.in98(0),.in99(0),.in100(0),.in101(0),.in102(0),.in103(0),.in104(0),.in105(0),
+		.in106(0),.in107(0),.in108(0),.in109(0),.in110(0),.in111(0),.in112(0),.in113(0),
+		.in114(0),.in115(0),.in116(0),.in117(0),.in118(0),.in119(0),.in120(0),.in121(0),
+		.in122(0),.in123(0),.in124(0),.in125(0),.in126(0),.in127(0),.sel(mathMuxSel),.out(shr_var1));
+	
+	mux128_16 i_mux128_16_shr_var2(
+												.in0(autocorr_shrVar2Out),
+												.in1(lag_zero16),
+												.in2(0),
+												.in3(Az_shrOutVar2),
+												.in4(Qua_lsp_shrVar2Out),.in5(Int_lpc_shrVar2Out),
+		.in6(Int_qlpc_shrVar2Out),.in7(0),.in8(perc_var_shrVar2Out),.in9(0),.in10(0),.in11(0),.in12(0),.in13(0),.in14(0),.in15(0),
+		.in16(0),.in17(Pitch_ol_shrVar2Out),.in18(0),.in19(0),.in20(0),.in21(0),.in22(0),.in23(0),.in24(0),
+		.in25(0),.in26(0),.in27(0),.in28(Pitch_fr3_shrVar2Out),.in29(0),.in30(0),.in31(0),.in32(0),.in33(0),
+		.in34(0),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
+		.in43(0),.in44(0),.in45(0),.in46(0),.in47(0),.in48(0),.in49(0),.in50(0),.in51(0),
+		.in52(0),.in53(0),.in54(0),.in55(0),.in56(),.in57(0),.in58(0),.in59(0),.in60(0),
+		.in61(0),.in62(0),.in63(0),.in64(0),.in65(0),.in66(0),.in67(0),.in68(0),.in69(0),
+		.in70(0),.in71(0),.in72(0),.in73(0),.in74(0),.in75(0),.in76(0),.in77(0),.in78(0),
+		.in79(0),.in80(0),.in81(0),.in82(0),.in83(0),.in84(0),.in85(0),.in86(0),.in87(0),
+		.in88(0),.in89(0),.in90(0),.in91(0),.in92(0),.in93(0),.in94(0),.in95(0),.in96(0),
+		.in97(0),.in98(0),.in99(0),.in100(0),.in101(0),.in102(0),.in103(0),.in104(0),.in105(0),
+		.in106(0),.in107(0),.in108(0),.in109(0),.in110(0),.in111(0),.in112(0),.in113(0),
+		.in114(0),.in115(0),.in116(0),.in117(0),.in118(0),.in119(0),.in120(0),.in121(0),
+		.in122(0),.in123(0),.in124(0),.in125(0),.in126(0),.in127(0),.sel(mathMuxSel),.out(shr_var2));
+		
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//		sub
+	//
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	wire [15:0] sub_a,sub_b;
+	
+	sub i_sub_1(
+					.a(sub_a),
+					.b(sub_b),
+					.overflow(sub_overflow),
+					.diff(sub_out)
+					);
+
+	mux128_16 i_mux128_16_sub_a(
+											.in0(autocorr_subOutA),
+											.in1(lag_zero16),
+											.in2(levinson_sub_outa),
+											.in3(Az_subOutA),
+											.in4(Qua_lsp_subOutA),.in5(Int_lpc_subOutA),
+		.in6(Int_qlpc_subOutA),.in7(0),.in8(perc_var_subOutA),.in9(0),.in10(0),.in11(Residu_subOutA),.in12(Syn_filt_subOutA),.in13(0),.in14(0),.in15(Residu_subOutA),
+		.in16(Syn_filt_subOutA),.in17(Pitch_ol_subOutA),.in18(TL_Math2_subOutA),.in19(0),.in20(0),.in21(0),.in22(Syn_filt_subOutA),.in23(Syn_filt_subOutA),.in24(Residu_subOutA),
+		.in25(Syn_filt_subOutA),.in26(Residu_subOutA),.in27(Syn_filt_subOutA),.in28(Pitch_fr3_subOutA),.in29(Enc_lag3_subOutA),.in30(0),.in31(0),.in32(0),.in33(0),
+		.in34(0),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
+		.in43(0),.in44(0),.in45(0),.in46(0),.in47(0),.in48(0),.in49(0),.in50(0),.in51(0),
+		.in52(0),.in53(0),.in54(0),.in55(0),.in56(),.in57(0),.in58(0),.in59(0),.in60(0),
+		.in61(0),.in62(0),.in63(0),.in64(0),.in65(0),.in66(0),.in67(0),.in68(0),.in69(0),
+		.in70(0),.in71(0),.in72(0),.in73(0),.in74(0),.in75(0),.in76(0),.in77(0),.in78(0),
+		.in79(0),.in80(0),.in81(0),.in82(0),.in83(0),.in84(0),.in85(0),.in86(0),.in87(0),
+		.in88(0),.in89(0),.in90(0),.in91(0),.in92(0),.in93(0),.in94(0),.in95(0),.in96(0),
+		.in97(0),.in98(0),.in99(0),.in100(0),.in101(0),.in102(0),.in103(0),.in104(0),.in105(0),
+		.in106(0),.in107(0),.in108(0),.in109(0),.in110(0),.in111(0),.in112(0),.in113(0),
+		.in114(0),.in115(0),.in116(0),.in117(0),.in118(0),.in119(0),.in120(0),.in121(0),
+		.in122(0),.in123(0),.in124(0),.in125(0),.in126(0),.in127(0),.sel(mathMuxSel),.out(sub_a));
+	
+	mux128_16 i_mux128_16_sub_b(
+											.in0(autocorr_subOutB),
+											.in1(lag_zero16),
+											.in2(levinson_sub_outb),
+											.in3(Az_subOutB),
+											.in4(Qua_lsp_subOutB),.in5(Int_lpc_subOutB),
+		.in6(Int_qlpc_subOutB),.in7(0),.in8(perc_var_subOutB),.in9(0),.in10(0),.in11(Residu_subOutB),.in12(Syn_filt_subOutB),.in13(0),.in14(0),.in15(Residu_subOutB),
+		.in16(Syn_filt_subOutB),.in17(Pitch_ol_subOutB),.in18(TL_Math2_subOutB),.in19(0),.in20(0),.in21(0),.in22(Syn_filt_subOutB),.in23(Syn_filt_subOutB),.in24(Residu_subOutB),
+		.in25(Syn_filt_subOutB),.in26(Residu_subOutB),.in27(Syn_filt_subOutB),.in28(Pitch_fr3_subOutB),.in29(Enc_lag3_subOutB),.in30(0),.in31(0),.in32(0),.in33(0),
+		.in34(0),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
+		.in43(0),.in44(0),.in45(0),.in46(0),.in47(0),.in48(0),.in49(0),.in50(0),.in51(0),
+		.in52(0),.in53(0),.in54(0),.in55(0),.in56(),.in57(0),.in58(0),.in59(0),.in60(0),
+		.in61(0),.in62(0),.in63(0),.in64(0),.in65(0),.in66(0),.in67(0),.in68(0),.in69(0),
+		.in70(0),.in71(0),.in72(0),.in73(0),.in74(0),.in75(0),.in76(0),.in77(0),.in78(0),
+		.in79(0),.in80(0),.in81(0),.in82(0),.in83(0),.in84(0),.in85(0),.in86(0),.in87(0),
+		.in88(0),.in89(0),.in90(0),.in91(0),.in92(0),.in93(0),.in94(0),.in95(0),.in96(0),
+		.in97(0),.in98(0),.in99(0),.in100(0),.in101(0),.in102(0),.in103(0),.in104(0),.in105(0),
+		.in106(0),.in107(0),.in108(0),.in109(0),.in110(0),.in111(0),.in112(0),.in113(0),
+		.in114(0),.in115(0),.in116(0),.in117(0),.in118(0),.in119(0),.in120(0),.in121(0),
+		.in122(0),.in123(0),.in124(0),.in125(0),.in126(0),.in127(0),.sel(mathMuxSel),.out(sub_b));		
+		
 	//////////////////////////////////////////////////////////////////////////////////////////////
 	//
 	//		Scratch Memory
@@ -1717,7 +1811,7 @@ module G729_Pipe (clock,reset,xn,preProcReady,autocorrReady,lagReady,levinsonRea
 														.in4(Qua_lsp_memWriteAddr),.in5(Int_lpc_memWriteAddr),
 		.in6(Int_qlpc_memWriteAddr),.in7(Math1_memWriteAddr),.in8(perc_var_memWriteAddr),.in9(Weight_Az_memWriteAddr),.in10(Weight_Az_memWriteAddr),.in11(Residu_memWriteAddr),.in12(Syn_filt_memWriteAddr),.in13(Weight_Az_memWriteAddr),.in14(Weight_Az_memWriteAddr),.in15(Residu_memWriteAddr),
 		.in16(Syn_filt_memWriteAddr),.in17(Pitch_ol_memWriteAddr),.in18(0),.in19(Weight_Az_memWriteAddr),.in20(Weight_Az_memWriteAddr),.in21(TL_Math3_memWriteAddr),.in22(Syn_filt_memWriteAddr),.in23(Syn_filt_memWriteAddr),.in24(Residu_memWriteAddr),
-		.in25(Syn_filt_memWriteAddr),.in26(Residu_memWriteAddr),.in27(Syn_filt_memWriteAddr),.in28(Pitch_fr3_memWriteAddr),.in29(0),.in30(0),.in31(0),.in32(0),.in33(0),
+		.in25(Syn_filt_memWriteAddr),.in26(Residu_memWriteAddr),.in27(Syn_filt_memWriteAddr),.in28(Pitch_fr3_memWriteAddr),.in29(Enc_lag3_memWriteAddr),.in30(0),.in31(0),.in32(0),.in33(0),
 		.in34(0),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
 		.in43(0),.in44(0),.in45(0),.in46(0),.in47(0),.in48(0),.in49(0),.in50(0),.in51(0),
 		.in52(0),.in53(0),.in54(0),.in55(0),.in56(),.in57(0),.in58(0),.in59(0),.in60(0),
@@ -1738,7 +1832,7 @@ module G729_Pipe (clock,reset,xn,preProcReady,autocorrReady,lagReady,levinsonRea
 														.in4(Qua_lsp_memIn),.in5(Int_lpc_memIn),
 		.in6(Int_qlpc_memIn),.in7(Math1_memIn),.in8(perc_var_memIn),.in9(Weight_Az_memIn),.in10(Weight_Az_memIn),.in11(Residu_memIn),.in12(Syn_filt_memIn),.in13(Weight_Az_memIn),.in14(Weight_Az_memIn),.in15(Residu_memIn),
 		.in16(Syn_filt_memIn),.in17(Pitch_ol_memIn),.in18(0),.in19(Weight_Az_memIn),.in20(Weight_Az_memIn),.in21(TL_Math3_memIn),.in22(Syn_filt_memIn),.in23(Syn_filt_memIn),.in24(Residu_memIn),
-		.in25(Syn_filt_memIn),.in26(Residu_memIn),.in27(Syn_filt_memIn),.in28(Pitch_fr3_memIn),.in29(0),.in30(0),.in31(0),.in32(0),.in33(0),
+		.in25(Syn_filt_memIn),.in26(Residu_memIn),.in27(Syn_filt_memIn),.in28(Pitch_fr3_memIn),.in29(Enc_lag3_memIn),.in30(0),.in31(0),.in32(0),.in33(0),
 		.in34(0),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
 		.in43(0),.in44(0),.in45(0),.in46(0),.in47(0),.in48(0),.in49(0),.in50(0),.in51(0),
 		.in52(0),.in53(0),.in54(0),.in55(0),.in56(),.in57(0),.in58(0),.in59(0),.in60(0),
@@ -1759,7 +1853,7 @@ module G729_Pipe (clock,reset,xn,preProcReady,autocorrReady,lagReady,levinsonRea
 														.in4(Qua_lsp_memWriteEn),.in5(Int_lpc_memWriteEn),
 		.in6(Int_qlpc_memWriteEn),.in7(Math1_memWriteEn),.in8(perc_var_memWriteEn),.in9(Weight_Az_memWriteEn),.in10(Weight_Az_memWriteEn),.in11(Residu_memWriteEn),.in12(Syn_filt_memWriteEn),.in13(Weight_Az_memWriteEn),.in14(Weight_Az_memWriteEn),.in15(Residu_memWriteEn),
 		.in16(Syn_filt_memWriteEn),.in17(Pitch_ol_memWriteEn),.in18(0),.in19(Weight_Az_memWriteEn),.in20(Weight_Az_memWriteEn),.in21(TL_Math3_memWriteEn),.in22(Syn_filt_memWriteEn),.in23(Syn_filt_memWriteEn),.in24(Residu_memWriteEn),
-		.in25(Syn_filt_memWriteEn),.in26(Residu_memWriteEn),.in27(Syn_filt_memWriteEn),.in28(Pitch_fr3_memWriteEn),.in29(0),.in30(0),.in31(0),.in32(0),.in33(0),
+		.in25(Syn_filt_memWriteEn),.in26(Residu_memWriteEn),.in27(Syn_filt_memWriteEn),.in28(Pitch_fr3_memWriteEn),.in29(Enc_lag3_memWriteEn),.in30(0),.in31(0),.in32(0),.in33(0),
 		.in34(0),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
 		.in43(0),.in44(0),.in45(0),.in46(0),.in47(0),.in48(0),.in49(0),.in50(0),.in51(0),
 		.in52(0),.in53(0),.in54(0),.in55(0),.in56(),.in57(0),.in58(0),.in59(0),.in60(0),
@@ -1780,7 +1874,7 @@ module G729_Pipe (clock,reset,xn,preProcReady,autocorrReady,lagReady,levinsonRea
 														.in4(Qua_lsp_memReadAddr),.in5(Int_lpc_memReadAddr),
 		.in6(Int_qlpc_memReadAddr),.in7(Math1_memReadAddr),.in8(perc_var_memReadAddr),.in9(Weight_Az_memReadAddr),.in10(Weight_Az_memReadAddr),.in11(Residu_memReadAddr),.in12(Syn_filt_memReadAddr),.in13(Weight_Az_memReadAddr),.in14(Weight_Az_memReadAddr),.in15(Residu_memReadAddr),
 		.in16(Syn_filt_memReadAddr),.in17(Pitch_ol_memReadAddr),.in18(0),.in19(Weight_Az_memReadAddr),.in20(Weight_Az_memReadAddr),.in21(TL_Math3_memReadAddr),.in22(Syn_filt_memReadAddr),.in23(Syn_filt_memReadAddr),.in24(Residu_memReadAddr),
-		.in25(Syn_filt_memReadAddr),.in26(Residu_memSameAddr),.in27(Syn_filt_memReadAddr),.in28(Pitch_fr3_memReadAddr),.in29(0),.in30(0),.in31(0),.in32(0),.in33(0),
+		.in25(Syn_filt_memReadAddr),.in26(Residu_memSameAddr),.in27(Syn_filt_memReadAddr),.in28(Pitch_fr3_memReadAddr),.in29(Enc_lag3_memReadAddr),.in30(0),.in31(0),.in32(0),.in33(0),
 		.in34(0),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
 		.in43(0),.in44(0),.in45(0),.in46(0),.in47(0),.in48(0),.in49(0),.in50(0),.in51(0),
 		.in52(0),.in53(0),.in54(0),.in55(0),.in56(),.in57(0),.in58(0),.in59(0),.in60(0),
@@ -2870,8 +2964,8 @@ module G729_Pipe (clock,reset,xn,preProcReady,autocorrReady,lagReady,levinsonRea
 					.subOutB(TL_Math2_subOutB),
 					.L_subOutA(TL_Math2_L_subOutA),
 					.L_subOutB(TL_Math2_L_subOutB),
-					.T0_min(nextT0_min),
-					.T0_max(nextT0_max),
+					.T0_min(TL_Math2_nextT0_min),
+					.T0_max(TL_Math2_nextT0_max),
 					.done(Math2Done)
 				);
 
@@ -2975,6 +3069,367 @@ module G729_Pipe (clock,reset,xn,preProcReady,autocorrReady,lagReady,levinsonRea
 				
 	//////////////////////////////////////////////////////////////////////////////////////////////
 	//
+	//		Enc_lag3
+	//
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	
+/* 	module Enc_lag3(clk,reset,start,T0,T0_frac,T0_min,T0_max,PIT_MIN,PIT_MAX,pit_flag,addIn,subIn,memIn,addOutA,addOutB,
+					subOutA,subOutB,memReadAddr,memWriteAddr,memWriteEn,
+					memOut,index,done); */
+
+		Enc_lag3 Enc_lag3 (
+					.clk(clock),
+					.reset(reset),
+					.start(Enc_lag3Ready),
+					.T0(T0),
+					.T0_frac(T0_frac),
+					.T0_min_in(T0_min),
+					.T0_min_out(Enc_lag3_nextT0_min),
+					.T0_max(Enc_lag3_nextT0_max),
+					.PIT_MIN(PIT_MIN),
+					.PIT_MAX(PIT_MAX),
+					.pit_flag(i_subfr),
+					.addIn(add_out),
+					.subIn(sub_out),
+					.memIn(memOut),
+					.addOutA(Enc_lag3_addOutA),
+					.addOutB(Enc_lag3_addOutB),
+					.subOutA(Enc_lag3_subOutA),
+					.subOutB(Enc_lag3_subOutB),
+					.memReadAddr(Enc_lag3_memReadAddr),
+					.memWriteAddr(Enc_lag3_memWriteAddr),
+					.memWriteEn(Enc_lag3_memWriteEn),
+					.memOut(Enc_lag3_memIn),
+					.index(nextindex),
+					.done(Enc_lag3Done)	
+				);					
+								
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//		Parity_Pitch
+	//
+	//////////////////////////////////////////////////////////////////////////////////////////////
+
+	/*module Parity_pitch(clk, start, reset, done, pitch_index, sum, add_a, add_b, add_in, shr_a, shr_b, shr_in);*/
+/*
+		Parity_pitch Parity_pitch(
+					.clk(clock),
+					.start(Parity_pitchReady),
+					.reset(reset),
+					.done(Parity_pitchDone),
+					.pitch_index(),
+					.sum(),
+					.add_a(Parity_pitch_addOutA),
+					.add_b(Parity_pitch_addOutB),
+					.add_in(add_out),
+					.shr_a(Parity_pitch_shrVar1Out),
+					.shr_b(Parity_pitch_shrVar2Out),
+					.shr_in(shr_out)
+				);
+*/	
+	
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//		Pred_lt_3
+	//
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	/*module Pred_lt_3(clk, start, reset, done, exc, t0, frac, L_subfr, writeAddr, writeOut, writeEn, readAddr, readIn, 
+						add_a, add_b, add_in, L_mac_a, L_mac_b, L_mac_c, L_mac_in, L_add_a, L_add_b, L_add_in, 
+						L_negate_out, L_negate_in, sub_a, sub_b, sub_in, constantMemIn, constantMemAddr);*/
+						
+/*		Pred_lt_3 Pred_lt_3(
+					.clk(clock),
+					.start(Pred_lt_3Ready),
+					.reset(reset),
+					.done(Pred_lt_3Done),
+					.exc(),
+					.t0(),
+					.frac(),
+					.L_subfr(),
+					.writeAddr(),
+					.writeOut(),
+					.writeEn(),
+					.readAddr(),
+					.readIn(),
+					.add_a(),
+					.add_b(),
+					.add_in(),
+					.L_mac_a(),
+					.L_mac_b(),
+					.L_mac_c(),
+					.L_mac_in(),
+					.L_add_a(),
+					.L_add_b(),
+					.L_add_in(),
+					.L_negate_out(),
+					.L_negate_in(),
+					.sub_a(),
+					.sub_b(),
+					.sub_in(),
+					.constantMemIn(),
+					.constantMemAddr()
+				);						
+*/	
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//		Convolve
+	//
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	/*module convolve(clk, reset, start, memIn, memWriteEn, memWriteAddr, memOut, done,
+					    L_macIn, L_macOutA, L_macOutB, L_macOutC, L_shlIn, L_shlOutVar1,
+						 L_shlReady, L_shlDone, L_shlNumShiftOut, xAddr, hAddr, yAddr, L_subOutA,
+						 L_subOutB, L_subIn, L_addOutA, L_addOutB, L_addIn,addOutA,addOutB,addIn);*/
+	
+/*		convolve convolve(
+					.clk(clock),
+					.reset(reset),
+					.start(ConvolveReady),
+					.memIn(),
+					.memWriteEn(),
+					.memWriteAddr(),
+					.memOut(),
+					.done(ConvolveDone),
+					.L_macIn(),
+					.L_macOutA(),
+					.L_macOutB(),
+					.L_macOutC(),
+					.L_shlIn(),
+					.L_shlOutVar1(),
+					.L_shlReady(),
+					.L_shlDone(),
+					.L_shlNumShiftOut(),
+					.xAddr(),
+					.hAddr(),
+					.yAddr(),
+					.L_subOutA(),
+					.L_subOutB(),
+					.L_subIn(),
+					.L_addOutA(),
+					.L_addOutB(),
+					.L_addIn(),
+					.addOutA(),
+					.addOutB(),
+					.addIn()
+				);	
+*/					
+	
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//		G_pitch
+	//
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	/*module G_pitch(clock,reset,start,done,out,
+					shr_outa,shr_outb,shr_in,
+					L_mac_outa,L_mac_outb,L_mac_outc,L_mac_in,L_mac_overflow,
+					norm_l_out,norm_l_in,norm_l_start,norm_l_done,
+					L_shl_outa,L_shl_outb,L_shl_start,L_shl_in,L_shl_done,
+					sub_outa,sub_outb,sub_in,
+					add_outa,add_outb,add_in,
+					scratch_mem_read_addr,scratch_mem_write_addr,scratch_mem_in,scratch_mem_out,
+					scratch_mem_write_en,
+					L_add_outa,L_add_outb,L_add_in,
+					L_sub_outa,L_sub_outb,L_sub_in);*/
+
+/*		G_pitch G_pitch(
+					.clock(clock),
+					.reset(),
+					.start(),
+					.done(),
+					.out(),
+					.shr_outa(),
+					.shr_outb(),
+					.shr_in(),
+					.L_mac_outa(),
+					.L_mac_outb(),
+					.L_mac_outc(),
+					.L_mac_in(),
+					.L_mac_overflow(),
+					.norm_l_out(),
+					.norm_l_in(),
+					.norm_l_start(),
+					.norm_l_done(),
+					.L_shl_outa(),
+					.L_shl_outb(),
+					.L_shl_start(),
+					.L_shl_in(),
+					.L_shl_done(),
+					.sub_outa(),
+					.sub_outb(),
+					.sub_in(),
+					.add_outa(),
+					.add_outb(),
+					.add_in(),
+					.scratch_mem_read_addr(),
+					.scratch_mem_write_addr(),
+					.scratch_mem_in(),
+					.scratch_mem_out(),
+					.scratch_mem_write_en(),
+					.L_add_outa(),
+					.L_add_outb(),
+					.L_add_in(),
+					.L_sub_outa(),
+					.L_sub_outb(),
+					.L_sub_in()
+				);	
+*/					
+	
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//		Math 4
+	//
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//		test_err
+	//
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	/*module test_err(clock,reset,start,done,out,T0,T0_frac,
+						add_outa,add_outb,add_in,
+						sub_outa,sub_outb,sub_in,
+						L_sub_outa,L_sub_outb,L_sub_in,
+						scratch_mem_read_addr,scratch_mem_write_addr,
+						scratch_mem_in,scratch_mem_out,
+						scratch_mem_write_en,
+						constant_mem_read_addr,constant_mem_in)*/
+
+/*		test_err test_err(
+					.clock(clock),
+					.reset(reset),
+					.start(),
+					.done(),
+					.out(),
+					.T0(),
+					.T0_frac(),
+					.add_outa(),
+					.add_outb(),
+					.add_in(),
+					.sub_outa(),
+					.sub_outb(),
+					.sub_in(),
+					.L_sub_outa(),
+					.L_sub_outb(),
+					.L_sub_in(),
+					.scratch_mem_read_addr(),
+					.scratch_mem_write_addr(),
+					.scratch_mem_in(),
+					.scratch_mem_out(),
+					.scratch_mem_write_en(),
+					.constant_mem_read_addr(),
+					.constant_mem_in()
+				);
+*/
+
+						
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//		ACELP_Codebook
+	//
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	/*module ACELP_Codebook(clk,reset,start,T0,pitch_sharp,i_subfr,shlIn,subIn,addIn,multIn,L_macIn,
+							 L_absIn,L_subIn,norm_lIn,norm_lDone,L_shrIn,L_negateIn,L_multIn,L_msuIn,shrIn,
+							 L_addIn,L_add2In,L_add3In,L_add4In,memIn,shlVar1Out,shlVar2Out,subOutA,
+							 subOutB,addOutA,addOutB,multOutA,multOutB,L_macOutA,L_macOutB,L_macOutC,
+							 L_absOut,L_subOutA,L_subOutB,norm_lVar1Out,norm_lReady,L_shrVar1Out,
+							 L_shrNumShiftOut,L_negateOut,L_multOutA,L_multOutB,L_msuOutA,L_msuOutB,
+							 L_msuOutC,shrVar1Out,shrVar2Out,L_addOutA,L_addOutB,L_add2OutA,L_add2OutB,
+							 L_add3OutA,L_add3OutB,L_add4OutA,L_add4OutB,memReadAddr,memWriteAddr,memOut,
+							 memWriteEn,index,done);*/
+	
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//		Math 5
+	//
+	//////////////////////////////////////////////////////////////////////////////////////////////
+		
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//		Corr_xy2
+	//
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	/*module Corr_xy2(clk,reset,start,shrIn,L_macIn,addIn,norm_lIn,norm_lDone,L_shlIn,L_shlDone,
+					 L_addIn,subIn,L_negateIn,memIn,shrVar1Out,shrVar2Out,L_macOutA,L_macOutB,
+					 L_macOutC,addOutA,addOutB,norm_lVar1Out,norm_lReady,L_shlVar1Out,L_shlNumShiftOut,
+					 L_shlReady,L_addOutA,L_addOutB,subOutA,subOutB,L_negateOut,memReadAddr,memWriteAddr,
+				    memOut,memWriteEn,done);*/
+	
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//		Qua_gain
+	//
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	/*module Qua_gain(clock,reset,start,done,out,tame_flag,
+						L_mac_outa,L_mac_outb,L_mac_outc,L_mac_overflow,L_mac_in,
+						L_msu_outa,L_msu_outb,L_msu_outc,L_msu_overflow,L_msu_in,
+						L_mult_outa,L_mult_outb,L_mult_overflow,L_mult_in,
+						L_add_outa,L_add_outb,L_add_overflow,L_add_in,
+						L_sub_outa,L_sub_outb,L_sub_overflow,L_sub_in,
+						L_shr_outa,L_shr_outb,L_shr_overflow,L_shr_in,
+						L_shl_outa,L_shl_outb,L_shl_start,L_shl_in,L_shl_done,L_shl_overflow,
+						norm_l_out,norm_l_start,norm_l_in,norm_l_done,
+						mult_outa,mult_outb,mult_overflow,mult_in,
+						shl_outa,shl_outb,shl_overflow,shl_in,
+						add_outa,add_outb,add_overflow,add_in,
+						sub_outa,sub_outb,sub_overflow,sub_in,
+						scratch_mem_write_addr,scratch_mem_read_addr,
+						scratch_mem_write_en,scratch_mem_out,scratch_mem_in,
+						constant_mem_read_addr,constant_mem_in,
+						L_negate_out,L_negate_in,
+						shr_outa,shr_outb,shr_in);*/
+	
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//		Math 6
+	//
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//		update_exc_err
+	//
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	/*module update_exc_err(clock,reset,start,done,gain_pit,T0,
+								sub_outa,sub_outb,sub_in,
+								L_shl_outa,L_shl_outb,L_shl_in,L_shl_start,L_shl_done,
+								L_add_outa,L_add_outb,L_add_in,
+								L_sub_outa,L_sub_outb,L_sub_in,
+								add_outa,add_outb,add_in,
+								L_mac_outa,L_mac_outb,L_mac_outc,L_mac_in,L_mac_overflow,
+								L_mult_outa,L_mult_outb,L_mult_in,L_mult_overflow,
+								mult_outa,mult_outb,mult_in,mult_overflow,
+								L_msu_outa,L_msu_outb,L_msu_outc,L_msu_in,
+								L_shr_outa,L_shr_outb,L_shr_in,
+								scratch_mem_read_addr,scratch_mem_write_addr,
+								scratch_mem_out,scratch_mem_in,
+								scratch_mem_write_en,
+								constant_mem_read_addr,constant_mem_in);*/
+	
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//		Math 7
+	//
+	//////////////////////////////////////////////////////////////////////////////////////////////
+		
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//		Copy
+	//
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	/*module copy(clk,reset,start,xAddr,yAddr,L,memIn,addIn,L_addIn,
+				addOutA,addOutB,L_addOutA,L_addOutB,memWriteAddr,memReadAddr,memWriteEn,memOut,done);*/
+	
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//		prm2bits_ld8kDone
+	//
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	/*module prm2bits_ld8k(clock,reset,start,done,add_outa,add_outb,add_in,constant_mem_read_addr,
+							constant_mem_in,scratch_mem_read_addr,scratch_mem_write_addr,scratch_mem_in,
+							scratch_mem_out,scratch_mem_write_en,L_add_outa,L_add_outb,L_add_in,sub_outa,
+							sub_outb,sub_in);*/
+	
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//
 	//		divErr always block(checking for divide by zero errors)
 	//
 	//////////////////////////////////////////////////////////////////////////////////////////////
@@ -3028,6 +3483,7 @@ module G729_Pipe (clock,reset,xn,preProcReady,autocorrReady,lagReady,levinsonRea
 	parameter RESIDU4 = 6'd27;
 	parameter SYN_FILT6 = 6'd28;
 	parameter PITCH_FR3 = 6'd29;
+	parameter ENC_LAG3 = 6'd30;
 
 	always @ (posedge clock)
 	begin
@@ -3385,6 +3841,11 @@ module G729_Pipe (clock,reset,xn,preProcReady,autocorrReady,lagReady,levinsonRea
 			PITCH_FR3:
 			begin
 				if (Pitch_fr3Done)
+					nextstate = ENC_LAG3;
+			end
+			ENC_LAG3:
+			begin
+				if (Enc_lag3Done)
 				begin
 					if (i_subfr == 'd40)
 						nextstate = PRE_PROCESS;

@@ -1223,6 +1223,8 @@ module G729_Top_Test_v;
 	
 			testdone = 1;
 			wait(done);
+			@(posedge clock);
+			@(posedge clock) #5;
 			testdone = 0;
 			$display($time, "*****TL_Math2 Completed Successfully*****");
 
@@ -1630,9 +1632,23 @@ module G729_Top_Test_v;
 	
 				testdone = 1;
 				wait(done);
+				@(posedge clock);
+				@(posedge clock) #5;
 				testdone = 0;
 				$display($time, "*****Pitch_fr3 Completed Successfully*****");
 
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//		Enc_lag3
+	//
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	
+				testdone = 1;
+				wait(done);
+				@(posedge clock);
+				@(posedge clock) #5;
+				testdone = 0;
+				$display($time, "*****Enc_lag3 Completed Successfully*****");
 
 			end//z for loop
 		end//k for loop

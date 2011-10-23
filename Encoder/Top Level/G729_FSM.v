@@ -153,7 +153,8 @@ module G729_FSM(clock,reset,start,divErr,
 	 parameter SUB_MODULE_RESIDU4_DONE = 6'd33;
 	 parameter SUB_MODULE_SYN_FILT6_DONE = 6'd34;
 	 parameter SUB_MODULE_PITCH_FR3_DONE = 6'd35;
-
+	 parameter SUB_MODULE_ENC_LAG3_DONE = 6'd36;
+	 parameter LOAD_REGISTERS_1 = 6'd37;
 
 	 parameter TL_FOR_LOOP_INC = 6'd62;
 	 parameter TL_DONE = 6'd63;
@@ -561,7 +562,6 @@ module G729_FSM(clock,reset,start,divErr,
 					LDA_Addr = 1;
 					LDAq_Addr = 1;
 					reseti_gamma = 1;
-					mathMuxSel = 6'd19;
 					nextsubModuleState = TL_FOR_LOOP;
 				end				
 			end//SUB_MODULE_MATH2_DONE		
@@ -717,13 +717,35 @@ module G729_FSM(clock,reset,start,divErr,
 					nextsubModuleState = SUB_MODULE_PITCH_FR3_DONE;
 				else if(Pitch_fr3Done == 1)
 				begin
-					LDi_subfr = 1; 
 					LDT0 = 1; 
 					LDT0_frac = 1;
 					mathMuxSel = 6'd29;
-					nextsubModuleState = TL_FOR_LOOP_INC;
+					nextsubModuleState = SUB_MODULE_ENC_LAG3_DONE;
+					Enc_lag3Ready = 1;
 				end				
-			end//SUB_MODULE_SYN_FILT6_DONE		
+			end//SUB_MODULE_PITCH_FR3_DONE		
+
+			SUB_MODULE_ENC_LAG3_DONE:
+			begin
+				mathMuxSel = 6'd29;
+				if(Enc_lag3Done == 0)
+					nextsubModuleState = SUB_MODULE_ENC_LAG3_DONE;
+				else if(Enc_lag3Done == 1)
+				begin
+					LDi_subfr = 1;
+					LDindex = 1; 
+					LDT0_min = 1; 
+					LDT0_max = 1;
+					nextsubModuleState = LOAD_REGISTERS_1;
+				end				
+			end//SUB_MODULE_ENC_LAG3_DONE		
+
+			LOAD_REGISTERS_1:
+			begin
+				mathMuxSel = 6'd30;
+				nextsubModuleState = TL_FOR_LOOP_INC;
+			end
+
 
 
 
