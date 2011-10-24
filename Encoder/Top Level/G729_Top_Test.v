@@ -1650,6 +1650,22 @@ module G729_Top_Test_v;
 				testdone = 0;
 				$display($time, "*****Enc_lag3 Completed Successfully*****");
 
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//		Parity_Pitch
+	//
+	//////////////////////////////////////////////////////////////////////////////////////////////
+				
+				if (z == 0)
+				begin
+					testdone = 1;
+					wait(done);
+					@(posedge clock);
+					@(posedge clock) #5;
+					testdone = 0;
+					$display($time, "*****Parity_Pitch Completed Successfully*****");
+				end
+
 			end//z for loop
 		end//k for loop
 	end//initial 

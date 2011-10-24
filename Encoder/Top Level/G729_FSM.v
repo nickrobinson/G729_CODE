@@ -154,7 +154,9 @@ module G729_FSM(clock,reset,start,divErr,
 	 parameter SUB_MODULE_SYN_FILT6_DONE = 6'd34;
 	 parameter SUB_MODULE_PITCH_FR3_DONE = 6'd35;
 	 parameter SUB_MODULE_ENC_LAG3_DONE = 6'd36;
-	 parameter LOAD_REGISTERS_1 = 6'd37;
+	 parameter LOAD_ANA_2_7 = 6'd37;
+	 parameter CHECK_IF_PARITY_PITCH = 6'd38;
+	 parameter SUB_MODULE_PARITY_PITCH_DONE = 6'd39;
 
 	 parameter TL_FOR_LOOP_INC = 6'd62;
 	 parameter TL_DONE = 6'd63;
@@ -732,21 +734,46 @@ module G729_FSM(clock,reset,start,divErr,
 					nextsubModuleState = SUB_MODULE_ENC_LAG3_DONE;
 				else if(Enc_lag3Done == 1)
 				begin
-					LDi_subfr = 1;
 					LDindex = 1; 
 					LDT0_min = 1; 
 					LDT0_max = 1;
-					nextsubModuleState = LOAD_REGISTERS_1;
+					nextsubModuleState = LOAD_ANA_2_7;
 				end				
 			end//SUB_MODULE_ENC_LAG3_DONE		
 
-			LOAD_REGISTERS_1:
+			LOAD_ANA_2_7:
 			begin
 				mathMuxSel = 6'd30;
-				nextsubModuleState = TL_FOR_LOOP_INC;
-			end
+				nextsubModuleState = CHECK_IF_PARITY_PITCH;
+			end//LOAD_ANA_2_7
 
+			CHECK_IF_PARITY_PITCH:
+			begin
+				mathMuxSel = 6'd30;
+				if (i_subfr == 'd0)
+				begin
+					mathMuxSel = 6'd31;
+					nextsubModuleState = SUB_MODULE_PARITY_PITCH_DONE;
+					Parity_PitchReady = 1;
+				end
+				else if (i_subfr == 'd40)
+				begin
+					LDi_subfr = 1;
+					nextsubModuleState = TL_FOR_LOOP_INC;
+				end
+			end//LOAD_ANA_2_7
 
+			SUB_MODULE_PARITY_PITCH_DONE:
+			begin
+				mathMuxSel = 6'd31;
+				if(Parity_PitchDone == 0)
+					nextsubModuleState = SUB_MODULE_PARITY_PITCH_DONE;
+				else if(Parity_PitchDone == 1)
+				begin
+					LDi_subfr = 1;
+					nextsubModuleState = TL_FOR_LOOP_INC;
+				end				
+			end//LOAD_ANA_2_7
 
 
 
