@@ -157,6 +157,8 @@ module G729_FSM(clock,reset,start,divErr,
 	 parameter LOAD_ANA_2_7 = 6'd37;
 	 parameter CHECK_IF_PARITY_PITCH = 6'd38;
 	 parameter SUB_MODULE_PARITY_PITCH_DONE = 6'd39;
+	 parameter SUB_MODULE_PRED_LT_3_DONE = 6'd40;
+	 parameter SUB_MODULE_CONVOLVE_DONE = 6'd41;
 
 	 parameter TL_FOR_LOOP_INC = 6'd62;
 	 parameter TL_DONE = 6'd63;
@@ -749,7 +751,6 @@ module G729_FSM(clock,reset,start,divErr,
 
 			CHECK_IF_PARITY_PITCH:
 			begin
-				mathMuxSel = 6'd30;
 				if (i_subfr == 'd0)
 				begin
 					mathMuxSel = 6'd31;
@@ -757,11 +758,12 @@ module G729_FSM(clock,reset,start,divErr,
 					Parity_PitchReady = 1;
 				end
 				else if (i_subfr == 'd40)
-				begin
-					LDi_subfr = 1;
-					nextsubModuleState = TL_FOR_LOOP_INC;
+				begin				
+				    mathMuxSel = 6'd32;
+					nextsubModuleState = SUB_MODULE_PRED_LT_3_DONE;
+					Pred_lt_3Ready = 1;
 				end
-			end//LOAD_ANA_2_7
+			end//CHECK_IF_PARITY_PITCH
 
 			SUB_MODULE_PARITY_PITCH_DONE:
 			begin
@@ -770,22 +772,47 @@ module G729_FSM(clock,reset,start,divErr,
 					nextsubModuleState = SUB_MODULE_PARITY_PITCH_DONE;
 				else if(Parity_PitchDone == 1)
 				begin
+				    mathMuxSel = 6'd32;
+					nextsubModuleState = SUB_MODULE_PRED_LT_3_DONE;
+					Pred_lt_3Ready = 1;
+				end				
+			end//SUB_MODULE_PARITY_PITCH_DONE
+
+			SUB_MODULE_PRED_LT_3_DONE:
+			begin
+				mathMuxSel = 6'd32;
+				if(Pred_lt_3Done == 0)
+					nextsubModuleState = SUB_MODULE_PRED_LT_3_DONE;
+				else if(Pred_lt_3Done == 1)
+				begin
+					mathMuxSel = 6'd33;
+					nextsubModuleState = SUB_MODULE_CONVOLVE_DONE;
+					ConvolveReady = 1;
+				end				
+			end//SUB_MODULE_PRED_LT_3_DONE
+
+			SUB_MODULE_CONVOLVE_DONE:
+			begin
+				mathMuxSel = 6'd33;
+				if(ConvolveDone == 0)
+					nextsubModuleState = SUB_MODULE_CONVOLVE_DONE;
+				else if(ConvolveDone == 1)
+				begin
 					LDi_subfr = 1;
 					nextsubModuleState = TL_FOR_LOOP_INC;
 				end				
-			end//LOAD_ANA_2_7
+			end//SUB_MODULE_CONVOLVE_DONE
 
-
-
-
-
-
+	
+	
+	
+	
 
 			TL_FOR_LOOP_INC:
 			begin
-					LDA_Addr = 1;
-					LDAq_Addr = 1;
-					nextsubModuleState = TL_FOR_LOOP;
+				LDA_Addr = 1;
+				LDAq_Addr = 1;
+				nextsubModuleState = TL_FOR_LOOP;
 			end//TL_FOR_LOOP_INC		
 
 			TL_DONE:

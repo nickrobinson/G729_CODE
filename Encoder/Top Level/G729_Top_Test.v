@@ -154,6 +154,12 @@ module G729_Top_Test_v;
 	reg [31:0] Syn_filt6_xn [0:4999];
 	reg [31:0] Syn_filt6_mem_w0 [0:4999];
 
+	//Pred_lt_3
+	reg [31:0] Pred_lt_3_exc [0:4999];
+
+	//Convolve
+	reg [31:0] Convolve_y1 [0:4999];
+
 	//working integers
 	integer i;
 	integer k;
@@ -269,6 +275,12 @@ module G729_Top_Test_v;
 		//Syn_filt6
 		$readmemh("Syn_filt6_xn.out", Syn_filt6_xn);
 		$readmemh("Syn_filt6_mem_w0.out", Syn_filt6_mem_w0);
+
+		//Pred_lt_3
+		$readmemh("Pred_lt_3_exc.out", Pred_lt_3_exc);
+
+		//Convolve
+		$readmemh("Convolve_y1.out", Convolve_y1);
 	end	
 
 	// Instantiate the Unit Under Test (UUT)
@@ -1665,6 +1677,81 @@ module G729_Top_Test_v;
 					testdone = 0;
 					$display($time, "*****Parity_Pitch Completed Successfully*****");
 				end
+
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//		Pred_lt_3
+	//
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	
+				testdone = 1;
+				wait(done);
+				testdone = 0;
+				flag1 = 0;
+				@(posedge clock);
+				@(posedge clock) #5;
+				
+				for (i = 0; i<L_SUBFR;i=i+1)
+				begin
+					if (z == 'd0)
+						outBufAddr = EXC + i;
+					else
+						outBufAddr = EXC + L_SUBFR + i;
+					@(posedge clock);
+					@(posedge clock) #5;
+					if (out != Pred_lt_3_exc[(2*k+z)*L_SUBFR+i])
+					begin
+						if (z == 'd0)
+							$display($time, " ERROR: exc[%d] = %x, expected = %x", (2*k+z)*L_SUBFR+i, out, Pred_lt_3_exc[(2*k+z)*L_SUBFR+i]);
+						else
+							$display($time, " ERROR: exc[L_SUBFR+%d] = %x, expected = %x", (2*k+z)*L_SUBFR+i, out, Pred_lt_3_exc[(2*k+z)*L_SUBFR+i]);
+						flag1 = 1;
+					end
+					@(posedge clock);
+					@(posedge clock) #5;
+				end	
+				
+				if (flag1)
+				begin
+					if (z == 'd0)
+						$display($time, "!!!!!Pred_lt_3 Failed: exc!!!!!");
+					else
+						$display($time, "!!!!!Pred_lt_3 Failed: exc[L_SUBFR]!!!!!");
+				end
+				else
+					$display($time, "*****Pred_lt_3 Completed Successfully*****");
+
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//		Convolve
+	//
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	
+				testdone = 1;
+				wait(done);
+				testdone = 0;
+				flag1 = 0;
+				@(posedge clock);
+				@(posedge clock) #5;
+				
+				for (i = 0; i<L_SUBFR;i=i+1)
+				begin
+					outBufAddr = Y1 + i;
+					@(posedge clock);
+					@(posedge clock) #5;
+					if (out != Convolve_y1[(2*k+z)*L_SUBFR+i])
+					begin
+						$display($time, " ERROR: y1[%d] = %x, expected = %x", (2*k+z)*L_SUBFR+i, out, Convolve_y1[(2*k+z)*L_SUBFR+i]);
+						flag1 = 1;
+					end
+					@(posedge clock);
+					@(posedge clock) #5;
+				end	
+				
+				if (flag1)
+					$display($time, "!!!!!Convolve Failed: y1!!!!!");
+				else
+					$display($time, "*****Convolve Completed Successfully*****");
 
 			end//z for loop
 		end//k for loop
