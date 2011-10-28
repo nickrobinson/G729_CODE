@@ -159,6 +159,7 @@ module G729_FSM(clock,reset,start,divErr,
 	 parameter SUB_MODULE_PARITY_PITCH_DONE = 6'd39;
 	 parameter SUB_MODULE_PRED_LT_3_DONE = 6'd40;
 	 parameter SUB_MODULE_CONVOLVE_DONE = 6'd41;
+	 parameter SUB_MODULE_G_PITCH_DONE = 6'd42;
 
 	 parameter TL_FOR_LOOP_INC = 6'd62;
 	 parameter TL_DONE = 6'd63;
@@ -798,11 +799,24 @@ module G729_FSM(clock,reset,start,divErr,
 					nextsubModuleState = SUB_MODULE_CONVOLVE_DONE;
 				else if(ConvolveDone == 1)
 				begin
-					LDi_subfr = 1;
-					nextsubModuleState = TL_FOR_LOOP_INC;
+					mathMuxSel = 6'd34;
+					nextsubModuleState = SUB_MODULE_G_PITCH_DONE;
+					G_pitchReady = 1;
 				end				
 			end//SUB_MODULE_CONVOLVE_DONE
 
+			SUB_MODULE_G_PITCH_DONE:
+			begin
+				mathMuxSel = 6'd34;
+				if(G_pitchDone == 0)
+					nextsubModuleState = SUB_MODULE_G_PITCH_DONE;
+				else if(G_pitchDone == 1)
+				begin
+					LDi_subfr = 1;
+					LDgain_pit = 1;
+					nextsubModuleState = TL_FOR_LOOP_INC;
+				end				
+			end//SUB_MODULE_G_PITCH_DONE
 	
 	
 	

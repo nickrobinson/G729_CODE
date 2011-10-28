@@ -1644,9 +1644,9 @@ module G729_Top_Test_v;
 	
 				testdone = 1;
 				wait(done);
+				testdone = 0;
 				@(posedge clock);
 				@(posedge clock) #5;
-				testdone = 0;
 				$display($time, "*****Pitch_fr3 Completed Successfully*****");
 
 	//////////////////////////////////////////////////////////////////////////////////////////////
@@ -1657,9 +1657,9 @@ module G729_Top_Test_v;
 	
 				testdone = 1;
 				wait(done);
+				testdone = 0;
 				@(posedge clock);
 				@(posedge clock) #5;
-				testdone = 0;
 				$display($time, "*****Enc_lag3 Completed Successfully*****");
 
 	//////////////////////////////////////////////////////////////////////////////////////////////
@@ -1672,9 +1672,9 @@ module G729_Top_Test_v;
 				begin
 					testdone = 1;
 					wait(done);
+					testdone = 0;
 					@(posedge clock);
 					@(posedge clock) #5;
-					testdone = 0;
 					$display($time, "*****Parity_Pitch Completed Successfully*****");
 				end
 
@@ -1752,6 +1752,19 @@ module G729_Top_Test_v;
 					$display($time, "!!!!!Convolve Failed: y1!!!!!");
 				else
 					$display($time, "*****Convolve Completed Successfully*****");
+
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//		G_pitch
+	//
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	
+				testdone = 1;
+				wait(done);
+				testdone = 0;
+				@(posedge clock);
+				@(posedge clock) #5;
+				$display($time, "*****G_pitch Completed Successfully*****");
 
 			end//z for loop
 		end//k for loop

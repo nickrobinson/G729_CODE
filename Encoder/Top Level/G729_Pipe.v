@@ -660,7 +660,8 @@ module G729_Pipe (clock,reset,xn,preProcReady,autocorrReady,lagReady,levinsonRea
 	wire [15:0] Convolve_addOutB; 
 	
 	//G_pitch Wires
-
+	wire [15:0] G_pitch_gain_pit;
+	
 	wire [15:0] G_pitch_subOutA; 
 	wire [15:0] G_pitch_subOutB; 
 	wire [15:0] G_pitch_addOutA; 
@@ -807,6 +808,26 @@ module G729_Pipe (clock,reset,xn,preProcReady,autocorrReady,lagReady,levinsonRea
 		else if(LDgain_pit)
 			gain_pit <= nextgain_pit;
 	end	
+	mux128_16 i_mux128_16_gain_pit(
+												.in0(0),
+												.in1(0),
+												.in2(0),
+												.in3(0),
+												.in4(0),.in5(0),
+		.in6(0),.in7(0),.in8(0),.in9(0),.in10(0),.in11(0),.in12(0),.in13(0),.in14(0),.in15(0),
+		.in16(0),.in17(0),.in18(0),.in19(0),.in20(0),.in21(0),.in22(0),.in23(0),.in24(0),
+		.in25(0),.in26(0),.in27(0),.in28(0),.in29(0),.in30(0),.in31(0),.in32(0),.in33(0),
+		.in34(G_pitch_gain_pit),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
+		.in43(0),.in44(0),.in45(0),.in46(0),.in47(0),.in48(0),.in49(0),.in50(0),.in51(0),
+		.in52(0),.in53(0),.in54(0),.in55(0),.in56(),.in57(0),.in58(0),.in59(0),.in60(0),
+		.in61(0),.in62(0),.in63(0),.in64(0),.in65(0),.in66(0),.in67(0),.in68(0),.in69(0),
+		.in70(0),.in71(0),.in72(0),.in73(0),.in74(0),.in75(0),.in76(0),.in77(0),.in78(0),
+		.in79(0),.in80(0),.in81(0),.in82(0),.in83(0),.in84(0),.in85(0),.in86(0),.in87(0),
+		.in88(0),.in89(0),.in90(0),.in91(0),.in92(0),.in93(0),.in94(0),.in95(0),.in96(0),
+		.in97(0),.in98(0),.in99(0),.in100(0),.in101(0),.in102(0),.in103(0),.in104(0),.in105(0),
+		.in106(0),.in107(0),.in108(0),.in109(0),.in110(0),.in111(0),.in112(0),.in113(0),
+		.in114(0),.in115(0),.in116(0),.in117(0),.in118(0),.in119(0),.in120(0),.in121(0),
+		.in122(0),.in123(0),.in124(0),.in125(0),.in126(0),.in127(0),.sel(mathMuxSel),.out(nextgain_pit));
 	always @(posedge clock)
 	begin
 		if(reset)
@@ -975,7 +996,7 @@ module G729_Pipe (clock,reset,xn,preProcReady,autocorrReady,lagReady,levinsonRea
 		.in6(Int_qlpc_addOutA),.in7(Math1_addOutA),.in8(perc_var_addOutA),.in9(Weight_Az_addOutA),.in10(Weight_Az_addOutA),.in11(Residu_addOutA),.in12(Syn_filt_addOutA),.in13(Weight_Az_addOutA),.in14(Weight_Az_addOutA),.in15(Residu_addOutA),
 		.in16(Syn_filt_addOutA),.in17(Pitch_ol_addOutA),.in18(TL_Math2_addOutA),.in19(Weight_Az_addOutA),.in20(Weight_Az_addOutA),.in21(TL_Math3_addOutA),.in22(Syn_filt_addOutA),.in23(Syn_filt_addOutA),.in24(Residu_addOutA),
 		.in25(Syn_filt_addOutA),.in26(Residu_addOutA),.in27(Syn_filt_addOutA),.in28(Pitch_fr3_addOutA),.in29(Enc_lag3_addOutA),.in30(0),.in31(Parity_pitch_addOutA),.in32(Pred_lt_3_addOutA),.in33(Convolve_addOutA),
-		.in34(0),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
+		.in34(G_pitch_addOutA),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
 		.in43(0),.in44(0),.in45(0),.in46(0),.in47(0),.in48(0),.in49(0),.in50(0),.in51(0),
 		.in52(0),.in53(0),.in54(0),.in55(0),.in56(),.in57(0),.in58(0),.in59(0),.in60(0),
 		.in61(0),.in62(0),.in63(0),.in64(0),.in65(0),.in66(0),.in67(0),.in68(0),.in69(0),
@@ -996,7 +1017,7 @@ module G729_Pipe (clock,reset,xn,preProcReady,autocorrReady,lagReady,levinsonRea
 		.in6(Int_qlpc_addOutB),.in7(Math1_addOutB),.in8(perc_var_addOutB),.in9(Weight_Az_addOutB),.in10(Weight_Az_addOutB),.in11(Residu_addOutB),.in12(Syn_filt_addOutB),.in13(Weight_Az_addOutB),.in14(Weight_Az_addOutB),.in15(Residu_addOutB),
 		.in16(Syn_filt_addOutB),.in17(Pitch_ol_addOutB),.in18(TL_Math2_addOutB),.in19(Weight_Az_addOutB),.in20(Weight_Az_addOutB),.in21(TL_Math3_addOutB),.in22(Syn_filt_addOutB),.in23(Syn_filt_addOutB),.in24(Residu_addOutB),
 		.in25(Syn_filt_addOutB),.in26(Residu_addOutB),.in27(Syn_filt_addOutB),.in28(Pitch_fr3_addOutB),.in29(Enc_lag3_addOutB),.in30(0),.in31(Parity_pitch_addOutB),.in32(Pred_lt_3_addOutB),.in33(Convolve_addOutB),
-		.in34(0),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
+		.in34(G_pitch_addOutB),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
 		.in43(0),.in44(0),.in45(0),.in46(0),.in47(0),.in48(0),.in49(0),.in50(0),.in51(0),
 		.in52(0),.in53(0),.in54(0),.in55(0),.in56(),.in57(0),.in58(0),.in59(0),.in60(0),
 		.in61(0),.in62(0),.in63(0),.in64(0),.in65(0),.in66(0),.in67(0),.in68(0),.in69(0),
@@ -1063,7 +1084,7 @@ module G729_Pipe (clock,reset,xn,preProcReady,autocorrReady,lagReady,levinsonRea
 		.in6(Int_qlpc_L_addOutA),.in7(0),.in8(perc_var_L_addOutA),.in9(Weight_Az_L_addOutA),.in10(Weight_Az_L_addOutA),.in11(Residu_L_addOutA),.in12(Syn_filt_L_addOutA),.in13(Weight_Az_L_addOutA),.in14(Weight_Az_L_addOutA),.in15(Residu_L_addOutA),
 		.in16(Syn_filt_L_addOutA),.in17(Pitch_ol_L_addOutA),.in18(0),.in19(Weight_Az_L_addOutA),.in20(Weight_Az_L_addOutA),.in21(0),.in22(Syn_filt_L_addOutA),.in23(Syn_filt_L_addOutA),.in24(Residu_L_addOutA),
 		.in25(Syn_filt_L_addOutA),.in26(Residu_L_addOutA),.in27(Syn_filt_L_addOutA),.in28(Pitch_fr3_L_addOutA),.in29(0),.in30(0),.in31(0),.in32(Pred_lt_3_L_addOutA),.in33(Convolve_L_addOutA),
-		.in34(0),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
+		.in34(G_pitch_L_addOutA),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
 		.in43(0),.in44(0),.in45(0),.in46(0),.in47(0),.in48(0),.in49(0),.in50(0),.in51(0),
 		.in52(0),.in53(0),.in54(0),.in55(0),.in56(),.in57(0),.in58(0),.in59(0),.in60(0),
 		.in61(0),.in62(0),.in63(0),.in64(0),.in65(0),.in66(0),.in67(0),.in68(0),.in69(0),
@@ -1084,7 +1105,7 @@ module G729_Pipe (clock,reset,xn,preProcReady,autocorrReady,lagReady,levinsonRea
 		.in6(Int_qlpc_L_addOutB),.in7(0),.in8(perc_var_L_addOutB),.in9(Weight_Az_L_addOutB),.in10(Weight_Az_L_addOutB),.in11(Residu_L_addOutB),.in12(Syn_filt_L_addOutB),.in13(Weight_Az_L_addOutB),.in14(Weight_Az_L_addOutB),.in15(Residu_L_addOutB),
 		.in16(Syn_filt_L_addOutB),.in17(Pitch_ol_L_addOutB),.in18(0),.in19(Weight_Az_L_addOutB),.in20(Weight_Az_L_addOutB),.in21(0),.in22(Syn_filt_L_addOutB),.in23(Syn_filt_L_addOutB),.in24(Residu_L_addOutB),
 		.in25(Syn_filt_L_addOutB),.in26(Residu_L_addOutB),.in27(Syn_filt_L_addOutB),.in28(Pitch_fr3_L_addOutB),.in29(0),.in30(0),.in31(0),.in32(Pred_lt_3_L_addOutB),.in33(Convolve_L_addOutB),
-		.in34(0),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
+		.in34(G_pitch_L_addOutB),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
 		.in43(0),.in44(0),.in45(0),.in46(0),.in47(0),.in48(0),.in49(0),.in50(0),.in51(0),
 		.in52(0),.in53(0),.in54(0),.in55(0),.in56(),.in57(0),.in58(0),.in59(0),.in60(0),
 		.in61(0),.in62(0),.in63(0),.in64(0),.in65(0),.in66(0),.in67(0),.in68(0),.in69(0),
@@ -1121,7 +1142,7 @@ module G729_Pipe (clock,reset,xn,preProcReady,autocorrReady,lagReady,levinsonRea
 			.in6(Int_qlpc_L_macOutA),.in7(0),.in8(0),.in9(0),.in10(0),.in11(Residu_L_macOutA),.in12(0),.in13(0),.in14(0),.in15(Residu_L_macOutA),
 			.in16(0),.in17(Pitch_ol_L_macOutA),.in18(0),.in19(0),.in20(0),.in21(0),.in22(0),.in23(0),.in24(Residu_L_macOutA),
 			.in25(0),.in26(Residu_L_macOutA),.in27(0),.in28(Pitch_fr3_L_macOutA),.in29(0),.in30(0),.in31(0),.in32(Pred_lt_3_L_macOutA),.in33(Convolve_L_macOutA),
-			.in34(0),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
+			.in34(G_pitch_L_macOutA),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
 			.in43(0),.in44(0),.in45(0),.in46(0),.in47(0),.in48(0),.in49(0),.in50(0),.in51(0),
 			.in52(0),.in53(0),.in54(0),.in55(0),.in56(),.in57(0),.in58(0),.in59(0),.in60(0),
 			.in61(0),.in62(0),.in63(0),.in64(0),.in65(0),.in66(0),.in67(0),.in68(0),.in69(0),
@@ -1142,7 +1163,7 @@ module G729_Pipe (clock,reset,xn,preProcReady,autocorrReady,lagReady,levinsonRea
 		.in6(Int_qlpc_L_macOutB),.in7(0),.in8(0),.in9(0),.in10(0),.in11(Residu_L_macOutB),.in12(0),.in13(0),.in14(0),.in15(Residu_L_macOutB),
 		.in16(0),.in17(Pitch_ol_L_macOutB),.in18(0),.in19(0),.in20(0),.in21(0),.in22(0),.in23(0),.in24(Residu_L_macOutB),
 		.in25(0),.in26(Residu_L_macOutB),.in27(0),.in28(Pitch_fr3_L_macOutB),.in29(0),.in30(0),.in31(0),.in32(Pred_lt_3_L_macOutB),.in33(Convolve_L_macOutB),
-		.in34(0),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
+		.in34(G_pitch_L_macOutB),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
 		.in43(0),.in44(0),.in45(0),.in46(0),.in47(0),.in48(0),.in49(0),.in50(0),.in51(0),
 		.in52(0),.in53(0),.in54(0),.in55(0),.in56(),.in57(0),.in58(0),.in59(0),.in60(0),
 		.in61(0),.in62(0),.in63(0),.in64(0),.in65(0),.in66(0),.in67(0),.in68(0),.in69(0),
@@ -1163,7 +1184,7 @@ module G729_Pipe (clock,reset,xn,preProcReady,autocorrReady,lagReady,levinsonRea
 		.in6(Int_qlpc_L_macOutC),.in7(0),.in8(0),.in9(0),.in10(0),.in11(Residu_L_macOutC),.in12(0),.in13(0),.in14(0),.in15(Residu_L_macOutC),
 		.in16(0),.in17(Pitch_ol_L_macOutC),.in18(0),.in19(0),.in20(0),.in21(0),.in22(0),.in23(0),.in24(Residu_L_macOutC),
 		.in25(0),.in26(Residu_L_macOutC),.in27(0),.in28(Pitch_fr3_L_macOutC),.in29(0),.in30(0),.in31(0),.in32(Pred_lt_3_L_macOutC),.in33(Convolve_L_macOutC),
-		.in34(0),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
+		.in34(G_pitch_L_macOutC),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
 		.in43(0),.in44(0),.in45(0),.in46(0),.in47(0),.in48(0),.in49(0),.in50(0),.in51(0),
 		.in52(0),.in53(0),.in54(0),.in55(0),.in56(),.in57(0),.in58(0),.in59(0),.in60(0),
 		.in61(0),.in62(0),.in63(0),.in64(0),.in65(0),.in66(0),.in67(0),.in68(0),.in69(0),
@@ -1366,7 +1387,7 @@ module G729_Pipe (clock,reset,xn,preProcReady,autocorrReady,lagReady,levinsonRea
 		.in6(Int_qlpc_L_shlOutVar1),.in7(0),.in8(0),.in9(0),.in10(0),.in11(Residu_L_shlOutVar1),.in12(Syn_filt_L_shlOutVar1),.in13(0),.in14(0),.in15(Residu_L_shlOutVar1),
 		.in16(Syn_filt_L_shlOutVar1),.in17(Pitch_ol_L_shlOutVar1),.in18(0),.in19(0),.in20(0),.in21(0),.in22(Syn_filt_L_shlOutVar1),.in23(Syn_filt_L_shlOutVar1),.in24(Residu_L_shlOutVar1),
 		.in25(Syn_filt_L_shlOutVar1),.in26(Residu_L_shlOutVar1),.in27(Syn_filt_L_shlOutVar1),.in28(Pitch_fr3_L_shlOutVar1),.in29(0),.in30(0),.in31(0),.in32(0),.in33(Convolve_L_shlOutVar1),
-		.in34(0),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
+		.in34(G_pitch_L_shlOutVar1),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
 		.in43(0),.in44(0),.in45(0),.in46(0),.in47(0),.in48(0),.in49(0),.in50(0),.in51(0),
 		.in52(0),.in53(0),.in54(0),.in55(0),.in56(),.in57(0),.in58(0),.in59(0),.in60(0),
 		.in61(0),.in62(0),.in63(0),.in64(0),.in65(0),.in66(0),.in67(0),.in68(0),.in69(0),
@@ -1387,7 +1408,7 @@ module G729_Pipe (clock,reset,xn,preProcReady,autocorrReady,lagReady,levinsonRea
 		.in6(Int_qlpc_L_shlNumShiftOut),.in7(0),.in8(0),.in9(0),.in10(0),.in11(Residu_L_shlNumShiftOut),.in12(Syn_filt_L_shlNumShiftOut),.in13(0),.in14(0),.in15(Residu_L_shlNumShiftOut),
 		.in16(Syn_filt_L_shlNumShiftOut),.in17(Pitch_ol_L_shlNumShiftOut),.in18(0),.in19(0),.in20(0),.in21(0),.in22(Syn_filt_L_shlNumShiftOut),.in23(Syn_filt_L_shlNumShiftOut),.in24(Residu_L_shlNumShiftOut),
 		.in25(Syn_filt_L_shlNumShiftOut),.in26(Residu_L_shlNumShiftOut),.in27(Syn_filt_L_shlNumShiftOut),.in28(Pitch_fr3_L_shlNumShiftOut),.in29(0),.in30(0),.in31(0),.in32(0),.in33(Convolve_L_shlNumShiftOut),
-		.in34(0),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
+		.in34(G_pitch_L_shlNumShiftOut),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
 		.in43(0),.in44(0),.in45(0),.in46(0),.in47(0),.in48(0),.in49(0),.in50(0),.in51(0),
 		.in52(0),.in53(0),.in54(0),.in55(0),.in56(),.in57(0),.in58(0),.in59(0),.in60(0),
 		.in61(0),.in62(0),.in63(0),.in64(0),.in65(0),.in66(0),.in67(0),.in68(0),.in69(0),
@@ -1408,7 +1429,7 @@ module G729_Pipe (clock,reset,xn,preProcReady,autocorrReady,lagReady,levinsonRea
 		.in6(Int_qlpc_L_shlReady),.in7(Pitch_ol_L_shlReady),.in8(0),.in9(0),.in10(0),.in11(Residu_L_shlReady),.in12(Syn_filt_L_shlReady),.in13(0),.in14(0),.in15(Residu_L_shlReady),
 		.in16(Syn_filt_L_shlReady),.in17(Pitch_ol_L_shlReady),.in18(0),.in19(0),.in20(0),.in21(0),.in22(Syn_filt_L_shlReady),.in23(Syn_filt_L_shlReady),.in24(Residu_L_shlReady),
 		.in25(Syn_filt_L_shlReady),.in26(Residu_L_shlReady),.in27(Syn_filt_L_shlReady),.in28(Pitch_fr3_L_shlReady),.in29(0),.in30(0),.in31(0),.in32(0),.in33(Convolve_L_shlReady),
-		.in34(0),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
+		.in34(G_pitch_L_shlReady),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
 		.in43(0),.in44(0),.in45(0),.in46(0),.in47(0),.in48(0),.in49(0),.in50(0),.in51(0),
 		.in52(0),.in53(0),.in54(0),.in55(0),.in56(),.in57(0),.in58(0),.in59(0),.in60(0),
 		.in61(0),.in62(0),.in63(0),.in64(0),.in65(0),.in66(0),.in67(0),.in68(0),.in69(0),
@@ -1500,7 +1521,7 @@ module G729_Pipe (clock,reset,xn,preProcReady,autocorrReady,lagReady,levinsonRea
 		.in6(Int_qlpc_L_subOutA),.in7(0),.in8(perc_var_L_subOutA),.in9(0),.in10(0),.in11(0),.in12(0),.in13(0),.in14(0),.in15(0),
 		.in16(0),.in17(Pitch_ol_L_subOutA),.in18(TL_Math2_L_subOutA),.in19(0),.in20(0),.in21(0),.in22(0),.in23(0),.in24(0),
 		.in25(0),.in26(0),.in27(0),.in28(Pitch_fr3_L_subOutA),.in29(0),.in30(0),.in31(0),.in32(0),.in33(Convolve_L_subOutA),
-		.in34(0),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
+		.in34(G_pitch_L_subOutA),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
 		.in43(0),.in44(0),.in45(0),.in46(0),.in47(0),.in48(0),.in49(0),.in50(0),.in51(0),
 		.in52(0),.in53(0),.in54(0),.in55(0),.in56(),.in57(0),.in58(0),.in59(0),.in60(0),
 		.in61(0),.in62(0),.in63(0),.in64(0),.in65(0),.in66(0),.in67(0),.in68(0),.in69(0),
@@ -1521,7 +1542,7 @@ module G729_Pipe (clock,reset,xn,preProcReady,autocorrReady,lagReady,levinsonRea
 		.in6(Int_qlpc_L_subOutB),.in7(0),.in8(perc_var_L_subOutB),.in9(0),.in10(0),.in11(0),.in12(0),.in13(0),.in14(0),.in15(0),
 		.in16(0),.in17(Pitch_ol_L_subOutB),.in18(TL_Math2_L_subOutB),.in19(0),.in20(0),.in21(0),.in22(0),.in23(0),.in24(0),
 		.in25(0),.in26(0),.in27(0),.in28(Pitch_fr3_L_subOutB),.in29(0),.in30(0),.in31(0),.in32(0),.in33(Convolve_L_subOutB),
-		.in34(0),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
+		.in34(G_pitch_L_subOutB),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
 		.in43(0),.in44(0),.in45(0),.in46(0),.in47(0),.in48(0),.in49(0),.in50(0),.in51(0),
 		.in52(0),.in53(0),.in54(0),.in55(0),.in56(),.in57(0),.in58(0),.in59(0),.in60(0),
 		.in61(0),.in62(0),.in63(0),.in64(0),.in65(0),.in66(0),.in67(0),.in68(0),.in69(0),
@@ -1625,7 +1646,7 @@ module G729_Pipe (clock,reset,xn,preProcReady,autocorrReady,lagReady,levinsonRea
 		.in6(Int_qlpc_norm_l_out),.in7(0),.in8(0),.in9(0),.in10(0),.in11(0),.in12(0),.in13(0),.in14(0),.in15(0),
 		.in16(0),.in17(Pitch_ol_norm_l_out),.in18(0),.in19(0),.in20(0),.in21(0),.in22(0),.in23(0),.in24(0),
 		.in25(0),.in26(0),.in27(0),.in28(Pitch_fr3_norm_l_out),.in29(0),.in30(0),.in31(0),.in32(0),.in33(0),
-		.in34(0),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
+		.in34(G_pitch_norm_l_out),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
 		.in43(0),.in44(0),.in45(0),.in46(0),.in47(0),.in48(0),.in49(0),.in50(0),.in51(0),
 		.in52(0),.in53(0),.in54(0),.in55(0),.in56(),.in57(0),.in58(0),.in59(0),.in60(0),
 		.in61(0),.in62(0),.in63(0),.in64(0),.in65(0),.in66(0),.in67(0),.in68(0),.in69(0),
@@ -1646,7 +1667,7 @@ module G729_Pipe (clock,reset,xn,preProcReady,autocorrReady,lagReady,levinsonRea
 		.in6(Int_qlpc_norm_l_start),.in7(0),.in8(0),.in9(0),.in10(0),.in11(0),.in12(0),.in13(0),.in14(0),.in15(0),
 		.in16(0),.in17(Pitch_ol_norm_l_start),.in18(0),.in19(0),.in20(0),.in21(0),.in22(0),.in23(0),.in24(0),
 		.in25(0),.in26(0),.in27(0),.in28(Pitch_fr3_norm_l_start),.in29(0),.in30(0),.in31(0),.in32(0),.in33(0),
-		.in34(0),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
+		.in34(G_pitch_norm_l_start),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
 		.in43(0),.in44(0),.in45(0),.in46(0),.in47(0),.in48(0),.in49(0),.in50(0),.in51(0),
 		.in52(0),.in53(0),.in54(0),.in55(0),.in56(),.in57(0),.in58(0),.in59(0),.in60(0),
 		.in61(0),.in62(0),.in63(0),.in64(0),.in65(0),.in66(0),.in67(0),.in68(0),.in69(0),
@@ -1796,7 +1817,7 @@ module G729_Pipe (clock,reset,xn,preProcReady,autocorrReady,lagReady,levinsonRea
 		.in6(Int_qlpc_shrVar1Out),.in7(0),.in8(perc_var_shrVar1Out),.in9(0),.in10(0),.in11(0),.in12(0),.in13(0),.in14(0),.in15(0),
 		.in16(0),.in17(Pitch_ol_shrVar1Out),.in18(0),.in19(0),.in20(0),.in21(0),.in22(0),.in23(0),.in24(0),
 		.in25(0),.in26(0),.in27(0),.in28(Pitch_fr3_shrVar1Out),.in29(0),.in30(0),.in31(Parity_pitch_shrVar1Out),.in32(0),.in33(0),
-		.in34(0),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
+		.in34(G_pitch_shrVar1Out),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
 		.in43(0),.in44(0),.in45(0),.in46(0),.in47(0),.in48(0),.in49(0),.in50(0),.in51(0),
 		.in52(0),.in53(0),.in54(0),.in55(0),.in56(),.in57(0),.in58(0),.in59(0),.in60(0),
 		.in61(0),.in62(0),.in63(0),.in64(0),.in65(0),.in66(0),.in67(0),.in68(0),.in69(0),
@@ -1817,7 +1838,7 @@ module G729_Pipe (clock,reset,xn,preProcReady,autocorrReady,lagReady,levinsonRea
 		.in6(Int_qlpc_shrVar2Out),.in7(0),.in8(perc_var_shrVar2Out),.in9(0),.in10(0),.in11(0),.in12(0),.in13(0),.in14(0),.in15(0),
 		.in16(0),.in17(Pitch_ol_shrVar2Out),.in18(0),.in19(0),.in20(0),.in21(0),.in22(0),.in23(0),.in24(0),
 		.in25(0),.in26(0),.in27(0),.in28(Pitch_fr3_shrVar2Out),.in29(0),.in30(0),.in31(Parity_pitch_shrVar2Out),.in32(0),.in33(0),
-		.in34(0),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
+		.in34(G_pitch_shrVar2Out),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
 		.in43(0),.in44(0),.in45(0),.in46(0),.in47(0),.in48(0),.in49(0),.in50(0),.in51(0),
 		.in52(0),.in53(0),.in54(0),.in55(0),.in56(),.in57(0),.in58(0),.in59(0),.in60(0),
 		.in61(0),.in62(0),.in63(0),.in64(0),.in65(0),.in66(0),.in67(0),.in68(0),.in69(0),
@@ -1852,7 +1873,7 @@ module G729_Pipe (clock,reset,xn,preProcReady,autocorrReady,lagReady,levinsonRea
 		.in6(Int_qlpc_subOutA),.in7(0),.in8(perc_var_subOutA),.in9(0),.in10(0),.in11(Residu_subOutA),.in12(Syn_filt_subOutA),.in13(0),.in14(0),.in15(Residu_subOutA),
 		.in16(Syn_filt_subOutA),.in17(Pitch_ol_subOutA),.in18(TL_Math2_subOutA),.in19(0),.in20(0),.in21(0),.in22(Syn_filt_subOutA),.in23(Syn_filt_subOutA),.in24(Residu_subOutA),
 		.in25(Syn_filt_subOutA),.in26(Residu_subOutA),.in27(Syn_filt_subOutA),.in28(Pitch_fr3_subOutA),.in29(Enc_lag3_subOutA),.in30(0),.in31(0),.in32(Pred_lt_3_subOutA),.in33(0),
-		.in34(0),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
+		.in34(G_pitch_subOutA),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
 		.in43(0),.in44(0),.in45(0),.in46(0),.in47(0),.in48(0),.in49(0),.in50(0),.in51(0),
 		.in52(0),.in53(0),.in54(0),.in55(0),.in56(),.in57(0),.in58(0),.in59(0),.in60(0),
 		.in61(0),.in62(0),.in63(0),.in64(0),.in65(0),.in66(0),.in67(0),.in68(0),.in69(0),
@@ -1873,7 +1894,7 @@ module G729_Pipe (clock,reset,xn,preProcReady,autocorrReady,lagReady,levinsonRea
 		.in6(Int_qlpc_subOutB),.in7(0),.in8(perc_var_subOutB),.in9(0),.in10(0),.in11(Residu_subOutB),.in12(Syn_filt_subOutB),.in13(0),.in14(0),.in15(Residu_subOutB),
 		.in16(Syn_filt_subOutB),.in17(Pitch_ol_subOutB),.in18(TL_Math2_subOutB),.in19(0),.in20(0),.in21(0),.in22(Syn_filt_subOutB),.in23(Syn_filt_subOutB),.in24(Residu_subOutB),
 		.in25(Syn_filt_subOutB),.in26(Residu_subOutB),.in27(Syn_filt_subOutB),.in28(Pitch_fr3_subOutB),.in29(Enc_lag3_subOutB),.in30(0),.in31(0),.in32(Pred_lt_3_subOutB),.in33(0),
-		.in34(0),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
+		.in34(G_pitch_subOutB),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
 		.in43(0),.in44(0),.in45(0),.in46(0),.in47(0),.in48(0),.in49(0),.in50(0),.in51(0),
 		.in52(0),.in53(0),.in54(0),.in55(0),.in56(),.in57(0),.in58(0),.in59(0),.in60(0),
 		.in61(0),.in62(0),.in63(0),.in64(0),.in65(0),.in66(0),.in67(0),.in68(0),.in69(0),
@@ -1912,7 +1933,7 @@ module G729_Pipe (clock,reset,xn,preProcReady,autocorrReady,lagReady,levinsonRea
 		.in6(Int_qlpc_memWriteAddr),.in7(Math1_memWriteAddr),.in8(perc_var_memWriteAddr),.in9(Weight_Az_memWriteAddr),.in10(Weight_Az_memWriteAddr),.in11(Residu_memWriteAddr),.in12(Syn_filt_memWriteAddr),.in13(Weight_Az_memWriteAddr),.in14(Weight_Az_memWriteAddr),.in15(Residu_memWriteAddr),
 		.in16(Syn_filt_memWriteAddr),.in17(Pitch_ol_memWriteAddr),.in18(0),.in19(Weight_Az_memWriteAddr),.in20(Weight_Az_memWriteAddr),.in21(TL_Math3_memWriteAddr),.in22(Syn_filt_memWriteAddr),.in23(Syn_filt_memWriteAddr),.in24(Residu_memWriteAddr),
 		.in25(Syn_filt_memWriteAddr),.in26(Residu_memWriteAddr),.in27(Syn_filt_memWriteAddr),.in28(Pitch_fr3_memWriteAddr),.in29(Enc_lag3_memWriteAddr),.in30(LOAD_ANA_2_7_Addr),.in31(PRM+'d3),.in32(Pred_lt_3_memWriteAddr),.in33(Convolve_memWriteAddr),
-		.in34(0),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
+		.in34(G_pitch_memWriteAddr),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
 		.in43(0),.in44(0),.in45(0),.in46(0),.in47(0),.in48(0),.in49(0),.in50(0),.in51(0),
 		.in52(0),.in53(0),.in54(0),.in55(0),.in56(),.in57(0),.in58(0),.in59(0),.in60(0),
 		.in61(0),.in62(0),.in63(0),.in64(0),.in65(0),.in66(0),.in67(0),.in68(0),.in69(0),
@@ -1933,7 +1954,7 @@ module G729_Pipe (clock,reset,xn,preProcReady,autocorrReady,lagReady,levinsonRea
 		.in6(Int_qlpc_memIn),.in7(Math1_memIn),.in8(perc_var_memIn),.in9(Weight_Az_memIn),.in10(Weight_Az_memIn),.in11(Residu_memIn),.in12(Syn_filt_memIn),.in13(Weight_Az_memIn),.in14(Weight_Az_memIn),.in15(Residu_memIn),
 		.in16(Syn_filt_memIn),.in17(Pitch_ol_memIn),.in18(0),.in19(Weight_Az_memIn),.in20(Weight_Az_memIn),.in21(TL_Math3_memIn),.in22(Syn_filt_memIn),.in23(Syn_filt_memIn),.in24(Residu_memIn),
 		.in25(Syn_filt_memIn),.in26(Residu_memIn),.in27(Syn_filt_memIn),.in28(Pitch_fr3_memIn),.in29(Enc_lag3_memIn),.in30(LOAD_ANA_2_7_Data),.in31(Parity_pitch_sum_Data),.in32(Pred_lt_3_memIn),.in33(Convolve_memIn),
-		.in34(0),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
+		.in34(G_pitch_memIn),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
 		.in43(0),.in44(0),.in45(0),.in46(0),.in47(0),.in48(0),.in49(0),.in50(0),.in51(0),
 		.in52(0),.in53(0),.in54(0),.in55(0),.in56(),.in57(0),.in58(0),.in59(0),.in60(0),
 		.in61(0),.in62(0),.in63(0),.in64(0),.in65(0),.in66(0),.in67(0),.in68(0),.in69(0),
@@ -1954,7 +1975,7 @@ module G729_Pipe (clock,reset,xn,preProcReady,autocorrReady,lagReady,levinsonRea
 		.in6(Int_qlpc_memWriteEn),.in7(Math1_memWriteEn),.in8(perc_var_memWriteEn),.in9(Weight_Az_memWriteEn),.in10(Weight_Az_memWriteEn),.in11(Residu_memWriteEn),.in12(Syn_filt_memWriteEn),.in13(Weight_Az_memWriteEn),.in14(Weight_Az_memWriteEn),.in15(Residu_memWriteEn),
 		.in16(Syn_filt_memWriteEn),.in17(Pitch_ol_memWriteEn),.in18(0),.in19(Weight_Az_memWriteEn),.in20(Weight_Az_memWriteEn),.in21(TL_Math3_memWriteEn),.in22(Syn_filt_memWriteEn),.in23(Syn_filt_memWriteEn),.in24(Residu_memWriteEn),
 		.in25(Syn_filt_memWriteEn),.in26(Residu_memWriteEn),.in27(Syn_filt_memWriteEn),.in28(Pitch_fr3_memWriteEn),.in29(Enc_lag3_memWriteEn),.in30('d1),.in31(Parity_PitchDone&'d1),.in32(Pred_lt_3_memWriteEn),.in33(Convolve_memWriteEn),
-		.in34(0),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
+		.in34(G_pitch_memWriteEn),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
 		.in43(0),.in44(0),.in45(0),.in46(0),.in47(0),.in48(0),.in49(0),.in50(0),.in51(0),
 		.in52(0),.in53(0),.in54(0),.in55(0),.in56(),.in57(0),.in58(0),.in59(0),.in60(0),
 		.in61(0),.in62(0),.in63(0),.in64(0),.in65(0),.in66(0),.in67(0),.in68(0),.in69(0),
@@ -1974,8 +1995,8 @@ module G729_Pipe (clock,reset,xn,preProcReady,autocorrReady,lagReady,levinsonRea
 														.in4(Qua_lsp_memReadAddr),.in5(Int_lpc_memReadAddr),
 		.in6(Int_qlpc_memReadAddr),.in7(Math1_memReadAddr),.in8(perc_var_memReadAddr),.in9(Weight_Az_memReadAddr),.in10(Weight_Az_memReadAddr),.in11(Residu_memReadAddr),.in12(Syn_filt_memReadAddr),.in13(Weight_Az_memReadAddr),.in14(Weight_Az_memReadAddr),.in15(Residu_memReadAddr),
 		.in16(Syn_filt_memReadAddr),.in17(Pitch_ol_memReadAddr),.in18(0),.in19(Weight_Az_memReadAddr),.in20(Weight_Az_memReadAddr),.in21(TL_Math3_memReadAddr),.in22(Syn_filt_memReadAddr),.in23(Syn_filt_memReadAddr),.in24(Residu_memReadAddr),
-		.in25(Syn_filt_memReadAddr),.in26(Residu_memSameAddr),.in27(Syn_filt_memReadAddr),.in28(Pitch_fr3_memReadAddr),.in29(Enc_lag3_memReadAddr),.in30(0),.in31(0),.in32(Pred_lt_3_memReadAddr),.in33(Convolve_memReadAddr),
-		.in34(0),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
+		.in25(Syn_filt_memReadAddr),.in26(Residu_memSameAddr),.in27(Syn_filt_memReadAddr),.in28(Pitch_fr3_memReadAddr),.in29(Enc_lag3_memReadAddr),.in30(0),.in31(0),.in32(Pred_lt_3_memReadAddr),.in33(Convolve_memWriteAddr),
+		.in34(G_pitch_memReadAddr),.in35(0),.in36(0),.in37(0),.in38(0),.in39(0),.in40(0),.in41(0),.in42(0),
 		.in43(0),.in44(0),.in45(0),.in46(0),.in47(0),.in48(0),.in49(0),.in50(0),.in51(0),
 		.in52(0),.in53(0),.in54(0),.in55(0),.in56(),.in57(0),.in58(0),.in59(0),.in60(0),
 		.in61(0),.in62(0),.in63(0),.in64(0),.in65(0),.in66(0),.in67(0),.in68(0),.in69(0),
@@ -3362,12 +3383,12 @@ module G729_Pipe (clock,reset,xn,preProcReady,autocorrReady,lagReady,levinsonRea
 					L_add_outa,L_add_outb,L_add_in,
 					L_sub_outa,L_sub_outb,L_sub_in);*/
 
-/*		G_pitch G_pitch(
+		G_pitch G_pitch(
 					.clock(clock),
 					.reset(reset),
 					.start(G_pitchReady),
 					.done(G_pitchDone),
-					.out(),
+					.out(G_pitch_gain_pit),
 					.shr_outa(G_pitch_shrVar1Out),
 					.shr_outb(G_pitch_shrVar2Out),
 					.shr_in(shr_out),
@@ -3380,8 +3401,8 @@ module G729_Pipe (clock,reset,xn,preProcReady,autocorrReady,lagReady,levinsonRea
 					.norm_l_in(norm_l_out),
 					.norm_l_start(G_pitch_norm_l_start),
 					.norm_l_done(norm_l_done),
-					.L_shl_outa(G_pitch_shlOutVar1),
-					.L_shl_outb(G_pitch_shlNumShiftOut),
+					.L_shl_outa(G_pitch_L_shlOutVar1),
+					.L_shl_outb(G_pitch_L_shlNumShiftOut),
 					.L_shl_start(G_pitch_L_shlReady),
 					.L_shl_in(L_shl_out),
 					.L_shl_done(L_shl_done),
@@ -3403,7 +3424,7 @@ module G729_Pipe (clock,reset,xn,preProcReady,autocorrReady,lagReady,levinsonRea
 					.L_sub_outb(G_pitch_L_subOutB),
 					.L_sub_in(L_sub_out)
 				);	
-*/					
+					
 	
 	//////////////////////////////////////////////////////////////////////////////////////////////
 	//
@@ -3905,6 +3926,7 @@ module G729_Pipe (clock,reset,xn,preProcReady,autocorrReady,lagReady,levinsonRea
 	parameter ENC_LAG3 = 6'd30;
 	parameter PRED_LT_3 = 6'd31;
 	parameter CONVOLVE = 6'd32;
+	parameter G_PITCH = 6'd33;
 
 	always @ (posedge clock)
 	begin
@@ -4297,6 +4319,11 @@ module G729_Pipe (clock,reset,xn,preProcReady,autocorrReady,lagReady,levinsonRea
 					outBufIn = dina;
 				end
 				if (ConvolveDone)
+					nextstate = G_PITCH;
+			end
+			G_PITCH:
+			begin
+				if (G_pitchDone)
 				begin
 					if (i_subfr == 'd40)
 						nextstate = PRE_PROCESS;
