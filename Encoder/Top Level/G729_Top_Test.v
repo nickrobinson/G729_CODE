@@ -1235,9 +1235,9 @@ module G729_Top_Test_v;
 	
 			testdone = 1;
 			wait(done);
+			testdone = 0;
 			@(posedge clock);
 			@(posedge clock) #5;
-			testdone = 0;
 			$display($time, "*****TL_Math2 Completed Successfully*****");
 
 		//////////////////////////////////////////////////////////////////////////////////////////////
@@ -1765,6 +1765,19 @@ module G729_Top_Test_v;
 				@(posedge clock);
 				@(posedge clock) #5;
 				$display($time, "*****G_pitch Completed Successfully*****");
+
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//		test_err
+	//
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	
+				testdone = 1;
+				wait(done);
+				testdone = 0;
+				@(posedge clock);
+				@(posedge clock) #5;
+				$display($time, "*****test_err Completed Successfully*****");
 
 			end//z for loop
 		end//k for loop
