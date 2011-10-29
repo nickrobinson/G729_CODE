@@ -23,7 +23,7 @@
 //
 //////////////////////////////////////////////////////////////////////////////////
 
-module TL_Math4 (clock,reset,start,tempIn,gain_pit_in,GPCLIP,subIn,memIn,subOutA,subOutB,memWriteAddr,memOut,memWriteEn,memReadAddr,gain_pit_out,done);
+module TL_Math4 (clock,reset,start,y1,xn,xn2,temp,gain_pit_in,GPCLIP,L_SUBFR,addIn,subIn,L_multIn,memIn,L_shlIn,L_shlDone,addOutA,addOutB,subOutA,subOutB,L_multOutA,L_multOutB,L_shlReady,L_shlOutA,L_shlOutB,memWriteAddr,memOut,memWriteEn,memReadAddr,L_temp,gain_pit_out,done);
 
 	`include "paramList.v"
 	
@@ -31,36 +31,57 @@ module TL_Math4 (clock,reset,start,tempIn,gain_pit_in,GPCLIP,subIn,memIn,subOutA
 	input clock;
 	input reset;
 	input start;
+	input [11:0] y1, xn, xn2;
 	input [15:0] gain_pit_in;
-	input [15:0] tempIn;
+	input [15:0] temp;
 	input [15:0] GPCLIP;
-	
+	input [15:0] L_SUBFR;
+
+	input [15:0] addIn;
 	input [15:0] subIn;
+	input [31:0] L_multIn;
 	input [31:0] memIn;
+	input [31:0] L_shlIn;
+	input L_shlDone;
 	
 	//outputs
 	output [15:0] gain_pit_out;
+	output [31:0] L_temp;
 	output reg done;
 
+	output reg [15:0] addOutA;
+	output reg [15:0] addOutB;
 	output reg [15:0] subOutA;
 	output reg [15:0] subOutB;
+	output reg [15:0] L_multOutA;
+	output reg [15:0] L_multOutB;
+	output reg L_shlReady;
+	output reg [31:0] L_shlOutA;
+	output reg [15:0] L_shlOutB;
 	output reg [11:0] memWriteAddr; 
 	output reg [31:0] memOut; 
 	output reg memWriteEn; 
 	output reg [11:0] memReadAddr; 
 	
 	//wires/regs
-	reg [2:0] currentstate, nextstate;
-	reg [15:0] next_gp_in, next_gp_out;
-	reg [15:0] gp_in, gp_out;
-	reg LD_gp_in, LD_gp_out;
-	reg reset_gp_in, reset_gp_out;
+	reg [3:0] currentstate, nextstate;
+	reg [15:0] next_gain_pit_out,next_i;
+	reg [31:0] next_L_temp;
+	reg [15:0] gain_pit_out,i;
+	reg [31:0] L_temp;
+	reg LD_gain_pit_out,LD_i,LD_L_temp;
+	reg reset_gain_pit_out,reset_i,reset_L_temp;
 	
 	//parameters
-	parameter INIT = 3'd0;
-	parameter SUBTRACT_1 = 3'd1;
-	parameter SUBTRACT_2 = 3'd2;
-	parameter DONE = 3'd3;
+	parameter INIT = 4'd0;
+	parameter IF_1 = 4'd1;
+	parameter IF_2 = 4'd2;
+	parameter FOR_CHECK = 4'd3;
+	parameter L_MULT = 4'd4;
+	parameter L_SHL = 4'd5;
+	parameter SUB = 4'd6;
+	parameter INC = 4'd7;
+	parameter DONE = 4'd8;
 	
 	//flip flops
 	always @ (posedge clock)
@@ -75,25 +96,42 @@ module TL_Math4 (clock,reset,start,tempIn,gain_pit_in,GPCLIP,subIn,memIn,subOutA
 	begin
 		if (reset)
 			i <= 0;
-		else if (reset_gp_in)
+		else if (reset_i)
 			i <= 0;
-		else if (LD_gp_in)
-			i <= next_gp_in;
+		else if (LD_i)
+			i <= next_i;
 	end
 
 	always @ (posedge clock)
 	begin
 		if (reset)
-			gp_out <= 0;
-		else if (reset_gp_out)
-			gp_out <= 0;
-		else if (LD_gp_out)
-			gp_out <= next_gp_out;
+			gain_pit_out <= 0;
+		else if (reset_gain_pit_out)
+			gain_pit_out <= 0;
+		else if (LD_gain_pit_out)
+			gain_pit_out <= next_gain_pit_out;
+	end
+
+	always @ (posedge clock)
+	begin
+		if (reset)
+			L_temp <= 0;
+		else if (reset_L_temp)
+			L_temp <= 0;
+		else if (LD_L_temp)
+			L_temp <= next_L_temp;
 	end
 	
 	always@(*) begin
+		addOutA = 0;
+		addOutB = 0;
 	   subOutA = 0;
 		subOutB = 0;
+		L_multOutA = 0;
+		L_multOutB = 0;
+		L_shlReady = 0;
+		L_shlOutA = 0;
+		L_shlOutB = 0;
 		done = 0;
 		memWriteAddr = 0; 
 	   memOut = 0; 
@@ -101,52 +139,118 @@ module TL_Math4 (clock,reset,start,tempIn,gain_pit_in,GPCLIP,subIn,memIn,subOutA
 		memReadAddr = 0; 
 
 		nextstate = currentstate;
-		next_gp_in = gp_in;
-		next_gp_out = gp_out;
-		LD_gp_in = 0;
-		LD_gp_out = 0;
-		reset_gp_in = 0;
-		reset_gp_out = 0;
+		next_gain_pit_out = gain_pit_out;
+		next_i = i;
+		next_L_temp = L_temp;
+		LD_gain_pit_out = 0;
+		LD_i = 0;
+		LD_L_temp = 0;
+		reset_gain_pit_out = 0;
+		reset_i = 0;
+		reset_L_temp = 0;
 		case(currentstate)
 
 			INIT: 
 			begin
-				reset_gp_out = 1;
-				reset_gp_in = 1;
+				reset_i = 1;
+				reset_gain_pit_out = 1;
 				if(start == 1)
-					nextstate = S1;
+					nextstate = IF_1;
 				else
 					nextstate = INIT;
 			end
 			
-			//if( temp == 1)			
-			S1: 
+			//if(temp == 1)			
+			IF_1: 
 			begin
-				if(tempIn[15:0] == 16'h0001)
-					nextstate = SUBTRACT_1;
+				if(temp[15:0] == 16'h0001)
+					nextstate = IF_2;
+				else
+					nextstate = FOR_CHECK;
+			end
+			
+		    //if (sub(gain_pit, GPCLIP) > 0) {
+              //gain_pit = GPCLIP;
+            //}
+			IF_2: 
+			begin
+				subOutA = gain_pit_in;
+				subOutB = GPCLIP;
+				if(subIn[15:0] != 16'h0000 && subIn[15] != 1'd1)
+				begin
+					next_gain_pit_out = GPCLIP;
+					LD_gain_pit_out = 1;
+				end
+				nextstate = FOR_CHECK;
+			end
+
+			//for (i = 0; i < L_SUBFR; i++)
+			//y1[i]
+			FOR_CHECK: 
+			begin
+				if(i < L_SUBFR)
+				begin
+					addOutA = y1;
+					addOutB = i;
+					memReadAddr = addIn;
+					nextstate = L_MULT;
+				end
 				else
 					nextstate = DONE;
 			end
 
-			// sub(gain_pit, GPCLIP)
-			SUBTRACT_1: 
+			//L_temp = L_mult(y1[i], gain_pit);
+			L_MULT: 
 			begin
-					subOutA = gain_pit_in[15:0];
-					subOutB = GPCLIP;
-					nextstate = SUBTRACT_2;
+				L_multOutA = memIn;
+				L_multOutB = gain_pit_out;
+				next_L_temp = L_multIn;
+				LD_L_temp = 1;
+				nextstate = L_SHL;
 			end
-			
-		   //if (sub(gain_pit, GPCLIP) > 0) {
-         //gain_pit = GPCLIP;
-         // }
-			SUBTRACT_2: 
+
+			//L_temp = L_shl(L_temp, 1);
+			L_SHL: 
 			begin
-				if(subIn[15:0] > 16'h0000)
+				L_shlReady = 1;
+				L_shlOutA = L_temp;
+				L_shlOutB = 16'd1;
+				if (L_shlDone)
 				begin
-					next_gp_out = GPCLIP;
-					LD_gp_out = 1;
-					nextstate = DONE;
+					next_L_temp = L_shlIn;
+					LD_L_temp = 1;
+					addOutA = xn;
+					addOutB = i;
+					memReadAddr = addIn;
+					nextstate = SUB;
 				end
+				else
+					nextstate = L_SHL;
+			end
+
+			//xn2[i] = sub(xn[i], extract_h(L_temp));
+			SUB: 
+			begin
+				subOutA = memIn;
+				subOutB = L_temp[31:16];
+				addOutA = xn2;
+				addOutB = i;
+				memWriteAddr = addIn;
+				if (subIn[15] == 1)
+					memOut = {16'hffff,subIn};
+				else
+					memOut = {16'h0000,subIn};
+				memWriteEn = 1;
+				nextstate = INC;
+			end
+
+			INC: 
+			begin
+				addOutA = i;
+				addOutB = 16'd1;
+				next_i = addIn;
+				LD_i = 1;
+				nextstate = FOR_CHECK;
 			end
 			
 			DONE: 

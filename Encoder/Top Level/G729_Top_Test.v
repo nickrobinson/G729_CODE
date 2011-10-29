@@ -160,6 +160,9 @@ module G729_Top_Test_v;
 	//Convolve
 	reg [31:0] Convolve_y1 [0:4999];
 
+	//TL_Math4
+	reg [31:0] TL_Math4_xn2 [0:4999];
+
 	//working integers
 	integer i;
 	integer k;
@@ -281,6 +284,9 @@ module G729_Top_Test_v;
 
 		//Convolve
 		$readmemh("Convolve_y1.out", Convolve_y1);
+
+		//TL_Math4
+		$readmemh("TL_Math4_xn2.out", TL_Math4_xn2);
 	end	
 
 	// Instantiate the Unit Under Test (UUT)
@@ -370,7 +376,7 @@ module G729_Top_Test_v;
 	//////////////////////////////////////////////////////////////////////////////////////////////
 		
 			@(posedge clock);
-			@(posedge clock) #5;
+			@(posedge clock);
 			testdone = 1;
 			for (i=0;i<80;i=i+1)
 				begin
@@ -392,23 +398,23 @@ module G729_Top_Test_v;
 			testdone = 0;
 			flag1 = 0;
 			@(posedge clock);
-			@(posedge clock) #5;
+			@(posedge clock);
 
 			for (i = 0; i<L_FRAME;i=i+1)
 			begin		
 				@(posedge clock);
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 				outBufAddr = NEW_SPEECH + i;
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 				if (out != Pre_Process_new_speech[i+L_FRAME*k])
 				begin
 					$display($time, " ERROR: new_speech[%d] = %x, expected = %x", i+L_FRAME*k, out, Pre_Process_new_speech[i+L_FRAME*k]);
 					flag1 = 1;
 				end
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 			end
 			
 			if (flag1)
@@ -427,23 +433,23 @@ module G729_Top_Test_v;
 			testdone = 0;
 			flag1 = 0;
 			@(posedge clock);
-			@(posedge clock) #5;
+			@(posedge clock);
 
 			for (i = 0; i<MP1;i=i+1)
 			begin		
 				@(posedge clock);
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 				outBufAddr = {AUTOCORR_R[11:4],i[3:0]};
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 				if (out != Autocorr_r[i+MP1*k])
 				begin
 					$display($time, " ERROR: r[%d] = %x, expected = %x", i+MP1*k, out, Autocorr_r[i+MP1*k]);
 					flag1 = 1;
 				end
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 			end
 			
 			if (flag1)
@@ -462,23 +468,23 @@ module G729_Top_Test_v;
 			testdone = 0;
 			flag1 = 0;
 			@(posedge clock);
-			@(posedge clock) #5;
+			@(posedge clock);
 
 			for (i = 0; i<MP1;i=i+1)
 			begin		
 				@(posedge clock);
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 				outBufAddr = {LAG_WINDOW_R_PRIME[11:4],i[3:0]};
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 				if (out != Lag_window_r[i+MP1*k])
 				begin
 					$display($time, " ERROR: r[%d] = %x, expected = %x", i+MP1*k, out, Lag_window_r[i+MP1*k]);
 					flag1 = 1;
 				end
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 			end
 			
 			if (flag1)
@@ -498,44 +504,44 @@ module G729_Top_Test_v;
 			flag1 = 0;
 			flag2 = 0;
 			@(posedge clock);
-			@(posedge clock) #5;
+			@(posedge clock);
 
 			for (i = 0; i<MP1;i=i+1)
 			begin		
 				@(posedge clock);
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 				outBufAddr = {A_T_HIGH[11:4],i[3:0]};
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 				if (out != Levinson_A_t_MP1[i+MP1*k])
 				begin
 					$display($time, " ERROR: A_t_MP1[%d] = %x, expected = %x", i+MP1*k, out, Levinson_A_t_MP1[i+MP1*k]);
 					flag1 = 1;
 				end
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 			end
 
 			@(posedge clock);
-			@(posedge clock) #5;
+			@(posedge clock);
 
 			for (i = 0; i<M;i=i+1)
 			begin		
 					
 				@(posedge clock);
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 				outBufAddr = {LEVINSON_DURBIN_RC[11:4],i[3:0]};
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 				if (out != Levinson_rc[i+M*k])
 				begin
 					$display($time, " ERROR: rc[%d] = %x, expected = %x", i+M*k, out, Levinson_rc[i+M*k]);
 					flag2 = 1;
 				end
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 			end
 
 			if (flag1)
@@ -556,20 +562,20 @@ module G729_Top_Test_v;
 			testdone = 0;
 			flag1 = 0;
 			@(posedge clock);
-			@(posedge clock) #5;
+			@(posedge clock);
 			
 			for (i = 0; i<M;i=i+1)
 			begin		
 				outBufAddr = LSP_NEW + i;
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 				if (out != Az_lsp_lsp_new[i+M*k])
 				begin
 					$display($time, " ERROR: lsp_new[%d] = %x, expected = %x", i+M*k, out, Az_lsp_lsp_new[i+M*k]);
 					flag1 = 1;
 				end
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 			end	
 			
 			if (flag1)
@@ -589,34 +595,34 @@ module G729_Top_Test_v;
 			flag1 = 0;
 			flag2 = 0;
 			@(posedge clock);
-			@(posedge clock) #5;
+			@(posedge clock);
 			
 			for (i = 0; i<M;i=i+1)
 			begin		
 				outBufAddr = LSP_NEW_Q + i;
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 				if (out != Qua_lsp_lsp_new_q[i+M*k])
 				begin
 					$display($time, " ERROR: lsp_new_q[%d] = %x, expected = %x", i+M*k, out, Qua_lsp_lsp_new_q[i+M*k]);
 					flag1 = 1;
 				end
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 			end	
 			
 			for (i = 0; i<PRM_SIZE;i=i+1)
 			begin		
 				outBufAddr = PRM + i;
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 				if (out != Qua_lsp_ana[i+PRM_SIZE*k])
 				begin
 					$display($time, " ERROR: ana[%d] = %x, expected = %x", i+PRM_SIZE*k, out, Qua_lsp_ana[i+PRM_SIZE*k]);
 					flag2 = 1;
 				end
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 			end	
 			
 			if (flag1)
@@ -639,63 +645,63 @@ module G729_Top_Test_v;
 			flag2 = 0;
 			flag3 = 0;
 			@(posedge clock);
-			@(posedge clock) #5;
+			@(posedge clock);
 
 			for (i = 0; i<M;i=i+1)
 			begin		
 				@(posedge clock);
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 				outBufAddr = {INTERPOLATION_LSF_INT[11:4],i[3:0]};
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 				if (out != Int_lpc_lsf_int[i+M*k])
 				begin
 					$display($time, " ERROR: lsf_int[%d] = %x, expected = %x", i+M*k, out, Int_lpc_lsf_int[i+M*k]);
 					flag1 = 1;
 				end
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 			end
 
 			@(posedge clock);
-			@(posedge clock) #5;
+			@(posedge clock);
 
 			for (i = 0; i<M;i=i+1)
 			begin		
 				@(posedge clock);
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 				outBufAddr = {INTERPOLATION_LSF_NEW[11:4],i[3:0]};
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 				if (out != Int_lpc_lsf_new[i+M*k])
 				begin
 					$display($time, " ERROR: lsf_new[%d] = %x, expected = %x", i+M*k, out, Int_lpc_lsf_new[i+M*k]);
 					flag2 = 1;
 				end
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 			end
 
 			@(posedge clock);
-			@(posedge clock) #5;
+			@(posedge clock);
 			
 			for (i = 0; i<MP1; i=i+1)
 			begin		
 				@(posedge clock);
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 				outBufAddr = {A_T_LOW[11:4],i[3:0]};
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 				if (out != Int_lpc_A_t[i+MP1*k])
 				begin
 					$display($time, " ERROR: A_t[%d] = %x, expected = %x", i+MP1*k, out, Int_lpc_A_t[i+MP1*k]);
 					flag3 = 1;
 				end
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 			end
 
 			if (flag1)
@@ -718,26 +724,26 @@ module G729_Top_Test_v;
 			testdone = 0;
 			flag1 = 0;
 			@(posedge clock);
-			@(posedge clock) #5;
+			@(posedge clock);
 
 			for (i = 0; i<(MP1*2); i=i+1)
 			begin		
 				@(posedge clock);
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 				if (i < MP1)
 					outBufAddr = AQ_T_LOW + i;
 				else
 					outBufAddr = AQ_T_HIGH + (i%MP1);
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 				if (out != Int_qlpc_Aq_t[i+(MP1*2)*k])
 				begin
 					$display($time, " ERROR: Aq_t[%d] = %x, expected = %x", i+(MP1*2)*k, out, Int_qlpc_Aq_t[i+(MP1*2)*k]);
 					flag1 = 1;
 				end
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 			end
 			
 			if (flag1)
@@ -757,40 +763,40 @@ module G729_Top_Test_v;
 			flag1 = 0;
 			flag2 = 0;
 			@(posedge clock);
-			@(posedge clock) #5;
+			@(posedge clock);
 			
 			for (i = 0; i<M; i=i+1)
 			begin		
 				@(posedge clock);
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 				outBufAddr = LSP_OLD + i;
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 				if (out != TL_Math1_lsp_old[i+M*k])
 				begin
 					$display($time, " ERROR: lsp_old[%d] = %x, expected = %x", i+M*k, out, TL_Math1_lsp_old[i+M*k]);
 					flag1 = 1;
 				end
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 			end
 			
 			for (i = 0; i<M; i=i+1)
 			begin		
 				@(posedge clock);
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 				outBufAddr = LSP_OLD_Q + i;
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 				if (out != TL_Math1_lsp_old_q[i+M*k])
 				begin
 					$display($time, " ERROR: lsp_old_q[%d] = %x, expected = %x", i+M*k, out, TL_Math1_lsp_old_q[i+M*k]);
 					flag2 = 1;
 				end
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 			end
 			
 			if (flag1)
@@ -815,74 +821,74 @@ module G729_Top_Test_v;
 			flag3 = 0;
 			flag4 = 0;
 			@(posedge clock);
-			@(posedge clock) #5;
+			@(posedge clock);
 			
 			for (i = 0; i<2; i=i+1)
 			begin		
 				@(posedge clock);
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 				outBufAddr = PERC_VAR_GAMMA1 + i;
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 				if (out != perc_var_gamma1[i+2*k])
 				begin
 					$display($time, " ERROR: gamma1[%d] = %x, expected = %x", i+2*k, out, perc_var_gamma1[i+2*k]);
 					flag1 = 1;
 				end
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 			end
 			
 			for (i = 0; i<2; i=i+1)
 			begin		
 				@(posedge clock);
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 				outBufAddr = PERC_VAR_GAMMA2 + i;
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 				if (out != perc_var_gamma2[i+2*k])
 				begin
 					$display($time, " ERROR: gamma2[%d] = %x, expected = %x", i+2*k, out, perc_var_gamma2[i+2*k]);
 					flag2 = 1;
 				end
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 			end
 
 			for (i = 0; i<M; i=i+1)
 			begin		
 				@(posedge clock);
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 				outBufAddr = INTERPOLATION_LSF_INT + i;
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 				if (out != perc_var_lsf_int[i+M*k])
 				begin
 					$display($time, " ERROR: lsf_int[%d] = %x, expected = %x", i+M*k, out, perc_var_lsf_int[i+M*k]);
 					flag3 = 1;
 				end
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 			end
 
 			for (i = 0; i<M; i=i+1)
 			begin		
 				@(posedge clock);
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 				outBufAddr = INTERPOLATION_LSF_NEW + i;
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 				if (out != perc_var_lsf_new[i+M*k])
 				begin
 					$display($time, " ERROR: lsf_new[%d] = %x, expected = %x", i+M*k, out, perc_var_lsf_new[i+M*k]);
 					flag4 = 1;
 				end
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 			end
 			
 			if (flag1)
@@ -907,20 +913,20 @@ module G729_Top_Test_v;
 			testdone = 0;
 			flag1 = 0;
 			@(posedge clock);
-			@(posedge clock) #5;
+			@(posedge clock);
 			
 			for (i = 0; i<MP1;i=i+1)
 			begin		
 				outBufAddr = WEIGHT_AZ_AP_OUT + i;
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 				if (out != Weight_Az1_Ap1[i+MP1*k])
 				begin
 					$display($time, " ERROR: Ap1[%d] = %x, expected = %x", i+MP1*k, out, Weight_Az1_Ap1[i+MP1*k]);
 					flag1 = 1;
 				end
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 			end	
 			
 			if (flag1)
@@ -939,20 +945,20 @@ module G729_Top_Test_v;
 			testdone = 0;
 			flag1 = 0;
 			@(posedge clock);
-			@(posedge clock) #5;
+			@(posedge clock);
 			
 			for (i = 0; i<MP1;i=i+1)
 			begin		
 				outBufAddr = WEIGHT_AZ_AP_OUT2 + i;
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 				if (out != Weight_Az2_Ap2[i+MP1*k])
 				begin
 					$display($time, " ERROR: Ap2[%d] = %x, expected = %x", i+MP1*k, out, Weight_Az2_Ap2[i+MP1*k]);
 					flag1 = 1;
 				end
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 			end	
 			
 			if (flag1)
@@ -971,20 +977,20 @@ module G729_Top_Test_v;
 			testdone = 0;
 			flag1 = 0;
 			@(posedge clock);
-			@(posedge clock) #5;
+			@(posedge clock);
 			
 			for (i = 0; i<L_SUBFR;i=i+1)
 			begin		
 				outBufAddr = WSP + i;
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 				if (out != Residu1_wsp[i+L_SUBFR*k])
 				begin
 					$display($time, " ERROR: wsp[%d] = %x, expected = %x", i+L_SUBFR*k, out, Residu1_wsp[i+L_SUBFR*k]);
 					flag1 = 1;
 				end
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 			end	
 			
 			if (flag1)
@@ -1004,40 +1010,40 @@ module G729_Top_Test_v;
 			flag1 = 0;
 			flag2 = 0;
 			@(posedge clock);
-			@(posedge clock) #5;
+			@(posedge clock);
 			
 			for (i = 0; i<L_SUBFR; i=i+1)
 			begin		
 				@(posedge clock);
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 				outBufAddr = WSP + i;
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 				if (out != Syn_filt1_wsp[i+L_SUBFR*k])
 				begin
 					$display($time, " ERROR: wsp[%d] = %x, expected = %x", i+L_SUBFR*k, out, Syn_filt1_wsp[i+L_SUBFR*k]);
 					flag1 = 1;
 				end
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 			end
 			
 			for (i = 0; i<M; i=i+1)
 			begin		
 				@(posedge clock);
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 				outBufAddr = MEM_W + i;
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 				if (out != Syn_filt1_mem_w[i+M*k])
 				begin
 					$display($time, " ERROR: mem_w[%d] = %x, expected = %x", i+M*k, out, Syn_filt1_mem_w[i+M*k]);
 					flag2 = 1;
 				end
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 			end
 			
 			if (flag1)
@@ -1058,20 +1064,20 @@ module G729_Top_Test_v;
 			testdone = 0;
 			flag1 = 0;
 			@(posedge clock);
-			@(posedge clock) #5;
+			@(posedge clock);
 			
 			for (i = 0; i<MP1;i=i+1)
 			begin		
 				outBufAddr = WEIGHT_AZ_AP_OUT + i;
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 				if (out != Weight_Az3_Ap1[i+MP1*k])
 				begin
 					$display($time, " ERROR: Ap1[%d] = %x, expected = %x", i+MP1*k, out, Weight_Az3_Ap1[i+MP1*k]);
 					flag1 = 1;
 				end
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 			end	
 			
 			if (flag1)
@@ -1090,20 +1096,20 @@ module G729_Top_Test_v;
 			testdone = 0;
 			flag1 = 0;
 			@(posedge clock);
-			@(posedge clock) #5;
+			@(posedge clock);
 			
 			for (i = 0; i<MP1;i=i+1)
 			begin		
 				outBufAddr = WEIGHT_AZ_AP_OUT2 + i;
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 				if (out != Weight_Az4_Ap2[i+MP1*k])
 				begin
 					$display($time, " ERROR: Ap2[%d] = %x, expected = %x", i+MP1*k, out, Weight_Az4_Ap2[i+MP1*k]);
 					flag1 = 1;
 				end
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 			end	
 			
 			if (flag1)
@@ -1122,20 +1128,20 @@ module G729_Top_Test_v;
 			testdone = 0;
 			flag1 = 0;
 			@(posedge clock);
-			@(posedge clock) #5;
+			@(posedge clock);
 			
 			for (i = 0; i<L_SUBFR;i=i+1)
 			begin		
 				outBufAddr = WSP + L_SUBFR + i;
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 				if (out != Residu2_wsp[i+L_SUBFR*k])
 				begin
 					$display($time, " ERROR: wsp[L_SUBFR+%d] = %x, expected = %x", i+L_SUBFR*k, out, Residu2_wsp[i+L_SUBFR*k]);
 					flag1 = 1;
 				end
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 			end	
 			
 			if (flag1)
@@ -1155,40 +1161,40 @@ module G729_Top_Test_v;
 			flag1 = 0;
 			flag2 = 0;
 			@(posedge clock);
-			@(posedge clock) #5;
+			@(posedge clock);
 			
 			for (i = 0; i<L_SUBFR; i=i+1)
 			begin		
 				@(posedge clock);
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 				outBufAddr = WSP + L_SUBFR + i;
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 				if (out != Syn_filt2_wsp[i+L_SUBFR*k])
 				begin
 					$display($time, " ERROR: wsp[L_SUBFR+%d] = %x, expected = %x", i+L_SUBFR*k, out, Syn_filt2_wsp[i+L_SUBFR*k]);
 					flag1 = 1;
 				end
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 			end
 			
 			for (i = 0; i<M; i=i+1)
 			begin		
 				@(posedge clock);
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 				outBufAddr = MEM_W + i;
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 				if (out != Syn_filt2_mem_w[i+M*k])
 				begin
 					$display($time, " ERROR: mem_w[%d] = %x, expected = %x", i+M*k, out, Syn_filt2_mem_w[i+M*k]);
 					flag2 = 1;
 				end
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 			end
 			
 			if (flag1)
@@ -1209,18 +1215,18 @@ module G729_Top_Test_v;
 			testdone = 0;
 			flag1 = 0;
 			@(posedge clock);
-			@(posedge clock) #5;
+			@(posedge clock);
 			
 			outBufAddr = T_OP;
 			@(posedge clock);
-			@(posedge clock) #5;
+			@(posedge clock);
 			if (out != Pitch_ol_T_op[k])
 			begin
 				$display($time, " ERROR: T_op[%d] = %x, expected = %x", k, out, Pitch_ol_T_op[k]);
 				flag1 = 1;
 			end
 			@(posedge clock);
-			@(posedge clock) #5;
+			@(posedge clock);
 			
 			if (flag1)
 				$display($time, "!!!!!Pitch_ol Failed: T_op!!!!!");
@@ -1237,7 +1243,7 @@ module G729_Top_Test_v;
 			wait(done);
 			testdone = 0;
 			@(posedge clock);
-			@(posedge clock) #5;
+			@(posedge clock);
 			$display($time, "*****TL_Math2 Completed Successfully*****");
 
 		//////////////////////////////////////////////////////////////////////////////////////////////
@@ -1250,26 +1256,26 @@ module G729_Top_Test_v;
 			begin
 
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 				testdone = 1;
 				wait(done);
 				testdone = 0;
 				flag1 = 0;
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 				
 				for (i = 0; i<MP1;i=i+1)
 				begin		
 					outBufAddr = WEIGHT_AZ_AP_OUT + i;
 					@(posedge clock);
-					@(posedge clock) #5;
+					@(posedge clock);
 					if (out != Weight_Az5_Ap1[(2*k+z)*MP1+i])
 					begin
 						$display($time, " ERROR: Ap1[%d] = %x, expected = %x", (2*k+z)*MP1+i, out, Weight_Az5_Ap1[(2*k+z)*MP1+i]);
 						flag1 = 1;
 					end
 					@(posedge clock);
-					@(posedge clock) #5;
+					@(posedge clock);
 				end	
 				
 				if (flag1)
@@ -1288,20 +1294,20 @@ module G729_Top_Test_v;
 				testdone = 0;
 				flag1 = 0;
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 				
 				for (i = 0; i<MP1;i=i+1)
 				begin		
 					outBufAddr = WEIGHT_AZ_AP_OUT2 + i;
 					@(posedge clock);
-					@(posedge clock) #5;
+					@(posedge clock);
 					if (out != Weight_Az6_Ap2[(2*k+z)*MP1+i])
 					begin
 						$display($time, " ERROR: Ap2[%d] = %x, expected = %x", (2*k+z)*MP1+i, out, Weight_Az6_Ap2[(2*k+z)*MP1+i]);
 						flag1 = 1;
 					end
 					@(posedge clock);
-					@(posedge clock) #5;
+					@(posedge clock);
 				end	
 				
 				if (flag1)
@@ -1320,20 +1326,20 @@ module G729_Top_Test_v;
 				testdone = 0;
 				flag1 = 0;
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 				
 				for (i = 0; i<MP1;i=i+1)
 				begin		
 					outBufAddr = AI_ZERO + i;
 					@(posedge clock);
-					@(posedge clock) #5;
+					@(posedge clock);
 					if (out != TL_Math3_ai_zero[(2*k+z)*MP1+i])
 					begin
 						$display($time, " ERROR: ai_zero[%d] = %x, expected = %x", (2*k+z)*MP1+i, out, TL_Math3_ai_zero[(2*k+z)*MP1+i]);
 						flag1 = 1;
 					end
 					@(posedge clock);
-					@(posedge clock) #5;
+					@(posedge clock);
 				end	
 				
 				if (flag1)
@@ -1353,40 +1359,40 @@ module G729_Top_Test_v;
 				flag1 = 0;
 				flag2 = 0;
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 				
 				for (i = 0; i<L_SUBFR; i=i+1)
 				begin		
 					@(posedge clock);
 					@(posedge clock);
-					@(posedge clock) #5;
+					@(posedge clock);
 					outBufAddr = H1 + i;
 					@(posedge clock);
-					@(posedge clock) #5;
+					@(posedge clock);
 					if (out != Syn_filt3_h1[(2*k+z)*L_SUBFR+i])
 					begin
 						$display($time, " ERROR: h1[%d] = %x, expected = %x", (2*k+z)*L_SUBFR+i, out, Syn_filt3_h1[(2*k+z)*L_SUBFR+i]);
 						flag1 = 1;
 					end
 					@(posedge clock);
-					@(posedge clock) #5;
+					@(posedge clock);
 				end
 				
 				for (i = 0; i<M; i=i+1)
 				begin		
 					@(posedge clock);
 					@(posedge clock);
-					@(posedge clock) #5;
+					@(posedge clock);
 					outBufAddr = ZERO + i;
 					@(posedge clock);
-					@(posedge clock) #5;
+					@(posedge clock);
 					if (out != Syn_filt3_zero[(2*k+z)*M+i])
 					begin
 						$display($time, " ERROR: zero[%d] = %x, expected = %x", (2*k+z)*M+i, out, Syn_filt3_zero[(2*k+z)*M+i]);
 						flag2 = 1;
 					end
 					@(posedge clock);
-					@(posedge clock) #5;
+					@(posedge clock);
 				end
 				
 				if (flag1)
@@ -1408,40 +1414,40 @@ module G729_Top_Test_v;
 				flag1 = 0;
 				flag2 = 0;
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 				
 				for (i = 0; i<L_SUBFR; i=i+1)
 				begin		
 					@(posedge clock);
 					@(posedge clock);
-					@(posedge clock) #5;
+					@(posedge clock);
 					outBufAddr = H1 + i;
 					@(posedge clock);
-					@(posedge clock) #5;
+					@(posedge clock);
 					if (out != Syn_filt4_h1[(2*k+z)*L_SUBFR+i])
 					begin
 						$display($time, " ERROR: h1[%d] = %x, expected = %x", (2*k+z)*L_SUBFR+i, out, Syn_filt4_h1[(2*k+z)*L_SUBFR+i]);
 						flag1 = 1;
 					end
 					@(posedge clock);
-					@(posedge clock) #5;
+					@(posedge clock);
 				end
 				
 				for (i = 0; i<M; i=i+1)
 				begin		
 					@(posedge clock);
 					@(posedge clock);
-					@(posedge clock) #5;
+					@(posedge clock);
 					outBufAddr = ZERO + i;
 					@(posedge clock);
-					@(posedge clock) #5;
+					@(posedge clock);
 					if (out != Syn_filt4_zero[(2*k+z)*M+i])
 					begin
 						$display($time, " ERROR: zero[%d] = %x, expected = %x", (2*k+z)*M+i, out, Syn_filt4_zero[(2*k+z)*M+i]);
 						flag2 = 1;
 					end
 					@(posedge clock);
-					@(posedge clock) #5;
+					@(posedge clock);
 				end
 				
 				if (flag1)
@@ -1462,7 +1468,7 @@ module G729_Top_Test_v;
 				testdone = 0;
 				flag1 = 0;
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 				
 				for (i = 0; i<L_SUBFR;i=i+1)
 				begin
@@ -1471,7 +1477,7 @@ module G729_Top_Test_v;
 					else
 						outBufAddr = EXC + L_SUBFR + i;
 					@(posedge clock);
-					@(posedge clock) #5;
+					@(posedge clock);
 					if (out != Residu3_exc[(2*k+z)*L_SUBFR+i])
 					begin
 						if (z == 'd0)
@@ -1481,7 +1487,7 @@ module G729_Top_Test_v;
 						flag1 = 1;
 					end
 					@(posedge clock);
-					@(posedge clock) #5;
+					@(posedge clock);
 				end	
 				
 				if (flag1)
@@ -1506,40 +1512,40 @@ module G729_Top_Test_v;
 				flag1 = 0;
 				flag2 = 0;
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 				
 				for (i = 0; i<L_SUBFR; i=i+1)
 				begin		
 					@(posedge clock);
 					@(posedge clock);
-					@(posedge clock) #5;
+					@(posedge clock);
 					outBufAddr = ERROR + i;
 					@(posedge clock);
-					@(posedge clock) #5;
+					@(posedge clock);
 					if (out != Syn_filt5_error[(2*k+z)*L_SUBFR+i])
 					begin
 						$display($time, " ERROR: error[%d] = %x, expected = %x", (2*k+z)*L_SUBFR+i, out, Syn_filt5_error[(2*k+z)*L_SUBFR+i]);
 						flag1 = 1;
 					end
 					@(posedge clock);
-					@(posedge clock) #5;
+					@(posedge clock);
 				end
 				
 				for (i = 0; i<M; i=i+1)
 				begin		
 					@(posedge clock);
 					@(posedge clock);
-					@(posedge clock) #5;
+					@(posedge clock);
 					outBufAddr = MEM_ERR + i;
 					@(posedge clock);
-					@(posedge clock) #5;
+					@(posedge clock);
 					if (out != Syn_filt5_mem_err[(2*k+z)*M+i])
 					begin
 						$display($time, " ERROR: mem_err[%d] = %x, expected = %x", (2*k+z)*M+i, out, Syn_filt5_mem_err[(2*k+z)*M+i]);
 						flag2 = 1;
 					end
 					@(posedge clock);
-					@(posedge clock) #5;
+					@(posedge clock);
 				end
 				
 				if (flag1)
@@ -1560,20 +1566,20 @@ module G729_Top_Test_v;
 				testdone = 0;
 				flag1 = 0;
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 				
 				for (i = 0; i<L_SUBFR;i=i+1)
 				begin
 					outBufAddr = XN + i;
 					@(posedge clock);
-					@(posedge clock) #5;
+					@(posedge clock);
 					if (out != Residu4_xn[(2*k+z)*L_SUBFR+i])
 					begin
 						$display($time, " ERROR: xn[%d] = %x, expected = %x", (2*k+z)*L_SUBFR+i, out, Residu4_xn[(2*k+z)*L_SUBFR+i]);
 						flag1 = 1;
 					end
 					@(posedge clock);
-					@(posedge clock) #5;
+					@(posedge clock);
 				end	
 				
 				if (flag1)
@@ -1593,40 +1599,40 @@ module G729_Top_Test_v;
 				flag1 = 0;
 				flag2 = 0;
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 				
 				for (i = 0; i<L_SUBFR; i=i+1)
 				begin		
 					@(posedge clock);
 					@(posedge clock);
-					@(posedge clock) #5;
+					@(posedge clock);
 					outBufAddr = XN + i;
 					@(posedge clock);
-					@(posedge clock) #5;
+					@(posedge clock);
 					if (out != Syn_filt6_xn[(2*k+z)*L_SUBFR+i])
 					begin
 						$display($time, " ERROR: xn[%d] = %x, expected = %x", (2*k+z)*L_SUBFR+i, out, Syn_filt6_xn[(2*k+z)*L_SUBFR+i]);
 						flag1 = 1;
 					end
 					@(posedge clock);
-					@(posedge clock) #5;
+					@(posedge clock);
 				end
 				
 				for (i = 0; i<M; i=i+1)
 				begin		
 					@(posedge clock);
 					@(posedge clock);
-					@(posedge clock) #5;
+					@(posedge clock);
 					outBufAddr = MEM_W0 + i;
 					@(posedge clock);
-					@(posedge clock) #5;
+					@(posedge clock);
 					if (out != Syn_filt6_mem_w0[(2*k+z)*M+i])
 					begin
 						$display($time, " ERROR: mem_w0[%d] = %x, expected = %x", (2*k+z)*M+i, out, Syn_filt6_mem_w0[(2*k+z)*M+i]);
 						flag2 = 1;
 					end
 					@(posedge clock);
-					@(posedge clock) #5;
+					@(posedge clock);
 				end
 				
 				if (flag1)
@@ -1646,7 +1652,7 @@ module G729_Top_Test_v;
 				wait(done);
 				testdone = 0;
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 				$display($time, "*****Pitch_fr3 Completed Successfully*****");
 
 	//////////////////////////////////////////////////////////////////////////////////////////////
@@ -1659,7 +1665,7 @@ module G729_Top_Test_v;
 				wait(done);
 				testdone = 0;
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 				$display($time, "*****Enc_lag3 Completed Successfully*****");
 
 	//////////////////////////////////////////////////////////////////////////////////////////////
@@ -1674,7 +1680,7 @@ module G729_Top_Test_v;
 					wait(done);
 					testdone = 0;
 					@(posedge clock);
-					@(posedge clock) #5;
+					@(posedge clock);
 					$display($time, "*****Parity_Pitch Completed Successfully*****");
 				end
 
@@ -1689,7 +1695,7 @@ module G729_Top_Test_v;
 				testdone = 0;
 				flag1 = 0;
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 				
 				for (i = 0; i<L_SUBFR;i=i+1)
 				begin
@@ -1698,7 +1704,7 @@ module G729_Top_Test_v;
 					else
 						outBufAddr = EXC + L_SUBFR + i;
 					@(posedge clock);
-					@(posedge clock) #5;
+					@(posedge clock);
 					if (out != Pred_lt_3_exc[(2*k+z)*L_SUBFR+i])
 					begin
 						if (z == 'd0)
@@ -1708,7 +1714,7 @@ module G729_Top_Test_v;
 						flag1 = 1;
 					end
 					@(posedge clock);
-					@(posedge clock) #5;
+					@(posedge clock);
 				end	
 				
 				if (flag1)
@@ -1732,20 +1738,20 @@ module G729_Top_Test_v;
 				testdone = 0;
 				flag1 = 0;
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 				
 				for (i = 0; i<L_SUBFR;i=i+1)
 				begin
 					outBufAddr = Y1 + i;
 					@(posedge clock);
-					@(posedge clock) #5;
+					@(posedge clock);
 					if (out != Convolve_y1[(2*k+z)*L_SUBFR+i])
 					begin
 						$display($time, " ERROR: y1[%d] = %x, expected = %x", (2*k+z)*L_SUBFR+i, out, Convolve_y1[(2*k+z)*L_SUBFR+i]);
 						flag1 = 1;
 					end
 					@(posedge clock);
-					@(posedge clock) #5;
+					@(posedge clock);
 				end	
 				
 				if (flag1)
@@ -1763,7 +1769,7 @@ module G729_Top_Test_v;
 				wait(done);
 				testdone = 0;
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 				$display($time, "*****G_pitch Completed Successfully*****");
 
 	//////////////////////////////////////////////////////////////////////////////////////////////
@@ -1776,8 +1782,40 @@ module G729_Top_Test_v;
 				wait(done);
 				testdone = 0;
 				@(posedge clock);
-				@(posedge clock) #5;
+				@(posedge clock);
 				$display($time, "*****test_err Completed Successfully*****");
+
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//		TL_Math4
+	//
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	
+				testdone = 1;
+				wait(done);
+				testdone = 0;
+				flag1 = 0;
+				@(posedge clock);
+				@(posedge clock);
+				
+				for (i = 0; i<L_SUBFR;i=i+1)
+				begin
+					outBufAddr = XN2 + i;
+					@(posedge clock);
+					@(posedge clock);
+					if (out != TL_Math4_xn2[(2*k+z)*L_SUBFR+i])
+					begin
+						$display($time, " ERROR: xn2[%d] = %x, expected = %x", (2*k+z)*L_SUBFR+i, out, TL_Math4_xn2[(2*k+z)*L_SUBFR+i]);
+						flag1 = 1;
+					end
+					@(posedge clock);
+					@(posedge clock);
+				end	
+				
+				if (flag1)
+					$display($time, "!!!!!TL_Math4 Failed: xn2!!!!!");
+				else
+					$display($time, "*****TL_Math4 Completed Successfully*****");
 
 			end//z for loop
 		end//k for loop

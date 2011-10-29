@@ -161,6 +161,7 @@ module G729_FSM(clock,reset,start,divErr,
 	 parameter SUB_MODULE_CONVOLVE_DONE = 6'd41;
 	 parameter SUB_MODULE_G_PITCH_DONE = 6'd42;
 	 parameter SUB_MODULE_TEST_ERR_DONE = 6'd43;
+	 parameter SUB_MODULE_MATH4_DONE = 6'd44;
 
 	 
 	 parameter TL_FOR_LOOP_INC = 6'd62;
@@ -569,6 +570,7 @@ module G729_FSM(clock,reset,start,divErr,
 					LDA_Addr = 1;
 					LDAq_Addr = 1;
 					reseti_gamma = 1;
+					mathMuxSel = 6'd19;
 					nextsubModuleState = TL_FOR_LOOP;
 				end				
 			end//SUB_MODULE_MATH2_DONE		
@@ -742,6 +744,7 @@ module G729_FSM(clock,reset,start,divErr,
 					LDindex = 1; 
 					LDT0_min = 1; 
 					LDT0_max = 1;
+					mathMuxSel = 6'd30;
 					nextsubModuleState = LOAD_ANA_2_7;
 				end				
 			end//SUB_MODULE_ENC_LAG3_DONE		
@@ -828,13 +831,26 @@ module G729_FSM(clock,reset,start,divErr,
 					nextsubModuleState = SUB_MODULE_TEST_ERR_DONE;
 				else if(test_errDone == 1)
 				begin
-					LDi_subfr = 1;
 					LDtemp = 1;
-					nextsubModuleState = TL_FOR_LOOP_INC;
+					mathMuxSel = 6'd36;
+					nextsubModuleState = SUB_MODULE_MATH4_DONE;
+					Math4Ready = 1;
 				end				
 			end//SUB_MODULE_TEST_ERR_DONE
 	
-	
+			SUB_MODULE_MATH4_DONE:
+			begin
+				mathMuxSel = 6'd36;
+				if(Math4Done == 0)
+					nextsubModuleState = SUB_MODULE_MATH4_DONE;
+				else if(Math4Done == 1)
+				begin
+					LDi_subfr = 1;
+					LDgain_pit = 1;
+					LDL_temp = 1;
+					nextsubModuleState = TL_FOR_LOOP_INC;
+				end				
+			end//SUB_MODULE_MATH4_DONE
 	
 	
 	
