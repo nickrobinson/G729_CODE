@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<spirit:design xmlns:spirit="http://www.spiritconsortium.org/XMLSchema/SPIRIT/1.4" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xilinx="http://www.xilinx.com" >
+   <spirit:vendor>xilinx.com</spirit:vendor>
+   <spirit:library>CoreGen</spirit:library>
+   <spirit:name>coregen</spirit:name>
+   <spirit:version>1.0</spirit:version>
+   <spirit:componentInstances>
+      <spirit:componentInstance>
+         <spirit:instanceName>CONSTANT_MEMORY</spirit:instanceName>
+         <spirit:displayName></spirit:displayName>
+         <spirit:description></spirit:description>
+         <spirit:componentRef spirit:vendor="xilinx.com" spirit:library="ip" spirit:name="blk_mem_gen" spirit:version="4.3" />
+         <spirit:configurableElementValues>
+            <spirit:configurableElementValue spirit:referenceId="parameter_port_b_write_rate">50</spirit:configurableElementValue>
+            <spirit:configurableElementValue spirit:referenceId="parameter_register_portb_output_of_memory_primitives">false</spirit:configurableElementValue>
+            <spirit:configurableElementValue spirit:referenceId="parameter_write_depth_a">4096</spirit:configurableElementValue>
+            <spirit:configurableElementValue spirit:referenceId="parameter_operating_mode_a">WRITE_FIRST</spirit:configurableElementValue>
+            <spirit:configurableElementValue spirit:referenceId="parameter_additional_inputs_for_power_estimation">false</spirit:configurableElementValue>
+            <spirit:configurableElementValue spirit:referenceId="parameter_operating_mode_b">WRITE_FIRST</spirit:configurableElementValue>
+            <spirit:configurableElementValue spirit:referenceId="parameter_softecc">false</spirit:configurableElementValue>
+            <spirit:configurableElementValue spirit:referenceId="parameter_register_porta_input_of_softecc">false</spirit:configurableElementValue>
+            <spirit:configurableElementValue spirit:referenceId="parameter_write_width_a">32</spirit:configurableElementValue>
+            <spirit:configurableElementValue spirit:referenceId="parameter_write_width_b">32</spirit:configurableElementValue>
+            <spirit:configurableElementValue spirit:referenceId="parameter_ecc">false</spirit:configurableElementValue>
+            <spirit:configurableElementValue spirit:referenceId="parameter_use_regcea_pin">false</spirit:configurableElementValue>
+            <spirit:configurableElementValue spirit:referenceId="parameter_primitive">8kx2</spirit:configurableElementValue>
+            <spirit:configurableElementValue spirit:referenceId="parameter_memory_type">Single_Port_RAM</spirit:configurableElementValue>
+            <spirit:configurableElementValue spirit:referenceId="parameter_use_rsta_pin">false</spirit:configurableElementValue>
+            <spirit:configurableElementValue spirit:referenceId="parameter_byte_size">9</spirit:configurableElementValue>
+            <spirit:configurableElementValue spirit:referenceId="parameter_disable_out_of_range_warnings">false</spirit:configurableElementValue>
+            <spirit:configurableElementValue spirit:referenceId="parameter_pipeline_stages">0</spirit:configurableElementValue>
+            <spirit:configurableElementValue spirit:referenceId="parameter_use_regceb_pin">false</spirit:configurableElementValue>
+            <spirit:configurableElementValue spirit:referenceId="parameter_remaining_memory_locations">0</spirit:configurableElementValue>
+            <spirit:configurableElementValue spirit:referenceId="parameter_reset_memory_latch_a">false</spirit:configurableElementValue>
+            <spirit:configurableElementValue spirit:referenceId="parameter_reset_memory_latch_b">false</spirit:configurableElementValue>
+            <spirit:configurableElementValue spirit:referenceId="parameter_use_byte_write_enable">false</spirit:configurableElementValue>
+            <spirit:configurableElementValue spirit:referenceId="parameter_enable_a">Always_Enabled</spirit:configurableElementValue>
+            <spirit:configurableElementValue spirit:referenceId="parameter_enable_b">Always_Enabled</spirit:configurableElementValue>
+            <spirit:configurableElementValue spirit:referenceId="parameter_port_a_enable_rate">100</spirit:configurableElementValue>
+            <spirit:configurableElementValue spirit:referenceId="parameter_use_rstb_pin">false</spirit:configurableElementValue>
+            <spirit:configurableElementValue spirit:referenceId="parameter_register_porta_output_of_memory_core">false</spirit:configurableElementValue>
+            <spirit:configurableElementValue spirit:referenceId="parameter_assume_synchronous_clk">false</spirit:configurableElementValue>
+            <spirit:configurableElementValue spirit:referenceId="parameter_disable_collision_warnings">false</spirit:configurableElementValue>
+            <spirit:configurableElementValue spirit:referenceId="parameter_port_a_write_rate">50</spirit:configurableElementValue>
+            <spirit:configurableElementValue spirit:referenceId="parameter_algorithm">Minimum_Area</spirit:configurableElementValue>
+            <spirit:configurableElementValue spirit:referenceId="parameter_fill_remaining_memory_locations">false</spirit:configurableElementValue>
+            <spirit:configurableElementValue spirit:referenceId="parameter_ecctype">No_ECC</spirit:configurableElementValue>
+            <spirit:configurableElementValue spirit:referenceId="parameter_port_b_clock">100</spirit:configurableElementValue>
+            <spirit:configurableElementValue spirit:referenceId="parameter_use_error_injection_pins">false</spirit:configurableElementValue>
+            <spirit:configurableElementValue spirit:referenceId="parameter_port_a_clock">100</spirit:configurableElementValue>
+            <spirit:configurableElementValue spirit:referenceId="parameter_read_width_a">32</spirit:configurableElementValue>
+            <spirit:configurableElementValue spirit:referenceId="parameter_read_width_b">32</spirit:configurableElementValue>
+            <spirit:configurableElementValue spirit:referenceId="parameter_reset_type">SYNC</spirit:configurableElementValue>
+            <spirit:configurableElementValue spirit:referenceId="parameter_register_porta_output_of_memory_primitives">false</spirit:configurableElementValue>
+            <spirit:configurableElementValue spirit:referenceId="parameter_register_portb_output_of_softecc">false</spirit:configurableElementValue>
+            <spirit:configurableElementValue spirit:referenceId="parameter_port_b_enable_rate">100</spirit:configurableElementValue>
+            <spirit:configurableElementValue spirit:referenceId="parameter_output_reset_value_a">0</spirit:configurableElementValue>
+            <spirit:configurableElementValue spirit:referenceId="parameter_output_reset_value_b">0</spirit:configurableElementValue>
+            <spirit:configurableElementValue spirit:referenceId="parameter_register_portb_output_of_memory_core">false</spirit:configurableElementValue>
+            <spirit:configurableElementValue spirit:referenceId="parameter_load_init_file">true</spirit:configurableElementValue>
+            <spirit:configurableElementValue spirit:referenceId="parameter_coe_file">C:\Users\Josh\Documents\School\Fall 2011\Senior Design I\Xilinx Modules\constants.coe</spirit:configurableElementValue>
+            <spirit:configurableElementValue spirit:referenceId="parameter_error_injection_type">Single_Bit_Error_Injection</spirit:configurableElementValue>
+            <spirit:configurableElementValue spirit:referenceId="parameter_collision_warnings">ALL</spirit:configurableElementValue>
+            <spirit:configurableElementValue spirit:referenceId="parameter_reset_priority_a">CE</spirit:configurableElementValue>
+            <spirit:configurableElementValue spirit:referenceId="parameter_reset_priority_b">CE</spirit:configurableElementValue>
+         </spirit:configurableElementValues>
+         <spirit:vendorExtensions>
+            <xilinx:instanceProperties>
+             <xilinx:projectOptions>
+               <xilinx:projectName>coregen</xilinx:projectName>
+               <xilinx:outputDirectory>./</xilinx:outputDirectory>
+               <xilinx:workingDirectory>./tmp/</xilinx:workingDirectory>
+               <xilinx:subWorkingDirectory>./tmp/_cg</xilinx:subWorkingDirectory>
+             </xilinx:projectOptions>
+             <xilinx:part>
+               <xilinx:device>xc5vlx50t</xilinx:device>
+               <xilinx:deviceFamily>virtex5</xilinx:deviceFamily>
+               <xilinx:package>ff1136</xilinx:package>
+               <xilinx:speedGrade>-1</xilinx:speedGrade>
+             </xilinx:part>
+             <xilinx:flowOptions>
+               <xilinx:busFormat>BusFormatAngleBracketNotRipped</xilinx:busFormat>
+               <xilinx:designEntry>Verilog</xilinx:designEntry>
+               <xilinx:asySymbol>true</xilinx:asySymbol>
+               <xilinx:flowVendor>Other</xilinx:flowVendor>
+               <xilinx:addPads>false</xilinx:addPads>
+               <xilinx:removeRPMs>false</xilinx:removeRPMs>
+               <xilinx:createNDF>false</xilinx:createNDF>
+               <xilinx:implementationFileType>Ngc</xilinx:implementationFileType>
+               <xilinx:formalVerification>false</xilinx:formalVerification>
+             </xilinx:flowOptions>
+             <xilinx:simulationOptions>
+               <xilinx:simulationModel>Behavioral</xilinx:simulationModel>
+               <xilinx:simulationLanguage>Verilog</xilinx:simulationLanguage>
+               <xilinx:foundationSym>false</xilinx:foundationSym>
+             </xilinx:simulationOptions>
+           </xilinx:instanceProperties>
+            <xilinx:generationHistory>
+               <xilinx:fileSet>
+                  <xilinx:name>customization_generator</xilinx:name>
+                  <xilinx:file>
+                     <xilinx:name>./CONSTANT_MEMORY.mif</xilinx:name>
+                     <xilinx:userFileType>mif</xilinx:userFileType>
+                     <xilinx:timeStamp>Mon Oct 24 17:49:02 GMT 2011</xilinx:timeStamp>
+                     <xilinx:checkSum>0x774C604E</xilinx:checkSum>
+                  </xilinx:file>
+               </xilinx:fileSet>
+               <xilinx:fileSet>
+                  <xilinx:name>ip_xco_generator</xilinx:name>
+                  <xilinx:file>
+                     <xilinx:name>./CONSTANT_MEMORY.xco</xilinx:name>
+                     <xilinx:userFileType>xco</xilinx:userFileType>
+                     <xilinx:timeStamp>Mon Oct 24 17:49:03 GMT 2011</xilinx:timeStamp>
+                     <xilinx:checkSum>0x6B1E1888</xilinx:checkSum>
+                  </xilinx:file>
+               </xilinx:fileSet>
+               <xilinx:fileSet>
+                  <xilinx:name>implementation_netlist_generator</xilinx:name>
+                  <xilinx:file>
+                     <xilinx:name>./CONSTANT_MEMORY.asy</xilinx:name>
+                     <xilinx:userFileType>asy</xilinx:userFileType>
+                     <xilinx:timeStamp>Mon Oct 24 17:49:52 GMT 2011</xilinx:timeStamp>
+                     <xilinx:checkSum>0x873F8539</xilinx:checkSum>
+                  </xilinx:file>
+                  <xilinx:file>
+                     <xilinx:name>./CONSTANT_MEMORY.mif</xilinx:name>
+                     <xilinx:userFileType>mif</xilinx:userFileType>
+                     <xilinx:timeStamp>Mon Oct 24 17:49:52 GMT 2011</xilinx:timeStamp>
+                     <xilinx:checkSum>0x774C604E</xilinx:checkSum>
+                  </xilinx:file>
+                  <xilinx:file>
+                     <xilinx:name>./CONSTANT_MEMORY.ngc</xilinx:name>
+                     <xilinx:userFileType>ngc</xilinx:userFileType>
+                     <xilinx:timeStamp>Mon Oct 24 17:52:56 GMT 2011</xilinx:timeStamp>
+                     <xilinx:checkSum>0x9F548125</xilinx:checkSum>
+                  </xilinx:file>
+                  <xilinx:file>
+                     <xilinx:name>./CONSTANT_MEMORY.v</xilinx:name>
+                     <xilinx:userFileType>verilog</xilinx:userFileType>
+                     <xilinx:timeStamp>Mon Oct 24 17:52:22 GMT 2011</xilinx:timeStamp>
+                     <xilinx:checkSum>0x2AB94BC1</xilinx:checkSum>
+                  </xilinx:file>
+                  <xilinx:file>
+                     <xilinx:name>./CONSTANT_MEMORY.veo</xilinx:name>
+                     <xilinx:userFileType>veo</xilinx:userFileType>
+                     <xilinx:timeStamp>Mon Oct 24 17:52:23 GMT 2011</xilinx:timeStamp>
+                     <xilinx:checkSum>0x88C08A84</xilinx:checkSum>
+                  </xilinx:file>
+                  <xilinx:file>
+                     <xilinx:name>./blk_mem_gen_ds512.pdf</xilinx:name>
+                     <xilinx:userFileType>pdf</xilinx:userFileType>
+                     <xilinx:timeStamp>Mon Oct 24 17:52:22 GMT 2011</xilinx:timeStamp>
+                     <xilinx:checkSum>0xFF542E99</xilinx:checkSum>
+                  </xilinx:file>
+                  <xilinx:file>
+                     <xilinx:name>./blk_mem_gen_readme.txt</xilinx:name>
+                     <xilinx:userFileType>txt</xilinx:userFileType>
+                     <xilinx:timeStamp>Mon Oct 24 17:52:22 GMT 2011</xilinx:timeStamp>
+                     <xilinx:checkSum>0xED96AB8B</xilinx:checkSum>
+                  </xilinx:file>
+               </xilinx:fileSet>
+               <xilinx:fileSet>
+                  <xilinx:name>instantiation_template_generator</xilinx:name>
+               </xilinx:fileSet>
+               <xilinx:fileSet>
+                  <xilinx:name>xco_generator</xilinx:name>
+                  <xilinx:file>
+                     <xilinx:name>./CONSTANT_MEMORY.xco</xilinx:name>
+                     <xilinx:userFileType>xco</xilinx:userFileType>
+                     <xilinx:timeStamp>Mon Oct 24 17:53:03 GMT 2011</xilinx:timeStamp>
+                     <xilinx:checkSum>0xCA04A710</xilinx:checkSum>
+                  </xilinx:file>
+               </xilinx:fileSet>
+               <xilinx:fileSet>
+                  <xilinx:name>xmdf_generator</xilinx:name>
+                  <xilinx:file>
+                     <xilinx:name>./CONSTANT_MEMORY_xmdf.tcl</xilinx:name>
+                     <xilinx:userFileType>tclXmdf</xilinx:userFileType>
+                     <xilinx:userFileType>tcl</xilinx:userFileType>
+                     <xilinx:timeStamp>Mon Oct 24 17:53:03 GMT 2011</xilinx:timeStamp>
+                     <xilinx:checkSum>0x3614BD86</xilinx:checkSum>
+                  </xilinx:file>
+               </xilinx:fileSet>
+               <xilinx:fileSet>
+                  <xilinx:name>ise_generator</xilinx:name>
+                  <xilinx:file>
+                     <xilinx:name>./CONSTANT_MEMORY.gise</xilinx:name>
+                     <xilinx:userFileType>ignore</xilinx:userFileType>
+                     <xilinx:userFileType>gise</xilinx:userFileType>
+                     <xilinx:timeStamp>Mon Oct 24 17:53:16 GMT 2011</xilinx:timeStamp>
+                     <xilinx:checkSum>0x9DEA0BED</xilinx:checkSum>
+                  </xilinx:file>
+                  <xilinx:file>
+                     <xilinx:name>./CONSTANT_MEMORY.xise</xilinx:name>
+                     <xilinx:userFileType>ignore</xilinx:userFileType>
+                     <xilinx:userFileType>xise</xilinx:userFileType>
+                     <xilinx:timeStamp>Mon Oct 24 17:53:16 GMT 2011</xilinx:timeStamp>
+                     <xilinx:checkSum>0xD3DE857D</xilinx:checkSum>
+                  </xilinx:file>
+                  <xilinx:file>
+                     <xilinx:name>./_xmsgs/pn_parser.xmsgs</xilinx:name>
+                     <xilinx:userFileType>ignore</xilinx:userFileType>
+                     <xilinx:userFileType>unknown</xilinx:userFileType>
+                     <xilinx:timeStamp>Mon Oct 24 17:53:15 GMT 2011</xilinx:timeStamp>
+                     <xilinx:checkSum>0x628319C5</xilinx:checkSum>
+                  </xilinx:file>
+               </xilinx:fileSet>
+               <xilinx:fileSet>
+                  <xilinx:name>deliver_readme_generator</xilinx:name>
+               </xilinx:fileSet>
+               <xilinx:fileSet>
+                  <xilinx:name>flist_generator</xilinx:name>
+                  <xilinx:file>
+                     <xilinx:name>./CONSTANT_MEMORY_flist.txt</xilinx:name>
+                     <xilinx:userFileType>ignore</xilinx:userFileType>
+                     <xilinx:userFileType>txtFlist</xilinx:userFileType>
+                     <xilinx:userFileType>txt</xilinx:userFileType>
+                     <xilinx:timeStamp>Mon Oct 24 17:53:17 GMT 2011</xilinx:timeStamp>
+                     <xilinx:checkSum>0x893AC834</xilinx:checkSum>
+                  </xilinx:file>
+               </xilinx:fileSet>
+               <xilinx:fileSet>
+                  <xilinx:name>view_readme_generator</xilinx:name>
+               </xilinx:fileSet>
+            </xilinx:generationHistory>
+         </spirit:vendorExtensions>
+      </spirit:componentInstance>
+   </spirit:componentInstances>
+   <spirit:description></spirit:description>
+   <spirit:vendorExtensions>
+      <xilinx:instanceProperties>
+       <xilinx:projectOptions>
+         <xilinx:projectName>coregen</xilinx:projectName>
+         <xilinx:outputDirectory>./</xilinx:outputDirectory>
+         <xilinx:workingDirectory>./tmp/</xilinx:workingDirectory>
+         <xilinx:subWorkingDirectory>./tmp/_cg</xilinx:subWorkingDirectory>
+       </xilinx:projectOptions>
+       <xilinx:part>
+         <xilinx:device>xc5vlx50t</xilinx:device>
+         <xilinx:deviceFamily>virtex5</xilinx:deviceFamily>
+         <xilinx:package>ff1136</xilinx:package>
+         <xilinx:speedGrade>-1</xilinx:speedGrade>
+       </xilinx:part>
+       <xilinx:flowOptions>
+         <xilinx:busFormat>BusFormatAngleBracketNotRipped</xilinx:busFormat>
+         <xilinx:designEntry>Verilog</xilinx:designEntry>
+         <xilinx:asySymbol>true</xilinx:asySymbol>
+         <xilinx:flowVendor>Other</xilinx:flowVendor>
+         <xilinx:addPads>false</xilinx:addPads>
+         <xilinx:removeRPMs>false</xilinx:removeRPMs>
+         <xilinx:createNDF>false</xilinx:createNDF>
+         <xilinx:implementationFileType>Ngc</xilinx:implementationFileType>
+         <xilinx:formalVerification>false</xilinx:formalVerification>
+       </xilinx:flowOptions>
+       <xilinx:simulationOptions>
+         <xilinx:simulationModel>Behavioral</xilinx:simulationModel>
+         <xilinx:simulationLanguage>Verilog</xilinx:simulationLanguage>
+         <xilinx:foundationSym>false</xilinx:foundationSym>
+       </xilinx:simulationOptions>
+     </xilinx:instanceProperties>
+   </spirit:vendorExtensions>
+</spirit:design>

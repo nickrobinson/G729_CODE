@@ -64,7 +64,7 @@ module lsp_decw_reset_pipe(clk, reset, start, done, memInTest, memReadAddrTest
    .doutb(memInTest)
    );
 	
-	Constant_Memory_Controller constMem(
+	Const_Memory_Controller constMem(
 	.addra(memReadAddr),
 	.dina(),
 	.douta(memIn),

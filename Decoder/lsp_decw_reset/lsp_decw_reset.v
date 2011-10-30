@@ -148,7 +148,7 @@ always @(*)
 			end
 			else
 			begin
-				xAddr = (FREQ_PREV_RESET - 1);
+				xAddr = FREQ_PREV_RESET;
 				yAddr = {FREQ_PREV[11:6],i[1:0],4'd0};		
 				add_a = copyAddOutA;
 				add_b = copyAddOutB;
