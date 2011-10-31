@@ -163,6 +163,10 @@ module G729_Top_Test_v;
 	//TL_Math4
 	reg [31:0] TL_Math4_xn2 [0:4999];
 
+	//ACELP_Codebook
+	reg [31:0] ACELP_Codebook_code [0:4999];
+	reg [31:0] ACELP_Codebook_y2 [0:4999];
+
 	//working integers
 	integer i;
 	integer k;
@@ -287,6 +291,10 @@ module G729_Top_Test_v;
 
 		//TL_Math4
 		$readmemh("TL_Math4_xn2.out", TL_Math4_xn2);
+
+		//ACELP_Codebook
+		$readmemh("ACELP_Codebook_code.out", ACELP_Codebook_code);
+		$readmemh("ACELP_Codebook_y2.out", ACELP_Codebook_y2);
 	end	
 
 	// Instantiate the Unit Under Test (UUT)
@@ -1816,6 +1824,54 @@ module G729_Top_Test_v;
 					$display($time, "!!!!!TL_Math4 Failed: xn2!!!!!");
 				else
 					$display($time, "*****TL_Math4 Completed Successfully*****");
+
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//		ACELP_Codebook
+	//
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	
+				testdone = 1;
+				wait(done);
+				testdone = 0;
+				flag1 = 0;
+				@(posedge clock);
+				@(posedge clock);
+				
+				for (i = 0; i<L_SUBFR;i=i+1)
+				begin
+					outBufAddr = CODE + i;
+					@(posedge clock);
+					@(posedge clock);
+					if (out != ACELP_Codebook_code[(2*k+z)*L_SUBFR+i])
+					begin
+						$display($time, " ERROR: code[%d] = %x, expected = %x", (2*k+z)*L_SUBFR+i, out, ACELP_Codebook_code[(2*k+z)*L_SUBFR+i]);
+						flag1 = 1;
+					end
+					@(posedge clock);
+					@(posedge clock);
+				end	
+				
+				for (i = 0; i<L_SUBFR;i=i+1)
+				begin
+					outBufAddr = Y2 + i;
+					@(posedge clock);
+					@(posedge clock);
+					if (out != ACELP_Codebook_y2[(2*k+z)*L_SUBFR+i])
+					begin
+						$display($time, " ERROR: y2[%d] = %x, expected = %x", (2*k+z)*L_SUBFR+i, out, ACELP_Codebook_y2[(2*k+z)*L_SUBFR+i]);
+						flag1 = 1;
+					end
+					@(posedge clock);
+					@(posedge clock);
+				end	
+
+				if (flag1)
+					$display($time, "!!!!!ACELP_Codebook Failed: code!!!!!");
+				if (flag2)
+					$display($time, "!!!!!ACELP_Codebook Failed: y2!!!!!");
+				if (!flag1 && !flag2)
+					$display($time, "*****ACELP_Codebook Completed Successfully*****");
 
 			end//z for loop
 		end//k for loop

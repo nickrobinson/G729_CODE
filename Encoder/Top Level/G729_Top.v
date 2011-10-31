@@ -185,6 +185,8 @@ module G729_Top(clock, reset, start,in, outBufAddr, out, testdone, done);
 	wire LDL_temp;
 	wire LDA_Addr;
 	wire LDAq_Addr;
+	wire LDsharp;
+	wire LDi;
 	wire resetk; 
 	wire reseti_subfr;
 	wire reseti_gamma;
@@ -200,6 +202,8 @@ module G729_Top(clock, reset, start,in, outBufAddr, out, testdone, done);
 	wire resetL_temp;
 	wire resetA_Addr;
 	wire resetAq_Addr;
+	wire resetsharp;
+	wire reseti;
 
 	G729_Pipe i_G729_Pipe(
 								.clock(clock),
@@ -253,6 +257,8 @@ module G729_Top(clock, reset, start,in, outBufAddr, out, testdone, done);
 								.LDL_temp(LDL_temp),
 								.LDA_Addr(LDA_Addr),
 								.LDAq_Addr(LDAq_Addr),
+								.LDsharp(LDsharp),
+								.LDi(LDi),
 								.resetk(resetk), 
 								.reseti_subfr(reseti_subfr),
 								.reseti_gamma(reseti_gamma),
@@ -268,6 +274,8 @@ module G729_Top(clock, reset, start,in, outBufAddr, out, testdone, done);
 								.resetL_temp(resetL_temp),
 								.resetA_Addr(resetA_Addr),
 								.resetAq_Addr(resetAq_Addr),
+								.resetsharp(resetsharp),
+								.reseti(reseti),
 								.mathMuxSel(mathMuxSel),
 								.frame_done(frame_done),
 								.autocorrDone(autocorrDone),
@@ -363,6 +371,8 @@ module G729_Top(clock, reset, start,in, outBufAddr, out, testdone, done);
 								.LDL_temp(LDL_temp),
 								.LDA_Addr(LDA_Addr),
 								.LDAq_Addr(LDAq_Addr),
+								.LDsharp(LDsharp),
+								.LDi(LDi),
 								.resetk(resetk), 
 								.reseti_subfr(reseti_subfr),
 								.reseti_gamma(reseti_gamma),
@@ -378,6 +388,8 @@ module G729_Top(clock, reset, start,in, outBufAddr, out, testdone, done);
 								.resetL_temp(resetL_temp),
 								.resetA_Addr(resetA_Addr),
 								.resetAq_Addr(resetAq_Addr),
+								.resetsharp(resetsharp),
+								.reseti(reseti),
 								.mathMuxSel(mathMuxSel),
 								.autocorrReady(autocorrReadyFSM),
 								.lagReady(lagReadyFSM),

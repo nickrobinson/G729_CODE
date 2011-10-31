@@ -2847,7 +2847,10 @@ begin
 		begin
 			shrVar1Out = i0;
 			shrVar2Out = 16'd2;
-			memOut = shrIn[15:0];
+			if (shrIn[15] == 1)
+				memOut = {16'hffff, shrIn};
+			else
+				memOut = {16'h0000, shrIn};
 			memWriteEn = 1;
 			memWriteAddr = {CODE[11:6],ip0[5:0]};
 			nextstate = S111;
@@ -2858,7 +2861,10 @@ begin
 		begin
 			shrVar1Out = i1;
 			shrVar2Out = 16'd2;
-			memOut = shrIn[15:0];
+			if (shrIn[15] == 1)
+				memOut = {16'hffff, shrIn};
+			else
+				memOut = {16'h0000, shrIn};
 			memWriteEn = 1;
 			memWriteAddr = {CODE[11:6],ip1[5:0]};
 			nextstate = S112;
@@ -2869,7 +2875,10 @@ begin
 		begin
 			shrVar1Out = i2;
 			shrVar2Out = 16'd2;
-			memOut = shrIn[15:0];
+			if (shrIn[15] == 1)
+				memOut = {16'hffff, shrIn};
+			else
+				memOut = {16'h0000, shrIn};
 			memWriteEn = 1;
 			memWriteAddr = {CODE[11:6],ip2[5:0]};
 			nextstate = S113;
@@ -2880,7 +2889,10 @@ begin
 		begin
 			shrVar1Out = i3;
 			shrVar2Out = 16'd2;
-			memOut = shrIn[15:0];
+			if (shrIn[15] == 1)
+				memOut = {16'hffff, shrIn};
+			else
+				memOut = {16'h0000, shrIn};
 			memWriteEn = 1;
 			memWriteAddr = {CODE[11:6],ip3[5:0]};
 			iReset = 1;
@@ -2946,7 +2958,10 @@ begin
 		begin
 			addOutA = temp[15:0];
 			addOutB = memIn[15:0];
-			memOut = addIn[15:0];
+			if (addIn[15] == 1)
+				memOut = {16'hffff, addIn[15:0]};
+			else
+				memOut = {16'h0000, addIn[15:0]};
 			memWriteAddr = {Y2[11:6],i[5:0]};
 			memWriteEn = 1;
 			L_addOutA = i;
@@ -2981,7 +2996,10 @@ begin
 		begin
 			subOutA = temp[15:0];
 			subOutB = memIn[15:0];
-			memOut = subIn[15:0];
+			if (subIn[15] == 1)
+				memOut = {16'hffff, subIn[15:0]};
+			else
+				memOut = {16'h0000, subIn[15:0]};
 			memWriteAddr = {Y2[11:6],i[5:0]};
 			memWriteEn = 1;
 			L_addOutA = i;
@@ -3036,7 +3054,10 @@ begin
 		begin
 			addOutA = temp[15:0];
 			addOutB = memIn[15:0];
-			memOut = addIn[15:0];
+			if (addIn[15] == 1)
+				memOut = {16'hffff, addIn[15:0]};
+			else
+				memOut = {16'h0000, addIn[15:0]};
 			memWriteAddr = {Y2[11:6],i[5:0]};
 			memWriteEn = 1;
 			L_addOutA = i;
@@ -3071,7 +3092,10 @@ begin
 		begin
 			subOutA = temp[15:0];
 			subOutB = memIn[15:0];
-			memOut = subIn[15:0];
+			if (subIn[15] == 1)
+				memOut = {16'hffff, subIn[15:0]};
+			else
+				memOut = {16'h0000, subIn[15:0]};
 			memWriteAddr = {Y2[11:6],i[5:0]};
 			memWriteEn = 1;
 			L_addOutA = i;
@@ -3126,7 +3150,10 @@ begin
 		begin
 			addOutA = temp[15:0];
 			addOutB = memIn[15:0];
-			memOut = addIn[15:0];
+			if (addIn[15] == 1)
+				memOut = {16'hffff, addIn[15:0]};
+			else
+				memOut = {16'h0000, addIn[15:0]};
 			memWriteAddr = {Y2[11:6],i[5:0]};
 			memWriteEn = 1;
 			L_addOutA = i;
@@ -3161,7 +3188,10 @@ begin
 		begin
 			subOutA = temp[15:0];
 			subOutB = memIn[15:0];
-			memOut = subIn[15:0];
+			if (subIn[15] == 1)
+				memOut = {16'hffff, subIn[15:0]};
+			else
+				memOut = {16'h0000, subIn[15:0]};
 			memWriteAddr = {Y2[11:6],i[5:0]};
 			memWriteEn = 1;
 			L_addOutA = i;
@@ -3219,7 +3249,10 @@ begin
 		begin
 			addOutA = temp[15:0];
 			addOutB = memIn[15:0];
-			memOut = addIn[15:0];
+			if (addIn[15] == 1)
+				memOut = {16'hffff, addIn[15:0]};
+			else
+				memOut = {16'h0000, addIn[15:0]};
 			memWriteAddr = {Y2[11:6],i[5:0]};
 			memWriteEn = 1;
 			L_addOutA = i;
@@ -3257,7 +3290,10 @@ begin
 		begin
 			subOutA = temp[15:0];
 			subOutB = memIn[15:0];
-			memOut = subIn[15:0];
+			if (subIn[15] == 1)
+				memOut = {16'hffff, subIn[15:0]};
+			else
+				memOut = {16'h0000, subIn[15:0]};
 			memWriteAddr = {Y2[11:6],i[5:0]};
 			memWriteEn = 1;
 			L_addOutA = i;

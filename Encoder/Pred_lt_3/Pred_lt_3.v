@@ -230,7 +230,7 @@ module Pred_lt_3(clk, start, reset, done, exc, t0, frac, L_subfr, writeAddr, wri
 						sub_a = exc;
 						sub_b = t0;
 						next_x0 = sub_in;												//x0 = &exc[-t0];
-						L_negate_out = {'d0, frac}; 
+						L_negate_out = {16'd0, frac}; 
 						next_frac1 = L_negate_in;									//frac = negate(frac);
 						nextstate = S2;
 					end

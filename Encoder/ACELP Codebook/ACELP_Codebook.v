@@ -26,7 +26,7 @@ module ACELP_Codebook(clk,reset,start,T0,pitch_sharp,i_subfr,shlIn,subIn,addIn,m
 							 L_shrNumShiftOut,L_negateOut,L_multOutA,L_multOutB,L_msuOutA,L_msuOutB,
 							 L_msuOutC,shrVar1Out,shrVar2Out,L_addOutA,L_addOutB,L_add2OutA,L_add2OutB,
 							 L_add3OutA,L_add3OutB,L_add4OutA,L_add4OutB,memReadAddr,memWriteAddr,memOut,
-							 memWriteEn,index,done);
+							 memWriteEn,index,i_out,done);
 
 `include "paramList.v"
 
@@ -81,6 +81,7 @@ output reg [11:0] memReadAddr,memWriteAddr;
 output reg [31:0] memOut;
 output reg memWriteEn;
 output [15:0] index;
+output reg [15:0] i_out;
 output reg done;
 
 //Internal regs
@@ -455,6 +456,7 @@ begin
 	memWriteAddr = 0;
    memOut = 0;
    memWriteEn = 0;
+	i_out = 0;
    done = 0;
 	
 	case(state)
@@ -695,7 +697,10 @@ begin
 		begin
 			addOutA = memIn[15:0];
 			addOutB = temp[15:0];
-			memOut = addIn[15:0];
+			if (addIn[15] == 1)
+				memOut = {16'hffff, addIn};
+			else
+				memOut = {16'h0000, addIn};
 			memWriteAddr = {CODE[11:6],i[5:0]};
 			memWriteEn = 1;
 			L_addOutA = i;
@@ -704,9 +709,16 @@ begin
 			iLD = 1;
 			nextstate = S9;
 		end//S11
-		
+
 		S12:
 		begin
+			memReadAddr = TOP_LEVEL_I;
+			nextstate = S13;
+		end
+		
+		S13:
+		begin
+			i_out = memIn;
 			done = 1;
 			nextstate = INIT;
 		end//S12
