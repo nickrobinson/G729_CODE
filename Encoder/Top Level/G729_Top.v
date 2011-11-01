@@ -18,18 +18,18 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module G729_Top(clock, reset, start,in, outBufAddr, out, testdone, done);
+module G729_Top(clock, reset, start, in, outBufAddr, out, testdone, done);
   
 	//inputs
 	input clock;
-   input reset;
+        input reset;
 	input start;
 	input [11:0] outBufAddr;
-   input [15:0] in;
+        input [15:0] in;
 	input testdone;
 	
 	//outputs
-   output [31:0] out;
+        output [31:0] out;
 	output reg done;
 	
 	//working wires
