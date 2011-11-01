@@ -19,11 +19,17 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module G729_FSM(clock,reset,start,divErr,frame_done,autocorrDone,lagDone,levinsonDone,AzDone,Qua_lspDone,
-				Int_lpcDone,Int_qlpcDone,Math1Done,perc_varDone,Weight_AzDone,ResiduDone,Syn_filtDone,Pitch_olDone,Math2Done,Math3Done,i_subfr,mathMuxSel,autocorrReady,lagReady,
-				levinsonReady, AzReady,Qua_lspReady,Int_lpcReady,Int_qlpcReady,Math1Ready,perc_varReady,Weight_AzReady,ResiduReady,Syn_filtReady,Pitch_olReady,Math2Ready,Math3Ready,LDk,LDi_subfr,
-				LDi_gamma,LDT_op,LDT0,LDT0_min,LDT0_max,LDT0_frac,LDgain_pit,LDgain_code,LDindex,LDtemp,LDA_Addr,LDAq_Addr,resetk,reseti_subfr,reseti_gamma,resetT_op,resetT0,resetT0_min,
-				resetT0_max,resetT0_frac,resetgain_pit,resetgain_code,resetindex,resettemp,resetA_Addr,resetAq_Addr,LDL_temp,resetL_temp,done);
+module G729_FSM(clock,reset,start,divErr,
+				frame_done,autocorrDone,lagDone,levinsonDone,AzDone,Qua_lspDone,Int_lpcDone,Int_qlpcDone,Math1Done,perc_varDone,Weight_AzDone,ResiduDone,Syn_filtDone,
+				Pitch_olDone,Math2Done,Math3Done,Pitch_fr3Done,Enc_lag3Done,Parity_PitchDone,Pred_lt_3Done,ConvolveDone,G_pitchDone,Math4Done,test_errDone,ACELP_CodebookDone,
+				Math5Done,Corr_xy2Done,Qua_gainDone,Math6Done,update_exc_errDone,Math7Done,CopyDone,prm2bits_ld8kDone,
+				i_subfr,mathMuxSel,
+				autocorrReady,lagReady,levinsonReady, AzReady,Qua_lspReady,Int_lpcReady,Int_qlpcReady,Math1Ready,perc_varReady,Weight_AzReady,ResiduReady,Syn_filtReady,Pitch_olReady,
+				Math2Ready,Math3Ready,Pitch_fr3Ready,Enc_lag3Ready,Parity_PitchReady,Pred_lt_3Ready,ConvolveReady,G_pitchReady,Math4Ready,test_errReady,ACELP_CodebookReady,Math5Ready,
+				Corr_xy2Ready,Qua_gainReady,Math6Ready,update_exc_errReady,Math7Ready,CopyReady,prm2bits_ld8kReady,	
+				LDk,LDi_subfr,
+				LDi_gamma,LDT_op,LDT0,LDT0_min,LDT0_max,LDT0_frac,LDgain_pit,LDgain_code,LDindex,LDtemp,LDA_Addr,LDAq_Addr,LDsharp,LDi,resetk,reseti_subfr,reseti_gamma,resetT_op,resetT0,resetT0_min,
+				resetT0_max,resetT0_frac,resetgain_pit,resetgain_code,resetindex,resettemp,resetA_Addr,resetAq_Addr,resetsharp,reseti,LDL_temp,resetL_temp,done);
     
 	 //inputs
 	 input clock;
@@ -46,12 +52,28 @@ module G729_FSM(clock,reset,start,divErr,frame_done,autocorrDone,lagDone,levinso
 	 input Pitch_olDone;
 	 input Math2Done;
 	 input Math3Done;
-	 
+	input Pitch_fr3Done;	//New submodules
+	input Enc_lag3Done;
+	input Parity_PitchDone;
+	input Pred_lt_3Done;
+	input ConvolveDone;
+	input G_pitchDone;
+	input Math4Done;
+	input test_errDone;
+	input ACELP_CodebookDone;
+	input Math5Done;
+	input Corr_xy2Done;
+	input Qua_gainDone;
+	input Math6Done;
+	input update_exc_errDone;
+	input Math7Done;
+	input CopyDone;
+	input prm2bits_ld8kDone;	 //End new submodules
 	 input [15:0] i_subfr;
 	 
 	 ///outputs
-	 output reg LDk, LDi_subfr, LDi_gamma, LDT_op, LDT0, LDT0_min, LDT0_max, LDT0_frac, LDgain_pit, LDgain_code, LDindex, LDtemp, LDA_Addr, LDAq_Addr;
-	 output reg resetk, reseti_subfr, reseti_gamma, resetT_op, resetT0, resetT0_min, resetT0_max, resetT0_frac, resetgain_pit, resetgain_code, resetindex, resettemp, resetA_Addr, resetAq_Addr;
+	 output reg LDk, LDi_subfr, LDi_gamma, LDT_op, LDT0, LDT0_min, LDT0_max, LDT0_frac, LDgain_pit, LDgain_code, LDindex, LDtemp, LDA_Addr, LDAq_Addr, LDsharp, LDi;
+	 output reg resetk, reseti_subfr, reseti_gamma, resetT_op, resetT0, resetT0_min, resetT0_max, resetT0_frac, resetgain_pit, resetgain_code, resetindex, resettemp, resetA_Addr, resetAq_Addr, resetsharp, reseti;
     output reg LDL_temp;
     output reg resetL_temp;
 	 
@@ -71,6 +93,23 @@ module G729_FSM(clock,reset,start,divErr,frame_done,autocorrDone,lagDone,levinso
 	 output reg Pitch_olReady;
 	 output reg Math2Ready;
 	 output reg Math3Ready;
+	output reg Pitch_fr3Ready;		//New submodules
+	output reg Enc_lag3Ready;
+	output reg Parity_PitchReady;
+	output reg Pred_lt_3Ready;
+	output reg ConvolveReady;
+	output reg G_pitchReady;
+	output reg Math4Ready;
+	output reg test_errReady;
+	output reg ACELP_CodebookReady;
+	output reg Math5Ready;
+	output reg Corr_xy2Ready;
+	output reg Qua_gainReady;
+	output reg Math6Ready;
+	output reg update_exc_errReady;
+	output reg Math7Ready;
+	output reg CopyReady;
+	output reg prm2bits_ld8kReady;	 //End new submodules
 	 output reg done;
 	 
 	 parameter L_FRAME = 'd80;
@@ -113,8 +152,22 @@ module G729_FSM(clock,reset,start,divErr,frame_done,autocorrDone,lagDone,levinso
 	 parameter SUB_MODULE_SYN_FILT5_DONE = 6'd32;
 	 parameter SUB_MODULE_RESIDU4_DONE = 6'd33;
 	 parameter SUB_MODULE_SYN_FILT6_DONE = 6'd34;
-
-
+	 parameter SUB_MODULE_PITCH_FR3_DONE = 6'd35;
+	 parameter SUB_MODULE_ENC_LAG3_DONE = 6'd36;
+	 parameter LOAD_ANA_2_7 = 6'd37;
+	 parameter CHECK_IF_PARITY_PITCH = 6'd38;
+	 parameter SUB_MODULE_PARITY_PITCH_DONE = 6'd39;
+	 parameter LOAD_ANA_3 = 6'd40;
+	 parameter SUB_MODULE_PRED_LT_3_READY = 6'd41;
+	 parameter SUB_MODULE_PRED_LT_3_DONE = 6'd42;
+	 parameter SUB_MODULE_CONVOLVE_DONE = 6'd43;
+	 parameter SUB_MODULE_G_PITCH_DONE = 6'd44;
+	 parameter SUB_MODULE_TEST_ERR_DONE = 6'd45;
+	 parameter SUB_MODULE_MATH4_DONE = 6'd46;
+	 parameter SUB_MODULE_ACELP_CODEBOOK_DONE = 6'd47;
+	 parameter LOAD_ANA_4_8 = 6'd48;
+	 parameter LOAD_ANA_5_9 = 6'd49;
+	 
 	 parameter TL_FOR_LOOP_INC = 6'd62;
 	 parameter TL_DONE = 6'd63;
 
@@ -171,6 +224,8 @@ module G729_FSM(clock,reset,start,divErr,frame_done,autocorrDone,lagDone,levinso
 	   LDL_temp = 0;
 		LDA_Addr = 0;
 		LDAq_Addr = 0;
+		LDsharp = 0;
+		LDi = 0;
 		resetk = 0; 
 		reseti_subfr = 0;
 		reseti_gamma = 0;
@@ -186,6 +241,8 @@ module G729_FSM(clock,reset,start,divErr,frame_done,autocorrDone,lagDone,levinso
 		resetL_temp = 0;
 		resetA_Addr = 0;
 		resetAq_Addr = 0;
+		resetsharp = 0;
+		reseti = 0;
 
 		mathMuxSel = 0;
 		done = 0;
@@ -204,6 +261,23 @@ module G729_FSM(clock,reset,start,divErr,frame_done,autocorrDone,lagDone,levinso
 		Pitch_olReady = 0;
 		Math2Ready = 0;
 		Math3Ready = 0;
+		Pitch_fr3Ready = 0;		// New submodules
+		Enc_lag3Ready = 0;
+		Parity_PitchReady = 0;
+		Pred_lt_3Ready = 0;
+		ConvolveReady = 0;
+		G_pitchReady = 0;
+		Math4Ready = 0;
+		test_errReady = 0;
+		ACELP_CodebookReady = 0;
+		Math5Ready = 0;
+		Corr_xy2Ready = 0;
+		Qua_gainReady = 0;
+		Math6Ready = 0;
+		update_exc_errReady = 0;
+		Math7Ready = 0;
+		CopyReady = 0;
+		prm2bits_ld8kReady = 0;		//End new submodules
 		
 		if(divErr == 1)
 			nextsubModuleState = SUB_MODULE_START;
@@ -647,26 +721,189 @@ module G729_FSM(clock,reset,start,divErr,frame_done,autocorrDone,lagDone,levinso
 					nextsubModuleState = SUB_MODULE_SYN_FILT6_DONE;
 				else if(Syn_filtDone == 1)
 				begin
-					LDi_subfr = 1; 
 					mathMuxSel = 6'd28;
-					nextsubModuleState = TL_FOR_LOOP_INC;
+					nextsubModuleState = SUB_MODULE_PITCH_FR3_DONE;
+					Pitch_fr3Ready = 1;
 				end				
 			end//SUB_MODULE_SYN_FILT6_DONE		
 
+			SUB_MODULE_PITCH_FR3_DONE:
+			begin
+				mathMuxSel = 6'd28;
+				if(Pitch_fr3Done == 0)
+					nextsubModuleState = SUB_MODULE_PITCH_FR3_DONE;
+				else if(Pitch_fr3Done == 1)
+				begin
+					LDT0 = 1; 
+					LDT0_frac = 1;
+					mathMuxSel = 6'd29;
+					nextsubModuleState = SUB_MODULE_ENC_LAG3_DONE;
+					Enc_lag3Ready = 1;
+				end				
+			end//SUB_MODULE_PITCH_FR3_DONE		
 
+			SUB_MODULE_ENC_LAG3_DONE:
+			begin
+				mathMuxSel = 6'd29;
+				if(Enc_lag3Done == 0)
+					nextsubModuleState = SUB_MODULE_ENC_LAG3_DONE;
+				else if(Enc_lag3Done == 1)
+				begin
+					LDindex = 1; 
+					LDT0_min = 1; 
+					LDT0_max = 1;
+					mathMuxSel = 6'd30;
+					nextsubModuleState = LOAD_ANA_2_7;
+				end				
+			end//SUB_MODULE_ENC_LAG3_DONE		
 
+			LOAD_ANA_2_7:
+			begin
+				mathMuxSel = 6'd30;
+				nextsubModuleState = CHECK_IF_PARITY_PITCH;
+			end//LOAD_ANA_2_7
 
+			CHECK_IF_PARITY_PITCH:
+			begin
+				if (i_subfr == 'd0)
+				begin
+					mathMuxSel = 6'd31;
+					nextsubModuleState = SUB_MODULE_PARITY_PITCH_DONE;
+					Parity_PitchReady = 1;
+				end
+				else if (i_subfr == 'd40)
+					nextsubModuleState = SUB_MODULE_PRED_LT_3_READY;
+			end//CHECK_IF_PARITY_PITCH
 
+			SUB_MODULE_PARITY_PITCH_DONE:
+			begin
+				mathMuxSel = 6'd31;
+				if(Parity_PitchDone == 0)
+					nextsubModuleState = SUB_MODULE_PARITY_PITCH_DONE;
+				else if(Parity_PitchDone == 1)
+				begin
+				    mathMuxSel = 6'd32;
+					nextsubModuleState = LOAD_ANA_3;
+				end				
+			end//SUB_MODULE_PARITY_PITCH_DONE
+//32
+			LOAD_ANA_3:
+			begin
+				mathMuxSel = 6'd32;
+				nextsubModuleState = SUB_MODULE_PRED_LT_3_READY;
+			end//LOAD_ANA_2_7
+//33		
+			SUB_MODULE_PRED_LT_3_READY:
+			begin
+				mathMuxSel = 6'd33;
+				nextsubModuleState = SUB_MODULE_PRED_LT_3_DONE;
+				Pred_lt_3Ready = 1;
+			end//LOAD_ANA_2_7
 
-
-
-
+			SUB_MODULE_PRED_LT_3_DONE:
+			begin
+				mathMuxSel = 6'd33;
+				if(Pred_lt_3Done == 0)
+					nextsubModuleState = SUB_MODULE_PRED_LT_3_DONE;
+				else if(Pred_lt_3Done == 1)
+				begin
+					mathMuxSel = 6'd34;
+					nextsubModuleState = SUB_MODULE_CONVOLVE_DONE;
+					ConvolveReady = 1;
+				end				
+			end//SUB_MODULE_PRED_LT_3_DONE
+//34
+			SUB_MODULE_CONVOLVE_DONE:
+			begin
+				mathMuxSel = 6'd34;
+				if(ConvolveDone == 0)
+					nextsubModuleState = SUB_MODULE_CONVOLVE_DONE;
+				else if(ConvolveDone == 1)
+				begin
+					mathMuxSel = 6'd35;
+					nextsubModuleState = SUB_MODULE_G_PITCH_DONE;
+					G_pitchReady = 1;
+				end				
+			end//SUB_MODULE_CONVOLVE_DONE
+//35
+			SUB_MODULE_G_PITCH_DONE:
+			begin
+				mathMuxSel = 6'd35;
+				if(G_pitchDone == 0)
+					nextsubModuleState = SUB_MODULE_G_PITCH_DONE;
+				else if(G_pitchDone == 1)
+				begin
+					LDgain_pit = 1;
+					mathMuxSel = 6'd36;
+					nextsubModuleState = SUB_MODULE_TEST_ERR_DONE;
+					test_errReady = 1;
+				end				
+			end//SUB_MODULE_G_PITCH_DONE
+//36	
+			SUB_MODULE_TEST_ERR_DONE:
+			begin
+				mathMuxSel = 6'd36;
+				if(test_errDone == 0)
+					nextsubModuleState = SUB_MODULE_TEST_ERR_DONE;
+				else if(test_errDone == 1)
+				begin
+					LDtemp = 1;
+					mathMuxSel = 6'd37;
+					nextsubModuleState = SUB_MODULE_MATH4_DONE;
+					Math4Ready = 1;
+				end				
+			end//SUB_MODULE_TEST_ERR_DONE
+//37	
+			SUB_MODULE_MATH4_DONE:
+			begin
+				mathMuxSel = 6'd37;
+				if(Math4Done == 0)
+					nextsubModuleState = SUB_MODULE_MATH4_DONE;
+				else if(Math4Done == 1)
+				begin
+					LDgain_pit = 1;
+					LDL_temp = 1;
+					mathMuxSel = 6'd38;
+					nextsubModuleState = SUB_MODULE_ACELP_CODEBOOK_DONE;
+					ACELP_CodebookReady = 1;
+				end				
+			end//SUB_MODULE_MATH4_DONE
+//38	
+			SUB_MODULE_ACELP_CODEBOOK_DONE:
+			begin
+				mathMuxSel = 6'd38;
+				if(ACELP_CodebookDone == 0)
+					nextsubModuleState = SUB_MODULE_ACELP_CODEBOOK_DONE;
+				else if(ACELP_CodebookDone == 1)
+				begin
+					LDindex = 1;
+					LDi = 1;
+					mathMuxSel = 6'd39;
+					nextsubModuleState = LOAD_ANA_4_8;
+				end				
+			end//SUB_MODULE_ACELP_CODEBOOK_DONE
+//39
+			LOAD_ANA_4_8:
+			begin
+				mathMuxSel = 6'd39;
+				nextsubModuleState = LOAD_ANA_5_9;
+			end//LOAD_ANA_2_7
+//40
+			LOAD_ANA_5_9:
+			begin
+				LDi_subfr = 1;
+				mathMuxSel = 6'd40;
+				nextsubModuleState = TL_FOR_LOOP_INC;
+			end//LOAD_ANA_2_7
+			
+	
+	
 
 			TL_FOR_LOOP_INC:
 			begin
-					LDA_Addr = 1;
-					LDAq_Addr = 1;
-					nextsubModuleState = TL_FOR_LOOP;
+				LDA_Addr = 1;
+				LDAq_Addr = 1;
+				nextsubModuleState = TL_FOR_LOOP;
 			end//TL_FOR_LOOP_INC		
 
 			TL_DONE:

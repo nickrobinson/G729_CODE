@@ -18,19 +18,21 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module Enc_lag3(clk,reset,start,T0,T0_frac,pit_flag,addIn,subIn,memIn,addOutA,addOutB,
+module Enc_lag3(clk,reset,start,T0,T0_frac,T0_min_in,T0_min_out,T0_max,PIT_MIN,PIT_MAX,pit_flag,addIn,subIn,memIn,addOutA,addOutB,
 					 subOutA,subOutB,memReadAddr,memWriteAddr,memWriteEn,
 					 memOut,index,done);
 `include "paramList.v"
 
 //Inputs
 input clk,reset,start;
-input [15:0] T0,T0_frac,pit_flag;
+input [15:0] T0,T0_frac,T0_min_in,pit_flag;
 input [15:0] addIn;
 input [15:0] subIn;
 input [31:0] memIn;
+input [15:0] PIT_MIN,PIT_MAX;
 
 //Outputs
+output reg [15:0] T0_min_out,T0_max;
 output reg [15:0] addOutA,addOutB;
 output reg [15:0] subOutA,subOutB;
 output reg [11:0] memReadAddr,memWriteAddr;
@@ -47,6 +49,10 @@ reg [15:0] i,nexti;
 reg iLD,iReset;
 reg [31:0] temp,nexttemp;
 reg tempLD,tempReset;
+reg [31:0] nextT0_min_out;
+reg T0_min_outLD,T0_min_outReset;
+reg [31:0] nextT0_max;
+reg T0_maxLD,T0_maxReset;
 reg [15:0] T0Reg,T0_fracReg,pit_flagReg;
 reg T0RegLD,T0_fracRegLD,pit_flagRegLD;
 
@@ -113,6 +119,26 @@ end
 always @(posedge clk)
 begin
 	if(reset)
+		T0_min_out <= 0;
+	else if(T0_min_outReset)
+		T0_min_out <= 0;
+	else if(T0_min_outLD)
+		T0_min_out <= nextT0_min_out;
+end
+
+always @(posedge clk)
+begin
+	if(reset)
+		T0_max <= 0;
+	else if(T0_maxReset)
+		T0_max <= 0;
+	else if(T0_maxLD)
+		T0_max <= nextT0_max;
+end
+
+always @(posedge clk)
+begin
+	if(reset)
 		T0Reg <= 0;
 	else if(T0RegLD)
 		T0Reg <= T0;
@@ -150,13 +176,19 @@ begin
 	nextstate = state;
 	nextindex = index;
 	nexttemp = temp;
+	nextT0_min_out = T0_min_out;
+	nextT0_max = T0_max;
 	nexti = i;
 	indexReset = 0;
 	iReset = 0;
 	tempReset = 0;
+	T0_min_outReset = 0;
+	T0_maxReset = 0;
 	indexLD = 0;
 	iLD = 0;
 	tempLD = 0;
+	T0_min_outLD = 0;
+	T0_maxLD = 0;
 	T0RegLD = 0;
 	T0_fracRegLD = 0;
 	pit_flagRegLD = 0;
@@ -169,7 +201,6 @@ begin
 				nextstate = INIT;
 			else if(start == 1)
 			begin
-				indexReset = 1;
 				iReset = 1;
 				tempReset = 1;
 				T0RegLD = 1;
@@ -182,11 +213,11 @@ begin
 		//if (pit_flag == 0)
 		S1:
 		begin
-			if(pit_flagReg == 0)
+			if(pit_flag == 0)
 				nextstate = S2;
 			else
 			begin
-				memReadAddr = T0_MIN;
+//				memReadAddr = T0_min_out;
 				nextstate = S14;
 			end
 		end//S1
@@ -194,7 +225,7 @@ begin
 		//if (sub(T0, 85) <= 0)
 		S2:
 		begin
-			subOutA = T0Reg;
+			subOutA = T0;
 			subOutB = 16'd85;
 			if(subIn[15] == 1 || subIn == 0)
 				nextstate = S3;
@@ -205,8 +236,8 @@ begin
 		//add(T0, T0)
 		S3:
 		begin
-			addOutA = T0Reg;
-			addOutB = T0Reg;
+			addOutA = T0;
+			addOutB = T0;
 			nexttemp = addIn;
 			tempLD = 1;
 			nextstate = S4;
@@ -236,7 +267,7 @@ begin
 		S6:
 		begin
 			addOutA = temp;
-			addOutB = T0_fracReg;
+			addOutB = T0_frac;
 			nextindex = addIn;
 			indexLD = 1;
 			nextstate = S8;
@@ -246,53 +277,53 @@ begin
 			 index = add(T0, 112);} */
 		S7:
 		begin
-			addOutA = T0Reg;
+			addOutA = T0;
 			addOutB = 16'd112;
 			nextindex = addIn;
 			indexLD = 1;
 			nextstate = S8;
 		end//S7
 		
-		//*T0_min = sub(T0, 5);
+		//*T0_min_out = sub(T0, 5);
 		S8:
 		begin
-			subOutA = T0Reg;
+			subOutA = T0;
 			subOutB = 16'd5;
-			nexttemp = subIn;
-			tempLD = 1;
-			memOut = subIn;
-			memWriteAddr = T0_MIN;
-			memWriteEn = 1;
+			nextT0_min_out = subIn;
+			T0_min_outLD = 1;
+			// memOut = subIn;
+			// memWriteAddr = T0_min_out;
+			// memWriteEn = 1;
 			nextstate = S9;
 		end//S8
 		
-		/* if (sub(*T0_min, pit_min) < 0) 
-			*T0_min = pit_min; */
+		/* if (sub(*T0_min_out, pit_min) < 0) 
+			*T0_min_out = pit_min; */
 		S9:
 		begin
-			subOutA = temp;
-			subOutB = 16'd20;
+			subOutA = T0_min_out;
+			subOutB = PIT_MIN;
 			if(subIn[15] == 1)
 			begin
-				memOut = 32'd20;
-				memWriteAddr = T0_MIN;
-				memWriteEn = 1;
-				nexttemp = 32'd20;
-				tempLD = 1;
+				// memOut = 32'd20;
+				// memWriteAddr = T0_min_out;
+				// memWriteEn = 1;
+				nextT0_min_out = PIT_MIN;
+				T0_min_outLD = 1;
 			end
 			nextstate = S10;			
 		end//S9
 		
-		//*T0_max = add(*T0_min, 9);
+		//*T0_max = add(*T0_min_out, 9);
 		S10:
 		begin
-			addOutA = temp;
+			addOutA = T0_min_out;
 			addOutB = 16'd9;
-			memOut = addIn;
-			memWriteAddr = T0_MAX;
-			memWriteEn = 1;
-			nexttemp = addIn;
-			tempLD = 1;
+			// memOut = addIn;
+			// memWriteAddr = T0_MAX;
+			// memWriteEn = 1;
+			nextT0_max = addIn;
+			T0_maxLD = 1;
 			nextstate = S12;
 		end//S10
 		
@@ -300,13 +331,15 @@ begin
 			*T0_max = pit_max; */
 		S11:
 		begin
-			subOutA = temp;
-			subOutB = 16'd143;
-			if(subIn[15] == 1)
+			subOutA = T0_max;
+			subOutB = PIT_MAX;
+			if(subIn[15] == 0 && subIn[15:0] != 16'd0)
 			begin
-				memOut = 16'd143;
-				memWriteEn = 1;
-				memWriteAddr = T0_MAX;
+				// memOut = 16'd143;
+				// memWriteEn = 1;
+				// memWriteAddr = T0_MAX;
+				nextT0_max = PIT_MAX;
+				T0_maxLD = 1;
 				nextstate = S12;
 			end			
 			else
@@ -316,14 +349,16 @@ begin
 			end
 		end//S11		
 		
-		//*T0_min = sub(*T0_max, 9);
+		//*T0_min_out = sub(*T0_max, 9);
 		S12:
 		begin
-			subOutA = temp;
+			subOutA = T0_max;
 			subOutB = 16'd9;
-			memOut = subIn;
-			memWriteAddr = T0_MIN;
-			nextstate = S13;
+			nextT0_min_out = subIn;
+			T0_min_outLD = 1;
+			// memOut = subIn;
+			// memWriteAddr = T0_min_out;
+			 nextstate = S13;
 		end//S12
 		
 		S13:
@@ -333,11 +368,12 @@ begin
 		end//S13
 		
 		/* else {
-         i = sub(T0, *T0_min); */
+         i = sub(T0, *T0_min_out); */
 		S14:
 		begin
-			subOutA = T0Reg;
-			subOutB = memIn[15:0];
+			subOutA = T0;
+//			subOutB = memIn[15:0];
+			subOutB = T0_min_in;
 			nexti = subIn;
 			iLD = 1;
 			nextstate = S15;
@@ -377,7 +413,7 @@ begin
 		S18:
 		begin
 			addOutA = temp;
-			addOutB = T0_fracReg;
+			addOutB = T0_frac;
 			nextindex = addIn;
 			indexLD = 1;
 			nextstate = S13;

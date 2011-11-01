@@ -18,18 +18,18 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module G729_Top(clock, reset, start,in, outBufAddr, out, testdone, done);
+module G729_Top(clock, reset, start, in, outBufAddr, out, testdone, done);
   
 	//inputs
 	input clock;
-   input reset;
+        input reset;
 	input start;
 	input [11:0] outBufAddr;
-   input [15:0] in;
+        input [15:0] in;
 	input testdone;
 	
 	//outputs
-   output [31:0] out;
+        output [31:0] out;
 	output reg done;
 	
 	//working wires
@@ -52,6 +52,23 @@ module G729_Top(clock, reset, start,in, outBufAddr, out, testdone, done);
 	wire Math3Done;
 	wire [15:0] i_subfr;
 	wire divErr;
+	wire Pitch_fr3Done;	//New submodules
+	wire Enc_lag3Done;
+	wire Parity_PitchDone;
+	wire Pred_lt_3Done;
+	wire ConvolveDone;
+	wire G_pitchDone;
+	wire Math4Done;
+	wire test_errDone;
+	wire ACELP_CodebookDone;
+	wire Math5Done;
+	wire Corr_xy2Done;
+	wire Qua_gainDone;
+	wire Math6Done;
+	wire update_exc_errDone;
+	wire Math7Done;
+	wire CopyDone;
+	wire prm2bits_ld8kDone;	
 
 	reg preProcReady;
 	reg preProcWaiting;
@@ -85,7 +102,41 @@ module G729_Top(clock, reset, start,in, outBufAddr, out, testdone, done);
 	reg Math2Waiting;
 	reg Math3Ready;
 	reg Math3Waiting;
-
+	reg Pitch_fr3Ready;			//New submodules
+	reg Pitch_fr3Waiting;	
+	reg Enc_lag3Ready;
+	reg Enc_lag3Waiting;
+	reg Parity_PitchReady;
+	reg Parity_PitchWaiting;
+	reg Pred_lt_3Ready;
+	reg Pred_lt_3Waiting;
+	reg ConvolveReady;
+	reg ConvolveWaiting;
+	reg G_pitchReady;
+	reg G_pitchWaiting;	
+	reg Math4Ready;
+	reg Math4Waiting;
+	reg test_errReady;
+	reg test_errWaiting;
+	reg ACELP_CodebookReady;
+	reg ACELP_CodebookWaiting;
+	reg Math5Ready;
+	reg Math5Waiting;
+	reg Corr_xy2Ready;
+	reg Corr_xy2Waiting;	
+	reg Qua_gainReady;
+	reg Qua_gainWaiting;	
+	reg Math6Ready;
+	reg Math6Waiting;	
+	reg update_exc_errReady;
+	reg update_exc_errWaiting;
+	reg Math7Ready;
+	reg Math7Waiting;
+	reg CopyReady;
+	reg CopyWaiting;
+	reg prm2bits_ld8kReady;
+	reg prm2bits_ld8kWaiting;
+	
 	wire autocorrReadyFSM;
 	wire lagReadyFSM;
 	wire levinsonReadyFSM;
@@ -101,6 +152,23 @@ module G729_Top(clock, reset, start,in, outBufAddr, out, testdone, done);
 	wire Pitch_olReadyFSM;
 	wire Math2ReadyFSM;
 	wire Math3ReadyFSM;
+	wire Pitch_fr3ReadyFSM;		//New submodules
+	wire Enc_lag3ReadyFSM;
+	wire Parity_PitchReadyFSM;
+	wire Pred_lt_3ReadyFSM;
+	wire ConvolveReadyFSM;
+	wire G_pitchReadyFSM;
+	wire Math4ReadyFSM;
+	wire test_errReadyFSM;
+	wire ACELP_CodebookReadyFSM;
+	wire Math5ReadyFSM;
+	wire Corr_xy2ReadyFSM;
+	wire Qua_gainReadyFSM;
+	wire Math6ReadyFSM;
+	wire update_exc_errReadyFSM;
+	wire Math7ReadyFSM;
+	wire CopyReadyFSM;
+	wire prm2bits_ld8kReadyFSM;		
 
 	wire LDk;
 	wire LDi_subfr;
@@ -117,6 +185,8 @@ module G729_Top(clock, reset, start,in, outBufAddr, out, testdone, done);
 	wire LDL_temp;
 	wire LDA_Addr;
 	wire LDAq_Addr;
+	wire LDsharp;
+	wire LDi;
 	wire resetk; 
 	wire reseti_subfr;
 	wire reseti_gamma;
@@ -132,6 +202,8 @@ module G729_Top(clock, reset, start,in, outBufAddr, out, testdone, done);
 	wire resetL_temp;
 	wire resetA_Addr;
 	wire resetAq_Addr;
+	wire resetsharp;
+	wire reseti;
 
 	G729_Pipe i_G729_Pipe(
 								.clock(clock),
@@ -153,6 +225,23 @@ module G729_Top(clock, reset, start,in, outBufAddr, out, testdone, done);
 								.Pitch_olReady(Pitch_olReady),
 								.Math2Ready(Math2Ready),
 								.Math3Ready(Math3Ready),
+								.Pitch_fr3Ready(Pitch_fr3Ready),
+								.Enc_lag3Ready(Enc_lag3Ready),
+								.Parity_PitchReady(Parity_PitchReady),
+								.Pred_lt_3Ready(Pred_lt_3Ready),
+								.ConvolveReady(ConvolveReady),
+								.G_pitchReady(G_pitchReady),
+								.Math4Ready(Math4Ready),
+								.test_errReady(test_errReady),
+								.ACELP_CodebookReady(ACELP_CodebookReady),
+								.Math5Ready(Math5Ready),
+								.Corr_xy2Ready(Corr_xy2Ready),
+								.Qua_gainReady(Qua_gainReady),
+								.Math6Ready(Math6Ready),
+								.update_exc_errReady(update_exc_errReady),
+								.Math7Ready(Math7Ready),
+								.CopyReady(CopyReady),
+								.prm2bits_ld8kReady(prm2bits_ld8kReady),
 								.LDk(LDk),
 								.LDi_subfr(LDi_subfr),
 								.LDi_gamma(LDi_gamma),
@@ -168,6 +257,8 @@ module G729_Top(clock, reset, start,in, outBufAddr, out, testdone, done);
 								.LDL_temp(LDL_temp),
 								.LDA_Addr(LDA_Addr),
 								.LDAq_Addr(LDAq_Addr),
+								.LDsharp(LDsharp),
+								.LDi(LDi),
 								.resetk(resetk), 
 								.reseti_subfr(reseti_subfr),
 								.reseti_gamma(reseti_gamma),
@@ -183,6 +274,8 @@ module G729_Top(clock, reset, start,in, outBufAddr, out, testdone, done);
 								.resetL_temp(resetL_temp),
 								.resetA_Addr(resetA_Addr),
 								.resetAq_Addr(resetAq_Addr),
+								.resetsharp(resetsharp),
+								.reseti(reseti),
 								.mathMuxSel(mathMuxSel),
 								.frame_done(frame_done),
 								.autocorrDone(autocorrDone),
@@ -200,6 +293,23 @@ module G729_Top(clock, reset, start,in, outBufAddr, out, testdone, done);
  	 							.Pitch_olDone(Pitch_olDone),
  								.Math2Done(Math2Done),
  								.Math3Done(Math3Done),
+								.Pitch_fr3Done(Pitch_fr3Done),
+								.Enc_lag3Done(Enc_lag3Done),
+								.Parity_PitchDone(Parity_PitchDone),
+								.Pred_lt_3Done(Pred_lt_3Done),
+								.ConvolveDone(ConvolveDone),
+								.G_pitchDone(G_pitchDone),
+								.Math4Done(Math4Done),
+								.test_errDone(test_errDone),
+								.ACELP_CodebookDone(ACELP_CodebookDone),
+								.Math5Done(Math5Done),
+								.Corr_xy2Done(Corr_xy2Done),
+								.Qua_gainDone(Qua_gainDone),
+								.Math6Done(Math6Done),
+								.update_exc_errDone(update_exc_errDone),
+								.Math7Done(Math7Done),
+								.CopyDone(CopyDone),
+								.prm2bits_ld8kDone(prm2bits_ld8kDone),								
  								.i_subfr(i_subfr),
 								.divErr(divErr),
 								.outBufAddr(outBufAddr),
@@ -228,6 +338,23 @@ module G729_Top(clock, reset, start,in, outBufAddr, out, testdone, done);
  								.Pitch_olDone(Pitch_olDone),
  								.Math2Done(Math2Done),
  								.Math3Done(Math3Done),
+								.Pitch_fr3Done(Pitch_fr3Done),
+								.Enc_lag3Done(Enc_lag3Done),
+								.Parity_PitchDone(Parity_PitchDone),
+								.Pred_lt_3Done(Pred_lt_3Done),
+								.ConvolveDone(ConvolveDone),
+								.G_pitchDone(G_pitchDone),
+								.Math4Done(Math4Done),
+								.test_errDone(test_errDone),
+								.ACELP_CodebookDone(ACELP_CodebookDone),
+								.Math5Done(Math5Done),
+								.Corr_xy2Done(Corr_xy2Done),
+								.Qua_gainDone(Qua_gainDone),
+								.Math6Done(Math6Done),
+								.update_exc_errDone(update_exc_errDone),
+								.Math7Done(Math7Done),
+								.CopyDone(CopyDone),
+								.prm2bits_ld8kDone(prm2bits_ld8kDone),								
  								.i_subfr(i_subfr),
 								.LDk(LDk),
 								.LDi_subfr(LDi_subfr),
@@ -244,6 +371,8 @@ module G729_Top(clock, reset, start,in, outBufAddr, out, testdone, done);
 								.LDL_temp(LDL_temp),
 								.LDA_Addr(LDA_Addr),
 								.LDAq_Addr(LDAq_Addr),
+								.LDsharp(LDsharp),
+								.LDi(LDi),
 								.resetk(resetk), 
 								.reseti_subfr(reseti_subfr),
 								.reseti_gamma(reseti_gamma),
@@ -259,6 +388,8 @@ module G729_Top(clock, reset, start,in, outBufAddr, out, testdone, done);
 								.resetL_temp(resetL_temp),
 								.resetA_Addr(resetA_Addr),
 								.resetAq_Addr(resetAq_Addr),
+								.resetsharp(resetsharp),
+								.reseti(reseti),
 								.mathMuxSel(mathMuxSel),
 								.autocorrReady(autocorrReadyFSM),
 								.lagReady(lagReadyFSM),
@@ -275,6 +406,23 @@ module G729_Top(clock, reset, start,in, outBufAddr, out, testdone, done);
 								.Pitch_olReady(Pitch_olReadyFSM),
 								.Math2Ready(Math2ReadyFSM),
 								.Math3Ready(Math3ReadyFSM),
+								.Pitch_fr3Ready(Pitch_fr3ReadyFSM),
+								.Enc_lag3Ready(Enc_lag3ReadyFSM),
+								.Parity_PitchReady(Parity_PitchReadyFSM),
+								.Pred_lt_3Ready(Pred_lt_3ReadyFSM),
+								.ConvolveReady(ConvolveReadyFSM),
+								.G_pitchReady(G_pitchReadyFSM),
+								.Math4Ready(Math4ReadyFSM),
+								.test_errReady(test_errReadyFSM),
+								.ACELP_CodebookReady(ACELP_CodebookReadyFSM),
+								.Math5Ready(Math5ReadyFSM),
+								.Corr_xy2Ready(Corr_xy2ReadyFSM),
+								.Qua_gainReady(Qua_gainReadyFSM),
+								.Math6Ready(Math6ReadyFSM),
+								.update_exc_errReady(update_exc_errReadyFSM),
+								.Math7Ready(Math7ReadyFSM),
+								.CopyReady(CopyReadyFSM),
+								.prm2bits_ld8kReady(prm2bits_ld8kReadyFSM),
 								.done(FSMdone)
 								);
 
@@ -518,9 +666,264 @@ module G729_Top(clock, reset, start,in, outBufAddr, out, testdone, done);
 		end
 	end
 	
+	always @ (*)		//Pitch_fr3
+	begin
+		Pitch_fr3Ready = 0;
+		if (Pitch_fr3ReadyFSM)
+			Pitch_fr3Waiting = 1;
+		if (Pitch_fr3Waiting)
+		begin
+			if (testdone)
+			begin
+				Pitch_fr3Ready = 1;
+				Pitch_fr3Waiting = 0;
+			end
+		end
+	end
+	
+	always @ (*)		//Enc_lag3FSM
+	begin
+		Enc_lag3Ready = 0;
+		if (Enc_lag3ReadyFSM)
+			Enc_lag3Waiting = 1;
+		if (Enc_lag3Waiting)
+		begin
+			if (testdone)
+			begin
+				Enc_lag3Ready = 1;
+				Enc_lag3Waiting = 0;
+			end
+		end
+	end	
+	
+	always @ (*)		//Parity_Pitch
+	begin
+		Parity_PitchReady = 0;
+		if (Parity_PitchReadyFSM)
+			Parity_PitchWaiting = 1;
+		if (Parity_PitchWaiting)
+		begin
+			if (testdone)
+			begin
+				Parity_PitchReady = 1;
+				Parity_PitchWaiting = 0;
+			end
+		end
+	end	
+	
+	always @ (*)		//Pred_lt_3
+	begin
+		Pred_lt_3Ready = 0;
+		if (Pred_lt_3ReadyFSM)
+			Pred_lt_3Waiting = 1;
+		if (Pred_lt_3Waiting)
+		begin
+			if (testdone)
+			begin
+				Pred_lt_3Ready = 1;
+				Pred_lt_3Waiting = 0;
+			end
+		end
+	end	
+	
+	always @ (*)		//Convolve
+	begin
+		ConvolveReady = 0;
+		if (ConvolveReadyFSM)
+			ConvolveWaiting = 1;
+		if (ConvolveWaiting)
+		begin
+			if (testdone)
+			begin
+				ConvolveReady = 1;
+				ConvolveWaiting = 0;
+			end
+		end
+	end	
+	
+	always @ (*)		//G_pitch
+	begin
+		G_pitchReady = 0;
+		if (G_pitchReadyFSM)
+			G_pitchWaiting = 1;
+		if (G_pitchWaiting)
+		begin
+			if (testdone)
+			begin
+				G_pitchReady = 1;
+				G_pitchWaiting = 0;
+			end
+		end
+	end	
+	
+	always @ (*)		//Math4
+	begin
+		Math4Ready = 0;
+		if (Math4ReadyFSM)
+			Math4Waiting = 1;
+		if (Math4Waiting)
+		begin
+			if (testdone)
+			begin
+				Math4Ready = 1;
+				Math4Waiting = 0;
+			end
+		end
+	end	
+	
+	always @ (*)		//test_err
+	begin
+		test_errReady = 0;
+		if (test_errReadyFSM)
+			test_errWaiting = 1;
+		if (test_errWaiting)
+		begin
+			if (testdone)
+			begin
+				test_errReady = 1;
+				test_errWaiting = 0;
+			end
+		end
+	end	
+	
+	always @ (*)		//ACELP_Codebook
+	begin
+		ACELP_CodebookReady = 0;
+		if (ACELP_CodebookReadyFSM)
+			ACELP_CodebookWaiting = 1;
+		if (ACELP_CodebookWaiting)
+		begin
+			if (testdone)
+			begin
+				ACELP_CodebookReady = 1;
+				ACELP_CodebookWaiting = 0;
+			end
+		end
+	end	
+	
+	always @ (*)		//Math 5
+	begin
+		Math5Ready = 0;
+		if (Math5ReadyFSM)
+			Math5Waiting = 1;
+		if (Math5Waiting)
+		begin
+			if (testdone)
+			begin
+				Math5Ready = 1;
+				Math5Waiting = 0;
+			end
+		end
+	end
+	
+	always @ (*)		//Corr_xy2
+	begin
+		Corr_xy2Ready = 0;
+		if (Corr_xy2ReadyFSM)
+			Corr_xy2Waiting = 1;
+		if (Corr_xy2Waiting)
+		begin
+			if (testdone)
+			begin
+				Corr_xy2Ready = 1;
+				Corr_xy2Waiting = 0;
+			end
+		end
+	end
+	
+	always @ (*)		//Qua_gain
+	begin
+		Qua_gainReady = 0;
+		if (Qua_gainReadyFSM)
+			Qua_gainWaiting = 1;
+		if (Qua_gainWaiting)
+		begin
+			if (testdone)
+			begin
+				Qua_gainReady = 1;
+				Qua_gainWaiting = 0;
+			end
+		end
+	end	
+	
+	always @ (*)		//Math 6
+	begin
+		Math6Ready = 0;
+		if (Math6ReadyFSM)
+			Math6Waiting = 1;
+		if (Math6Waiting)
+		begin
+			if (testdone)
+			begin
+				Math6Ready = 1;
+				Math6Waiting = 0;
+			end
+		end
+	end	
+	
+	always @ (*)		//update_exc_err
+	begin
+		update_exc_errReady = 0;
+		if (update_exc_errReadyFSM)
+			update_exc_errWaiting = 1;
+		if (update_exc_errWaiting)
+		begin
+			if (testdone)
+			begin
+				update_exc_errReady = 1;
+				update_exc_errWaiting = 0;
+			end
+		end
+	end	
+	
+	always @ (*)		//Math 7
+	begin
+		Math7Ready = 0;
+		if (Math7ReadyFSM)
+			Math7Waiting = 1;
+		if (Math7Waiting)
+		begin
+			if (testdone)
+			begin
+				Math7Ready = 1;
+				Math7Waiting = 0;
+			end
+		end
+	end	
+	
+	always @ (*)		//Copy
+	begin
+		CopyReady = 0;
+		if (CopyReadyFSM)
+			CopyWaiting = 1;
+		if (CopyWaiting)
+		begin
+			if (testdone)
+			begin
+				CopyReady = 1;
+				CopyWaiting = 0;
+			end
+		end
+	end	
+	
+	always @ (*)		//prm2bits_ld8k
+	begin
+		prm2bits_ld8kReady = 0;
+		if (prm2bits_ld8kReadyFSM)
+			prm2bits_ld8kWaiting = 1;
+		if (prm2bits_ld8kWaiting)
+		begin
+			if (testdone)
+			begin
+				prm2bits_ld8kReady = 1;
+				prm2bits_ld8kWaiting = 0;
+			end
+		end
+	end	
+	
 	always @ (*)
 	begin
-		if (autocorrReadyFSM || autocorrDone || lagDone || levinsonDone || AzDone || Qua_lspDone || Int_lpcDone || Int_qlpcDone || Math1Done || perc_varDone || Weight_AzDone || ResiduDone || Syn_filtDone || Pitch_olDone || Math2Done || Math3Done)
+		if (autocorrReadyFSM || autocorrDone || lagDone || levinsonDone || AzDone || Qua_lspDone || Int_lpcDone || Int_qlpcDone || Math1Done || perc_varDone || Weight_AzDone || ResiduDone || Syn_filtDone || Pitch_olDone || Math2Done || Math3Done || Pitch_fr3Done || Enc_lag3Done || Parity_PitchDone || Pred_lt_3Done || ConvolveDone || G_pitchDone || Math4Done || test_errDone || ACELP_CodebookDone || Math5Done || Corr_xy2Done || Qua_gainDone || Math6Done || update_exc_errDone || Math7Done || CopyDone || prm2bits_ld8kDone)								
 			done = 1;
 		else 
 			done = 0;

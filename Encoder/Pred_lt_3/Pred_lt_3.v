@@ -1,4 +1,4 @@
-`timescale 1ns / 1ps
+							`timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
 // Company: 
 // Engineer: 
@@ -197,17 +197,32 @@ module Pred_lt_3(clk, start, reset, done, exc, t0, frac, L_subfr, writeAddr, wri
 			L_add_b = 0;
 			L_negate_out = 0;
 			writeEn = 0;
+			writeOut = 0;
 			writeAddr = 0;
+			
 			readAddr = 0;
 			constantMemAddr = 0;
 		
 			case(state)
 				INIT:
 					begin
+						nexti = 0;
+						nextj = 0;
+						nextk = 0;
+						next_x0 = 0;
+						next_x1 = 0;
+						next_x2 = 0;
+						next_c1 = 0;
+						next_c2 = 0;
+						next_s = 0;
+						next_frac1 = 0;
+						next_temp_x2 = 0;
 						if(start)
 							begin
 								nextstate = S1;
 							end
+						else
+							nextstate = INIT;
 					end
 				
 				S1:
@@ -215,7 +230,7 @@ module Pred_lt_3(clk, start, reset, done, exc, t0, frac, L_subfr, writeAddr, wri
 						sub_a = exc;
 						sub_b = t0;
 						next_x0 = sub_in;												//x0 = &exc[-t0];
-						L_negate_out = {'d0, frac}; 
+						L_negate_out = {16'd0, frac}; 
 						next_frac1 = L_negate_in;									//frac = negate(frac);
 						nextstate = S2;
 					end

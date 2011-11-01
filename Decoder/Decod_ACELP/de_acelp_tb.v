@@ -62,8 +62,7 @@ module de_acelp_tb;
 	
 	reg [31:0] sign_in [0:4999];
 	reg [31:0] index_in [0:4999];
-	reg [31:0] pos [0:4999];
-	reg [31:0] cod [0:4999];
+	reg [31:0] cod [0:9999];
 	
 	//file read in for inputs and output tests
 	initial 
@@ -75,102 +74,10 @@ module de_acelp_tb;
 	
 	integer i, j;
 
+	initial forever #10 clk = ~clk;
+
 	initial begin
-		/*// Initialize Inputs
-		clk = 0;
-		reset = 0;
-		start = 0;
-
-		@(posedge clk);
-		@(posedge clk);
-		@(posedge clk) #5;
-		reset = 1;
-		// Wait 50 ns for global reset to finish
-		@(posedge clk);
-		@(posedge clk);
-		@(posedge clk) #5;
-		reset = 0;
 		
-		@(posedge clk) #5;
-//		for(j=0;j<60;j=j+1)
-//		begin
-			//TEST1
-			@(posedge clk);
-			@(posedge clk);
-			@(posedge clk) #5;
-			mem_Mux1Sel = 1;
-			mem_Mux2Sel = 1;
-			mem_Mux3Sel = 1;
-			mem_Mux4Sel = 1;
-		   test_write_addr = {}; //address of index in scratch mem (probably a parameter) 
-			test_write = index;
-			test_write_en = 1;			
-			@(posedge clk);
-			test_write_addr = {}; //address of sign in scratch mem (probably a parameter) 
-			test_write = sign;
-			test_write_en = 1;			
-			@(posedge clk);
-			test_write_en = 0;	
-			@(posedge clk);
-			@(posedge clk) #5;
-
-			
-			@(posedge clk);
-			@(posedge clk);
-			@(posedge clk) #5;
-			mem_Mux1Sel = 0; // giving your model control memory
-			mem_Mux2Sel = 0;
-			mem_Mux3Sel = 0;
-			mem_Mux4Sel = 0;
-			@(posedge clk);
-			@(posedge clk);
-			@(posedge clk) #5;		
-			start = 1;        // start your FSM
-			@(posedge clk);
-			@(posedge clk);
-			@(posedge clk) #5;
-			start = 0;
-			// Add stimulus here	
-			wait(done);
-			
-			@(posedge clk);
-			@(posedge clk);
-			@(posedge clk) #5;
-			mem_Mux1Sel = 1;
-			mem_Mux2Sel = 1;
-			mem_Mux3Sel = 1;
-			mem_Mux4Sel = 1;			
-			@(posedge clk);
-			@(posedge clk);
-			@(posedge clk) #5;
-
-		   test_read_addr = {}; //address of cod[0] in scratch mem (probably a parameter) 
-			@(posedge clk);
-         if (scratch_mem_in != cod0)
-			  $display("error");
-
-		   test_read_addr = {}; //address of cod[1] in scratch mem (probably a parameter) 
-			@(posedge clk);
-         if (scratch_mem_in != cod1)
-			  $display("error");
-			  
-		   test_read_addr = {}; //address of cod[2] in scratch mem (probably a parameter) 
-			@(posedge clk);
-         if (scratch_mem_in != cod2)
-			  $display("error");
-			  
-		   test_read_addr = {}; //address of cod[3] in scratch mem (probably a parameter) 
-			@(posedge clk);
-         if (scratch_mem_in != cod3)
-			  $display("error");
-			
-			@(posedge clk);
-			@(posedge clk) #5;
-			
-
-
-//		end//j for loop*/
-
 		// Initialize Inputs
 		clk = 0;
 		reset = 0;
@@ -187,7 +94,7 @@ module de_acelp_tb;
 		reset = 0;
 		
 		@(posedge clk) #5;
-		for(j=0;j<34;j=j+1)
+		for(j=0;j<60;j=j+1)
 		begin
 			//TEST1
 			@(posedge clk);
@@ -199,85 +106,68 @@ module de_acelp_tb;
 			mem_Mux4Sel = 0;
 			test_read_addr = 0;
 			
-			@(posedge clk);
-			@(posedge clk);
-			@(posedge clk) #5;
-			//for(i=0;i<40;i=i+1)
-			//begin
-				@(posedge clk);
-				@(posedge clk);
-				@(posedge clk) #5;
-				mem_Mux1Sel = 1;
-				mem_Mux2Sel = 1;
-				mem_Mux3Sel = 1;
-				mem_Mux4Sel = 1;
-				@(posedge clk);
-				@(posedge clk);
-				@(posedge clk) #5;
-				//test_write_addr = {INDEX_IN[11:6],j[5:0]};
-				test_write_addr = {INDEX_IN[11:6],6'd0};
-				test_write = index_in[j];
-				test_write_en = 1;	
-				@(posedge clk);
-				@(posedge clk);
-				@(posedge clk) #5;
-			//end
-			@(posedge clk);
-			@(posedge clk) #5;
-			//for(i=0;i<40;i=i+1)
-			//begin
-				@(posedge clk);
-				@(posedge clk);
-				@(posedge clk) #5;
-				mem_Mux1Sel = 1;
-				mem_Mux2Sel = 1;
-				mem_Mux3Sel = 1;
-				mem_Mux4Sel = 1;
-				@(posedge clk);
-				@(posedge clk);
-				@(posedge clk) #5;
-				//test_write_addr = {SIGN_IN[11:6],j[5:0]};
-				test_write_addr = {SIGN_IN[11:6],6'd0};
-				test_write = sign_in[j];
-				test_write_en = 1;	
-				@(posedge clk);
-				@(posedge clk);
-				@(posedge clk) #5;
-			//end
-			/*for(i=0;i<4;i=i+1)
-			begin
-				@(posedge clk);
-				@(posedge clk);
-				@(posedge clk) #5;
-				mem_Mux1Sel = 1;
-				mem_Mux2Sel = 1;
-				mem_Mux3Sel = 1;
-				mem_Mux4Sel = 1;
-				@(posedge clk);
-				@(posedge clk);
-				@(posedge clk) #5;
-				test_write_addr = {G_COEFF[11:2],i[1:0]};
-				test_write = g_coeff_in[4*j+i];
-				test_write_en = 1;	
-				@(posedge clk);
-				@(posedge clk);
-				@(posedge clk) #5;
-			end*/
 			
 			@(posedge clk);
 			@(posedge clk);
 			@(posedge clk) #5;
+			
+			mem_Mux1Sel = 1;
+			mem_Mux2Sel = 1;
+			mem_Mux3Sel = 1;
+			mem_Mux4Sel = 1;
+			
+			@(posedge clk);
+			@(posedge clk);
+			@(posedge clk) #5;
+			
+			test_write_addr = INDEX_IN;
+			test_write = index_in[j];
+			test_write_en = 1;	
+			
+			@(posedge clk);
+			@(posedge clk);
+			@(posedge clk) #5;
+			//end
+			@(posedge clk);
+			@(posedge clk) #5;
+			
+		
+			@(posedge clk);
+			@(posedge clk);
+			@(posedge clk) #5;
+			
+			mem_Mux1Sel = 1;
+			mem_Mux2Sel = 1;
+			mem_Mux3Sel = 1;
+			mem_Mux4Sel = 1;
+			
+			@(posedge clk);
+			@(posedge clk);
+			@(posedge clk) #5;
+			
+			test_write_addr = SIGN_IN;
+			test_write = sign_in[j];
+			test_write_en = 1;	
+			
+			@(posedge clk);
+			@(posedge clk);
+			@(posedge clk) #5;
+			
 			mem_Mux1Sel = 0;
 			mem_Mux2Sel = 0;
 			mem_Mux3Sel = 0;
 			mem_Mux4Sel = 0;
-			@(posedge clk);
-			@(posedge clk);
-			@(posedge clk) #5;		
-			start = 1;
+			
 			@(posedge clk);
 			@(posedge clk);
 			@(posedge clk) #5;
+			
+			start = 1;
+			
+			@(posedge clk);
+			@(posedge clk);
+			@(posedge clk) #5;
+			
 			start = 0;
 			// Add stimulus here	
 			wait(done);
@@ -291,33 +181,25 @@ module de_acelp_tb;
 			@(posedge clk);
 			@(posedge clk) #5;
 			
-			//Check gain_pit outputs
-					//#50;
-				for(i = 0; i < 40; i = i + 1) begin
-					@(posedge clk);
-					@(posedge clk);
-					@(posedge clk) #5;
-					
-					test_read_addr = {COD[11:6],i[5:0]};
-					
-					@(posedge clk);
-					@(posedge clk) #5;
-					
-					if (scratch_mem_in != cod[40*j+i])
-						$display($time, " ERROR: cod[%d] = %x, expected = %x", i, scratch_mem_in, cod[40*j+i]);
-					else if (scratch_mem_in == cod[40*j+i])
-						$display($time, " CORRECT:  cod[%d] = %x", i, scratch_mem_in);
-					@(posedge clk);
-				end
-			/*@(posedge clk);
-			@(posedge clk);
-			@(posedge clk) #5;*/
-
+			for(i = 0; i < 40; i = i + 1) begin
+				@(posedge clk);
+				@(posedge clk);
+				@(posedge clk) #5;
+				
+				test_read_addr = {COD[11:6],i[5:0]};
+				
+				@(posedge clk);
+				@(posedge clk) #5;
+				
+				if (scratch_mem_in != cod[40*j+i])
+					$display($time, " ERROR: cod[%d] = %x, expected = %x", i, scratch_mem_in, cod[40*j+i]);
+				else if (scratch_mem_in == cod[40*j+i])
+					$display($time, " CORRECT:  cod[%d] = %x", i, scratch_mem_in);
+				@(posedge clk);
+			end
 		end//j for loop
 
 	end
-	
-	initial forever #10 clk = ~clk;
       
 endmodule
 
