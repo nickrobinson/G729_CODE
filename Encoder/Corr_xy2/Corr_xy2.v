@@ -326,7 +326,10 @@ begin
 		begin
 			shrVar1Out = memIn[15:0];
 			shrVar2Out = 16'd3;
-			memOut = shrIn[15:0];
+			if(shrIn[15] == 1)
+				memOut = {16'hffff,shrIn[15:0]};
+			else
+				memOut = {16'h0000,shrIn[15:0]};
 			memWriteEn = 1;
 			memWriteAddr = {CORR_XY2_SCALED_Y2[11:6],i[5:0]};
 			addOutA = i;
@@ -441,7 +444,10 @@ begin
 		S10:
 		begin
 			memWriteAddr = {G_COEFF_CS[11:2],2'd2};
-			memOut = y2y2;
+			if (y2y2[15] == 1)
+				memOut = {16'hffff,y2y2[15:0]};
+			else
+				memOut = {16'h0000,y2y2[15:0]};
 			memWriteEn = 1;
 			nextstate = S11;
 		end//S10
@@ -451,7 +457,10 @@ begin
 		S11:
 		begin
 			memWriteAddr = {EXP_G_COEFF_CS[11:2],2'd2};
-			memOut = exp_y2y2;
+			if (exp_y2y2[15] == 1)
+				memOut = {16'hffff,exp_y2y2[15:0]};
+			else
+				memOut = {16'h0000,exp_y2y2[15:0]};
 			memWriteEn = 1;
 			nextL_acc = 16'd1;
 			L_accLD = 1;
@@ -578,7 +587,7 @@ begin
 				L_negateOut = {16'd0,xny2[15:0]};
 			memWriteEn = 1;
 			memWriteAddr = {G_COEFF_CS[11:2],2'd3};
-			memOut = L_negateIn[15:0];
+			memOut = L_negateIn;
 			nextstate = S21;
 		end//S20
 		
@@ -589,7 +598,10 @@ begin
 			subOutA = exp_xny2;
 			subOutB = 16'd1;
 			memWriteAddr = {EXP_G_COEFF_CS[11:2],2'd3};
-			memOut = subIn[15:0];
+			if (subIn[15] == 1)
+				memOut = {16'hffff,subIn[15:0]};
+			else
+				memOut = {16'h0000,subIn[15:0]};
 			memWriteEn = 1;
 			nextL_acc = 32'd1;
 			L_accLD = 1;
@@ -709,7 +721,10 @@ begin
 		//g_coeff[4] = y1y2;
 		S30:
 		begin
-			memOut = y1y2[15:0];
+			if (y1y2[15] == 1)
+				memOut = {16'hffff,y1y2[15:0]};
+			else
+				memOut = {16'h0000,y1y2[15:0]};
 			memWriteAddr = {G_COEFF_CS[11:3],3'd4};
 			memWriteEn = 1;
 			nextstate = S31;
@@ -720,7 +735,10 @@ begin
 		begin
 			subOutA = exp_y1y2;
 			subOutB = 16'd1;
-			memOut = subIn[15:0];
+			if (subIn[15] == 1)
+				memOut = {16'hffff,subIn[15:0]};
+			else
+				memOut = {16'h0000,subIn[15:0]};
 			memWriteEn = 1;
 			memWriteAddr = {EXP_G_COEFF_CS[11:3],3'd4};
 			nextstate = S32;

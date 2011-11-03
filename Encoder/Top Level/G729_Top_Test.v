@@ -167,6 +167,10 @@ module G729_Top_Test_v;
 	reg [31:0] ACELP_Codebook_code [0:4999];
 	reg [31:0] ACELP_Codebook_y2 [0:4999];
 
+	//Corr_xy2
+	reg [31:0] Corr_xy2_g_coeff_cs [0:4999];
+	reg [31:0] Corr_xy2_exp_g_coeff_cs [0:4999];
+	
 	//working integers
 	integer i;
 	integer k;
@@ -295,6 +299,10 @@ module G729_Top_Test_v;
 		//ACELP_Codebook
 		$readmemh("ACELP_Codebook_code.out", ACELP_Codebook_code);
 		$readmemh("ACELP_Codebook_y2.out", ACELP_Codebook_y2);
+
+		//Corr_xy2
+		$readmemh("Corr_xy2_g_coeff_cs.out", Corr_xy2_g_coeff_cs);
+		$readmemh("Corr_xy2_exp_g_coeff_cs.out", Corr_xy2_exp_g_coeff_cs);
 	end	
 
 	// Instantiate the Unit Under Test (UUT)
@@ -1872,7 +1880,7 @@ module G729_Top_Test_v;
 					$display($time, "!!!!!ACELP_Codebook Failed: y2!!!!!");
 				if (!flag1 && !flag2)
 					$display($time, "*****ACELP_Codebook Completed Successfully*****");
-
+					
 	//////////////////////////////////////////////////////////////////////////////////////////////
 	//
 	//		TL_Math5
@@ -1885,7 +1893,55 @@ module G729_Top_Test_v;
 				@(posedge clock);
 				@(posedge clock);
 				$display($time, "*****TL_Math5 Completed Successfully*****");
-					
+
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//		Corr_xy2
+	//
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	
+				testdone = 1;
+				wait(done);
+				testdone = 0;
+				flag1 = 0;
+				@(posedge clock);
+				@(posedge clock);
+				
+				for (i = 0; i<5;i=i+1)
+				begin
+					outBufAddr = G_COEFF_CS + i;
+					@(posedge clock);
+					@(posedge clock);
+					if (out != Corr_xy2_g_coeff_cs[(2*k+z)*5+i])
+					begin
+						$display($time, " ERROR: g_coeff_cs[%d] = %x, expected = %x", (2*k+z)*5+i, out, Corr_xy2_g_coeff_cs[(2*k+z)*5+i]);
+						flag1 = 1;
+					end
+					@(posedge clock);
+					@(posedge clock);
+				end	
+				
+				for (i = 0; i<5;i=i+1)
+				begin
+					outBufAddr = EXP_G_COEFF_CS + i;
+					@(posedge clock);
+					@(posedge clock);
+					if (out != Corr_xy2_exp_g_coeff_cs[(2*k+z)*5+i])
+					begin
+						$display($time, " ERROR: exp_g_coeff_cs[%d] = %x, expected = %x", (2*k+z)*5+i, out, Corr_xy2_exp_g_coeff_cs[(2*k+z)*5+i]);
+						flag1 = 1;
+					end
+					@(posedge clock);
+					@(posedge clock);
+				end	
+
+				if (flag1)
+					$display($time, "!!!!!Corr_xy2 Failed: g_coeff_cs!!!!!");
+				if (flag2)
+					$display($time, "!!!!!Corr_xy2 Failed: exp_g_coeff_cs!!!!!");
+				if (!flag1 && !flag2)
+					$display($time, "*****Corr_xy2 Completed Successfully*****");
+				
 			end//z for loop
 		end//k for loop
 	end//initial 

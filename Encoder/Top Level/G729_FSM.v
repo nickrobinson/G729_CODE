@@ -169,6 +169,7 @@ module G729_FSM(clock,reset,start,divErr,
 	 parameter LOAD_ANA_5_9 = 6'd49;
 	 parameter SUB_MODULE_TL_MATH5_READY = 6'd50;
 	 parameter SUB_MODULE_TL_MATH5_DONE = 6'd51;
+	 parameter SUB_MODULE_CORR_XY2_DONE = 6'd52;
 
 
 	 parameter TL_FOR_LOOP_INC = 6'd62;
@@ -912,14 +913,26 @@ module G729_FSM(clock,reset,start,divErr,
 					nextsubModuleState = SUB_MODULE_TL_MATH5_DONE;
 				else if(Math5Done == 1)
 				begin
-					LDi_subfr = 1;
 					mathMuxSel = 6'd42;
-					nextsubModuleState = TL_FOR_LOOP_INC;
+					nextsubModuleState = SUB_MODULE_CORR_XY2_DONE;
+					Corr_xy2Ready = 1;
 				end				
 			end//SUB_MODULE_TL_MATH5_DONE
 
+			SUB_MODULE_CORR_XY2_DONE:
+			begin
+				mathMuxSel = 6'd42;
+				if(Corr_xy2Done == 0)
+					nextsubModuleState = SUB_MODULE_CORR_XY2_DONE;
+				else if(Corr_xy2Done == 1)
+				begin
+					LDi_subfr = 1;
+					mathMuxSel = 6'd43;
+					nextsubModuleState = TL_FOR_LOOP_INC;
+				end				
+			end//SUB_MODULE_CORR_XY2_DONE
 
-
+			
 
 			
 	
@@ -933,8 +946,8 @@ module G729_FSM(clock,reset,start,divErr,
 
 			TL_DONE:
 			begin
-					done = 1;
-					nextsubModuleState = SUB_MODULE_START;
+				done = 1;
+				nextsubModuleState = SUB_MODULE_START;
 			end//TL_DONE		
 
 		endcase
