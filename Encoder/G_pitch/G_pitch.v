@@ -539,7 +539,10 @@ module G_pitch(clock,reset,start,done,out,
 			
 			state21: begin
 				scratch_mem_write_addr = {G_COEFF[11:2],2'd0};
-				scratch_mem_out = {16'd0,yy};
+				if (yy[15] == 1)
+					scratch_mem_out = {16'hffff,yy};
+				else
+					scratch_mem_out = {16'h0000,yy};
 				scratch_mem_write_en = 'd1;
 				nextstate = state22;
 			end
@@ -548,14 +551,20 @@ module G_pitch(clock,reset,start,done,out,
 				scratch_mem_write_addr = {G_COEFF[11:2],2'd1};
 				sub_outa = 'd15;
 				sub_outb = exp_yy;
-				scratch_mem_out = {16'd0,sub_in};
+				if (sub_in[15] == 1)
+					scratch_mem_out = {16'hffff,sub_in};
+				else
+					scratch_mem_out = {16'h0000,sub_in};
 				scratch_mem_write_en = 'd1;
 				nextstate = state23;
 			end
 			
 			state23: begin
 				scratch_mem_write_addr = {G_COEFF[11:2],2'd2};
-				scratch_mem_out = {16'd0,xy};
+				if (xy[15] == 1)
+					scratch_mem_out = {16'hffff,xy};
+				else
+					scratch_mem_out = {16'h0000,xy};
 				scratch_mem_write_en = 'd1;
 				nextstate = state24;
 			end
@@ -564,7 +573,10 @@ module G_pitch(clock,reset,start,done,out,
 				scratch_mem_write_addr = {G_COEFF[11:2],2'd3};
 				sub_outa = 'd15;
 				sub_outb = exp_xy;
-				scratch_mem_out = {16'd0,sub_in};
+				if (sub_in[15] == 1)
+					scratch_mem_out = {16'hffff,sub_in};
+				else
+					scratch_mem_out = {16'd0,sub_in};
 				scratch_mem_write_en = 'd1;
 				if(xy[15] == 'd1 || xy == 'd0) begin
 					nextstate = state25;

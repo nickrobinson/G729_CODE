@@ -191,6 +191,9 @@ module LPC_Mem_Ctrl(clock, reset, In_Done, In_Sample, Out_Count, Out_Sample, fra
 	always@(*)begin
 		nextaddrb = addrb;
 		nextframe_count = frame_count;
+		//added code
+		framedoneflag = 0;
+		webflag = 0;
 		if(In_Done) begin
 			if(addrb == 239) begin
 				nextaddrb = 160;
@@ -209,10 +212,10 @@ module LPC_Mem_Ctrl(clock, reset, In_Done, In_Sample, Out_Count, Out_Sample, fra
 		end
 	end
 	
-	always@(negedge In_Done)begin
-		framedoneflag = 0;
-		webflag = 0;
-	end
+//	always@(negedge In_Done)begin
+//		framedoneflag = 0;
+//		webflag = 0;
+//	end
 
 	
 	

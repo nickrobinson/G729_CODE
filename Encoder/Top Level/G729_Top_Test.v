@@ -1873,6 +1873,19 @@ module G729_Top_Test_v;
 				if (!flag1 && !flag2)
 					$display($time, "*****ACELP_Codebook Completed Successfully*****");
 
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//		TL_Math5
+	//
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	
+				testdone = 1;
+				wait(done);
+				testdone = 0;
+				@(posedge clock);
+				@(posedge clock);
+				$display($time, "*****TL_Math5 Completed Successfully*****");
+					
 			end//z for loop
 		end//k for loop
 	end//initial 
