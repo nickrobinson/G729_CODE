@@ -176,6 +176,10 @@ module G729_Top_Test_v;
 
 	//update_exc_err
 	reg [31:0] update_exc_err_L_exc_err [0:4999];
+
+	//Syn_filt7
+	reg [31:0] Syn_filt7_synth [0:4999];
+	reg [31:0] Syn_filt7_mem_syn [0:4999];
 	
 	//working integers
 	integer i;
@@ -315,6 +319,11 @@ module G729_Top_Test_v;
 
 		//update_exc_err
 		$readmemh("update_exc_err_L_exc_err.out", update_exc_err_L_exc_err);
+
+		//Syn_filt7
+		$readmemh("Syn_filt7_synth.out", Syn_filt7_synth);
+		$readmemh("Syn_filt7_mem_syn.out", Syn_filt7_mem_syn);
+
 	end	
 
 	// Instantiate the Unit Under Test (UUT)
@@ -2030,6 +2039,61 @@ module G729_Top_Test_v;
 					$display($time, "!!!!!update_exc_err Failed: L_exc_err!!!!!");
 				else
 					$display($time, "*****update_exc_err Completed Successfully*****");
+
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//		Syn_filt7
+	//
+	//////////////////////////////////////////////////////////////////////////////////////////////
+			
+				testdone = 1;
+				wait(done);
+				testdone = 0;
+				flag1 = 0;
+				flag2 = 0;
+				@(posedge clock);
+				@(posedge clock);
+				
+				for (i = 0; i<L_SUBFR; i=i+1)
+				begin		
+					@(posedge clock);
+					@(posedge clock);
+					@(posedge clock);
+					outBufAddr = SYN + (z * L_SUBFR) + i;
+					@(posedge clock);
+					@(posedge clock);
+					if (out != Syn_filt7_synth[(2*k+z)*L_SUBFR+i])
+					begin
+						$display($time, " ERROR: synth[%d] = %x, expected = %x", (2*k+z)*L_SUBFR+i, out, Syn_filt7_synth[(2*k+z)*L_SUBFR+i]);
+						flag1 = 1;
+					end
+					@(posedge clock);
+					@(posedge clock);
+				end
+				
+				for (i = 0; i<M; i=i+1)
+				begin		
+					@(posedge clock);
+					@(posedge clock);
+					@(posedge clock);
+					outBufAddr = MEM_SYN + i;
+					@(posedge clock);
+					@(posedge clock);
+					if (out != Syn_filt7_mem_syn[(2*k+z)*M+i])
+					begin
+						$display($time, " ERROR: mem_syn[%d] = %x, expected = %x", (2*k+z)*M+i, out, Syn_filt7_mem_syn[(2*k+z)*M+i]);
+						flag2 = 1;
+					end
+					@(posedge clock);
+					@(posedge clock);
+				end
+				
+				if (flag1)
+					$display($time, "!!!!!Syn_filt7 Failed: synth!!!!!");
+				if (flag2)
+					$display($time, "!!!!!Syn_filt7 Failed: mem_syn!!!!!");
+				if (!flag1 && !flag2)
+					$display($time, "*****Syn_filt7 Completed Successfully*****");
 
 			end//z for loop
 		end//k for loop
