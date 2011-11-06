@@ -173,6 +173,9 @@ module G729_Top_Test_v;
 
 	//TL_Math6
 	reg [31:0] TL_Math6_exc [0:4999];
+
+	//update_exc_err
+	reg [31:0] update_exc_err_L_exc_err [0:4999];
 	
 	//working integers
 	integer i;
@@ -309,6 +312,9 @@ module G729_Top_Test_v;
 
 		//TL_Math6
 		$readmemh("TL_Math6_exc.out", TL_Math6_exc);
+
+		//update_exc_err
+		$readmemh("update_exc_err_L_exc_err.out", update_exc_err_L_exc_err);
 	end	
 
 	// Instantiate the Unit Under Test (UUT)
@@ -1992,6 +1998,38 @@ module G729_Top_Test_v;
 					$display($time, "!!!!!TL_Math6 Failed: exc!!!!!");
 				else
 					$display($time, "*****TL_Math6 Completed Successfully*****");
+
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//		update_exc_err
+	//
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	
+				testdone = 1;
+				wait(done);
+				testdone = 0;
+				flag1 = 0;
+				@(posedge clock);
+				@(posedge clock);
+				
+				for (i = 0; i<4;i=i+1)
+				begin
+					outBufAddr = L_EXC_ERR + i;
+					@(posedge clock);
+					@(posedge clock);
+					if (out != update_exc_err_L_exc_err[(2*k+z)*4+i])
+					begin
+						$display($time, " ERROR: L_exc_err[%d] = %x, expected = %x", (2*k+z)*4+i, out, update_exc_err_L_exc_err[(2*k+z)*4+i]);
+						flag1 = 1;
+					end
+					@(posedge clock);
+					@(posedge clock);
+				end	
+				
+				if (flag1)
+					$display($time, "!!!!!update_exc_err Failed: L_exc_err!!!!!");
+				else
+					$display($time, "*****update_exc_err Completed Successfully*****");
 
 			end//z for loop
 		end//k for loop
