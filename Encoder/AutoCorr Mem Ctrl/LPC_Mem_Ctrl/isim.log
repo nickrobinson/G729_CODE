@@ -548,7 +548,7 @@ WARNING:  For instance i_G729_Pipe/i_mux128_16_L_temp/, width 16 of formal port 
 WARNING:  For instance i_G729_Pipe/i_mux128_16_L_temp/, width 16 of formal port in42 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_L_temp/, width 16 of formal port in43 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_L_temp/, width 16 of formal port in44 is not equal to width 32 of actual constant.
-WARNING:  For instance i_G729_Pipe/i_mux128_16_L_temp/, width 16 of formal port in45 is not equal to width 32 of actual constant.
+WARNING: File "C:/Users/VMonCooper/Desktop/TopLevel/G729_Pipe.v" Line 850.  For instance i_G729_Pipe/i_mux128_16_L_temp/, width 16 of formal port in45 is not equal to width 32 of actual signal TL_Math6_nextL_temp.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_L_temp/, width 16 of formal port in46 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_L_temp/, width 16 of formal port in47 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_L_temp/, width 16 of formal port in48 is not equal to width 32 of actual constant.
@@ -630,7 +630,7 @@ WARNING:  For instance i_G729_Pipe/i_mux128_16_L_temp/, width 16 of formal port 
 WARNING:  For instance i_G729_Pipe/i_mux128_16_L_temp/, width 16 of formal port in125 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_L_temp/, width 16 of formal port in126 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_L_temp/, width 16 of formal port in127 is not equal to width 32 of actual constant.
-WARNING: File "C:/Users/VMonCooper/Desktop/TopLevel/G729_Pipe.v" Line 157.  For instance i_G729_Pipe/i_mux128_16_L_temp/, width 16 of formal port out is not equal to width 32 of actual signal nextL_temp.
+WARNING: File "C:/Users/VMonCooper/Desktop/TopLevel/G729_Pipe.v" Line 158.  For instance i_G729_Pipe/i_mux128_16_L_temp/, width 16 of formal port out is not equal to width 32 of actual signal nextL_temp.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_sharp/, width 16 of formal port in0 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_sharp/, width 16 of formal port in1 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_sharp/, width 16 of formal port in2 is not equal to width 32 of actual constant.
@@ -676,7 +676,6 @@ WARNING:  For instance i_G729_Pipe/i_mux128_16_sharp/, width 16 of formal port i
 WARNING:  For instance i_G729_Pipe/i_mux128_16_sharp/, width 16 of formal port in42 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_sharp/, width 16 of formal port in43 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_sharp/, width 16 of formal port in44 is not equal to width 32 of actual constant.
-WARNING:  For instance i_G729_Pipe/i_mux128_16_sharp/, width 16 of formal port in45 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_sharp/, width 16 of formal port in46 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_sharp/, width 16 of formal port in47 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_sharp/, width 16 of formal port in48 is not equal to width 32 of actual constant.
@@ -1645,7 +1644,6 @@ WARNING:  For instance i_G729_Pipe/i_mux128_16_add_a/, width 16 of formal port i
 WARNING:  For instance i_G729_Pipe/i_mux128_16_add_a/, width 16 of formal port in32 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_add_a/, width 16 of formal port in39 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_add_a/, width 16 of formal port in40 is not equal to width 32 of actual constant.
-WARNING:  For instance i_G729_Pipe/i_mux128_16_add_a/, width 16 of formal port in44 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_add_a/, width 16 of formal port in45 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_add_a/, width 16 of formal port in46 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_add_a/, width 16 of formal port in47 is not equal to width 32 of actual constant.
@@ -1732,7 +1730,6 @@ WARNING:  For instance i_G729_Pipe/i_mux128_16_add_b/, width 16 of formal port i
 WARNING:  For instance i_G729_Pipe/i_mux128_16_add_b/, width 16 of formal port in32 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_add_b/, width 16 of formal port in39 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_add_b/, width 16 of formal port in40 is not equal to width 32 of actual constant.
-WARNING:  For instance i_G729_Pipe/i_mux128_16_add_b/, width 16 of formal port in44 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_add_b/, width 16 of formal port in45 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_add_b/, width 16 of formal port in46 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_add_b/, width 16 of formal port in47 is not equal to width 32 of actual constant.
@@ -1840,7 +1837,6 @@ WARNING:  For instance i_G729_Pipe/i_mux128_16_L_mac_a/, width 16 of formal port
 WARNING:  For instance i_G729_Pipe/i_mux128_16_L_mac_a/, width 16 of formal port in39 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_L_mac_a/, width 16 of formal port in40 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_L_mac_a/, width 16 of formal port in41 is not equal to width 32 of actual constant.
-WARNING:  For instance i_G729_Pipe/i_mux128_16_L_mac_a/, width 16 of formal port in44 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_L_mac_a/, width 16 of formal port in45 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_L_mac_a/, width 16 of formal port in46 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_L_mac_a/, width 16 of formal port in47 is not equal to width 32 of actual constant.
@@ -1948,7 +1944,6 @@ WARNING:  For instance i_G729_Pipe/i_mux128_16_L_mac_b/, width 16 of formal port
 WARNING:  For instance i_G729_Pipe/i_mux128_16_L_mac_b/, width 16 of formal port in39 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_L_mac_b/, width 16 of formal port in40 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_L_mac_b/, width 16 of formal port in41 is not equal to width 32 of actual constant.
-WARNING:  For instance i_G729_Pipe/i_mux128_16_L_mac_b/, width 16 of formal port in44 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_L_mac_b/, width 16 of formal port in45 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_L_mac_b/, width 16 of formal port in46 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_L_mac_b/, width 16 of formal port in47 is not equal to width 32 of actual constant.
@@ -2268,7 +2263,6 @@ WARNING:  For instance i_G729_Pipe/i_mux128_16_L_mult_a/, width 16 of formal por
 WARNING:  For instance i_G729_Pipe/i_mux128_16_L_mult_a/, width 16 of formal port in40 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_L_mult_a/, width 16 of formal port in41 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_L_mult_a/, width 16 of formal port in42 is not equal to width 32 of actual constant.
-WARNING:  For instance i_G729_Pipe/i_mux128_16_L_mult_a/, width 16 of formal port in44 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_L_mult_a/, width 16 of formal port in45 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_L_mult_a/, width 16 of formal port in46 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_L_mult_a/, width 16 of formal port in47 is not equal to width 32 of actual constant.
@@ -2366,7 +2360,6 @@ WARNING:  For instance i_G729_Pipe/i_mux128_16_L_mult_b/, width 16 of formal por
 WARNING:  For instance i_G729_Pipe/i_mux128_16_L_mult_b/, width 16 of formal port in40 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_L_mult_b/, width 16 of formal port in41 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_L_mult_b/, width 16 of formal port in42 is not equal to width 32 of actual constant.
-WARNING:  For instance i_G729_Pipe/i_mux128_16_L_mult_b/, width 16 of formal port in44 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_L_mult_b/, width 16 of formal port in45 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_L_mult_b/, width 16 of formal port in46 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_L_mult_b/, width 16 of formal port in47 is not equal to width 32 of actual constant.
@@ -2469,7 +2462,6 @@ WARNING:  For instance i_G729_Pipe/i_mux128_16_L_shl_b/, width 16 of formal port
 WARNING:  For instance i_G729_Pipe/i_mux128_16_L_shl_b/, width 16 of formal port in39 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_L_shl_b/, width 16 of formal port in40 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_L_shl_b/, width 16 of formal port in41 is not equal to width 32 of actual constant.
-WARNING:  For instance i_G729_Pipe/i_mux128_16_L_shl_b/, width 16 of formal port in44 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_L_shl_b/, width 16 of formal port in45 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_L_shl_b/, width 16 of formal port in46 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_L_shl_b/, width 16 of formal port in47 is not equal to width 32 of actual constant.
@@ -2571,7 +2563,6 @@ WARNING:  For instance i_G729_Pipe/i_mux128_1_L_shl_start/, width 1 of formal po
 WARNING:  For instance i_G729_Pipe/i_mux128_1_L_shl_start/, width 1 of formal port in39 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_1_L_shl_start/, width 1 of formal port in40 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_1_L_shl_start/, width 1 of formal port in41 is not equal to width 32 of actual constant.
-WARNING:  For instance i_G729_Pipe/i_mux128_1_L_shl_start/, width 1 of formal port in44 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_1_L_shl_start/, width 1 of formal port in45 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_1_L_shl_start/, width 1 of formal port in46 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_1_L_shl_start/, width 1 of formal port in47 is not equal to width 32 of actual constant.
@@ -3479,7 +3470,7 @@ WARNING:  For instance i_G729_Pipe/i_mux128_16_shl_var1/, width 16 of formal por
 WARNING:  For instance i_G729_Pipe/i_mux128_16_shl_var1/, width 16 of formal port in126 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_shl_var1/, width 16 of formal port in127 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_shl_var2/, width 16 of formal port in2 is not equal to width 32 of actual constant.
-WARNING: File "C:/Users/VMonCooper/Desktop/TopLevel/G729_Pipe.v" Line 2177.  For instance i_G729_Pipe/i_mux128_16_shl_var2/, width 16 of formal port in3 is not equal to width 1 of actual signal Az_zer016.
+WARNING: File "C:/Users/VMonCooper/Desktop/TopLevel/G729_Pipe.v" Line 2200.  For instance i_G729_Pipe/i_mux128_16_shl_var2/, width 16 of formal port in3 is not equal to width 1 of actual signal Az_zer016.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_shl_var2/, width 16 of formal port in6 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_shl_var2/, width 16 of formal port in7 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_shl_var2/, width 16 of formal port in9 is not equal to width 32 of actual constant.
@@ -3838,7 +3829,6 @@ WARNING:  For instance i_G729_Pipe/i_mux128_16_sub_a/, width 16 of formal port i
 WARNING:  For instance i_G729_Pipe/i_mux128_16_sub_a/, width 16 of formal port in39 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_sub_a/, width 16 of formal port in40 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_sub_a/, width 16 of formal port in41 is not equal to width 32 of actual constant.
-WARNING:  For instance i_G729_Pipe/i_mux128_16_sub_a/, width 16 of formal port in44 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_sub_a/, width 16 of formal port in45 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_sub_a/, width 16 of formal port in46 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_sub_a/, width 16 of formal port in47 is not equal to width 32 of actual constant.
@@ -3936,7 +3926,6 @@ WARNING:  For instance i_G729_Pipe/i_mux128_16_sub_b/, width 16 of formal port i
 WARNING:  For instance i_G729_Pipe/i_mux128_16_sub_b/, width 16 of formal port in39 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_sub_b/, width 16 of formal port in40 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_sub_b/, width 16 of formal port in41 is not equal to width 32 of actual constant.
-WARNING:  For instance i_G729_Pipe/i_mux128_16_sub_b/, width 16 of formal port in44 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_sub_b/, width 16 of formal port in45 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_sub_b/, width 16 of formal port in46 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_sub_b/, width 16 of formal port in47 is not equal to width 32 of actual constant.
@@ -4022,7 +4011,6 @@ WARNING:  For instance i_G729_Pipe/i_mux128_16_sub_b/, width 16 of formal port i
 WARNING:  For instance i_G729_Pipe/i_mux128_12_scratch_addra/, width 12 of formal port in18 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_12_scratch_addra/, width 12 of formal port in31 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_12_scratch_addra/, width 12 of formal port in32 is not equal to width 32 of actual constant.
-WARNING:  For instance i_G729_Pipe/i_mux128_12_scratch_addra/, width 12 of formal port in44 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_12_scratch_addra/, width 12 of formal port in45 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_12_scratch_addra/, width 12 of formal port in46 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_12_scratch_addra/, width 12 of formal port in47 is not equal to width 32 of actual constant.
@@ -4111,7 +4099,6 @@ WARNING:  For instance i_G729_Pipe/i_mux128_1_scratch_wea/, width 1 of formal po
 WARNING:  For instance i_G729_Pipe/i_mux128_1_scratch_wea/, width 1 of formal port in32 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_1_scratch_wea/, width 1 of formal port in39 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_1_scratch_wea/, width 1 of formal port in40 is not equal to width 32 of actual constant.
-WARNING:  For instance i_G729_Pipe/i_mux128_1_scratch_wea/, width 1 of formal port in44 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_1_scratch_wea/, width 1 of formal port in45 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_1_scratch_wea/, width 1 of formal port in46 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_1_scratch_wea/, width 1 of formal port in47 is not equal to width 32 of actual constant.
@@ -4200,7 +4187,6 @@ WARNING:  For instance i_G729_Pipe/i_mux128_12_scratch_addrb/, width 12 of forma
 WARNING:  For instance i_G729_Pipe/i_mux128_12_scratch_addrb/, width 12 of formal port in32 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_12_scratch_addrb/, width 12 of formal port in39 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_12_scratch_addrb/, width 12 of formal port in40 is not equal to width 32 of actual constant.
-WARNING:  For instance i_G729_Pipe/i_mux128_12_scratch_addrb/, width 12 of formal port in44 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_12_scratch_addrb/, width 12 of formal port in45 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_12_scratch_addrb/, width 12 of formal port in46 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_12_scratch_addrb/, width 12 of formal port in47 is not equal to width 32 of actual constant.
@@ -4398,23 +4384,23 @@ WARNING:  For instance i_G729_Pipe/i_mux128_12_constantMemAddr/, width 12 of for
 WARNING:  For instance i_G729_Pipe/i_mux128_12_constantMemAddr/, width 12 of formal port in125 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_12_constantMemAddr/, width 12 of formal port in126 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_12_constantMemAddr/, width 12 of formal port in127 is not equal to width 32 of actual constant.
-WARNING: File "C:/Users/VMonCooper/Desktop/TopLevel/G729_Pipe.v" Line 166.  For instance i_G729_Pipe/pre_proc_mem/, width 8 of formal port Out_Count is not equal to width 12 of actual signal preProcMemReadAddr.
-WARNING: File "C:/Users/VMonCooper/Desktop/TopLevel/G729_Pipe.v" Line 173.  For instance i_G729_Pipe/i_mux128_11_pre_proc_mem_addr/, width 11 of formal port in0 is not equal to width 12 of actual signal autocorrRequested.
-WARNING: File "C:/Users/VMonCooper/Desktop/TopLevel/G729_Pipe.v" Line 173.  For instance i_G729_Pipe/i_mux128_11_pre_proc_mem_addr/, width 11 of formal port in1 is not equal to width 12 of actual signal autocorrRequested.
-WARNING: File "C:/Users/VMonCooper/Desktop/TopLevel/G729_Pipe.v" Line 173.  For instance i_G729_Pipe/i_mux128_11_pre_proc_mem_addr/, width 11 of formal port in2 is not equal to width 12 of actual signal autocorrRequested.
-WARNING: File "C:/Users/VMonCooper/Desktop/TopLevel/G729_Pipe.v" Line 173.  For instance i_G729_Pipe/i_mux128_11_pre_proc_mem_addr/, width 11 of formal port in3 is not equal to width 12 of actual signal autocorrRequested.
-WARNING: File "C:/Users/VMonCooper/Desktop/TopLevel/G729_Pipe.v" Line 173.  For instance i_G729_Pipe/i_mux128_11_pre_proc_mem_addr/, width 11 of formal port in4 is not equal to width 12 of actual signal autocorrRequested.
+WARNING: File "C:/Users/VMonCooper/Desktop/TopLevel/G729_Pipe.v" Line 167.  For instance i_G729_Pipe/pre_proc_mem/, width 8 of formal port Out_Count is not equal to width 12 of actual signal preProcMemReadAddr.
+WARNING: File "C:/Users/VMonCooper/Desktop/TopLevel/G729_Pipe.v" Line 174.  For instance i_G729_Pipe/i_mux128_11_pre_proc_mem_addr/, width 11 of formal port in0 is not equal to width 12 of actual signal autocorrRequested.
+WARNING: File "C:/Users/VMonCooper/Desktop/TopLevel/G729_Pipe.v" Line 174.  For instance i_G729_Pipe/i_mux128_11_pre_proc_mem_addr/, width 11 of formal port in1 is not equal to width 12 of actual signal autocorrRequested.
+WARNING: File "C:/Users/VMonCooper/Desktop/TopLevel/G729_Pipe.v" Line 174.  For instance i_G729_Pipe/i_mux128_11_pre_proc_mem_addr/, width 11 of formal port in2 is not equal to width 12 of actual signal autocorrRequested.
+WARNING: File "C:/Users/VMonCooper/Desktop/TopLevel/G729_Pipe.v" Line 174.  For instance i_G729_Pipe/i_mux128_11_pre_proc_mem_addr/, width 11 of formal port in3 is not equal to width 12 of actual signal autocorrRequested.
+WARNING: File "C:/Users/VMonCooper/Desktop/TopLevel/G729_Pipe.v" Line 174.  For instance i_G729_Pipe/i_mux128_11_pre_proc_mem_addr/, width 11 of formal port in4 is not equal to width 12 of actual signal autocorrRequested.
 WARNING:  For instance i_G729_Pipe/i_mux128_11_pre_proc_mem_addr/, width 11 of formal port in5 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_11_pre_proc_mem_addr/, width 11 of formal port in6 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_11_pre_proc_mem_addr/, width 11 of formal port in7 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_11_pre_proc_mem_addr/, width 11 of formal port in8 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_11_pre_proc_mem_addr/, width 11 of formal port in9 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_11_pre_proc_mem_addr/, width 11 of formal port in10 is not equal to width 32 of actual constant.
-WARNING: File "C:/Users/VMonCooper/Desktop/TopLevel/G729_Pipe.v" Line 493.  For instance i_G729_Pipe/i_mux128_11_pre_proc_mem_addr/, width 11 of formal port in11 is not equal to width 12 of actual signal Residu_speechAddr.
+WARNING: File "C:/Users/VMonCooper/Desktop/TopLevel/G729_Pipe.v" Line 494.  For instance i_G729_Pipe/i_mux128_11_pre_proc_mem_addr/, width 11 of formal port in11 is not equal to width 12 of actual signal Residu_speechAddr.
 WARNING:  For instance i_G729_Pipe/i_mux128_11_pre_proc_mem_addr/, width 11 of formal port in12 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_11_pre_proc_mem_addr/, width 11 of formal port in13 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_11_pre_proc_mem_addr/, width 11 of formal port in14 is not equal to width 32 of actual constant.
-WARNING: File "C:/Users/VMonCooper/Desktop/TopLevel/G729_Pipe.v" Line 493.  For instance i_G729_Pipe/i_mux128_11_pre_proc_mem_addr/, width 11 of formal port in15 is not equal to width 12 of actual signal Residu_speechAddr.
+WARNING: File "C:/Users/VMonCooper/Desktop/TopLevel/G729_Pipe.v" Line 494.  For instance i_G729_Pipe/i_mux128_11_pre_proc_mem_addr/, width 11 of formal port in15 is not equal to width 12 of actual signal Residu_speechAddr.
 WARNING:  For instance i_G729_Pipe/i_mux128_11_pre_proc_mem_addr/, width 11 of formal port in16 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_11_pre_proc_mem_addr/, width 11 of formal port in17 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_11_pre_proc_mem_addr/, width 11 of formal port in18 is not equal to width 32 of actual constant.
@@ -4423,7 +4409,7 @@ WARNING:  For instance i_G729_Pipe/i_mux128_11_pre_proc_mem_addr/, width 11 of f
 WARNING:  For instance i_G729_Pipe/i_mux128_11_pre_proc_mem_addr/, width 11 of formal port in21 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_11_pre_proc_mem_addr/, width 11 of formal port in22 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_11_pre_proc_mem_addr/, width 11 of formal port in23 is not equal to width 32 of actual constant.
-WARNING: File "C:/Users/VMonCooper/Desktop/TopLevel/G729_Pipe.v" Line 493.  For instance i_G729_Pipe/i_mux128_11_pre_proc_mem_addr/, width 11 of formal port in24 is not equal to width 12 of actual signal Residu_speechAddr.
+WARNING: File "C:/Users/VMonCooper/Desktop/TopLevel/G729_Pipe.v" Line 494.  For instance i_G729_Pipe/i_mux128_11_pre_proc_mem_addr/, width 11 of formal port in24 is not equal to width 12 of actual signal Residu_speechAddr.
 WARNING:  For instance i_G729_Pipe/i_mux128_11_pre_proc_mem_addr/, width 11 of formal port in25 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_11_pre_proc_mem_addr/, width 11 of formal port in26 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_11_pre_proc_mem_addr/, width 11 of formal port in27 is not equal to width 32 of actual constant.
@@ -4526,9 +4512,9 @@ WARNING:  For instance i_G729_Pipe/i_mux128_11_pre_proc_mem_addr/, width 11 of f
 WARNING:  For instance i_G729_Pipe/i_mux128_11_pre_proc_mem_addr/, width 11 of formal port in125 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_11_pre_proc_mem_addr/, width 11 of formal port in126 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_11_pre_proc_mem_addr/, width 11 of formal port in127 is not equal to width 32 of actual constant.
-WARNING: File "C:/Users/VMonCooper/Desktop/TopLevel/G729_Pipe.v" Line 166.  For instance i_G729_Pipe/i_mux128_11_pre_proc_mem_addr/, width 11 of formal port out is not equal to width 12 of actual signal preProcMemReadAddr.
-WARNING: File "C:/Users/VMonCooper/Desktop/TopLevel/G729_Pipe.v" Line 178.  For instance i_G729_Pipe/autocorr/, width 16 of formal port xIn is not equal to width 32 of actual signal speechIn.
-WARNING: File "C:/Users/VMonCooper/Desktop/TopLevel/G729_Pipe.v" Line 173.  For instance i_G729_Pipe/autocorr/, width 8 of formal port xRequested is not equal to width 12 of actual signal autocorrRequested.
+WARNING: File "C:/Users/VMonCooper/Desktop/TopLevel/G729_Pipe.v" Line 167.  For instance i_G729_Pipe/i_mux128_11_pre_proc_mem_addr/, width 11 of formal port out is not equal to width 12 of actual signal preProcMemReadAddr.
+WARNING: File "C:/Users/VMonCooper/Desktop/TopLevel/G729_Pipe.v" Line 179.  For instance i_G729_Pipe/autocorr/, width 16 of formal port xIn is not equal to width 32 of actual signal speechIn.
+WARNING: File "C:/Users/VMonCooper/Desktop/TopLevel/G729_Pipe.v" Line 174.  For instance i_G729_Pipe/autocorr/, width 8 of formal port xRequested is not equal to width 12 of actual signal autocorrRequested.
 WARNING:  For instance relspwed_fsm/select_1/, width 12 of formal port lspcb2Addr is not equal to width 32 of actual constant.
 WARNING:  For instance relspwed_fsm/select_2/, width 12 of formal port lspcb2Addr is not equal to width 32 of actual constant.
 WARNING:  For instance relspwed_fsm/expand_1_2/, width 4 of formal port gap is not equal to width 32 of actual constant.
@@ -4547,8 +4533,8 @@ WARNING:  For instance i_G729_Pipe/i_mux128_12_Weight_Az_A/, width 12 of formal 
 WARNING:  For instance i_G729_Pipe/i_mux128_12_Weight_Az_A/, width 12 of formal port in16 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_12_Weight_Az_A/, width 12 of formal port in17 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_12_Weight_Az_A/, width 12 of formal port in18 is not equal to width 32 of actual constant.
-WARNING: File "C:/Users/VMonCooper/Desktop/TopLevel/G729_Pipe.v" Line 154.  For instance i_G729_Pipe/i_mux128_12_Weight_Az_A/, width 12 of formal port in19 is not equal to width 16 of actual variable A_Addr. 
-WARNING: File "C:/Users/VMonCooper/Desktop/TopLevel/G729_Pipe.v" Line 154.  For instance i_G729_Pipe/i_mux128_12_Weight_Az_A/, width 12 of formal port in20 is not equal to width 16 of actual variable A_Addr. 
+WARNING: File "C:/Users/VMonCooper/Desktop/TopLevel/G729_Pipe.v" Line 155.  For instance i_G729_Pipe/i_mux128_12_Weight_Az_A/, width 12 of formal port in19 is not equal to width 16 of actual variable A_Addr. 
+WARNING: File "C:/Users/VMonCooper/Desktop/TopLevel/G729_Pipe.v" Line 155.  For instance i_G729_Pipe/i_mux128_12_Weight_Az_A/, width 12 of formal port in20 is not equal to width 16 of actual variable A_Addr. 
 WARNING:  For instance i_G729_Pipe/i_mux128_12_Weight_Az_A/, width 12 of formal port in21 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_12_Weight_Az_A/, width 12 of formal port in22 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_12_Weight_Az_A/, width 12 of formal port in23 is not equal to width 32 of actual constant.
@@ -4927,7 +4913,7 @@ WARNING:  For instance i_G729_Pipe/i_mux128_12_Residu_A/, width 12 of formal por
 WARNING:  For instance i_G729_Pipe/i_mux128_12_Residu_A/, width 12 of formal port in21 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_12_Residu_A/, width 12 of formal port in22 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_12_Residu_A/, width 12 of formal port in23 is not equal to width 32 of actual constant.
-WARNING: File "C:/Users/VMonCooper/Desktop/TopLevel/G729_Pipe.v" Line 154.  For instance i_G729_Pipe/i_mux128_12_Residu_A/, width 12 of formal port in24 is not equal to width 16 of actual variable Aq_Addr. 
+WARNING: File "C:/Users/VMonCooper/Desktop/TopLevel/G729_Pipe.v" Line 155.  For instance i_G729_Pipe/i_mux128_12_Residu_A/, width 12 of formal port in24 is not equal to width 16 of actual variable Aq_Addr. 
 WARNING:  For instance i_G729_Pipe/i_mux128_12_Residu_A/, width 12 of formal port in25 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_12_Residu_A/, width 12 of formal port in27 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_12_Residu_A/, width 12 of formal port in28 is not equal to width 32 of actual constant.
@@ -5305,9 +5291,9 @@ WARNING:  For instance i_G729_Pipe/i_mux128_12_Syn_filt_A/, width 12 of formal p
 WARNING:  For instance i_G729_Pipe/i_mux128_12_Syn_filt_A/, width 12 of formal port in19 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_12_Syn_filt_A/, width 12 of formal port in20 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_12_Syn_filt_A/, width 12 of formal port in21 is not equal to width 32 of actual constant.
-WARNING: File "C:/Users/VMonCooper/Desktop/TopLevel/G729_Pipe.v" Line 154.  For instance i_G729_Pipe/i_mux128_12_Syn_filt_A/, width 12 of formal port in22 is not equal to width 16 of actual variable Aq_Addr. 
+WARNING: File "C:/Users/VMonCooper/Desktop/TopLevel/G729_Pipe.v" Line 155.  For instance i_G729_Pipe/i_mux128_12_Syn_filt_A/, width 12 of formal port in22 is not equal to width 16 of actual variable Aq_Addr. 
 WARNING:  For instance i_G729_Pipe/i_mux128_12_Syn_filt_A/, width 12 of formal port in24 is not equal to width 32 of actual constant.
-WARNING: File "C:/Users/VMonCooper/Desktop/TopLevel/G729_Pipe.v" Line 154.  For instance i_G729_Pipe/i_mux128_12_Syn_filt_A/, width 12 of formal port in25 is not equal to width 16 of actual variable Aq_Addr. 
+WARNING: File "C:/Users/VMonCooper/Desktop/TopLevel/G729_Pipe.v" Line 155.  For instance i_G729_Pipe/i_mux128_12_Syn_filt_A/, width 12 of formal port in25 is not equal to width 16 of actual variable Aq_Addr. 
 WARNING:  For instance i_G729_Pipe/i_mux128_12_Syn_filt_A/, width 12 of formal port in26 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_12_Syn_filt_A/, width 12 of formal port in28 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_12_Syn_filt_A/, width 12 of formal port in29 is not equal to width 32 of actual constant.
@@ -5799,8 +5785,12 @@ WARNING:  For instance i_G729_Pipe/Pred_lt_3/, width 16 of formal port L_subfr i
 WARNING:  For instance i_G729_Pipe/convolve/, width 12 of formal port xAddr is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/TL_Math4/, width 16 of formal port GPCLIP is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/TL_Math4/, width 16 of formal port L_SUBFR is not equal to width 32 of actual constant.
-WARNING: File "C:/Users/VMonCooper/Desktop/TopLevel/G729_Pipe.v" Line 716.  For instance i_G729_Pipe/TL_Math4/, width 32 of formal port L_temp is not equal to width 16 of actual signal TL_Math4_nextL_temp.
-WARNING: File "C:/Users/VMonCooper/Desktop/TopLevel/G729_Pipe.v" Line 154.  For instance i_G729_Pipe/Qua_gain/, width 1 of formal port tame_flag is not equal to width 16 of actual variable temp. 
+WARNING: File "C:/Users/VMonCooper/Desktop/TopLevel/G729_Pipe.v" Line 717.  For instance i_G729_Pipe/TL_Math4/, width 32 of formal port L_temp is not equal to width 16 of actual signal TL_Math4_nextL_temp.
+WARNING: File "C:/Users/VMonCooper/Desktop/TopLevel/G729_Pipe.v" Line 155.  For instance i_G729_Pipe/Qua_gain/, width 1 of formal port tame_flag is not equal to width 16 of actual variable temp. 
+WARNING:  For instance i_G729_Pipe/TL_Math6/, width 16 of formal port SHARPMIN is not equal to width 32 of actual constant.
+WARNING:  For instance i_G729_Pipe/TL_Math6/, width 16 of formal port SHARPMAX is not equal to width 32 of actual constant.
+WARNING:  For instance i_G729_Pipe/TL_Math6/, width 12 of formal port exc is not equal to width 32 of actual constant.
+WARNING:  For instance i_G729_Pipe/TL_Math6/, width 16 of formal port L_SUBFR is not equal to width 32 of actual constant.
 Time resolution is 1 ps
 # onerror resume
 # wave add /
@@ -5821,6 +5811,7 @@ ERROR: Too many words specified in datafile Convolve_y1.out
 ERROR: Too many words specified in datafile TL_Math4_xn2.out
 ERROR: Too many words specified in datafile ACELP_Codebook_code.out
 ERROR: Too many words specified in datafile ACELP_Codebook_y2.out
+ERROR: Illegal hex digit '[' found in data of file "TL_Math6_exc.out" on line 311 in file "C:/Users/VMonCooper/Desktop/TopLevel/G729_Top_Test.v".
  Block Memory Generator CORE Generator module loading initial data...
  Block Memory Generator data initialization complete.
 Block Memory Generator CORE Generator module G729_Top_Test_v.uut.i_G729_Pipe.scratch_mem.scratch_mem.inst.blk_mem_gen_v4_3_inst is using a behavioral model for simulation which will not precisely model memory collision behavior.
@@ -5850,6 +5841,7 @@ ERROR: Too many words specified in datafile Convolve_y1.out
 ERROR: Too many words specified in datafile TL_Math4_xn2.out
 ERROR: Too many words specified in datafile ACELP_Codebook_code.out
 ERROR: Too many words specified in datafile ACELP_Codebook_y2.out
+ERROR: Illegal hex digit '[' found in data of file "TL_Math6_exc.out" on line 311 in file "C:/Users/VMonCooper/Desktop/TopLevel/G729_Top_Test.v".
  Block Memory Generator CORE Generator module loading initial data...
  Block Memory Generator data initialization complete.
 Block Memory Generator CORE Generator module G729_Top_Test_v.uut.i_G729_Pipe.scratch_mem.scratch_mem.inst.blk_mem_gen_v4_3_inst is using a behavioral model for simulation which will not precisely model memory collision behavior.
@@ -5902,25 +5894,27 @@ Finished circuit initialization process.
              2456290*****TL_Math5 Completed Successfully*****
              2468510*****Corr_xy2 Completed Successfully*****
              2485270*****Qua_gain Completed Successfully*****
-             2486870*****Weight_Az5 Completed Successfully*****
-             2488430*****Weight_Az6 Completed Successfully*****
-             2490070*****TL_Math3 Completed Successfully*****
-             2532790*****Syn_filt3 Completed Successfully*****
-             2575510*****Syn_filt4 Completed Successfully*****
-             2611590*****Residu3 Completed Successfully*****
-             2654310*****Syn_filt5 Completed Successfully*****
-             2690390*****Residu4 Completed Successfully*****
-             2733110*****Syn_filt6 Completed Successfully*****
-             2982450*****Pitch_fr3 Completed Successfully*****
-             2982630*****Enc_lag3 Completed Successfully*****
-             3013950*****Pred_lt_3 Completed Successfully*****
-             3072810*****Convolve Completed Successfully*****
-             3079930*****G_pitch Completed Successfully*****
-             3080150*****test_err Completed Successfully*****
-             3089050*****TL_Math4 Completed Successfully*****
-             3526110*****ACELP_Codebook Completed Successfully*****
-             3526290*****TL_Math5 Completed Successfully*****
-             3537550*****Corr_xy2 Completed Successfully*****
-             3553490*****Qua_gain Completed Successfully*****
-             3590410*****Pre_Process Completed Successfully*****
-Stopped at time : 3591430 ns : File "C:/Users/VMonCooper/Desktop/TopLevel/Levinson_Durbin_FSM.v" Line 142
+             2495790*****TL_Math6 Completed Successfully*****
+             2497390*****Weight_Az5 Completed Successfully*****
+             2498950*****Weight_Az6 Completed Successfully*****
+             2500590*****TL_Math3 Completed Successfully*****
+             2543310*****Syn_filt3 Completed Successfully*****
+             2586030*****Syn_filt4 Completed Successfully*****
+             2622110*****Residu3 Completed Successfully*****
+             2664830*****Syn_filt5 Completed Successfully*****
+             2700910*****Residu4 Completed Successfully*****
+             2743630*****Syn_filt6 Completed Successfully*****
+             2992970*****Pitch_fr3 Completed Successfully*****
+             2993150*****Enc_lag3 Completed Successfully*****
+             3024470*****Pred_lt_3 Completed Successfully*****
+             3083330*****Convolve Completed Successfully*****
+             3090450*****G_pitch Completed Successfully*****
+             3090670*****test_err Completed Successfully*****
+             3099570*****TL_Math4 Completed Successfully*****
+             3536630*****ACELP_Codebook Completed Successfully*****
+             3536810*****TL_Math5 Completed Successfully*****
+             3548070*****Corr_xy2 Completed Successfully*****
+             3564010*****Qua_gain Completed Successfully*****
+             3574530*****TL_Math6 Completed Successfully*****
+             3611450*****Pre_Process Completed Successfully*****
+Stopped at time : 3649770 ns : File "C:/Users/VMonCooper/Desktop/TopLevel/Lsp_prev_compose.v" Line 149

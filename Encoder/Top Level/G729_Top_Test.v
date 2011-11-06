@@ -170,6 +170,9 @@ module G729_Top_Test_v;
 	//Corr_xy2
 	reg [31:0] Corr_xy2_g_coeff_cs [0:4999];
 	reg [31:0] Corr_xy2_exp_g_coeff_cs [0:4999];
+
+	//TL_Math6
+	reg [31:0] TL_Math6_exc [0:4999];
 	
 	//working integers
 	integer i;
@@ -303,6 +306,9 @@ module G729_Top_Test_v;
 		//Corr_xy2
 		$readmemh("Corr_xy2_g_coeff_cs.out", Corr_xy2_g_coeff_cs);
 		$readmemh("Corr_xy2_exp_g_coeff_cs.out", Corr_xy2_exp_g_coeff_cs);
+
+		//TL_Math6
+		$readmemh("TL_Math6_exc.out", TL_Math6_exc);
 	end	
 
 	// Instantiate the Unit Under Test (UUT)
@@ -1954,6 +1960,38 @@ module G729_Top_Test_v;
 				@(posedge clock);
 				@(posedge clock);
 				$display($time, "*****Qua_gain Completed Successfully*****");
+
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//		TL_Math6
+	//
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	
+				testdone = 1;
+				wait(done);
+				testdone = 0;
+				flag1 = 0;
+				@(posedge clock);
+				@(posedge clock);
+				
+				for (i = 0; i<L_SUBFR;i=i+1)
+				begin
+					outBufAddr = EXC + (z * L_SUBFR) + i;
+					@(posedge clock);
+					@(posedge clock);
+					if (out != TL_Math6_exc[(2*k+z)*L_SUBFR+i])
+					begin
+						$display($time, " ERROR: exc[%d] = %x, expected = %x", (2*k+z)*L_SUBFR+i, out, TL_Math6_exc[(2*k+z)*L_SUBFR+i]);
+						flag1 = 1;
+					end
+					@(posedge clock);
+					@(posedge clock);
+				end	
+				
+				if (flag1)
+					$display($time, "!!!!!TL_Math6 Failed: exc!!!!!");
+				else
+					$display($time, "*****TL_Math6 Completed Successfully*****");
 
 			end//z for loop
 		end//k for loop
