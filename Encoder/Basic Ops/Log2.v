@@ -284,7 +284,7 @@ module Log2(clock,reset,start,done,L_x,exponent,fraction,L_shl_outa,L_shl_outb,L
 		end
 			
 		done_state: begin
-			next_done = 0;
+			next_done = 'd0;
 			nextstate = INIT;
 		end
 	endcase

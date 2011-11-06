@@ -241,7 +241,10 @@ module Gain_update(clock,reset,start,done,L_gbk12,scratch_mem_read_addr,scratch_
 					mult_outb = 'd24660;
 					scratch_mem_write_en = 'd1;
 					scratch_mem_write_addr = PAST_QUA_EN;
-					scratch_mem_out = {16'd0,mult_in};
+					if(mult_in[15] == 1)
+						scratch_mem_out = {16'hffff,mult_in};
+					else
+						scratch_mem_out = {16'd0,mult_in};
 					next_done = 'd1;
 					nextstate = done_state;
 				end

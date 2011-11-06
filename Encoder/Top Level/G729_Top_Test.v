@@ -1942,6 +1942,19 @@ module G729_Top_Test_v;
 				if (!flag1 && !flag2)
 					$display($time, "*****Corr_xy2 Completed Successfully*****");
 				
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//		Qua_gain
+	//
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	
+				testdone = 1;
+				wait(done);
+				testdone = 0;
+				@(posedge clock);
+				@(posedge clock);
+				$display($time, "*****Qua_gain Completed Successfully*****");
+
 			end//z for loop
 		end//k for loop
 	end//initial 

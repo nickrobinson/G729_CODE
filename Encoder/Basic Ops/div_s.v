@@ -126,7 +126,7 @@ module div_s(clock, reset, a, b, div_err, out, start, done, subouta, suboutb, su
 			end
 			
 			check_state: begin
-				if((a>b) || (a[15]==1) || (b[15]==1) || (b==0))
+				if((a>b) || (a[15]==1) || (b[15]==1))
 					nextstate = err_state;
 				else if(a==0) begin
 					next_out = 'd0;
@@ -145,6 +145,7 @@ module div_s(clock, reset, a, b, div_err, out, start, done, subouta, suboutb, su
 
 			err_state: begin
 				div_err = 1;
+				nextstate = init;
 			end
 			
 			zero_state: begin

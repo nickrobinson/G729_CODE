@@ -339,6 +339,7 @@ module Gain_predict(clock,reset,start,done,scratch_mem_read_addr,scratch_mem_wri
 				L_mac_outa = 'd32588;
 				L_mac_outb = 'd32;
 				L_mac_outc = L_temp;
+				next_L_temp = L_mac_in;
 				L_shl_outa = L_mac_in;
 				L_shl_outb = 'd10;
 				L_shl_start = 'd1;

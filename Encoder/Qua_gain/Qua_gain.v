@@ -22,7 +22,7 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module Qua_gain(clock,reset,start,done,out,tame_flag,
+module Qua_gain(clock,reset,start,done,tame_flag,gain_pit,gain_cod,ANA,i_subfr,
 						L_mac_outa,L_mac_outb,L_mac_outc,L_mac_overflow,L_mac_in,
 						L_msu_outa,L_msu_outb,L_msu_outc,L_msu_overflow,L_msu_in,
 						L_mult_outa,L_mult_outb,L_mult_overflow,L_mult_in,
@@ -46,8 +46,10 @@ module Qua_gain(clock,reset,start,done,out,tame_flag,
 	`include "constants_param_list.v"
 	 
 	input clock,reset,start,tame_flag;
+	input [11:0] ANA;
+	input [15:0] i_subfr;
 	output reg done;
-	output reg [15:0] out;
+	output reg [15:0] gain_pit,gain_cod;
 	 
 	input L_mac_overflow,L_msu_overflow,L_mult_overflow,L_add_overflow,L_sub_overflow,
 			L_shr_overflow,mult_overflow,shl_overflow,add_overflow,sub_overflow,
@@ -203,7 +205,7 @@ module Qua_gain(clock,reset,start,done,out,tame_flag,
     );
 	 
 	reg next_done;
-	reg [15:0] next_out,gain_pit,gain_cod,next_gain_pit,next_gain_cod;
+	reg [15:0] next_out,out,next_gain_pit,next_gain_cod;
 	reg [15:0] i,next_i,j,next_j,index1,next_index1,index2,next_index2,cand1,next_cand1,cand2,next_cand2,exp,next_exp,gcode0,next_gcode0,
 					exp_gcode0,next_exp_gcode0,gcode0_org,next_gcode0_org,e_min,next_e_min,nume,next_nume,denom,next_denom,inv_denom,
 					next_inv_denom,exp_inv_denom,next_exp_inv_denom,sft,next_sft,temp,next_temp,g_pitch,next_g_pitch,g2_pitch,next_g2_pitch,
@@ -925,7 +927,7 @@ module Qua_gain(clock,reset,start,done,out,tame_flag,
 				else
 					nextstate = INIT;
 			end
-			
+
 			state1: begin
 				gain_predict_start = 'd1;
 				nextstate = state2;
@@ -2133,6 +2135,15 @@ module Qua_gain(clock,reset,start,done,out,tame_flag,
 			state88: begin
 				add_outa = temp16;
 				add_outb = constant_mem_in[15:0];
+				if (i_subfr == 'd40)
+					scratch_mem_write_addr = PRM + 'd10;
+				else
+					scratch_mem_write_addr = PRM + 'd6;
+				if (add_in[15] == 1)
+					scratch_mem_out = {16'hffff,add_in};
+				else
+					scratch_mem_out = {16'h0000,add_in};
+				scratch_mem_write_en = 1;
 				next_out = add_in;
 				next_done = 'd1;
 				nextstate = done_state;
