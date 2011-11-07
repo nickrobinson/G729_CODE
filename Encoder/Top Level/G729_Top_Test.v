@@ -180,6 +180,10 @@ module G729_Top_Test_v;
 	//Syn_filt7
 	reg [31:0] Syn_filt7_synth [0:4999];
 	reg [31:0] Syn_filt7_mem_syn [0:4999];
+
+	//TL_Math7
+	reg [31:0] TL_Math7_mem_err [0:4999];
+	reg [31:0] TL_Math7_mem_w0 [0:4999];
 	
 	//working integers
 	integer i;
@@ -324,6 +328,10 @@ module G729_Top_Test_v;
 		$readmemh("Syn_filt7_synth.out", Syn_filt7_synth);
 		$readmemh("Syn_filt7_mem_syn.out", Syn_filt7_mem_syn);
 
+		//TL_Math7
+		$readmemh("TL_Math7_mem_err.out", TL_Math7_mem_err);
+		$readmemh("TL_Math7_mem_w0.out", TL_Math7_mem_w0);
+		
 	end	
 
 	// Instantiate the Unit Under Test (UUT)
@@ -2094,6 +2102,61 @@ module G729_Top_Test_v;
 					$display($time, "!!!!!Syn_filt7 Failed: mem_syn!!!!!");
 				if (!flag1 && !flag2)
 					$display($time, "*****Syn_filt7 Completed Successfully*****");
+
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//		TL_Math7
+	//
+	//////////////////////////////////////////////////////////////////////////////////////////////
+			
+				testdone = 1;
+				wait(done);
+				testdone = 0;
+				flag1 = 0;
+				flag2 = 0;
+				@(posedge clock);
+				@(posedge clock);
+				
+				for (i = 0; i<M; i=i+1)
+				begin		
+					@(posedge clock);
+					@(posedge clock);
+					@(posedge clock);
+					outBufAddr = MEM_ERR + i;
+					@(posedge clock);
+					@(posedge clock);
+					if (out != TL_Math7_mem_err[(2*k+z)*M+i])
+					begin
+						$display($time, " ERROR: mem_err[%d] = %x, expected = %x", (2*k+z)*M+i, out, TL_Math7_mem_err[(2*k+z)*M+i]);
+						flag1 = 1;
+					end
+					@(posedge clock);
+					@(posedge clock);
+				end
+				
+				for (i = 0; i<M; i=i+1)
+				begin		
+					@(posedge clock);
+					@(posedge clock);
+					@(posedge clock);
+					outBufAddr = MEM_W0 + i;
+					@(posedge clock);
+					@(posedge clock);
+					if (out != TL_Math7_mem_w0[(2*k+z)*M+i])
+					begin
+						$display($time, " ERROR: mem_w0[%d] = %x, expected = %x", (2*k+z)*M+i, out, TL_Math7_mem_w0[(2*k+z)*M+i]);
+						flag2 = 1;
+					end
+					@(posedge clock);
+					@(posedge clock);
+				end
+				
+				if (flag1)
+					$display($time, "!!!!!TL_Math7 Failed: mem_err!!!!!");
+				if (flag2)
+					$display($time, "!!!!!TL_Math7 Failed: mem_w0!!!!!");
+				if (!flag1 && !flag2)
+					$display($time, "*****TL_Math7 Completed Successfully*****");
 
 			end//z for loop
 		end//k for loop
