@@ -185,6 +185,15 @@ module G729_Top_Test_v;
 	reg [31:0] TL_Math7_mem_err [0:4999];
 	reg [31:0] TL_Math7_mem_w0 [0:4999];
 	
+	//Copy1
+	reg [31:0] Copy1_old_speech [0:4999];
+	
+	//Copy2
+	reg [31:0] Copy2_old_wsp [0:4999];
+	
+	//Copy3
+	reg [31:0] Copy3_old_exc [0:4999];
+	
 	//working integers
 	integer i;
 	integer k;
@@ -332,6 +341,14 @@ module G729_Top_Test_v;
 		$readmemh("TL_Math7_mem_err.out", TL_Math7_mem_err);
 		$readmemh("TL_Math7_mem_w0.out", TL_Math7_mem_w0);
 		
+		//Copy1
+		$readmemh("Copy1_old_speech.out", Copy1_old_speech);
+		
+		//Copy2
+		$readmemh("Copy2_old_wsp.out", Copy2_old_wsp);
+		
+		//Copy3
+		$readmemh("Copy3_old_exc.out", Copy3_old_exc);
 	end	
 
 	// Instantiate the Unit Under Test (UUT)
@@ -2159,6 +2176,102 @@ module G729_Top_Test_v;
 					$display($time, "*****TL_Math7 Completed Successfully*****");
 
 			end//z for loop
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//		Copy1
+	//
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	
+			testdone = 1;
+			wait(done);
+			testdone = 0;
+			flag1 = 0;
+			@(posedge clock);
+			@(posedge clock);
+			
+			for (i = 0; i<(L_TOTAL-L_FRAME);i=i+1)
+			begin
+				outBufAddr = OLD_SPEECH + i;
+				@(posedge clock);
+				@(posedge clock);
+				if (out != Copy1_old_speech[k*(L_TOTAL-L_FRAME)+i])
+				begin
+					$display($time, " ERROR: old_speech[%d] = %x, expected = %x", k*(L_TOTAL-L_FRAME)+i, out, Copy1_old_speech[k*(L_TOTAL-L_FRAME)+i]);
+					flag1 = 1;
+				end
+				@(posedge clock);
+				@(posedge clock);
+			end	
+			
+			if (flag1)
+				$display($time, "!!!!!Copy1 Failed: old_speech!!!!!");
+			else
+				$display($time, "*****Copy1 Completed Successfully*****");
+
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//		Copy2
+	//
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	
+			testdone = 1;
+			wait(done);
+			testdone = 0;
+			flag1 = 0;
+			@(posedge clock);
+			@(posedge clock);
+			
+			for (i = 0; i<PIT_MAX;i=i+1)
+			begin
+				outBufAddr = OLD_WSP + i;
+				@(posedge clock);
+				@(posedge clock);
+				if (out != Copy2_old_wsp[k*PIT_MAX+i])
+				begin
+					$display($time, " ERROR: old_wsp[%d] = %x, expected = %x", k*PIT_MAX+i, out, Copy2_old_wsp[k*PIT_MAX+i]);
+					flag1 = 1;
+				end
+				@(posedge clock);
+				@(posedge clock);
+			end	
+			
+			if (flag1)
+				$display($time, "!!!!!Copy2 Failed: old_wsp!!!!!");
+			else
+				$display($time, "*****Copy2 Completed Successfully*****");
+
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//		Copy3
+	//
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	
+			testdone = 1;
+			wait(done);
+			testdone = 0;
+			flag1 = 0;
+			@(posedge clock);
+			@(posedge clock);
+			
+			for (i = 0; i<(PIT_MAX+L_INTERPOL);i=i+1)
+			begin
+				outBufAddr = OLD_EXC + i;
+				@(posedge clock);
+				@(posedge clock);
+				if (out != Copy3_old_exc[k*(PIT_MAX+L_INTERPOL)+i])
+				begin
+					$display($time, " ERROR: old_exc[%d] = %x, expected = %x", k*(PIT_MAX+L_INTERPOL)+i, out, Copy3_old_exc[k*(PIT_MAX+L_INTERPOL)+i]);
+					flag1 = 1;
+				end
+				@(posedge clock);
+				@(posedge clock);
+			end	
+			
+			if (flag1)
+				$display($time, "!!!!!Copy3 Failed: old_exc!!!!!");
+			else
+				$display($time, "*****Copy3 Completed Successfully*****");
+
 		end//k for loop
 	end//initial 
 	

@@ -117,76 +117,76 @@ module G729_FSM(clock,reset,start,divErr,
 	 parameter INIT = 3'd0;
 	 parameter S0 = 3'd1;
 	 parameter S1 = 3'd2;
-	 parameter SUB_MODULE_START = 6'd0;
-	 parameter SUB_MODULE_AUTOCORR_READY = 6'd1;
-	 parameter SUB_MODULE_AUTOCORR_DONE = 6'd2;
-	 parameter SUB_MODULE_LAG_DONE = 6'd3;
-	 parameter SUB_MODULE_LEVINSON_DONE = 6'd4;
-	 parameter SUB_MODULE_AZ_DONE = 6'd5;
-	 parameter SUB_MODULE_QUA_LSP_DONE = 6'd6;
-	 parameter SUB_MODULE_INT_LPC_DONE = 6'd7;
- 	 parameter SUB_MODULE_INT_QLPC_DONE = 6'd8;
-	 parameter SUB_MODULE_MATH1_DONE = 6'd9;
-	 parameter SUB_MODULE_PERC_VAR_DONE = 6'd10;
-	 parameter SUB_MODULE_WEIGHT_AZ1_DONE = 6'd11;
-	 parameter SUB_MODULE_WEIGHT_AZ_WAIT1 = 6'd12;
-	 parameter SUB_MODULE_WEIGHT_AZ2_DONE = 6'd13;
-	 parameter SUB_MODULE_RESIDU1_DONE = 6'd14;
-	 parameter SUB_MODULE_SYN_FILT1_DONE = 6'd15;
-	 parameter SUB_MODULE_WEIGHT_AZ3_DONE = 6'd16;
-	 parameter SUB_MODULE_WEIGHT_AZ_WAIT2 = 6'd17;
-	 parameter SUB_MODULE_WEIGHT_AZ4_DONE = 6'd18;
-	 parameter SUB_MODULE_RESIDU2_DONE = 6'd19;
-	 parameter SUB_MODULE_SYN_FILT2_DONE = 6'd20;
-	 parameter SUB_MODULE_PITCH_OL_DONE = 6'd21;
-	 parameter SUB_MODULE_MATH2_DONE = 6'd22;
-	 parameter TL_FOR_LOOP = 6'd23;
-	 parameter SUB_MODULE_WEIGHT_AZ5_DONE = 6'd24;
-	 parameter SUB_MODULE_WEIGHT_AZ_WAIT3 = 6'd25;
-	 parameter SUB_MODULE_WEIGHT_AZ6_DONE = 6'd26;
-	 parameter SUB_MODULE_MATH3_DONE = 6'd27;
-	 parameter SUB_MODULE_SYN_FILT3_DONE = 6'd28;
-	 parameter SUB_MODULE_SYN_FILT_WAIT = 6'd29;
-	 parameter SUB_MODULE_SYN_FILT4_DONE = 6'd30;
-	 parameter SUB_MODULE_RESIDU3_DONE = 6'd31;
-	 parameter SUB_MODULE_SYN_FILT5_DONE = 6'd32;
-	 parameter SUB_MODULE_RESIDU4_DONE = 6'd33;
-	 parameter SUB_MODULE_SYN_FILT6_DONE = 6'd34;
-	 parameter SUB_MODULE_PITCH_FR3_DONE = 6'd35;
-	 parameter SUB_MODULE_ENC_LAG3_DONE = 6'd36;
-	 parameter LOAD_ANA_2_7 = 6'd37;
-	 parameter CHECK_IF_PARITY_PITCH = 6'd38;
-	 parameter SUB_MODULE_PARITY_PITCH_DONE = 6'd39;
-	 parameter LOAD_ANA_3 = 6'd40;
-	 parameter SUB_MODULE_PRED_LT_3_READY = 6'd41;
-	 parameter SUB_MODULE_PRED_LT_3_DONE = 6'd42;
-	 parameter SUB_MODULE_CONVOLVE_DONE = 6'd43;
-	 parameter SUB_MODULE_G_PITCH_DONE = 6'd44;
-	 parameter SUB_MODULE_TEST_ERR_DONE = 6'd45;
-	 parameter SUB_MODULE_MATH4_DONE = 6'd46;
-	 parameter SUB_MODULE_ACELP_CODEBOOK_DONE = 6'd47;
-	 parameter LOAD_ANA_4_8 = 6'd48;
-	 parameter LOAD_ANA_5_9 = 6'd49;
-	 parameter SUB_MODULE_TL_MATH5_READY = 6'd50;
-	 parameter SUB_MODULE_TL_MATH5_DONE = 6'd51;
-	 parameter SUB_MODULE_CORR_XY2_DONE = 6'd52;
-	 parameter SUB_MODULE_QUA_GAIN_DONE = 6'd53;
-	 parameter SUB_MODULE_TL_MATH6_DONE = 6'd54;
-	 parameter SUB_MODULE_UPDATE_EXC_ERR_DONE = 6'd55;
-	 parameter SUB_MODULE_SYN_FILT7_DONE = 6'd56;
-	 parameter SUB_MODULE_TL_MATH7_DONE = 6'd57;
-	 
-
-
-
-
-	 parameter TL_FOR_LOOP_INC = 6'd62;
-	 parameter TL_DONE = 6'd63;
+	 parameter SUB_MODULE_START = 7'd0;
+	 parameter SUB_MODULE_AUTOCORR_READY = 7'd1;
+	 parameter SUB_MODULE_AUTOCORR_DONE = 7'd2;
+	 parameter SUB_MODULE_LAG_DONE = 7'd3;
+	 parameter SUB_MODULE_LEVINSON_DONE = 7'd4;
+	 parameter SUB_MODULE_AZ_DONE = 7'd5;
+	 parameter SUB_MODULE_QUA_LSP_DONE = 7'd6;
+	 parameter SUB_MODULE_INT_LPC_DONE = 7'd7;
+ 	 parameter SUB_MODULE_INT_QLPC_DONE = 7'd8;
+	 parameter SUB_MODULE_MATH1_DONE = 7'd9;
+	 parameter SUB_MODULE_PERC_VAR_DONE = 7'd10;
+	 parameter SUB_MODULE_WEIGHT_AZ1_DONE = 7'd11;
+	 parameter SUB_MODULE_WEIGHT_AZ_WAIT1 = 7'd12;
+	 parameter SUB_MODULE_WEIGHT_AZ2_DONE = 7'd13;
+	 parameter SUB_MODULE_RESIDU1_DONE = 7'd14;
+	 parameter SUB_MODULE_SYN_FILT1_DONE = 7'd15;
+	 parameter SUB_MODULE_WEIGHT_AZ3_DONE = 7'd16;
+	 parameter SUB_MODULE_WEIGHT_AZ_WAIT2 = 7'd17;
+	 parameter SUB_MODULE_WEIGHT_AZ4_DONE = 7'd18;
+	 parameter SUB_MODULE_RESIDU2_DONE = 7'd19;
+	 parameter SUB_MODULE_SYN_FILT2_DONE = 7'd20;
+	 parameter SUB_MODULE_PITCH_OL_DONE = 7'd21;
+	 parameter SUB_MODULE_MATH2_DONE = 7'd22;
+	 parameter TL_FOR_LOOP = 7'd23;
+	 parameter SUB_MODULE_WEIGHT_AZ5_DONE = 7'd24;
+	 parameter SUB_MODULE_WEIGHT_AZ_WAIT3 = 7'd25;
+	 parameter SUB_MODULE_WEIGHT_AZ6_DONE = 7'd26;
+	 parameter SUB_MODULE_MATH3_DONE = 7'd27;
+	 parameter SUB_MODULE_SYN_FILT3_DONE = 7'd28;
+	 parameter SUB_MODULE_SYN_FILT_WAIT = 7'd29;
+	 parameter SUB_MODULE_SYN_FILT4_DONE = 7'd30;
+	 parameter SUB_MODULE_RESIDU3_DONE = 7'd31;
+	 parameter SUB_MODULE_SYN_FILT5_DONE = 7'd32;
+	 parameter SUB_MODULE_RESIDU4_DONE = 7'd33;
+	 parameter SUB_MODULE_SYN_FILT6_DONE = 7'd34;
+	 parameter SUB_MODULE_PITCH_FR3_DONE = 7'd35;
+	 parameter SUB_MODULE_ENC_LAG3_DONE = 7'd36;
+	 parameter LOAD_ANA_2_7 = 7'd37;
+	 parameter CHECK_IF_PARITY_PITCH = 7'd38;
+	 parameter SUB_MODULE_PARITY_PITCH_DONE = 7'd39;
+	 parameter LOAD_ANA_3 = 7'd40;
+	 parameter SUB_MODULE_PRED_LT_3_READY = 7'd41;
+	 parameter SUB_MODULE_PRED_LT_3_DONE = 7'd42;
+	 parameter SUB_MODULE_CONVOLVE_DONE = 7'd43;
+	 parameter SUB_MODULE_G_PITCH_DONE = 7'd44;
+	 parameter SUB_MODULE_TEST_ERR_DONE = 7'd45;
+	 parameter SUB_MODULE_MATH4_DONE = 7'd46;
+	 parameter SUB_MODULE_ACELP_CODEBOOK_DONE = 7'd47;
+	 parameter LOAD_ANA_4_8 = 7'd48;
+	 parameter LOAD_ANA_5_9 = 7'd49;
+	 parameter SUB_MODULE_TL_MATH5_READY = 7'd50;
+	 parameter SUB_MODULE_TL_MATH5_DONE = 7'd51;
+	 parameter SUB_MODULE_CORR_XY2_DONE = 7'd52;
+	 parameter SUB_MODULE_QUA_GAIN_DONE = 7'd53;
+	 parameter SUB_MODULE_TL_MATH6_DONE = 7'd54;
+	 parameter SUB_MODULE_UPDATE_EXC_ERR_DONE = 7'd55;
+	 parameter SUB_MODULE_SYN_FILT7_DONE = 7'd56;
+	 parameter SUB_MODULE_TL_MATH7_DONE = 7'd57;
+	 parameter SUB_MODULE_COPY1_DONE = 7'd58;
+	 parameter SUB_MODULE_COPY_WAIT1_DONE = 7'd59;
+	 parameter SUB_MODULE_COPY2_DONE = 7'd60;
+	 parameter SUB_MODULE_COPY_WAIT2_DONE = 7'd61;
+	 parameter SUB_MODULE_COPY3_DONE = 7'd62;
+	 parameter TL_FOR_LOOP_INC = 7'd63;
+	 parameter TL_DONE = 7'd64;
 
 	 //working regs
 	 reg [2:0] frameDoneState, nextFrameDoneState;
 	 reg [2:0] frameDoneCount,frameDoneCountLoad,frameDoneCountReset;	
-	 reg [5:0] subModuleState,nextsubModuleState;
+	 reg [6:0] subModuleState,nextsubModuleState;
 	 
 	//autocorr ready state machine flop
 		always @(posedge clock)
@@ -607,7 +607,9 @@ module G729_FSM(clock,reset,start,divErr,
 				begin
 					reseti_subfr = 1;
 					reseti_gamma = 1;
-					nextsubModuleState = TL_DONE;
+					mathMuxSel = 6'd48;
+					nextsubModuleState = SUB_MODULE_COPY1_DONE;
+					CopyReady = 1;
 				end
 			end//TL_FOR_LOOP		
 			
@@ -1004,16 +1006,9 @@ module G729_FSM(clock,reset,start,divErr,
 				else if(Math7Done == 1)
 				begin
 					LDi_subfr = 1;
-					mathMuxSel = 6'd48;
 					nextsubModuleState = TL_FOR_LOOP_INC;
 				end				
 			end//SUB_MODULE_TL_MATH7_DONE
-
-
-
-
-
-			
 
 			TL_FOR_LOOP_INC:
 			begin
@@ -1021,7 +1016,48 @@ module G729_FSM(clock,reset,start,divErr,
 				LDAq_Addr = 1;
 				nextsubModuleState = TL_FOR_LOOP;
 			end//TL_FOR_LOOP_INC		
+			
+			SUB_MODULE_COPY1_DONE:
+			begin
+				mathMuxSel = 6'd48;
+				if(CopyDone == 0)
+					nextsubModuleState = SUB_MODULE_COPY1_DONE;
+				else if(CopyDone == 1)
+					nextsubModuleState = SUB_MODULE_COPY_WAIT1_DONE;
+			end//SUB_MODULE_COPY1_DONE		
+			
+			SUB_MODULE_COPY_WAIT1_DONE:
+			begin
+				mathMuxSel = 6'd49;
+				nextsubModuleState = SUB_MODULE_COPY2_DONE;
+				CopyReady = 1;
+			end//SUB_MODULE_COPY_WAIT1_DONE		
 
+			SUB_MODULE_COPY2_DONE:
+			begin
+				mathMuxSel = 6'd49;
+				if(CopyDone == 0)
+					nextsubModuleState = SUB_MODULE_COPY2_DONE;
+				else if(CopyDone == 1)
+					nextsubModuleState = SUB_MODULE_COPY_WAIT2_DONE;
+			end//SUB_MODULE_COPY2_DONE		
+
+			SUB_MODULE_COPY_WAIT2_DONE:
+			begin
+				mathMuxSel = 6'd50;
+				nextsubModuleState = SUB_MODULE_COPY3_DONE;
+				CopyReady = 1;
+			end//SUB_MODULE_COPY_WAIT2_DONE		
+
+			SUB_MODULE_COPY3_DONE:
+			begin
+				mathMuxSel = 6'd50;
+				if(CopyDone == 0)
+					nextsubModuleState = SUB_MODULE_COPY3_DONE;
+				else if(CopyDone == 1)
+					nextsubModuleState = TL_DONE;
+			end//SUB_MODULE_COPY3_DONE		
+			
 			TL_DONE:
 			begin
 				done = 1;

@@ -22,7 +22,7 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module LPC_Mem_Ctrl(clock, reset, In_Done, In_Sample, Out_Count, Out_Sample, frame_done);
+module LPC_Mem_Ctrl(clock, reset, In_Done, In_Sample, Out_Count, Out_Sample, memWriteAddr, memIn, memWriteEn, mathMuxSel, frame_done);
    input clock;
 	input reset;
 	input In_Done;
@@ -30,14 +30,18 @@ module LPC_Mem_Ctrl(clock, reset, In_Done, In_Sample, Out_Count, Out_Sample, fra
    input [7:0] Out_Count;
    output [31:0] Out_Sample;
 	output frame_done;
+	input [7:0] memWriteAddr;
+	input [31:0] memIn;
+	input memWriteEn;
+	input [5:0] mathMuxSel;
 
 	reg [8:0] nextaddra;
-	reg [7:0] addrb;
+	reg [7:0] addra,addrb;	
 	reg [8:0] nextaddrb;
-	reg [15:0] dina;
+	reg [31:0] dina;
 	reg wea;
 	reg web;
-	reg webflag;
+	reg weaflag,webflag;
 	reg frame_done;
 	reg framedoneflag;
 	reg [5:0] frame_count;
@@ -61,15 +65,34 @@ module LPC_Mem_Ctrl(clock, reset, In_Done, In_Sample, Out_Count, Out_Sample, fra
 //	Speech_Memory_Controller Speech_Mem (.addra(Out_Count),.dina(16'd0),.wea(1'd0),.clka(clock),
 //		.douta(Out_Sample), .addrb(addrb), .dinb(dinb), .web(webflag), .clkb(clock), .doutb(doutb));
 
-	Speech_Memory_Controller Speech_Mem (.addra(addrb),.dina(dinb),.wea(webflag),.clka(clock),
+	Speech_Memory_Controller Speech_Mem (.addra(addra),.dina(dina),.wea(weaflag),.clka(clock),
 		.clkb(clock), .addrb(Out_Count), .doutb(Out_Sample));
+		
+	always @ (*)
+	begin
+		if (mathMuxSel == 'd48)
+		begin
+			addra = memWriteAddr;
+			weaflag = memWriteEn;
+		end
+		else
+		begin
+			addra = addrb;
+			weaflag = webflag;
+		end
+	end	
 
 	always @ (*)
 	begin
-		if (In_Sample[15] == 1)
-			dinb = {16'hffff, In_Sample};
+		if (mathMuxSel == 'd48)
+			dina = memIn;
 		else
-			dinb = {16'd0, In_Sample};
+		begin
+			if (In_Sample[15] == 1)
+				dina = {16'hffff, In_Sample};
+			else
+				dina = {16'd0, In_Sample};
+		end
 	end
 	
 //	always@(posedge clock)begin
