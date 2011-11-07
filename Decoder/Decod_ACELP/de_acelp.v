@@ -176,10 +176,10 @@ module de_acelp(clk, start, reset, done, add_in, shr_in, shl_in, add_a, add_b,
 			next_pos2 = 0;
 			next_pos3 = 0;
 
-         ld_pos0 = 0;	
-         ld_pos1 = 0;	
-         ld_pos2 = 0;	
-         ld_pos3 = 0;
+         		ld_pos0 = 0;	
+         		ld_pos1 = 0;	
+         		ld_pos2 = 0;	
+         		ld_pos3 = 0;
 			
 			ld_index = 0;
 			ld_sign = 0;
