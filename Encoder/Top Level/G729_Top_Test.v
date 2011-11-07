@@ -193,7 +193,13 @@ module G729_Top_Test_v;
 	
 	//Copy3
 	reg [31:0] Copy3_old_exc [0:4999];
-	
+
+	//ana
+	reg [31:0] Coder_ld8k_ana [0:4999];
+
+	//synth
+	reg [31:0] Coder_ld8k_synth [0:4999];
+
 	//working integers
 	integer i;
 	integer k;
@@ -349,6 +355,12 @@ module G729_Top_Test_v;
 		
 		//Copy3
 		$readmemh("Copy3_old_exc.out", Copy3_old_exc);
+
+		//ana
+		$readmemh("Coder_ld8k_ana.out", Coder_ld8k_ana);
+		
+		//synth
+		$readmemh("Coder_ld8k_synth.out", Coder_ld8k_synth);
 	end	
 
 	// Instantiate the Unit Under Test (UUT)
@@ -2272,6 +2284,67 @@ module G729_Top_Test_v;
 			else
 				$display($time, "*****Copy3 Completed Successfully*****");
 
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//		ana
+	//
+	//////////////////////////////////////////////////////////////////////////////////////////////
+				
+			@(posedge clock);
+			@(posedge clock);
+			flag1 = 0;
+			@(posedge clock);
+			@(posedge clock);
+			
+			for (i = 0; i<PRM_SIZE;i=i+1)
+			begin
+				outBufAddr = PRM + i;
+				@(posedge clock);
+				@(posedge clock);
+				if (out != Coder_ld8k_ana[k*PRM_SIZE+i])
+				begin
+					$display($time, " ERROR: ana[%d] = %x, expected = %x", k*PRM_SIZE+i, out, Coder_ld8k_ana[k*PRM_SIZE+i]);
+					flag1 = 1;
+				end
+				@(posedge clock);
+				@(posedge clock);
+			end	
+			
+			if (flag1)
+				$display($time, "!!!!!ana is Incorrect!!!!!");
+			else
+				$display($time, "*****ana is Correct*****");
+			
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//		synth
+	//
+	//////////////////////////////////////////////////////////////////////////////////////////////
+				
+			@(posedge clock);
+			@(posedge clock);
+			flag1 = 0;
+			@(posedge clock);
+			@(posedge clock);
+			
+			for (i = 0; i<L_FRAME;i=i+1)
+			begin
+				outBufAddr = SYN + i;
+				@(posedge clock);
+				@(posedge clock);
+				if (out != Coder_ld8k_synth[k*L_FRAME+i])
+				begin
+					$display($time, " ERROR: synth[%d] = %x, expected = %x", k*L_FRAME+i, out, Coder_ld8k_synth[k*L_FRAME+i]);
+					flag1 = 1;
+				end
+				@(posedge clock);
+				@(posedge clock);
+			end	
+			
+			if (flag1)
+				$display($time, "!!!!!synth is Incorrect!!!!!");
+			else
+				$display($time, "*****synth is Correct*****");
 		end//k for loop
 	end//initial 
 	

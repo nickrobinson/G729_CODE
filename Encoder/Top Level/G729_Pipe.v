@@ -4260,7 +4260,6 @@ module G729_Pipe (clock,reset,xn,preProcReady,autocorrReady,lagReady,levinsonRea
 					.shr_in(shr_out)
 				);
 
-
 	//////////////////////////////////////////////////////////////////////////////////////////////
 	//
 	//		Math 6
@@ -4624,22 +4623,27 @@ module G729_Pipe (clock,reset,xn,preProcReady,autocorrReady,lagReady,levinsonRea
 	parameter SYN_FILT6 = 6'd28;
 	parameter PITCH_FR3 = 6'd29;
 	parameter ENC_LAG3 = 6'd30;
-	parameter PRED_LT_3 = 6'd31;
-	parameter CONVOLVE = 6'd32;
-	parameter G_PITCH = 6'd33;
-	parameter TEST_ERR = 6'd34;
-	parameter TL_MATH4 = 6'd35;
-	parameter ACELP_CODEBOOK = 6'd36;
-	parameter TL_MATH5 = 6'd37;
-	parameter CORR_XY2 = 6'd38;
-	parameter QUA_GAIN = 6'd39;
-	parameter TL_MATH6 = 6'd40;
-	parameter UPDATE_EXC_ERR = 6'd41;
-	parameter SYN_FILT7 = 6'd42;
-	parameter TL_MATH7 = 6'd43;
-	parameter COPY1 = 6'd44;
-	parameter COPY2 = 6'd45;
-	parameter COPY3 = 6'd46;
+	parameter ANA_2_7 = 6'd31;
+	parameter ANA_3 = 6'd32;
+	parameter PRED_LT_3 = 6'd33;
+	parameter CONVOLVE = 6'd34;
+	parameter G_PITCH = 6'd35;
+	parameter TEST_ERR = 6'd36;
+	parameter TL_MATH4 = 6'd37;
+	parameter ACELP_CODEBOOK = 6'd38;
+	parameter ANA_4_8 = 6'd39;
+	parameter ANA_5_9 = 6'd40;
+	parameter TL_MATH5 = 6'd41;
+	parameter CORR_XY2 = 6'd42;
+	parameter QUA_GAIN = 6'd43;
+	parameter TL_MATH6 = 6'd44;
+	parameter UPDATE_EXC_ERR = 6'd45;
+	parameter SYN_FILT7 = 6'd46;
+	parameter TL_MATH7 = 6'd47;
+	parameter COPY1 = 6'd48;
+	parameter COPY2 = 6'd49;
+	parameter COPY3 = 6'd50;
+
 	
 	always @ (posedge clock)
 	begin
@@ -5002,6 +5006,30 @@ module G729_Pipe (clock,reset,xn,preProcReady,autocorrReady,lagReady,levinsonRea
 			ENC_LAG3:
 			begin
 				if (Enc_lag3Done)
+					nextstate = ANA_2_7;
+			end
+			ANA_2_7:
+			begin
+				if (((addra == (PRM+'d2) || addra == (PRM+'d7))) && wea == 1)
+				begin
+					outBufWriteEn = 1;
+					outBufWriteAddr = addra;
+					outBufIn = dina;
+				end
+				if (mathMuxSel == 'd31)
+					nextstate = ANA_3;
+				else if (mathMuxSel == 'd33)
+					nextstate = PRED_LT_3;
+			end	
+			ANA_3:
+			begin
+				if ((addra == (PRM+'d3)) && wea == 1)
+				begin
+					outBufWriteEn = 1;
+					outBufWriteAddr = addra;
+					outBufIn = dina;
+				end
+				if (mathMuxSel == 'd32)
 					nextstate = PRED_LT_3;
 			end
 			PRED_LT_3:
@@ -5064,6 +5092,28 @@ module G729_Pipe (clock,reset,xn,preProcReady,autocorrReady,lagReady,levinsonRea
 					outBufIn = dina;
 				end
 				if (ACELP_CodebookDone)
+					nextstate = ANA_4_8;
+			end
+			ANA_4_8:
+			begin
+				if (((addra == (PRM+'d4) || addra == (PRM+'d8))) && wea == 1)
+				begin
+					outBufWriteEn = 1;
+					outBufWriteAddr = addra;
+					outBufIn = dina;
+				end
+				if (mathMuxSel == 'd39)
+					nextstate = ANA_5_9;
+			end
+			ANA_5_9:
+			begin
+				if (((addra == (PRM+'d5) || addra == (PRM+'d9))) && wea == 1)
+				begin
+					outBufWriteEn = 1;
+					outBufWriteAddr = addra;
+					outBufIn = dina;
+				end
+				if (mathMuxSel == 'd40)
 					nextstate = TL_MATH5;
 			end
 			TL_MATH5:
@@ -5090,8 +5140,14 @@ module G729_Pipe (clock,reset,xn,preProcReady,autocorrReady,lagReady,levinsonRea
 			end
 			QUA_GAIN:
 			begin
+				if (((addra == (PRM+'d6) || addra == (PRM+'d10))) && wea == 1)
+				begin
+					outBufWriteEn = 1;
+					outBufWriteAddr = addra;
+					outBufIn = dina;
+				end
 				if (Qua_gainDone)
-					nextstate = TL_MATH6;
+						nextstate = TL_MATH6;
 			end
 			TL_MATH6:
 			begin
@@ -5142,12 +5198,6 @@ module G729_Pipe (clock,reset,xn,preProcReady,autocorrReady,lagReady,levinsonRea
 						nextstate = WEIGHT_AZ5;
 				end
 			end
-			
-  // Copy(&old_speech[L_FRAME], &old_speech[0], L_TOTAL-L_FRAME);
-  // Copy(&old_wsp[L_FRAME], &old_wsp[0], PIT_MAX);
-  // Copy(&old_exc[L_FRAME], &old_exc[0], PIT_MAX+L_INTERPOL);
-				
-			
 			COPY1:
 			begin
 				if ((addra >= OLD_SPEECH && addra < (OLD_SPEECH+(L_TOTAL-L_FRAME))) && wea == 1)

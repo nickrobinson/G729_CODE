@@ -6009,12 +6009,13 @@ ERROR: Too many words specified in datafile Convolve_y1.out
 ERROR: Too many words specified in datafile TL_Math4_xn2.out
 ERROR: Too many words specified in datafile ACELP_Codebook_code.out
 ERROR: Too many words specified in datafile ACELP_Codebook_y2.out
-ERROR: Illegal hex digit '[' found in data of file "TL_Math6_exc.out" on line 331 in file "C:/Users/VMonCooper/Desktop/TopLevel/G729_Top_Test.v".
+ERROR: Illegal hex digit '[' found in data of file "TL_Math6_exc.out" on line 337 in file "C:/Users/VMonCooper/Desktop/TopLevel/G729_Top_Test.v".
 ERROR: Too many words specified in datafile Syn_filt7_synth.out
-WARNING: No file found 
-Copy1_old_speech.outWARNING: No file found 
-Copy2_old_wsp.outWARNING: No file found 
-Copy3_old_exc.out Block Memory Generator CORE Generator module loading initial data...
+ERROR: Too many words specified in datafile Copy1_old_speech.out
+ERROR: Too many words specified in datafile Copy2_old_wsp.out
+ERROR: Too many words specified in datafile Copy3_old_exc.out
+ERROR: Too many words specified in datafile Coder_ld8k_synth.out
+ Block Memory Generator CORE Generator module loading initial data...
  Block Memory Generator data initialization complete.
 Block Memory Generator CORE Generator module G729_Top_Test_v.uut.i_G729_Pipe.scratch_mem.scratch_mem.inst.blk_mem_gen_v4_3_inst is using a behavioral model for simulation which will not precisely model memory collision behavior.
  Block Memory Generator CORE Generator module loading initial data...
@@ -6043,12 +6044,13 @@ ERROR: Too many words specified in datafile Convolve_y1.out
 ERROR: Too many words specified in datafile TL_Math4_xn2.out
 ERROR: Too many words specified in datafile ACELP_Codebook_code.out
 ERROR: Too many words specified in datafile ACELP_Codebook_y2.out
-ERROR: Illegal hex digit '[' found in data of file "TL_Math6_exc.out" on line 331 in file "C:/Users/VMonCooper/Desktop/TopLevel/G729_Top_Test.v".
+ERROR: Illegal hex digit '[' found in data of file "TL_Math6_exc.out" on line 337 in file "C:/Users/VMonCooper/Desktop/TopLevel/G729_Top_Test.v".
 ERROR: Too many words specified in datafile Syn_filt7_synth.out
-WARNING: No file found 
-Copy1_old_speech.outWARNING: No file found 
-Copy2_old_wsp.outWARNING: No file found 
-Copy3_old_exc.out Block Memory Generator CORE Generator module loading initial data...
+ERROR: Too many words specified in datafile Copy1_old_speech.out
+ERROR: Too many words specified in datafile Copy2_old_wsp.out
+ERROR: Too many words specified in datafile Copy3_old_exc.out
+ERROR: Too many words specified in datafile Coder_ld8k_synth.out
+ Block Memory Generator CORE Generator module loading initial data...
  Block Memory Generator data initialization complete.
 Block Memory Generator CORE Generator module G729_Top_Test_v.uut.i_G729_Pipe.scratch_mem.scratch_mem.inst.blk_mem_gen_v4_3_inst is using a behavioral model for simulation which will not precisely model memory collision behavior.
  Block Memory Generator CORE Generator module loading initial data...
@@ -6131,5 +6133,111 @@ Finished circuit initialization process.
              3698070*****Copy1 Completed Successfully*****
              3715290*****Copy2 Completed Successfully*****
              3733830*****Copy3 Completed Successfully*****
-             3770750*****Pre_Process Completed Successfully*****
-Stopped at time : 3837490100 ps : File "C:/Users/VMonCooper/Desktop/TopLevel/Cor_h.v" Line 620
+             3734790*****ana is Correct*****
+             3741270*****synth is Correct*****
+             3778190*****Pre_Process Completed Successfully*****
+Stopped at time : 3826590 ns : File "C:/Users/VMonCooper/Desktop/TopLevel/Gain_predict.v" Line 242
+# run all
+             3965710*****Autocorr Completed Successfully*****
+             3968930*****Lag_window Completed Successfully*****
+             4003970*****Levinson Completed Successfully*****
+             4096210*****Az_lsp Completed Successfully*****
+             4317890*****Qua_lsp Completed Successfully*****
+             4341590*****Int_lpc Completed Successfully*****
+             4354890*****Int_qlpc Completed Successfully*****
+             4358370*****TL_Math1 Completed Successfully*****
+             4363310*****perc_var Completed Successfully*****
+             4364870*****Weight_Az1 Completed Successfully*****
+             4366430*****Weight_Az2 Completed Successfully*****
+             4402510*****Residu1 Completed Successfully*****
+             4447270*****Syn_filt1 Completed Successfully*****
+             4448830*****Weight_Az3 Completed Successfully*****
+             4450390*****Weight_Az4 Completed Successfully*****
+             4486470*****Residu2 Completed Successfully*****
+             4531230*****Syn_filt2 Completed Successfully*****
+             5368770*****Pitch_ol Completed Successfully*****
+             5368870*****TL_Math2 Completed Successfully*****
+             5370470*****Weight_Az5 Completed Successfully*****
+             5372030*****Weight_Az6 Completed Successfully*****
+             5373670*****TL_Math3 Completed Successfully*****
+             5416390*****Syn_filt3 Completed Successfully*****
+             5459110*****Syn_filt4 Completed Successfully*****
+             5492030 ERROR: exc[        80] = 00000001, expected = fffffeb9
+             5492110 ERROR: exc[        81] = 00000001, expected = 00000483
+             5492190 ERROR: exc[        82] = 00000001, expected = fffffb8d
+             5492270 ERROR: exc[        83] = 00000001, expected = 00000279
+             5492350 ERROR: exc[        84] = 00000000, expected = 000001ae
+             5492430 ERROR: exc[        85] = 00000000, expected = fffffbe9
+             5492510 ERROR: exc[        86] = 00000000, expected = 000004e4
+             5492590 ERROR: exc[        87] = 00000000, expected = fffffdfb
+             5492670 ERROR: exc[        88] = 00000000, expected = fffffec9
+             5492750 ERROR: exc[        89] = 00000000, expected = 00000490
+             5492830 ERROR: exc[        90] = 00000000, expected = fffffb97
+             5492910 ERROR: exc[        91] = 00000000, expected = 0000027f
+             5492990 ERROR: exc[        92] = 00000000, expected = 000001b0
+             5493070 ERROR: exc[        93] = 00000000, expected = fffffbe8
+             5493150 ERROR: exc[        94] = 00000000, expected = 000004e1
+             5493230 ERROR: exc[        95] = 00000000, expected = fffffdf6
+             5493310 ERROR: exc[        96] = 00000000, expected = fffffec2
+             5493390 ERROR: exc[        97] = 00000000, expected = 00000487
+             5493470 ERROR: exc[        98] = 00000000, expected = fffffb8b
+             5493550 ERROR: exc[        99] = 00000000, expected = 00000273
+             5493630 ERROR: exc[       100] = 00000000, expected = 000001a3
+             5493710 ERROR: exc[       101] = 00000000, expected = fffffbda
+             5493790 ERROR: exc[       102] = 00000000, expected = 000004d1
+             5493870 ERROR: exc[       103] = 00000000, expected = fffffde5
+             5493950 ERROR: exc[       104] = 00000000, expected = fffffeb0
+             5494030 ERROR: exc[       105] = 00000000, expected = 00000474
+             5494110 ERROR: exc[       106] = 00000000, expected = fffffb79
+             5494190 ERROR: exc[       107] = 00000000, expected = 00000260
+             5494270 ERROR: exc[       108] = 00000000, expected = 00000190
+             5494350 ERROR: exc[       109] = 00000000, expected = fffffbc8
+             5494430 ERROR: exc[       110] = 00000000, expected = 000004bf
+             5494510 ERROR: exc[       111] = 00000000, expected = fffffdd4
+             5494590 ERROR: exc[       112] = 00000000, expected = fffffe9f
+             5494670 ERROR: exc[       113] = 00000000, expected = 00000464
+             5494750 ERROR: exc[       114] = 00000000, expected = fffffb69
+             5494830 ERROR: exc[       115] = 00000000, expected = 00000250
+             5494910 ERROR: exc[       116] = 00000000, expected = 00000181
+             5494990 ERROR: exc[       117] = 00000000, expected = fffffbba
+             5495070 ERROR: exc[       118] = 00000000, expected = 000004b2
+             5495150 ERROR: exc[       119] = 00000000, expected = fffffdc7
+             5495190!!!!!Residu3 Failed: exc!!!!!
+             5537910*****Syn_filt5 Completed Successfully*****
+             5573990*****Residu4 Completed Successfully*****
+             5616710*****Syn_filt6 Completed Successfully*****
+             5855150*****Pitch_fr3 Completed Successfully*****
+             5855410*****Enc_lag3 Completed Successfully*****
+             5855770*****Parity_Pitch Completed Successfully*****
+             5883910 ERROR: exc[        80] = 00000001, expected = 00000003
+             5883990 ERROR: exc[        81] = 00000001, expected = fffffffd
+             5884070 ERROR: exc[        82] = 00000001, expected = ffffffee
+             5884150 ERROR: exc[        83] = 00000001, expected = fffffffe
+             5884230 ERROR: exc[        84] = 00000000, expected = 00000002
+             5884310 ERROR: exc[        85] = 00000000, expected = ffffffff
+             5884390 ERROR: exc[        86] = 00000000, expected = 00000001
+             5884470 ERROR: exc[        87] = 00000000, expected = ffffffff
+             5885030 ERROR: exc[        94] = 00000000, expected = 00000001
+             5885110 ERROR: exc[        95] = 00000000, expected = ffffffff
+             5885190 ERROR: exc[        96] = 00000000, expected = 00000001
+             5885270 ERROR: exc[        97] = 00000000, expected = 00000003
+             5885350 ERROR: exc[        98] = 00000000, expected = fffffffd
+             5885430 ERROR: exc[        99] = 00000000, expected = 00000003
+             5885510 ERROR: exc[       100] = 00000000, expected = 00000001
+             5885590 ERROR: exc[       101] = 00000000, expected = ffffffff
+             5885670 ERROR: exc[       102] = 00000000, expected = 00000001
+             5885750 ERROR: exc[       103] = 00000000, expected = ffffffff
+             5885830 ERROR: exc[       104] = 00000000, expected = 00000001
+             5885990 ERROR: exc[       106] = 00000000, expected = fffffffc
+             5886310 ERROR: exc[       110] = 00000000, expected = 00000001
+             5886390 ERROR: exc[       111] = 00000000, expected = ffffffff
+             5886470 ERROR: exc[       112] = 00000000, expected = 00000004
+             5886550 ERROR: exc[       113] = 00000000, expected = fffffffc
+             5886630 ERROR: exc[       114] = 00000000, expected = ffffffef
+             5886710 ERROR: exc[       115] = 00000000, expected = fffffffd
+             5886790 ERROR: exc[       116] = 00000000, expected = 00000003
+             5886870 ERROR: exc[       117] = 00000000, expected = ffffffff
+             5886950 ERROR: exc[       118] = 00000000, expected = 00000001
+             5887030 ERROR: exc[       119] = 00000000, expected = ffffffff
+             5887070!!!!!Pred_lt_3 Failed: exc!!!!!
+Stopped at time : 5901130100 ps : File "C:/Users/VMonCooper/Desktop/TopLevel/Lag_max.v" Line 313

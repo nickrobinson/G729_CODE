@@ -786,7 +786,10 @@ module G729_FSM(clock,reset,start,divErr,
 					Parity_PitchReady = 1;
 				end
 				else if (i_subfr == 'd40)
+				begin
+					mathMuxSel = 6'd33;
 					nextsubModuleState = SUB_MODULE_PRED_LT_3_READY;
+				end
 			end//CHECK_IF_PARITY_PITCH
 
 			SUB_MODULE_PARITY_PITCH_DONE:
@@ -795,10 +798,7 @@ module G729_FSM(clock,reset,start,divErr,
 				if(Parity_PitchDone == 0)
 					nextsubModuleState = SUB_MODULE_PARITY_PITCH_DONE;
 				else if(Parity_PitchDone == 1)
-				begin
-				    mathMuxSel = 6'd32;
 					nextsubModuleState = LOAD_ANA_3;
-				end				
 			end//SUB_MODULE_PARITY_PITCH_DONE
 //32
 			LOAD_ANA_3:
