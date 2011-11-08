@@ -1515,7 +1515,6 @@ WARNING:  For instance i_G729_Pipe/i_mux128_16_add_a/, width 16 of formal port i
 WARNING:  For instance i_G729_Pipe/i_mux128_16_add_a/, width 16 of formal port in32 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_add_a/, width 16 of formal port in39 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_add_a/, width 16 of formal port in40 is not equal to width 32 of actual constant.
-WARNING:  For instance i_G729_Pipe/i_mux128_16_add_a/, width 16 of formal port in51 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_add_a/, width 16 of formal port in52 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_add_a/, width 16 of formal port in53 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_add_a/, width 16 of formal port in54 is not equal to width 32 of actual constant.
@@ -1595,7 +1594,6 @@ WARNING:  For instance i_G729_Pipe/i_mux128_16_add_b/, width 16 of formal port i
 WARNING:  For instance i_G729_Pipe/i_mux128_16_add_b/, width 16 of formal port in32 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_add_b/, width 16 of formal port in39 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_add_b/, width 16 of formal port in40 is not equal to width 32 of actual constant.
-WARNING:  For instance i_G729_Pipe/i_mux128_16_add_b/, width 16 of formal port in51 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_add_b/, width 16 of formal port in52 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_add_b/, width 16 of formal port in53 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_add_b/, width 16 of formal port in54 is not equal to width 32 of actual constant.
@@ -3670,7 +3668,6 @@ WARNING:  For instance i_G729_Pipe/i_mux128_16_sub_a/, width 16 of formal port i
 WARNING:  For instance i_G729_Pipe/i_mux128_16_sub_a/, width 16 of formal port in48 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_sub_a/, width 16 of formal port in49 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_sub_a/, width 16 of formal port in50 is not equal to width 32 of actual constant.
-WARNING:  For instance i_G729_Pipe/i_mux128_16_sub_a/, width 16 of formal port in51 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_sub_a/, width 16 of formal port in52 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_sub_a/, width 16 of formal port in53 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_sub_a/, width 16 of formal port in54 is not equal to width 32 of actual constant.
@@ -3764,7 +3761,6 @@ WARNING:  For instance i_G729_Pipe/i_mux128_16_sub_b/, width 16 of formal port i
 WARNING:  For instance i_G729_Pipe/i_mux128_16_sub_b/, width 16 of formal port in48 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_sub_b/, width 16 of formal port in49 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_sub_b/, width 16 of formal port in50 is not equal to width 32 of actual constant.
-WARNING:  For instance i_G729_Pipe/i_mux128_16_sub_b/, width 16 of formal port in51 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_sub_b/, width 16 of formal port in52 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_sub_b/, width 16 of formal port in53 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_16_sub_b/, width 16 of formal port in54 is not equal to width 32 of actual constant.
@@ -3843,7 +3839,6 @@ WARNING:  For instance i_G729_Pipe/i_mux128_16_sub_b/, width 16 of formal port i
 WARNING:  For instance i_G729_Pipe/i_mux128_12_scratch_addra/, width 12 of formal port in18 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_12_scratch_addra/, width 12 of formal port in31 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_12_scratch_addra/, width 12 of formal port in32 is not equal to width 32 of actual constant.
-WARNING:  For instance i_G729_Pipe/i_mux128_12_scratch_addra/, width 12 of formal port in51 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_12_scratch_addra/, width 12 of formal port in52 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_12_scratch_addra/, width 12 of formal port in53 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_12_scratch_addra/, width 12 of formal port in54 is not equal to width 32 of actual constant.
@@ -3925,7 +3920,6 @@ WARNING:  For instance i_G729_Pipe/i_mux128_1_scratch_wea/, width 1 of formal po
 WARNING:  For instance i_G729_Pipe/i_mux128_1_scratch_wea/, width 1 of formal port in32 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_1_scratch_wea/, width 1 of formal port in39 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_1_scratch_wea/, width 1 of formal port in40 is not equal to width 32 of actual constant.
-WARNING:  For instance i_G729_Pipe/i_mux128_1_scratch_wea/, width 1 of formal port in51 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_1_scratch_wea/, width 1 of formal port in52 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_1_scratch_wea/, width 1 of formal port in53 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_1_scratch_wea/, width 1 of formal port in54 is not equal to width 32 of actual constant.
@@ -4008,7 +4002,6 @@ WARNING:  For instance i_G729_Pipe/i_mux128_12_scratch_addrb/, width 12 of forma
 WARNING:  For instance i_G729_Pipe/i_mux128_12_scratch_addrb/, width 12 of formal port in39 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_12_scratch_addrb/, width 12 of formal port in40 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_12_scratch_addrb/, width 12 of formal port in48 is not equal to width 32 of actual constant.
-WARNING:  For instance i_G729_Pipe/i_mux128_12_scratch_addrb/, width 12 of formal port in51 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_12_scratch_addrb/, width 12 of formal port in52 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_12_scratch_addrb/, width 12 of formal port in53 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_12_scratch_addrb/, width 12 of formal port in54 is not equal to width 32 of actual constant.
@@ -4122,7 +4115,6 @@ WARNING:  For instance i_G729_Pipe/i_mux128_12_constantMemAddr/, width 12 of for
 WARNING:  For instance i_G729_Pipe/i_mux128_12_constantMemAddr/, width 12 of formal port in48 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_12_constantMemAddr/, width 12 of formal port in49 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_12_constantMemAddr/, width 12 of formal port in50 is not equal to width 32 of actual constant.
-WARNING:  For instance i_G729_Pipe/i_mux128_12_constantMemAddr/, width 12 of formal port in51 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_12_constantMemAddr/, width 12 of formal port in52 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_12_constantMemAddr/, width 12 of formal port in53 is not equal to width 32 of actual constant.
 WARNING:  For instance i_G729_Pipe/i_mux128_12_constantMemAddr/, width 12 of formal port in54 is not equal to width 32 of actual constant.
@@ -6009,12 +6001,13 @@ ERROR: Too many words specified in datafile Convolve_y1.out
 ERROR: Too many words specified in datafile TL_Math4_xn2.out
 ERROR: Too many words specified in datafile ACELP_Codebook_code.out
 ERROR: Too many words specified in datafile ACELP_Codebook_y2.out
-ERROR: Illegal hex digit '[' found in data of file "TL_Math6_exc.out" on line 337 in file "C:/Users/VMonCooper/Desktop/TopLevel/G729_Top_Test.v".
+ERROR: Too many words specified in datafile TL_Math6_exc.out
 ERROR: Too many words specified in datafile Syn_filt7_synth.out
 ERROR: Too many words specified in datafile Copy1_old_speech.out
 ERROR: Too many words specified in datafile Copy2_old_wsp.out
 ERROR: Too many words specified in datafile Copy3_old_exc.out
 ERROR: Too many words specified in datafile Coder_ld8k_synth.out
+ERROR: Too many words specified in datafile prm2bits_ld8k_bits.out
  Block Memory Generator CORE Generator module loading initial data...
  Block Memory Generator data initialization complete.
 Block Memory Generator CORE Generator module G729_Top_Test_v.uut.i_G729_Pipe.scratch_mem.scratch_mem.inst.blk_mem_gen_v4_3_inst is using a behavioral model for simulation which will not precisely model memory collision behavior.
@@ -6044,12 +6037,13 @@ ERROR: Too many words specified in datafile Convolve_y1.out
 ERROR: Too many words specified in datafile TL_Math4_xn2.out
 ERROR: Too many words specified in datafile ACELP_Codebook_code.out
 ERROR: Too many words specified in datafile ACELP_Codebook_y2.out
-ERROR: Illegal hex digit '[' found in data of file "TL_Math6_exc.out" on line 337 in file "C:/Users/VMonCooper/Desktop/TopLevel/G729_Top_Test.v".
+ERROR: Too many words specified in datafile TL_Math6_exc.out
 ERROR: Too many words specified in datafile Syn_filt7_synth.out
 ERROR: Too many words specified in datafile Copy1_old_speech.out
 ERROR: Too many words specified in datafile Copy2_old_wsp.out
 ERROR: Too many words specified in datafile Copy3_old_exc.out
 ERROR: Too many words specified in datafile Coder_ld8k_synth.out
+ERROR: Too many words specified in datafile prm2bits_ld8k_bits.out
  Block Memory Generator CORE Generator module loading initial data...
  Block Memory Generator data initialization complete.
 Block Memory Generator CORE Generator module G729_Top_Test_v.uut.i_G729_Pipe.scratch_mem.scratch_mem.inst.blk_mem_gen_v4_3_inst is using a behavioral model for simulation which will not precisely model memory collision behavior.
@@ -6135,109 +6129,231 @@ Finished circuit initialization process.
              3733830*****Copy3 Completed Successfully*****
              3734790*****ana is Correct*****
              3741270*****synth is Correct*****
-             3778190*****Pre_Process Completed Successfully*****
-Stopped at time : 3826590 ns : File "C:/Users/VMonCooper/Desktop/TopLevel/Gain_predict.v" Line 242
-# run all
-             3965710*****Autocorr Completed Successfully*****
-             3968930*****Lag_window Completed Successfully*****
-             4003970*****Levinson Completed Successfully*****
-             4096210*****Az_lsp Completed Successfully*****
-             4317890*****Qua_lsp Completed Successfully*****
-             4341590*****Int_lpc Completed Successfully*****
-             4354890*****Int_qlpc Completed Successfully*****
-             4358370*****TL_Math1 Completed Successfully*****
-             4363310*****perc_var Completed Successfully*****
-             4364870*****Weight_Az1 Completed Successfully*****
-             4366430*****Weight_Az2 Completed Successfully*****
-             4402510*****Residu1 Completed Successfully*****
-             4447270*****Syn_filt1 Completed Successfully*****
-             4448830*****Weight_Az3 Completed Successfully*****
-             4450390*****Weight_Az4 Completed Successfully*****
-             4486470*****Residu2 Completed Successfully*****
-             4531230*****Syn_filt2 Completed Successfully*****
-             5368770*****Pitch_ol Completed Successfully*****
-             5368870*****TL_Math2 Completed Successfully*****
-             5370470*****Weight_Az5 Completed Successfully*****
-             5372030*****Weight_Az6 Completed Successfully*****
-             5373670*****TL_Math3 Completed Successfully*****
-             5416390*****Syn_filt3 Completed Successfully*****
-             5459110*****Syn_filt4 Completed Successfully*****
-             5492030 ERROR: exc[        80] = 00000001, expected = fffffeb9
-             5492110 ERROR: exc[        81] = 00000001, expected = 00000483
-             5492190 ERROR: exc[        82] = 00000001, expected = fffffb8d
-             5492270 ERROR: exc[        83] = 00000001, expected = 00000279
-             5492350 ERROR: exc[        84] = 00000000, expected = 000001ae
-             5492430 ERROR: exc[        85] = 00000000, expected = fffffbe9
-             5492510 ERROR: exc[        86] = 00000000, expected = 000004e4
-             5492590 ERROR: exc[        87] = 00000000, expected = fffffdfb
-             5492670 ERROR: exc[        88] = 00000000, expected = fffffec9
-             5492750 ERROR: exc[        89] = 00000000, expected = 00000490
-             5492830 ERROR: exc[        90] = 00000000, expected = fffffb97
-             5492910 ERROR: exc[        91] = 00000000, expected = 0000027f
-             5492990 ERROR: exc[        92] = 00000000, expected = 000001b0
-             5493070 ERROR: exc[        93] = 00000000, expected = fffffbe8
-             5493150 ERROR: exc[        94] = 00000000, expected = 000004e1
-             5493230 ERROR: exc[        95] = 00000000, expected = fffffdf6
-             5493310 ERROR: exc[        96] = 00000000, expected = fffffec2
-             5493390 ERROR: exc[        97] = 00000000, expected = 00000487
-             5493470 ERROR: exc[        98] = 00000000, expected = fffffb8b
-             5493550 ERROR: exc[        99] = 00000000, expected = 00000273
-             5493630 ERROR: exc[       100] = 00000000, expected = 000001a3
-             5493710 ERROR: exc[       101] = 00000000, expected = fffffbda
-             5493790 ERROR: exc[       102] = 00000000, expected = 000004d1
-             5493870 ERROR: exc[       103] = 00000000, expected = fffffde5
-             5493950 ERROR: exc[       104] = 00000000, expected = fffffeb0
-             5494030 ERROR: exc[       105] = 00000000, expected = 00000474
-             5494110 ERROR: exc[       106] = 00000000, expected = fffffb79
-             5494190 ERROR: exc[       107] = 00000000, expected = 00000260
-             5494270 ERROR: exc[       108] = 00000000, expected = 00000190
-             5494350 ERROR: exc[       109] = 00000000, expected = fffffbc8
-             5494430 ERROR: exc[       110] = 00000000, expected = 000004bf
-             5494510 ERROR: exc[       111] = 00000000, expected = fffffdd4
-             5494590 ERROR: exc[       112] = 00000000, expected = fffffe9f
-             5494670 ERROR: exc[       113] = 00000000, expected = 00000464
-             5494750 ERROR: exc[       114] = 00000000, expected = fffffb69
-             5494830 ERROR: exc[       115] = 00000000, expected = 00000250
-             5494910 ERROR: exc[       116] = 00000000, expected = 00000181
-             5494990 ERROR: exc[       117] = 00000000, expected = fffffbba
-             5495070 ERROR: exc[       118] = 00000000, expected = 000004b2
-             5495150 ERROR: exc[       119] = 00000000, expected = fffffdc7
-             5495190!!!!!Residu3 Failed: exc!!!!!
-             5537910*****Syn_filt5 Completed Successfully*****
-             5573990*****Residu4 Completed Successfully*****
-             5616710*****Syn_filt6 Completed Successfully*****
-             5855150*****Pitch_fr3 Completed Successfully*****
-             5855410*****Enc_lag3 Completed Successfully*****
-             5855770*****Parity_Pitch Completed Successfully*****
-             5883910 ERROR: exc[        80] = 00000001, expected = 00000003
-             5883990 ERROR: exc[        81] = 00000001, expected = fffffffd
-             5884070 ERROR: exc[        82] = 00000001, expected = ffffffee
-             5884150 ERROR: exc[        83] = 00000001, expected = fffffffe
-             5884230 ERROR: exc[        84] = 00000000, expected = 00000002
-             5884310 ERROR: exc[        85] = 00000000, expected = ffffffff
-             5884390 ERROR: exc[        86] = 00000000, expected = 00000001
-             5884470 ERROR: exc[        87] = 00000000, expected = ffffffff
-             5885030 ERROR: exc[        94] = 00000000, expected = 00000001
-             5885110 ERROR: exc[        95] = 00000000, expected = ffffffff
-             5885190 ERROR: exc[        96] = 00000000, expected = 00000001
-             5885270 ERROR: exc[        97] = 00000000, expected = 00000003
-             5885350 ERROR: exc[        98] = 00000000, expected = fffffffd
-             5885430 ERROR: exc[        99] = 00000000, expected = 00000003
-             5885510 ERROR: exc[       100] = 00000000, expected = 00000001
-             5885590 ERROR: exc[       101] = 00000000, expected = ffffffff
-             5885670 ERROR: exc[       102] = 00000000, expected = 00000001
-             5885750 ERROR: exc[       103] = 00000000, expected = ffffffff
-             5885830 ERROR: exc[       104] = 00000000, expected = 00000001
-             5885990 ERROR: exc[       106] = 00000000, expected = fffffffc
-             5886310 ERROR: exc[       110] = 00000000, expected = 00000001
-             5886390 ERROR: exc[       111] = 00000000, expected = ffffffff
-             5886470 ERROR: exc[       112] = 00000000, expected = 00000004
-             5886550 ERROR: exc[       113] = 00000000, expected = fffffffc
-             5886630 ERROR: exc[       114] = 00000000, expected = ffffffef
-             5886710 ERROR: exc[       115] = 00000000, expected = fffffffd
-             5886790 ERROR: exc[       116] = 00000000, expected = 00000003
-             5886870 ERROR: exc[       117] = 00000000, expected = ffffffff
-             5886950 ERROR: exc[       118] = 00000000, expected = 00000001
-             5887030 ERROR: exc[       119] = 00000000, expected = ffffffff
-             5887070!!!!!Pred_lt_3 Failed: exc!!!!!
-Stopped at time : 5901130100 ps : File "C:/Users/VMonCooper/Desktop/TopLevel/Lag_max.v" Line 313
+             3752230*****prm2bits_ld8k Completed Successfully*****
+             3789150*****Pre_Process Completed Successfully*****
+             3976670*****Autocorr Completed Successfully*****
+             3979890*****Lag_window Completed Successfully*****
+             4014930*****Levinson Completed Successfully*****
+             4107170*****Az_lsp Completed Successfully*****
+             4328850*****Qua_lsp Completed Successfully*****
+             4352550*****Int_lpc Completed Successfully*****
+             4365850*****Int_qlpc Completed Successfully*****
+             4369330*****TL_Math1 Completed Successfully*****
+             4374270*****perc_var Completed Successfully*****
+             4375830*****Weight_Az1 Completed Successfully*****
+             4377390*****Weight_Az2 Completed Successfully*****
+             4413470*****Residu1 Completed Successfully*****
+             4458230*****Syn_filt1 Completed Successfully*****
+             4459790*****Weight_Az3 Completed Successfully*****
+             4461350*****Weight_Az4 Completed Successfully*****
+             4497430*****Residu2 Completed Successfully*****
+             4542190*****Syn_filt2 Completed Successfully*****
+             5379730*****Pitch_ol Completed Successfully*****
+             5379830*****TL_Math2 Completed Successfully*****
+             5381430*****Weight_Az5 Completed Successfully*****
+             5382990*****Weight_Az6 Completed Successfully*****
+             5384630*****TL_Math3 Completed Successfully*****
+             5427350*****Syn_filt3 Completed Successfully*****
+             5470070*****Syn_filt4 Completed Successfully*****
+             5506150*****Residu3 Completed Successfully*****
+             5548870*****Syn_filt5 Completed Successfully*****
+             5584950*****Residu4 Completed Successfully*****
+             5627670*****Syn_filt6 Completed Successfully*****
+             5866110*****Pitch_fr3 Completed Successfully*****
+             5866370*****Enc_lag3 Completed Successfully*****
+             5866730*****Parity_Pitch Completed Successfully*****
+             5898030*****Pred_lt_3 Completed Successfully*****
+             5956890*****Convolve Completed Successfully*****
+             5964990*****G_pitch Completed Successfully*****
+             5965250*****test_err Completed Successfully*****
+             5974150*****TL_Math4 Completed Successfully*****
+             6368170*****ACELP_Codebook Completed Successfully*****
+             6368350*****TL_Math5 Completed Successfully*****
+             6379090*****Corr_xy2 Completed Successfully*****
+             6395350*****Qua_gain Completed Successfully*****
+             6405850*****TL_Math6 Completed Successfully*****
+             6406510*****update_exc_err Completed Successfully*****
+             6451270*****Syn_filt7 Completed Successfully*****
+             6457990*****TL_Math7 Completed Successfully*****
+             6459590*****Weight_Az5 Completed Successfully*****
+             6461150*****Weight_Az6 Completed Successfully*****
+             6462790*****TL_Math3 Completed Successfully*****
+             6505510*****Syn_filt3 Completed Successfully*****
+             6548230*****Syn_filt4 Completed Successfully*****
+             6584310*****Residu3 Completed Successfully*****
+             6627030*****Syn_filt5 Completed Successfully*****
+             6663110*****Residu4 Completed Successfully*****
+             6705830*****Syn_filt6 Completed Successfully*****
+             6981530*****Pitch_fr3 Completed Successfully*****
+             6981710*****Enc_lag3 Completed Successfully*****
+             7013030*****Pred_lt_3 Completed Successfully*****
+             7071890*****Convolve Completed Successfully*****
+             7079510*****G_pitch Completed Successfully*****
+             7079770*****test_err Completed Successfully*****
+             7088670*****TL_Math4 Completed Successfully*****
+             7484430*****ACELP_Codebook Completed Successfully*****
+             7484610*****TL_Math5 Completed Successfully*****
+             7495190*****Corr_xy2 Completed Successfully*****
+             7511470*****Qua_gain Completed Successfully*****
+             7521970*****TL_Math6 Completed Successfully*****
+             7522630*****update_exc_err Completed Successfully*****
+             7567390*****Syn_filt7 Completed Successfully*****
+             7574110*****TL_Math7 Completed Successfully*****
+             7593370*****Copy1 Completed Successfully*****
+             7610590*****Copy2 Completed Successfully*****
+             7629130*****Copy3 Completed Successfully*****
+             7630090*****ana is Correct*****
+             7636570*****synth is Correct*****
+             7647530*****prm2bits_ld8k Completed Successfully*****
+             7684450*****Pre_Process Completed Successfully*****
+             7871970*****Autocorr Completed Successfully*****
+             7875190*****Lag_window Completed Successfully*****
+             7910790*****Levinson Completed Successfully*****
+             8003350*****Az_lsp Completed Successfully*****
+             8224830*****Qua_lsp Completed Successfully*****
+             8248690*****Int_lpc Completed Successfully*****
+             8261990*****Int_qlpc Completed Successfully*****
+             8265470*****TL_Math1 Completed Successfully*****
+             8270410*****perc_var Completed Successfully*****
+             8271970*****Weight_Az1 Completed Successfully*****
+             8273530*****Weight_Az2 Completed Successfully*****
+             8309610*****Residu1 Completed Successfully*****
+             8354370*****Syn_filt1 Completed Successfully*****
+             8355930*****Weight_Az3 Completed Successfully*****
+             8357490*****Weight_Az4 Completed Successfully*****
+             8393570*****Residu2 Completed Successfully*****
+             8438330*****Syn_filt2 Completed Successfully*****
+             9275990*****Pitch_ol Completed Successfully*****
+             9276090*****TL_Math2 Completed Successfully*****
+             9277690*****Weight_Az5 Completed Successfully*****
+             9279250*****Weight_Az6 Completed Successfully*****
+             9280890*****TL_Math3 Completed Successfully*****
+             9323610*****Syn_filt3 Completed Successfully*****
+             9366330*****Syn_filt4 Completed Successfully*****
+             9402410*****Residu3 Completed Successfully*****
+             9445130*****Syn_filt5 Completed Successfully*****
+             9481210*****Residu4 Completed Successfully*****
+             9523930*****Syn_filt6 Completed Successfully*****
+             9762690*****Pitch_fr3 Completed Successfully*****
+             9762950*****Enc_lag3 Completed Successfully*****
+             9763310*****Parity_Pitch Completed Successfully*****
+             9794610*****Pred_lt_3 Completed Successfully*****
+             9853470*****Convolve Completed Successfully*****
+             9860890*****G_pitch Completed Successfully*****
+             9861150*****test_err Completed Successfully*****
+             9870050*****TL_Math4 Completed Successfully*****
+            10245850*****ACELP_Codebook Completed Successfully*****
+            10246030*****TL_Math5 Completed Successfully*****
+            10256530*****Corr_xy2 Completed Successfully*****
+            10272790*****Qua_gain Completed Successfully*****
+            10283290*****TL_Math6 Completed Successfully*****
+            10283950*****update_exc_err Completed Successfully*****
+            10328710*****Syn_filt7 Completed Successfully*****
+            10335430*****TL_Math7 Completed Successfully*****
+            10337030*****Weight_Az5 Completed Successfully*****
+            10338590*****Weight_Az6 Completed Successfully*****
+            10340230*****TL_Math3 Completed Successfully*****
+            10382950*****Syn_filt3 Completed Successfully*****
+            10425670*****Syn_filt4 Completed Successfully*****
+            10461750*****Residu3 Completed Successfully*****
+            10504470*****Syn_filt5 Completed Successfully*****
+            10540550*****Residu4 Completed Successfully*****
+            10583270*****Syn_filt6 Completed Successfully*****
+            10858770*****Pitch_fr3 Completed Successfully*****
+            10858950*****Enc_lag3 Completed Successfully*****
+            10890270*****Pred_lt_3 Completed Successfully*****
+            10949130*****Convolve Completed Successfully*****
+            10956490*****G_pitch Completed Successfully*****
+            10956750*****test_err Completed Successfully*****
+            10965650*****TL_Math4 Completed Successfully*****
+            11337510*****ACELP_Codebook Completed Successfully*****
+            11337690*****TL_Math5 Completed Successfully*****
+            11348310*****Corr_xy2 Completed Successfully*****
+            11364410*****Qua_gain Completed Successfully*****
+            11374910*****TL_Math6 Completed Successfully*****
+            11375570*****update_exc_err Completed Successfully*****
+            11420330*****Syn_filt7 Completed Successfully*****
+            11427050*****TL_Math7 Completed Successfully*****
+            11446310*****Copy1 Completed Successfully*****
+            11463530*****Copy2 Completed Successfully*****
+            11482070*****Copy3 Completed Successfully*****
+            11483030*****ana is Correct*****
+            11489510*****synth is Correct*****
+            11500470*****prm2bits_ld8k Completed Successfully*****
+            11537390*****Pre_Process Completed Successfully*****
+            11724910*****Autocorr Completed Successfully*****
+            11728130*****Lag_window Completed Successfully*****
+            11763530*****Levinson Completed Successfully*****
+            11856090*****Az_lsp Completed Successfully*****
+            12077570*****Qua_lsp Completed Successfully*****
+            12101430*****Int_lpc Completed Successfully*****
+            12114730*****Int_qlpc Completed Successfully*****
+            12118210*****TL_Math1 Completed Successfully*****
+            12123150*****perc_var Completed Successfully*****
+            12124710*****Weight_Az1 Completed Successfully*****
+            12126270*****Weight_Az2 Completed Successfully*****
+            12162350*****Residu1 Completed Successfully*****
+            12207110*****Syn_filt1 Completed Successfully*****
+            12208670*****Weight_Az3 Completed Successfully*****
+            12210230*****Weight_Az4 Completed Successfully*****
+            12246310*****Residu2 Completed Successfully*****
+            12291070*****Syn_filt2 Completed Successfully*****
+            13128890*****Pitch_ol Completed Successfully*****
+            13128990*****TL_Math2 Completed Successfully*****
+            13130590*****Weight_Az5 Completed Successfully*****
+            13132150*****Weight_Az6 Completed Successfully*****
+            13133790*****TL_Math3 Completed Successfully*****
+            13176510*****Syn_filt3 Completed Successfully*****
+            13219230*****Syn_filt4 Completed Successfully*****
+            13255310*****Residu3 Completed Successfully*****
+            13298030*****Syn_filt5 Completed Successfully*****
+            13334110*****Residu4 Completed Successfully*****
+            13376830*****Syn_filt6 Completed Successfully*****
+            13615550*****Pitch_fr3 Completed Successfully*****
+            13615810*****Enc_lag3 Completed Successfully*****
+            13616170*****Parity_Pitch Completed Successfully*****
+            13647470*****Pred_lt_3 Completed Successfully*****
+            13706330*****Convolve Completed Successfully*****
+            13713670*****G_pitch Completed Successfully*****
+            13713890*****test_err Completed Successfully*****
+            13722790*****TL_Math4 Completed Successfully*****
+            14127830*****ACELP_Codebook Completed Successfully*****
+            14128010*****TL_Math5 Completed Successfully*****
+            14138670*****Corr_xy2 Completed Successfully*****
+            14154790*****Qua_gain Completed Successfully*****
+            14165290*****TL_Math6 Completed Successfully*****
+            14165950*****update_exc_err Completed Successfully*****
+            14210710*****Syn_filt7 Completed Successfully*****
+            14217430*****TL_Math7 Completed Successfully*****
+            14219030*****Weight_Az5 Completed Successfully*****
+            14220590*****Weight_Az6 Completed Successfully*****
+            14222230*****TL_Math3 Completed Successfully*****
+            14264950*****Syn_filt3 Completed Successfully*****
+            14307670*****Syn_filt4 Completed Successfully*****
+            14343750*****Residu3 Completed Successfully*****
+            14386470*****Syn_filt5 Completed Successfully*****
+            14422550*****Residu4 Completed Successfully*****
+            14465270*****Syn_filt6 Completed Successfully*****
+            14740770*****Pitch_fr3 Completed Successfully*****
+            14740950*****Enc_lag3 Completed Successfully*****
+            14772270*****Pred_lt_3 Completed Successfully*****
+            14831130*****Convolve Completed Successfully*****
+            14838410*****G_pitch Completed Successfully*****
+            14838630*****test_err Completed Successfully*****
+            14847530*****TL_Math4 Completed Successfully*****
+            15304350*****ACELP_Codebook Completed Successfully*****
+            15304530*****TL_Math5 Completed Successfully*****
+            15315150*****Corr_xy2 Completed Successfully*****
+            15331310*****Qua_gain Completed Successfully*****
+            15341810*****TL_Math6 Completed Successfully*****
+            15342470*****update_exc_err Completed Successfully*****
+            15387230*****Syn_filt7 Completed Successfully*****
+            15393950*****TL_Math7 Completed Successfully*****
+            15413210*****Copy1 Completed Successfully*****
+            15430430*****Copy2 Completed Successfully*****
+            15448970*****Copy3 Completed Successfully*****
+            15449930*****ana is Correct*****
+            15456410*****synth is Correct*****
+            15467370*****prm2bits_ld8k Completed Successfully*****
+            15504290*****Pre_Process Completed Successfully*****
+Stopped at time : 15612710100 ps : File "C:/Users/VMonCooper/Desktop/TopLevel/Gain_predict.v" Line 233

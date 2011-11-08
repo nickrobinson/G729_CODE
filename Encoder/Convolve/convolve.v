@@ -258,7 +258,10 @@ begin
 		//y[n] = extract_h(s);
 		S7:
 		begin
-			memOut = s[31:16];
+			if (s[31] == 1)
+				memOut = {16'hffff,s[31:16]};
+			else	
+				memOut = {16'h0000,s[31:16]};
 			memWriteEn = 1;
 			addOutA = yAddr;
 			addOutB = n;

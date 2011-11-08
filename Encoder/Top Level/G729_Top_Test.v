@@ -200,6 +200,9 @@ module G729_Top_Test_v;
 	//synth
 	reg [31:0] Coder_ld8k_synth [0:4999];
 
+	//prm2bits_ld8k
+	reg [31:0] prm2bits_ld8k_bits [0:4999];
+
 	//working integers
 	integer i;
 	integer k;
@@ -361,6 +364,9 @@ module G729_Top_Test_v;
 		
 		//synth
 		$readmemh("Coder_ld8k_synth.out", Coder_ld8k_synth);
+		
+		//prm2bits_ld8k
+		$readmemh("prm2bits_ld8k_bits.out", prm2bits_ld8k_bits);
 	end	
 
 	// Instantiate the Unit Under Test (UUT)
@@ -393,6 +399,7 @@ module G729_Top_Test_v;
 	parameter L_INTERPOL = 'd11;
 	parameter M = 'd10;
 	parameter MP1 = M + 'd1;
+	parameter SERIAL_SIZE = 'd82;
 
 	parameter NEW_SPEECH = OLD_SPEECH + L_TOTAL - L_FRAME;
 	parameter SPEECH = OLD_SPEECH + L_TOTAL - L_FRAME - L_NEXT;                    
@@ -2345,6 +2352,39 @@ module G729_Top_Test_v;
 				$display($time, "!!!!!synth is Incorrect!!!!!");
 			else
 				$display($time, "*****synth is Correct*****");
+				
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//		prm2bits_ld8k
+	//
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	
+			testdone = 1;
+			wait(done);
+			testdone = 0;
+			flag1 = 0;
+			@(posedge clock);
+			@(posedge clock);
+			
+			for (i = 0; i<SERIAL_SIZE;i=i+1)
+			begin
+				outBufAddr = SERIAL + i;
+				@(posedge clock);
+				@(posedge clock);
+				if (out != prm2bits_ld8k_bits[k*SERIAL_SIZE+i])
+				begin
+					$display($time, " ERROR: bits[%d] = %x, expected = %x", k*SERIAL_SIZE+i, out, prm2bits_ld8k_bits[k*SERIAL_SIZE+i]);
+					flag1 = 1;
+				end
+				@(posedge clock);
+				@(posedge clock);
+			end	
+			
+			if (flag1)
+				$display($time, "!!!!!prm2bits_ld8k Failed: bits!!!!!");
+			else
+				$display($time, "*****prm2bits_ld8k Completed Successfully*****");
+
 		end//k for loop
 	end//initial 
 	

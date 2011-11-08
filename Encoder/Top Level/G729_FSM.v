@@ -175,13 +175,14 @@ module G729_FSM(clock,reset,start,divErr,
 	 parameter SUB_MODULE_UPDATE_EXC_ERR_DONE = 7'd55;
 	 parameter SUB_MODULE_SYN_FILT7_DONE = 7'd56;
 	 parameter SUB_MODULE_TL_MATH7_DONE = 7'd57;
-	 parameter SUB_MODULE_COPY1_DONE = 7'd58;
-	 parameter SUB_MODULE_COPY_WAIT1_DONE = 7'd59;
-	 parameter SUB_MODULE_COPY2_DONE = 7'd60;
-	 parameter SUB_MODULE_COPY_WAIT2_DONE = 7'd61;
-	 parameter SUB_MODULE_COPY3_DONE = 7'd62;
-	 parameter TL_FOR_LOOP_INC = 7'd63;
-	 parameter TL_DONE = 7'd64;
+	 parameter TL_FOR_LOOP_INC = 7'd58;
+	 parameter SUB_MODULE_COPY1_DONE = 7'd59;
+	 parameter SUB_MODULE_COPY_WAIT1_DONE = 7'd60;
+	 parameter SUB_MODULE_COPY2_DONE = 7'd61;
+	 parameter SUB_MODULE_COPY_WAIT2_DONE = 7'd62;
+	 parameter SUB_MODULE_COPY3_DONE = 7'd63;
+	 parameter SUB_MODULE_PRM2BITS_LD8K_DONE = 7'd64;
+	 parameter TL_DONE = 7'd65;
 
 	 //working regs
 	 reg [2:0] frameDoneState, nextFrameDoneState;
@@ -221,7 +222,7 @@ module G729_FSM(clock,reset,start,divErr,
 	 //Sub-Module state machine
 	 always@(*)
 	 begin
-	   LDk = 0;
+	    LDk = 0;
 		LDi_subfr = 0;
 		LDi_gamma = 0;
 		LDT_op = 0;
@@ -233,7 +234,7 @@ module G729_FSM(clock,reset,start,divErr,
 		LDgain_code = 0;
 		LDindex = 0;
 		LDtemp = 0;
-	   LDL_temp = 0;
+	    LDL_temp = 0;
 		LDA_Addr = 0;
 		LDAq_Addr = 0;
 		LDsharp = 0;
@@ -301,21 +302,22 @@ module G729_FSM(clock,reset,start,divErr,
 				if(start == 0)
 				begin
 					nextsubModuleState = SUB_MODULE_START;
-					resetk = 1; 
-					reseti_subfr = 1;
-					reseti_gamma = 1;
-					resetT_op = 1;
-					resetT0 = 1;
-					resetT0_min = 1;
-					resetT0_max = 1; 
-					resetT0_frac = 1;
-					resetgain_pit = 1;
-					resetgain_code = 1;
-					resetindex = 1;
-					resettemp = 1;
-					resetL_temp = 1;
 					resetA_Addr = 1;
 					resetAq_Addr = 1;
+					reseti_gamma = 1;
+					reseti_subfr = 1;
+					resetgain_code = 1;
+					resetgain_pit = 1;
+					resetindex = 1;
+					resetk = 1; 
+					resetL_temp = 1;
+					reseti = 1;
+					resetT_op = 1;
+					resetT0 = 1;
+					resetT0_frac = 1;
+					resetT0_max = 1; 
+					resetT0_min = 1;
+					resettemp = 1;
 				end	
 				else if(start == 1)
 					nextsubModuleState = SUB_MODULE_AUTOCORR_READY;
@@ -1055,9 +1057,22 @@ module G729_FSM(clock,reset,start,divErr,
 				if(CopyDone == 0)
 					nextsubModuleState = SUB_MODULE_COPY3_DONE;
 				else if(CopyDone == 1)
-					nextsubModuleState = TL_DONE;
+				begin
+					mathMuxSel = 6'd51;
+					nextsubModuleState = SUB_MODULE_PRM2BITS_LD8K_DONE;
+					prm2bits_ld8kReady = 1;
+				end
 			end//SUB_MODULE_COPY3_DONE		
-			
+
+			SUB_MODULE_PRM2BITS_LD8K_DONE:
+			begin
+				mathMuxSel = 6'd51;
+				if(prm2bits_ld8kDone == 0)
+					nextsubModuleState = SUB_MODULE_PRM2BITS_LD8K_DONE;
+				else if(prm2bits_ld8kDone == 1)
+					nextsubModuleState = TL_DONE;
+			end//SUB_MODULE_PRM2BITS_LD8K_DONE		
+
 			TL_DONE:
 			begin
 				done = 1;

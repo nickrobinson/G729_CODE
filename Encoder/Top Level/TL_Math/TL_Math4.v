@@ -45,8 +45,8 @@ module TL_Math4 (clock,reset,start,y1,xn,xn2,temp,gain_pit_in,GPCLIP,L_SUBFR,add
 	input L_shlDone;
 	
 	//outputs
-	output [15:0] gain_pit_out;
-	output [31:0] L_temp;
+	output reg [15:0] gain_pit_out;
+	output reg [31:0] L_temp;
 	output reg done;
 
 	output reg [15:0] addOutA;
@@ -67,8 +67,7 @@ module TL_Math4 (clock,reset,start,y1,xn,xn2,temp,gain_pit_in,GPCLIP,L_SUBFR,add
 	reg [3:0] currentstate, nextstate;
 	reg [15:0] next_gain_pit_out,next_i;
 	reg [31:0] next_L_temp;
-	reg [15:0] gain_pit_out,i;
-	reg [31:0] L_temp;
+	reg [15:0] i;
 	reg LD_gain_pit_out,LD_i,LD_L_temp;
 	reg reset_gain_pit_out,reset_i,reset_L_temp;
 	
@@ -166,7 +165,11 @@ module TL_Math4 (clock,reset,start,y1,xn,xn2,temp,gain_pit_in,GPCLIP,L_SUBFR,add
 				if(temp[15:0] == 16'h0001)
 					nextstate = IF_2;
 				else
+				begin
+					next_gain_pit_out = gain_pit_in;
+					LD_gain_pit_out = 1;
 					nextstate = FOR_CHECK;
+				end
 			end
 			
 		    //if (sub(gain_pit, GPCLIP) > 0) {
@@ -179,6 +182,11 @@ module TL_Math4 (clock,reset,start,y1,xn,xn2,temp,gain_pit_in,GPCLIP,L_SUBFR,add
 				if(subIn[15:0] != 16'h0000 && subIn[15] != 1'd1)
 				begin
 					next_gain_pit_out = GPCLIP;
+					LD_gain_pit_out = 1;
+				end
+				else
+				begin
+					next_gain_pit_out = gain_pit_in;
 					LD_gain_pit_out = 1;
 				end
 				nextstate = FOR_CHECK;

@@ -307,7 +307,10 @@ module Pred_lt_3(clk, start, reset, done, exc, t0, frac, L_subfr, writeAddr, wri
 								add_a = exc;
 								add_b = j;
 								writeAddr = add_in[11:0];
-								writeOut = L_add_in[31:16];						//exc[j] = round(s);
+								if (L_add_in[31] == 1)
+									writeOut = {16'hffff,L_add_in[31:16]};						//exc[j] = round(s);
+								else
+									writeOut = {16'h0000,L_add_in[31:16]};						//exc[j] = round(s);
 								writeEn = 1;
 								nextstate = S9;
 							end
