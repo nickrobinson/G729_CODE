@@ -8,7 +8,7 @@
 <!-- Copyright (c) 1995-2010 Xilinx, Inc.  All rights reserved.    -->
 
 <messages>
-<msg type="info" file="ProjectMgmt" num="1677" ><arg fmt="%s" index="1">Analyzing Verilog file \&quot;C:/Users/Josh/Documents/School/Fall 2011/Senior Design I/Xilinx Modules/Constant Memory/CONSTANT_MEMORY.v\&quot; into library work</arg>
+<msg type="info" file="ProjectMgmt" num="1677" ><arg fmt="%s" index="1">Analyzing Verilog file \&quot;C:/Users/Josh/Documents/School/Fall 2011/Senior Design I/GitHub/Decoder/Constant Memory/CONSTANT_MEMORY.v\&quot; into library work</arg>
 </msg>
 
 </messages>
