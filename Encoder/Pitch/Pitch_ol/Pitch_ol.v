@@ -424,56 +424,43 @@ module Pitch_ol(clk, start, reset, done, signal, pit_min, pit_max, L_frame, p_ma
 				
 				S5:
 					begin
-						if(overflow == 1)
-							begin
-								if((i[15] == 1) || (i < (L_frame-'d1)))
-									begin
-										shr_a = readIn;
-										shr_b = 'd3;
-										temp_sig = shr_in;						//scal_sig[i] = shr(signal[i], 3);
-										writeOut = shr_in;
-										nextstate = S3;
-									end
-								
-								else
-									nextstate = S6;
-							end
-							
+						if ((i[15] == 1) || i < L_frame)
+						begin
+							if(overflow == 1)
+								begin
+									shr_a = readIn;
+									shr_b = 'd3;
+									temp_sig = shr_in;						//scal_sig[i] = shr(signal[i], 3);
+									writeOut = shr_in;
+									nextstate = S3;
+								end
+							else
+								begin
+									if(t0 < 'd1048576)
+										begin
+											shl_a = readIn;
+											shl_b = 'd3;
+											temp_sig = shl_in;						//scal_sig[i] = shl(signal[i], 3);
+											writeOut = shl_in;
+											nextstate = S3;
+										end
+									else
+										begin
+											temp_sig = readIn;						//scal_sig[i] = signal[i];
+											writeOut = readIn;
+											nextstate = S3;
+										end
+								end
+						   add_a = scal_sig;
+						   add_b = i;
+						   sub_a = i;
+						   sub_b = 16'hffff;
+						   nexti = sub_in;
+						   writeAddr = add_in;
+						   writeEn = 1;
+						end
 						else
-							begin
-								if(t0 < 'd1048576)
-									begin
-										if((i[15] == 1) || (i < (L_frame-'d1)))
-											begin
-												shl_a = readIn;
-												shl_b = 'd3;
-												temp_sig = shl_in;						//scal_sig[i] = shl(signal[i], 3);
-												writeOut = shl_in;
-												nextstate = S3;
-											end
-										else
-											nextstate = S6;
-									end
-								
-								else
-									begin
-										if((i[15] == 1) || (i < (L_frame-'d1)))
-											begin
-												temp_sig = readIn;						//scal_sig[i] = signal[i];
-												writeOut = readIn;
-												nextstate = S3;
-											end
-										else
-											nextstate = S6;
-									end
-							end
-						 add_a = scal_sig;
-						 add_b = i;
-						 sub_a = i;
-						 sub_b = 16'hffff;
-						 nexti = sub_in;
-  						 writeAddr = add_in;
-						 writeEn = 1;
+							nextstate = S6;
 					end 
 					
 				S6:

@@ -250,7 +250,7 @@ end
 always @(posedge clk)
 begin
 	if(reset)
-		smooth <= 0;
+		smooth <= 1;
 	else if(smoothReset)
 		smooth <= 1;
 	else if(smoothLD)
@@ -324,7 +324,6 @@ begin
 			d_minReset = 1;
 			iReset = 1;
 			kReset = 1;	
-			smoothReset = 1;
 			if(start != 1)
 				nextstate = INIT;
 			else if (start == 1)				
@@ -355,7 +354,11 @@ begin
 			shlVar1Out = memIn[15:0];
 			shlVar2Out = 16'd1;
 			memWriteAddr = {INTERPOLATION_LSF_INT[11:4],k[3:0]};
-			memOut = {16'd0,shlIn[15:0]};
+			//memOut = {16'd0,shlIn[15:0]};
+			if (shlIn[15] == 1)
+				memOut = {16'hffff,shlIn[15:0]};
+			else
+				memOut = {16'h0000,shlIn[15:0]};
 			memWrite = 1;
 			nextstate = FOR_LOOP1_BODY1;
 		end	//FOR_LOOP1_MEM_WAIT1
@@ -374,7 +377,11 @@ begin
 			shlVar1Out = memIn[15:0];
 			shlVar2Out = 16'd1;
 			memWriteAddr = {INTERPOLATION_LSF_NEW[11:4],k[3:0]};
-			memOut = {16'd0,shlIn[15:0]};
+			//memOut = {16'd0,shlIn[15:0]};
+			if (shlIn[15] == 1)
+				memOut = {16'hffff,shlIn[15:0]};
+			else
+				memOut = {16'h0000,shlIn[15:0]};
 			memWrite = 1;
 			nextstate = FOR_LOOP1;
 			addOutA = {12'd0,k[3:0]};
@@ -439,7 +446,11 @@ begin
 				addOutA = {12'd0,i[3:0]};
 				addOutB = 16'd2;
 				memWriteAddr = {PERC_VAR_LAR[11:2],addIn[1:0]};
-				memOut = {16'd0,shrIn[15:0]};
+				//memOut = {16'd0,shrIn[15:0]};
+				if (shrIn[15] == 1)
+					memOut = {16'hffff,shrIn[15:0]};
+				else
+					memOut = {16'h0000,shrIn[15:0]};
 				memWrite = 1;
 				nextstate = FOR_LOOP2;
 				nextstate = FOR_LOOP2_BODY5;
@@ -478,7 +489,11 @@ begin
 				addOutA = {12'd0,i[3:0]};
 				addOutB = 16'd2;
 				memWriteAddr = {PERC_VAR_LAR[11:2],addIn[1:0]};
-				memOut = {16'd0,L_shrIn[15:0]};
+				//memOut = {16'd0,L_shrIn[15:0]};
+				if (L_shrIn[15] == 1)
+					memOut = {16'hffff,L_shrIn[15:0]};
+				else
+					memOut = {16'h0000,L_shrIn[15:0]};
 				memWrite = 1;
 				nextstate = FOR_LOOP2_BODY5;
 			end
@@ -514,7 +529,11 @@ begin
 				addOutA = {12'd0,i[3:0]};
 				addOutB = 16'd2;
 				memWriteAddr = {PERC_VAR_LAR[11:2],addIn[1:0]};
-				memOut = {16'd0,L_shrIn[15:0]};
+				//memOut = {16'd0,L_shrIn[15:0]};
+				if (L_shrIn[15] == 1)
+					memOut = {16'hffff,L_shrIn[15:0]};
+				else
+					memOut = {16'h0000,L_shrIn[15:0]};
 				memWrite = 1;
 				nextstate = FOR_LOOP2_BODY5;
 			end
@@ -545,7 +564,11 @@ begin
 			addOutA = {12'd0,i[3:0]};
 			addOutB = 16'd2;
 			memWriteAddr = {PERC_VAR_LAR[11:2],addIn[1:0]};
-			memOut = {16'd0,L_shrIn[15:0]};
+			//memOut = {16'd0,L_shrIn[15:0]};
+			if (L_shrIn[15] == 1)
+				memOut = {16'hffff,L_shrIn[15:0]};
+			else
+				memOut = {16'h0000,L_shrIn[15:0]};
 			memWrite = 1;
 			nextstate = FOR_LOOP2_BODY5;
 		end//FOR_LOOP2_BODY4
@@ -587,7 +610,11 @@ begin
 			addOutA = {12'd0,i[3:0]};
 			addOutB = 16'd2;
 			memWriteAddr = {PERC_VAR_LAR[11:2],addIn[1:0]};
-			memOut = {16'd0,subIn[15:0]};
+			//memOut = {16'd0,subIn[15:0]};
+			if (subIn[15] == 1)
+				memOut = {16'hffff,subIn[15:0]};
+			else
+				memOut = {16'h0000,subIn[15:0]};
 			memWrite = 1;
 			L_addOutA = {28'd0,i[3:0]}; 
 			L_addOutB = 32'd1;
@@ -621,7 +648,11 @@ begin
 			addOutB = memIn[15:0];
 			shrVar1Out = addIn;
 			shrVar2Out = 16'd1;
-			memOut = shrIn;
+			//memOut = shrIn;
+			if (shrIn[15] == 1)
+				memOut = {16'hffff,shrIn[15:0]};
+			else
+				memOut = {16'h0000,shrIn[15:0]};
 			memWrite = 1;
 			memWriteAddr = {PERC_VAR_LAR[11:2],2'd0};
 			nextstate = LAR_INTERPOL1_MEM_WAIT3;
@@ -629,7 +660,11 @@ begin
 		
 		LAR_INTERPOL1_MEM_WAIT3:			//state17
 		begin
-			memOut = temp;
+			//memOut = temp;
+			if (temp[15] == 1)
+				memOut = {16'hffff,temp[15:0]};
+			else
+				memOut = {16'h0000,temp[15:0]};
 			memWrite = 1;
 			memWriteAddr = {PERC_VAR_LAR_OLD[11:2],2'd0};
 			nextstate = LAR_INTERPOL2;
@@ -659,7 +694,11 @@ begin
 			addOutB = memIn[15:0];
 			shrVar1Out = addIn;
 			shrVar2Out = 16'd1;
-			memOut = shrIn;
+			//memOut = shrIn;
+			if (shrIn[15] == 1)
+				memOut = {16'hffff,shrIn[15:0]};
+			else
+				memOut = {16'h0000,shrIn[15:0]};
 			memWrite = 1;
 			memWriteAddr = {PERC_VAR_LAR[11:2],2'd1};
 			nextstate = LAR_INTERPOL2_MEM_WAIT3;
@@ -667,7 +706,11 @@ begin
 		
 		LAR_INTERPOL2_MEM_WAIT3:			//state21
 		begin
-			memOut = temp;
+			//memOut = temp;
+			if (temp[15] == 1)
+				memOut = {16'hffff,temp[15:0]};
+			else
+				memOut = {16'h0000,temp[15:0]};
 			memWrite = 1;
 			memWriteAddr = {PERC_VAR_LAR_OLD[11:2],2'd1};
 			nextstate = FOR_LOOP3;
@@ -880,7 +923,11 @@ begin
 			shlVar1Out = subIn;
 			shlVar2Out = 16'd5;
 			memWriteAddr = {PERC_VAR_GAMMA2[11:1],k[0]};
-			memOut = shlIn;
+			//memOut = shlIn;
+			if (shlIn[15] == 1)
+				memOut = {16'hffff,shlIn[15:0]};
+			else
+				memOut = {16'h0000,shlIn[15:0]};
 			memWrite = 1;
 			nextstate = FOR_LOOP3_BODY5;
 			nexttemp = shlIn;

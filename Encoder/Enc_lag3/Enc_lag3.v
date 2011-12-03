@@ -324,7 +324,7 @@ begin
 			// memWriteEn = 1;
 			nextT0_max = addIn;
 			T0_maxLD = 1;
-			nextstate = S12;
+			nextstate = S11;
 		end//S10
 		
 		/* if (sub(*T0_max, pit_max) > 0)
@@ -343,10 +343,7 @@ begin
 				nextstate = S12;
 			end			
 			else
-			begin
-				done = 1;
-				nextstate = INIT;
-			end
+				nextstate = S13;
 		end//S11		
 		
 		//*T0_min_out = sub(*T0_max, 9);

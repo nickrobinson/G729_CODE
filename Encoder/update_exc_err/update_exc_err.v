@@ -235,7 +235,7 @@ module update_exc_err(clock,reset,start,done,gain_pit,T0,
 			
 			INIT: begin
 				if(start) begin
-					next_L_worst = 'd1;
+					next_L_worst = 32'hffff_ffff;
 					nextstate = state1;
 				end
 				else
@@ -382,8 +382,8 @@ module update_exc_err(clock,reset,start,done,gain_pit,T0,
 					next_L_temp = L_add_in;
 					L_sub_outa = L_add_in;
 					L_sub_outb = L_worst;
-					if(L_sub_in[15] != 'd1 && L_sub_in != 'd0) begin
-						next_L_worst = L_temp;
+					if(L_sub_in[31] != 'd1 && L_sub_in != 'd0) begin
+						next_L_worst = L_add_in;
 					end
 					add_outa = i;
 					add_outb = 'd1;

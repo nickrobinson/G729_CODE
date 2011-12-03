@@ -1637,7 +1637,7 @@ module Qua_gain(clock,reset,start,done,tame_flag,gain_pit,gain_cod,ANA,i_subfr,
 				if(i == 'd4) begin
 					next_i = 'd0;
 					constant_mem_read_addr = {GBK1[11:4],index1[2:0],1'd0};
-					nextstate = state79;
+					nextstate = state81;
 				end
 				else
 					nextstate = state50;

@@ -54,154 +54,154 @@ module G729_Top_Test_v;
 	//////////////////////////////////////////////////////////////////////////////////////////////
 
 	//Input Samples
-	reg [15:0] samplesmem [0:10239];
+	reg [15:0] samplesmem [0:37679];
 	
 	//Pre-Processor
-	reg [31:0] Pre_Process_new_speech [0:10239];
+	reg [31:0] Pre_Process_new_speech [0:37679];
 	
 	//Autocorellation
-	reg [31:0] Autocorr_r [0:10239];
+	reg [31:0] Autocorr_r [0:37679];
 	
 	//Lag-Window
-	reg [31:0] Lag_window_r [0:10239];
+	reg [31:0] Lag_window_r [0:37679];
 	
 	//Levinson-Durbin
-	reg [31:0] Levinson_A_t_MP1 [0:10239];
-	reg [31:0] Levinson_rc [0:10239];
+	reg [31:0] Levinson_A_t_MP1 [0:37679];
+	reg [31:0] Levinson_rc [0:37679];
 	
 	//A(Z) to LSP
-	reg [31:0] Az_lsp_lsp_new [0:10239];
+	reg [31:0] Az_lsp_lsp_new [0:37679];
 	
 	//Qua_lsp
-	reg [31:0] Qua_lsp_lsp_new_q [0:9999];
-	reg [31:0] Qua_lsp_ana [0:9999];
+	reg [31:0] Qua_lsp_lsp_new_q [0:37679];
+	reg [31:0] Qua_lsp_ana [0:37679];
 
 	//Int_lpc
-	reg [31:0] Int_lpc_lsf_int [0:4999];
-	reg [31:0] Int_lpc_lsf_new [0:4999];
-	reg [31:0] Int_lpc_A_t [0:4999];
+	reg [31:0] Int_lpc_lsf_int [0:37679];
+	reg [31:0] Int_lpc_lsf_new [0:37679];
+	reg [31:0] Int_lpc_A_t [0:37679];
 	
 	//Int_qlpc
-	reg [31:0] Int_qlpc_Aq_t [0:4999];
+	reg [31:0] Int_qlpc_Aq_t [0:37679];
 	
 	//TL_Math1
-	reg [31:0] TL_Math1_lsp_old [0:4999];
-	reg [31:0] TL_Math1_lsp_old_q [0:4999];
+	reg [31:0] TL_Math1_lsp_old [0:37679];
+	reg [31:0] TL_Math1_lsp_old_q [0:37679];
 
 	//perc_var
-	reg [31:0] perc_var_gamma1 [0:4999];
-	reg [31:0] perc_var_gamma2 [0:4999];
-	reg [31:0] perc_var_lsf_int [0:4999];
-	reg [31:0] perc_var_lsf_new [0:4999];
+	reg [31:0] perc_var_gamma1 [0:37679];
+	reg [31:0] perc_var_gamma2 [0:37679];
+	reg [31:0] perc_var_lsf_int [0:37679];
+	reg [31:0] perc_var_lsf_new [0:37679];
 
 	//Weight_Az1
-	reg [31:0] Weight_Az1_Ap1 [0:4999];
+	reg [31:0] Weight_Az1_Ap1 [0:37679];
 
 	//Weight_Az2
-	reg [31:0] Weight_Az2_Ap2 [0:4999];
+	reg [31:0] Weight_Az2_Ap2 [0:37679];
 
 	//Residu1
-	reg [31:0] Residu1_wsp [0:4999];
+	reg [31:0] Residu1_wsp [0:37679];
 
 	//Syn_filt1
-	reg [31:0] Syn_filt1_wsp [0:4999];
-	reg [31:0] Syn_filt1_mem_w [0:4999];
+	reg [31:0] Syn_filt1_wsp [0:37679];
+	reg [31:0] Syn_filt1_mem_w [0:37679];
 
 	//Weight_Az3
-	reg [31:0] Weight_Az3_Ap1 [0:4999];
+	reg [31:0] Weight_Az3_Ap1 [0:37679];
 
 	//Weight_Az4
-	reg [31:0] Weight_Az4_Ap2 [0:4999];
+	reg [31:0] Weight_Az4_Ap2 [0:37679];
 
 	//Residu2
-	reg [31:0] Residu2_wsp [0:4999];
+	reg [31:0] Residu2_wsp [0:37679];
 
 	//Syn_filt2
-	reg [31:0] Syn_filt2_wsp [0:4999];
-	reg [31:0] Syn_filt2_mem_w [0:4999];
+	reg [31:0] Syn_filt2_wsp [0:37679];
+	reg [31:0] Syn_filt2_mem_w [0:37679];
 	
 	//Pitch_ol
-	reg [31:0] Pitch_ol_T_op [0:4999];
+	reg [31:0] Pitch_ol_T_op [0:37679];
 	
 	//Weight_Az5
-	reg [31:0] Weight_Az5_Ap1 [0:4999];
+	reg [31:0] Weight_Az5_Ap1 [0:37679];
 
 	//Weight_Az6
-	reg [31:0] Weight_Az6_Ap2 [0:4999];
+	reg [31:0] Weight_Az6_Ap2 [0:37679];
 
 	//TL_Math3
-	reg [31:0] TL_Math3_ai_zero [0:4999];
+	reg [31:0] TL_Math3_ai_zero [0:37679];
 
 	//Syn_filt3
-	reg [31:0] Syn_filt3_h1 [0:4999];
-	reg [31:0] Syn_filt3_zero [0:4999];
+	reg [31:0] Syn_filt3_h1 [0:37679];
+	reg [31:0] Syn_filt3_zero [0:37679];
 
 	//Syn_filt4
-	reg [31:0] Syn_filt4_h1 [0:4999];
-	reg [31:0] Syn_filt4_zero [0:4999];
+	reg [31:0] Syn_filt4_h1 [0:37679];
+	reg [31:0] Syn_filt4_zero [0:37679];
 
 	//Residu3
-	reg [31:0] Residu3_exc [0:4999];
+	reg [31:0] Residu3_exc [0:37679];
 	
 	//Syn_filt5
-	reg [31:0] Syn_filt5_error [0:4999];
-	reg [31:0] Syn_filt5_mem_err [0:4999];
+	reg [31:0] Syn_filt5_error [0:37679];
+	reg [31:0] Syn_filt5_mem_err [0:37679];
 
 	//Residu4
-	reg [31:0] Residu4_xn [0:4999];
+	reg [31:0] Residu4_xn [0:37679];
 	
 	//Syn_filt6
-	reg [31:0] Syn_filt6_xn [0:4999];
-	reg [31:0] Syn_filt6_mem_w0 [0:4999];
+	reg [31:0] Syn_filt6_xn [0:37679];
+	reg [31:0] Syn_filt6_mem_w0 [0:37679];
 
 	//Pred_lt_3
-	reg [31:0] Pred_lt_3_exc [0:4999];
+	reg [31:0] Pred_lt_3_exc [0:37679];
 
 	//Convolve
-	reg [31:0] Convolve_y1 [0:4999];
+	reg [31:0] Convolve_y1 [0:37679];
 
 	//TL_Math4
-	reg [31:0] TL_Math4_xn2 [0:4999];
+	reg [31:0] TL_Math4_xn2 [0:37679];
 
 	//ACELP_Codebook
-	reg [31:0] ACELP_Codebook_code [0:4999];
-	reg [31:0] ACELP_Codebook_y2 [0:4999];
+	reg [31:0] ACELP_Codebook_code [0:37679];
+	reg [31:0] ACELP_Codebook_y2 [0:37679];
 
 	//Corr_xy2
-	reg [31:0] Corr_xy2_g_coeff_cs [0:4999];
-	reg [31:0] Corr_xy2_exp_g_coeff_cs [0:4999];
+	reg [31:0] Corr_xy2_g_coeff_cs [0:37679];
+	reg [31:0] Corr_xy2_exp_g_coeff_cs [0:37679];
 
 	//TL_Math6
-	reg [31:0] TL_Math6_exc [0:4999];
+	reg [31:0] TL_Math6_exc [0:37679];
 
 	//update_exc_err
-	reg [31:0] update_exc_err_L_exc_err [0:4999];
+	reg [31:0] update_exc_err_L_exc_err [0:37679];
 
 	//Syn_filt7
-	reg [31:0] Syn_filt7_synth [0:4999];
-	reg [31:0] Syn_filt7_mem_syn [0:4999];
+	reg [31:0] Syn_filt7_synth [0:37679];
+	reg [31:0] Syn_filt7_mem_syn [0:37679];
 
 	//TL_Math7
-	reg [31:0] TL_Math7_mem_err [0:4999];
-	reg [31:0] TL_Math7_mem_w0 [0:4999];
+	reg [31:0] TL_Math7_mem_err [0:37679];
+	reg [31:0] TL_Math7_mem_w0 [0:37679];
 	
 	//Copy1
-	reg [31:0] Copy1_old_speech [0:4999];
+	reg [31:0] Copy1_old_speech [0:37679];
 	
 	//Copy2
-	reg [31:0] Copy2_old_wsp [0:4999];
+	reg [31:0] Copy2_old_wsp [0:37679];
 	
 	//Copy3
-	reg [31:0] Copy3_old_exc [0:4999];
+	reg [31:0] Copy3_old_exc [0:37679];
 
 	//ana
-	reg [31:0] Coder_ld8k_ana [0:4999];
+	reg [31:0] Coder_ld8k_ana [0:37679];
 
 	//synth
-	reg [31:0] Coder_ld8k_synth [0:4999];
+	reg [31:0] Coder_ld8k_synth [0:37679];
 
 	//prm2bits_ld8k
-	reg [31:0] prm2bits_ld8k_bits [0:4999];
+	reg [31:0] prm2bits_ld8k_bits [0:37679];
 
 	//working integers
 	integer i;
@@ -447,8 +447,9 @@ module G729_Top_Test_v;
 	//
 	//////////////////////////////////////////////////////////////////////////////////////////////
 			
-		for(k=0;k<128;k=k+1)
+		for(k=0;k<153;k=k+1)
 		begin
+			$display($time, " ITERATION: k = [%d] ", k+1);
 
 	//////////////////////////////////////////////////////////////////////////////////////////////
 	//

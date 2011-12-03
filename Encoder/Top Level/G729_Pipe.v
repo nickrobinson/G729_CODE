@@ -5132,7 +5132,7 @@ module G729_Pipe (clock,reset,xn,preProcReady,autocorrReady,lagReady,levinsonRea
 					outBufIn = dina;
 				end
 				if (Qua_gainDone)
-						nextstate = TL_MATH6;
+					nextstate = TL_MATH6;
 			end
 			TL_MATH6:
 			begin
